@@ -41,6 +41,16 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		0132BAF3281FC09400E7A81A /* Supporting Files */ = {
+			isa = PBXGroup;
+			children = (
+				01D9D2C2281F71C400E308D4 /* AppDelegate.swift */,
+				01D9D2C4281F71C400E308D4 /* SceneDelegate.swift */,
+				01D9D2CB281F71C700E308D4 /* Assets.xcassets */,
+			);
+			path = "Supporting Files";
+			sourceTree = "<group>";
+		};
 		01D9D2B6281F71C400E308D4 = {
 			isa = PBXGroup;
 			children = (
@@ -60,13 +70,11 @@
 		01D9D2C1281F71C400E308D4 /* Unsplash */ = {
 			isa = PBXGroup;
 			children = (
-				01D9D2C2281F71C400E308D4 /* AppDelegate.swift */,
-				01D9D2C4281F71C400E308D4 /* SceneDelegate.swift */,
+				0132BAF3281FC09400E7A81A /* Supporting Files */,
 				01D9D2D6281F7A4F00E308D4 /* MainTabController.swift */,
 				01D9D2D8281F7B1500E308D4 /* HomeViewController.swift */,
 				01D9D2DA281F7B1B00E308D4 /* SearchViewController.swift */,
 				0132BAF1281FAF4500E7A81A /* NetworkService.swift */,
-				01D9D2CB281F71C700E308D4 /* Assets.xcassets */,
 				01D9D2CD281F71C700E308D4 /* LaunchScreen.storyboard */,
 				01D9D2D0281F71C700E308D4 /* Info.plist */,
 			);
