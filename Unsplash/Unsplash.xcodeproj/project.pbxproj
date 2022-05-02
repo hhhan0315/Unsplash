@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		0132BAF2281FAF4500E7A81A /* NetworkService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0132BAF1281FAF4500E7A81A /* NetworkService.swift */; };
 		01D9D2C3281F71C400E308D4 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01D9D2C2281F71C400E308D4 /* AppDelegate.swift */; };
 		01D9D2C5281F71C400E308D4 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01D9D2C4281F71C400E308D4 /* SceneDelegate.swift */; };
 		01D9D2CC281F71C700E308D4 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 01D9D2CB281F71C700E308D4 /* Assets.xcassets */; };
@@ -17,6 +18,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		0132BAF1281FAF4500E7A81A /* NetworkService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkService.swift; sourceTree = "<group>"; };
 		01D9D2BF281F71C400E308D4 /* Unsplash.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Unsplash.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		01D9D2C2281F71C400E308D4 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		01D9D2C4281F71C400E308D4 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -63,6 +65,7 @@
 				01D9D2D6281F7A4F00E308D4 /* MainTabController.swift */,
 				01D9D2D8281F7B1500E308D4 /* HomeViewController.swift */,
 				01D9D2DA281F7B1B00E308D4 /* SearchViewController.swift */,
+				0132BAF1281FAF4500E7A81A /* NetworkService.swift */,
 				01D9D2CB281F71C700E308D4 /* Assets.xcassets */,
 				01D9D2CD281F71C700E308D4 /* LaunchScreen.storyboard */,
 				01D9D2D0281F71C700E308D4 /* Info.plist */,
@@ -144,6 +147,7 @@
 				01D9D2C3281F71C400E308D4 /* AppDelegate.swift in Sources */,
 				01D9D2D7281F7A4F00E308D4 /* MainTabController.swift in Sources */,
 				01D9D2C5281F71C400E308D4 /* SceneDelegate.swift in Sources */,
+				0132BAF2281FAF4500E7A81A /* NetworkService.swift in Sources */,
 				01D9D2D9281F7B1500E308D4 /* HomeViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
