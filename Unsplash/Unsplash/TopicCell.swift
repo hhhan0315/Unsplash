@@ -11,8 +11,9 @@ class TopicCell: UICollectionViewCell {
     static let identifier: String = String(describing: TopicCell.self)
     
     let button: UIButton = {
-        let button = UIButton(type: .custom)
+        let button = UIButton(type: .system)
         button.translatesAutoresizingMaskIntoConstraints = false
+        button.setTitleColor(UIColor.white, for: .normal)
         return button
     }()
     
