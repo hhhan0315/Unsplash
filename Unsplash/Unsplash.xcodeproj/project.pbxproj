@@ -8,6 +8,9 @@
 
 /* Begin PBXBuildFile section */
 		0132BAF2281FAF4500E7A81A /* NetworkService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0132BAF1281FAF4500E7A81A /* NetworkService.swift */; };
+		0132BAF52820C62E00E7A81A /* DetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0132BAF42820C62E00E7A81A /* DetailViewController.swift */; };
+		0132BAF72820D34000E7A81A /* Topic.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0132BAF62820D34000E7A81A /* Topic.swift */; };
+		0132BAF92820F69400E7A81A /* TopicCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0132BAF82820F69400E7A81A /* TopicCell.swift */; };
 		01D9D2C3281F71C400E308D4 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01D9D2C2281F71C400E308D4 /* AppDelegate.swift */; };
 		01D9D2C5281F71C400E308D4 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01D9D2C4281F71C400E308D4 /* SceneDelegate.swift */; };
 		01D9D2CC281F71C700E308D4 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 01D9D2CB281F71C700E308D4 /* Assets.xcassets */; };
@@ -19,6 +22,9 @@
 
 /* Begin PBXFileReference section */
 		0132BAF1281FAF4500E7A81A /* NetworkService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkService.swift; sourceTree = "<group>"; };
+		0132BAF42820C62E00E7A81A /* DetailViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailViewController.swift; sourceTree = "<group>"; };
+		0132BAF62820D34000E7A81A /* Topic.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Topic.swift; sourceTree = "<group>"; };
+		0132BAF82820F69400E7A81A /* TopicCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TopicCell.swift; sourceTree = "<group>"; };
 		01D9D2BF281F71C400E308D4 /* Unsplash.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Unsplash.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		01D9D2C2281F71C400E308D4 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		01D9D2C4281F71C400E308D4 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -73,8 +79,11 @@
 				0132BAF3281FC09400E7A81A /* Supporting Files */,
 				01D9D2D6281F7A4F00E308D4 /* MainTabController.swift */,
 				01D9D2D8281F7B1500E308D4 /* HomeViewController.swift */,
+				0132BAF42820C62E00E7A81A /* DetailViewController.swift */,
 				01D9D2DA281F7B1B00E308D4 /* SearchViewController.swift */,
 				0132BAF1281FAF4500E7A81A /* NetworkService.swift */,
+				0132BAF62820D34000E7A81A /* Topic.swift */,
+				0132BAF82820F69400E7A81A /* TopicCell.swift */,
 				01D9D2CD281F71C700E308D4 /* LaunchScreen.storyboard */,
 				01D9D2D0281F71C700E308D4 /* Info.plist */,
 			);
@@ -156,7 +165,10 @@
 				01D9D2D7281F7A4F00E308D4 /* MainTabController.swift in Sources */,
 				01D9D2C5281F71C400E308D4 /* SceneDelegate.swift in Sources */,
 				0132BAF2281FAF4500E7A81A /* NetworkService.swift in Sources */,
+				0132BAF72820D34000E7A81A /* Topic.swift in Sources */,
 				01D9D2D9281F7B1500E308D4 /* HomeViewController.swift in Sources */,
+				0132BAF92820F69400E7A81A /* TopicCell.swift in Sources */,
+				0132BAF52820C62E00E7A81A /* DetailViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
