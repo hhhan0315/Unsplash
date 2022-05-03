@@ -13,11 +13,18 @@ class SearchViewController: UIViewController {
         super.viewDidLoad()
         
         configureUI()
+        configureSearchController()
     }
     
     private func configureUI() {
         navigationItem.title = "Search"
+    }
+    
+    private func configureSearchController() {
+        let searchController = UISearchController(searchResultsController: nil)
+        searchController.searchBar.placeholder = "Search photos, collections, users"
+        searchController.hidesNavigationBarDuringPresentation = false
         
-        view.backgroundColor = .black
+        navigationItem.searchController = searchController
     }
 }
