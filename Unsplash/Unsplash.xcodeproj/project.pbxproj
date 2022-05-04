@@ -82,6 +82,26 @@
 			path = Domain;
 			sourceTree = "<group>";
 		};
+		0194CD282822234F0006470D /* Presentation */ = {
+			isa = PBXGroup;
+			children = (
+				0194CD29282223860006470D /* Cell */,
+				01D9D2D6281F7A4F00E308D4 /* MainTabController.swift */,
+				01D9D2D8281F7B1500E308D4 /* HomeViewController.swift */,
+				0132BAF42820C62E00E7A81A /* DetailViewController.swift */,
+				01D9D2DA281F7B1B00E308D4 /* SearchViewController.swift */,
+			);
+			path = Presentation;
+			sourceTree = "<group>";
+		};
+		0194CD29282223860006470D /* Cell */ = {
+			isa = PBXGroup;
+			children = (
+				0132BAF82820F69400E7A81A /* TopicCell.swift */,
+			);
+			path = Cell;
+			sourceTree = "<group>";
+		};
 		01D9D2B6281F71C400E308D4 = {
 			isa = PBXGroup;
 			children = (
@@ -102,13 +122,9 @@
 			isa = PBXGroup;
 			children = (
 				0132BAF3281FC09400E7A81A /* Supporting Files */,
-				01D9D2D6281F7A4F00E308D4 /* MainTabController.swift */,
-				01D9D2D8281F7B1500E308D4 /* HomeViewController.swift */,
-				0132BAF42820C62E00E7A81A /* DetailViewController.swift */,
-				01D9D2DA281F7B1B00E308D4 /* SearchViewController.swift */,
 				0132BAF1281FAF4500E7A81A /* NetworkService.swift */,
 				0194CD27282222000006470D /* Domain */,
-				0132BAF82820F69400E7A81A /* TopicCell.swift */,
+				0194CD282822234F0006470D /* Presentation */,
 				0132BAFA282118CE00E7A81A /* UnsplashEndpoint.swift */,
 				0194CD1F2821485F0006470D /* Endpoint.swift */,
 				0194CD2128215DF70006470D /* EndpointFactory.swift */,
