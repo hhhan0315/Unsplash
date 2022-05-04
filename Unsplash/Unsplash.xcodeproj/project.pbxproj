@@ -58,6 +58,7 @@
 		0132BAF3281FC09400E7A81A /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
+				01D9D2CD281F71C700E308D4 /* LaunchScreen.storyboard */,
 				01D9D2C2281F71C400E308D4 /* AppDelegate.swift */,
 				01D9D2C4281F71C400E308D4 /* SceneDelegate.swift */,
 				01D9D2CB281F71C700E308D4 /* Assets.xcassets */,
@@ -122,13 +123,12 @@
 			isa = PBXGroup;
 			children = (
 				0132BAF3281FC09400E7A81A /* Supporting Files */,
-				0132BAF1281FAF4500E7A81A /* NetworkService.swift */,
 				0194CD27282222000006470D /* Domain */,
 				0194CD282822234F0006470D /* Presentation */,
 				0132BAFA282118CE00E7A81A /* UnsplashEndpoint.swift */,
 				0194CD1F2821485F0006470D /* Endpoint.swift */,
 				0194CD2128215DF70006470D /* EndpointFactory.swift */,
-				01D9D2CD281F71C700E308D4 /* LaunchScreen.storyboard */,
+				0132BAF1281FAF4500E7A81A /* NetworkService.swift */,
 				01D9D2D0281F71C700E308D4 /* Info.plist */,
 			);
 			path = Unsplash;
