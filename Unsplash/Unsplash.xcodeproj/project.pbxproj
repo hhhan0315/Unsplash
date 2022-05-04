@@ -11,6 +11,10 @@
 		0132BAF52820C62E00E7A81A /* DetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0132BAF42820C62E00E7A81A /* DetailViewController.swift */; };
 		0132BAF72820D34000E7A81A /* Topic.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0132BAF62820D34000E7A81A /* Topic.swift */; };
 		0132BAF92820F69400E7A81A /* TopicCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0132BAF82820F69400E7A81A /* TopicCell.swift */; };
+		0132BAFB282118CE00E7A81A /* UnsplashEndpoint.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0132BAFA282118CE00E7A81A /* UnsplashEndpoint.swift */; };
+		0194CD202821485F0006470D /* Endpoint.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0194CD1F2821485F0006470D /* Endpoint.swift */; };
+		0194CD2228215DF70006470D /* EndpointFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0194CD2128215DF70006470D /* EndpointFactory.swift */; };
+		0194CD2428221CE40006470D /* Photo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0194CD2328221CE40006470D /* Photo.swift */; };
 		01D9D2C3281F71C400E308D4 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01D9D2C2281F71C400E308D4 /* AppDelegate.swift */; };
 		01D9D2C5281F71C400E308D4 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01D9D2C4281F71C400E308D4 /* SceneDelegate.swift */; };
 		01D9D2CC281F71C700E308D4 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 01D9D2CB281F71C700E308D4 /* Assets.xcassets */; };
@@ -25,6 +29,10 @@
 		0132BAF42820C62E00E7A81A /* DetailViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailViewController.swift; sourceTree = "<group>"; };
 		0132BAF62820D34000E7A81A /* Topic.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Topic.swift; sourceTree = "<group>"; };
 		0132BAF82820F69400E7A81A /* TopicCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TopicCell.swift; sourceTree = "<group>"; };
+		0132BAFA282118CE00E7A81A /* UnsplashEndpoint.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UnsplashEndpoint.swift; sourceTree = "<group>"; };
+		0194CD1F2821485F0006470D /* Endpoint.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Endpoint.swift; sourceTree = "<group>"; };
+		0194CD2128215DF70006470D /* EndpointFactory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EndpointFactory.swift; sourceTree = "<group>"; };
+		0194CD2328221CE40006470D /* Photo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Photo.swift; sourceTree = "<group>"; };
 		01D9D2BF281F71C400E308D4 /* Unsplash.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Unsplash.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		01D9D2C2281F71C400E308D4 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		01D9D2C4281F71C400E308D4 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -57,6 +65,23 @@
 			path = "Supporting Files";
 			sourceTree = "<group>";
 		};
+		0194CD2628221F1C0006470D /* Entities */ = {
+			isa = PBXGroup;
+			children = (
+				0132BAF62820D34000E7A81A /* Topic.swift */,
+				0194CD2328221CE40006470D /* Photo.swift */,
+			);
+			path = Entities;
+			sourceTree = "<group>";
+		};
+		0194CD27282222000006470D /* Domain */ = {
+			isa = PBXGroup;
+			children = (
+				0194CD2628221F1C0006470D /* Entities */,
+			);
+			path = Domain;
+			sourceTree = "<group>";
+		};
 		01D9D2B6281F71C400E308D4 = {
 			isa = PBXGroup;
 			children = (
@@ -82,8 +107,11 @@
 				0132BAF42820C62E00E7A81A /* DetailViewController.swift */,
 				01D9D2DA281F7B1B00E308D4 /* SearchViewController.swift */,
 				0132BAF1281FAF4500E7A81A /* NetworkService.swift */,
-				0132BAF62820D34000E7A81A /* Topic.swift */,
+				0194CD27282222000006470D /* Domain */,
 				0132BAF82820F69400E7A81A /* TopicCell.swift */,
+				0132BAFA282118CE00E7A81A /* UnsplashEndpoint.swift */,
+				0194CD1F2821485F0006470D /* Endpoint.swift */,
+				0194CD2128215DF70006470D /* EndpointFactory.swift */,
 				01D9D2CD281F71C700E308D4 /* LaunchScreen.storyboard */,
 				01D9D2D0281F71C700E308D4 /* Info.plist */,
 			);
@@ -164,6 +192,10 @@
 				01D9D2C3281F71C400E308D4 /* AppDelegate.swift in Sources */,
 				01D9D2D7281F7A4F00E308D4 /* MainTabController.swift in Sources */,
 				01D9D2C5281F71C400E308D4 /* SceneDelegate.swift in Sources */,
+				0194CD202821485F0006470D /* Endpoint.swift in Sources */,
+				0194CD2228215DF70006470D /* EndpointFactory.swift in Sources */,
+				0194CD2428221CE40006470D /* Photo.swift in Sources */,
+				0132BAFB282118CE00E7A81A /* UnsplashEndpoint.swift in Sources */,
 				0132BAF2281FAF4500E7A81A /* NetworkService.swift in Sources */,
 				0132BAF72820D34000E7A81A /* Topic.swift in Sources */,
 				01D9D2D9281F7B1500E308D4 /* HomeViewController.swift in Sources */,
@@ -236,7 +268,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 15.4;
+				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
 				MTL_FAST_MATH = YES;
 				ONLY_ACTIVE_ARCH = YES;
@@ -290,7 +322,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 15.4;
+				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				MTL_FAST_MATH = YES;
 				SDKROOT = iphoneos;
