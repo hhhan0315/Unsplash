@@ -12,9 +12,12 @@ class DetailViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        configureUI()
+        self.configure()
     }
-    
-    private func configureUI() {
+}
+
+private extension DetailViewController {
+    func configure() {
+        
     }
 }

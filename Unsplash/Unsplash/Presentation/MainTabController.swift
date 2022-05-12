@@ -12,12 +12,18 @@ class MainTabController: UITabBarController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        configureUI()
+        self.configure()
+    }
+}
+
+private extension MainTabController {
+    func configure() {
+        self.configureUI()
     }
     
-    private func configureUI() {
-        let homeVC = configureTemplateNavigationController(unselectedImage: UIImage(systemName: "photo.fill"), selectedImage: UIImage(systemName: "photo.fill"), rootViewController: HomeViewController())
-        let searchVC = configureTemplateNavigationController(unselectedImage: UIImage(systemName: "magnifyingglass"), selectedImage: UIImage(systemName: "magnifyingglass"), rootViewController: SearchViewController())
+    func configureUI() {
+        let homeVC = self.configureTemplateNavigationController(unselectedImage: UIImage(systemName: "photo.fill"), selectedImage: UIImage(systemName: "photo.fill"), rootViewController: HomeViewController())
+        let searchVC = self.configureTemplateNavigationController(unselectedImage: UIImage(systemName: "magnifyingglass"), selectedImage: UIImage(systemName: "magnifyingglass"), rootViewController: SearchViewController())
         
         self.tabBar.tintColor = .white
         self.tabBar.unselectedItemTintColor = .darkGray
@@ -25,7 +31,7 @@ class MainTabController: UITabBarController {
         self.viewControllers = [homeVC, searchVC]
     }
     
-    private func configureTemplateNavigationController(unselectedImage: UIImage?, selectedImage: UIImage?, rootViewController: UIViewController) -> UINavigationController {
+    func configureTemplateNavigationController(unselectedImage: UIImage?, selectedImage: UIImage?, rootViewController: UIViewController) -> UINavigationController {
         let nav = UINavigationController(rootViewController: rootViewController)
         nav.tabBarItem.image = unselectedImage
         nav.tabBarItem.selectedImage = selectedImage

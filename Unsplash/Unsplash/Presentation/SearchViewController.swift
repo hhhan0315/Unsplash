@@ -12,8 +12,14 @@ class SearchViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        configureUI()
-        configureSearchController()
+        self.configure()
+    }
+}
+
+private extension SearchViewController {
+    func configure() {
+        self.configureUI()
+        self.configureSearchController()
     }
     
     private func configureUI() {

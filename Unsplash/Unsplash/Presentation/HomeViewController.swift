@@ -26,12 +26,41 @@ class HomeViewController: UIViewController {
         return collectionView
     }()
     
+    private let photoCollectionView: UICollectionView = {
+        let layout = UICollectionViewFlowLayout()
+        layout.scrollDirection = .vertical
+        
+        let collectionView = UICollectionView(frame: .zero, collectionViewLayout: layout)
+        collectionView.translatesAutoresizingMaskIntoConstraints = false
+        collectionView.register(PhotoCell.self, forCellWithReuseIdentifier: PhotoCell.identifier)
+        collectionView.showsVerticalScrollIndicator = false
+        return collectionView
+    }()
+    
     private var topicDataSource: UICollectionViewDiffableDataSource<Section, Topic>?
+    private var photoDataSource: UICollectionViewDiffableDataSource<Section, Photo>?
+    
+    private var viewModel: HomeViewModel = HomeViewModel()
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
         self.configure()
+    }
+    
+    @objc func touchTopicButton(_ sender: UIButton) {
+        guard let title = sender.currentTitle, let topic = Topic(rawValue: title) else { return }
+//        let urlString = APIEnvironment.topic(topic).url
+//        
+//        viewModel.getAPIData(urlString: urlString, param: ["client_id": Constants.APIKeys.clientKey], completion: { photos, error in
+//            if let error = error {
+//                print(error.localizedDescription)
+//            } else {
+//                // photos 배열에 따로 저장??
+//                print(photos)
+//            }
+//            
+//        })
     }
 }
 
@@ -39,18 +68,19 @@ private extension HomeViewController {
     func configure() {
         self.configureUI()
         self.configureTopicDataSource()
+        self.configurePhotoDataSource()
     }
     
     func configureUI() {
-        navigationItem.title = "Unsplash"
+        self.navigationItem.title = "Unsplash"
         
-        view.addSubview(topicCollectionView)
+        self.view.addSubview(self.topicCollectionView)
         
         NSLayoutConstraint.activate([
-            topicCollectionView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
-            topicCollectionView.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor),
-            topicCollectionView.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor),
-            topicCollectionView.heightAnchor.constraint(equalToConstant: 60.0),
+            self.topicCollectionView.topAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.topAnchor),
+            self.topicCollectionView.leadingAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.leadingAnchor),
+            self.topicCollectionView.trailingAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.trailingAnchor),
+            self.topicCollectionView.heightAnchor.constraint(equalToConstant: 60.0),
         ])
     }
     
@@ -60,6 +90,7 @@ private extension HomeViewController {
                 return TopicCell()
             }
             cell.button.setTitle(topic.rawValue, for: .normal)
+            cell.button.addTarget(self, action: #selector(self.touchTopicButton(_:)), for: .touchUpInside)
             return cell
         })
         
@@ -67,5 +98,15 @@ private extension HomeViewController {
         snapShot.appendSections([.topics])
         snapShot.appendItems(Topic.allCases, toSection: .topics)
         self.topicDataSource?.apply(snapShot)
+    }
+    
+    func configurePhotoDataSource() {
+        self.photoDataSource = UICollectionViewDiffableDataSource<Section, Photo>(collectionView: self.photoCollectionView, cellProvider: { collectionView, indexPath, photo in
+            guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: PhotoCell.identifier, for: indexPath) as? PhotoCell else {
+                return PhotoCell()
+            }
+            cell.setImage(indexPath, photo: photo)
+            return cell
+        })
     }
 }
