@@ -63,9 +63,6 @@
 		0132BAF3281FC09400E7A81A /* Resources */ = {
 			isa = PBXGroup;
 			children = (
-				01D9D2CD281F71C700E308D4 /* LaunchScreen.storyboard */,
-				01D9D2C2281F71C400E308D4 /* AppDelegate.swift */,
-				01D9D2C4281F71C400E308D4 /* SceneDelegate.swift */,
 				01D9D2CB281F71C700E308D4 /* Assets.xcassets */,
 				01268B28282A8178007821E8 /* Constants.swift */,
 			);
@@ -95,6 +92,16 @@
 			children = (
 			);
 			path = UseCase;
+			sourceTree = "<group>";
+		};
+		016561CE282CE7B400437475 /* Application */ = {
+			isa = PBXGroup;
+			children = (
+				01D9D2CD281F71C700E308D4 /* LaunchScreen.storyboard */,
+				01D9D2C2281F71C400E308D4 /* AppDelegate.swift */,
+				01D9D2C4281F71C400E308D4 /* SceneDelegate.swift */,
+			);
+			path = Application;
 			sourceTree = "<group>";
 		};
 		0194CD332822A5240006470D /* Presentation */ = {
@@ -128,6 +135,7 @@
 		01D9D2C1281F71C400E308D4 /* Unsplash */ = {
 			isa = PBXGroup;
 			children = (
+				016561CE282CE7B400437475 /* Application */,
 				0132BAF3281FC09400E7A81A /* Resources */,
 				016561CC282CE2F600437475 /* Domain */,
 				0194CD332822A5240006470D /* Presentation */,
