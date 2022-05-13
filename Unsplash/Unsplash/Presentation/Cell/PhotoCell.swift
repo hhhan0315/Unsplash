@@ -10,8 +10,8 @@ import UIKit
 class PhotoCell: UICollectionViewCell {
     static let identifier: String = String(describing: PhotoCell.self)
     
-    let imageView: LazyImageView = {
-        let imageView = LazyImageView()
+    private let imageView: UIImageView = {
+        let imageView = UIImageView()
         imageView.translatesAutoresizingMaskIntoConstraints = false
         return imageView
     }()
@@ -27,8 +27,10 @@ class PhotoCell: UICollectionViewCell {
     }
     
     func setImage(_ indexPath: IndexPath, photo: Photo) {
-        guard let url = URL(string: photo.urls.small) else { return }
-        self.imageView.loadImage(imageURL: url)
+//        guard let url = URL(string: photo.urls.small) else { return }
+        ImageClient.shared.setImage(from: photo.urls.thumb, placeholder: nil) { [weak self] image in
+            self?.imageView.image = image
+        }
     }
 }
 
@@ -38,9 +40,11 @@ private extension PhotoCell {
     }
     
     func configureUI() {
-        self.addSubview(imageView)
+        self.addSubview(self.imageView)
         
         NSLayoutConstraint.activate([
+//            self.imageView.centerXAnchor.constraint(equalTo: self.centerXAnchor),
+//            self.imageView.centerYAnchor.constraint(equalTo: self.centerYAnchor),
             imageView.topAnchor.constraint(equalTo: self.topAnchor),
             imageView.bottomAnchor.constraint(equalTo: self.bottomAnchor),
             imageView.leadingAnchor.constraint(equalTo: self.leadingAnchor),

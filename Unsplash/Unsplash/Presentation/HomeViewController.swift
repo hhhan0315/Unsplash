@@ -29,38 +29,48 @@ class HomeViewController: UIViewController {
     private let photoCollectionView: UICollectionView = {
         let layout = UICollectionViewFlowLayout()
         layout.scrollDirection = .vertical
+//        layout.estimatedItemSize = UICollectionViewFlowLayout.automaticSize
         
         let collectionView = UICollectionView(frame: .zero, collectionViewLayout: layout)
         collectionView.translatesAutoresizingMaskIntoConstraints = false
         collectionView.register(PhotoCell.self, forCellWithReuseIdentifier: PhotoCell.identifier)
-        collectionView.showsVerticalScrollIndicator = false
+//        collectionView.showsVerticalScrollIndicator = false
         return collectionView
     }()
     
     private var topicDataSource: UICollectionViewDiffableDataSource<Section, Topic>?
     private var photoDataSource: UICollectionViewDiffableDataSource<Section, Photo>?
     
-    private var viewModel: HomeViewModel = HomeViewModel()
+    private let viewModel: HomeViewModel
+    
+    init(viewModel: HomeViewModel) {
+        self.viewModel = viewModel
+        super.init(nibName: nil, bundle: nil)
+    }
+    
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
         self.configure()
+        viewModel.fetch()
+        
+        viewModel.onFetchPhotoTopicSuccess = { [weak self] in
+            var snapShot = NSDiffableDataSourceSnapshot<Section, Photo>()
+            snapShot.appendSections([Section.photos])
+            snapShot.appendItems(self?.viewModel.photos ?? [])
+            self?.photoDataSource?.apply(snapShot)
+            print(self?.viewModel.photos.count)
+        }
     }
     
     @objc func touchTopicButton(_ sender: UIButton) {
-        guard let title = sender.currentTitle, let topic = Topic(rawValue: title) else { return }
-//        let urlString = APIEnvironment.topic(topic).url
-//        
-//        viewModel.getAPIData(urlString: urlString, param: ["client_id": Constants.APIKeys.clientKey], completion: { photos, error in
-//            if let error = error {
-//                print(error.localizedDescription)
-//            } else {
-//                // photos 배열에 따로 저장??
-//                print(photos)
-//            }
-//            
-//        })
+//        guard let title = sender.currentTitle, let topic = Topic(rawValue: title) else { return }
+        
+        // 뷰모델에서 topic에 따른 메소드 실행
     }
 }
 
@@ -75,12 +85,18 @@ private extension HomeViewController {
         self.navigationItem.title = "Unsplash"
         
         self.view.addSubview(self.topicCollectionView)
+        self.view.addSubview(self.photoCollectionView)
         
         NSLayoutConstraint.activate([
             self.topicCollectionView.topAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.topAnchor),
             self.topicCollectionView.leadingAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.leadingAnchor),
             self.topicCollectionView.trailingAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.trailingAnchor),
             self.topicCollectionView.heightAnchor.constraint(equalToConstant: 60.0),
+            
+            self.photoCollectionView.topAnchor.constraint(equalTo: self.topicCollectionView.bottomAnchor),
+            self.photoCollectionView.leadingAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.leadingAnchor),
+            self.photoCollectionView.trailingAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.trailingAnchor),
+            self.photoCollectionView.bottomAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.bottomAnchor),
         ])
     }
     
@@ -108,5 +124,10 @@ private extension HomeViewController {
             cell.setImage(indexPath, photo: photo)
             return cell
         })
+        
+//        var snapShot = NSDiffableDataSourceSnapshot<Section, Photo>()
+//        snapShot.appendSections([Section.photos])
+//        snapShot.appendItems(viewModel.photos)
+//        self.photoDataSource?.apply(snapShot)
     }
 }

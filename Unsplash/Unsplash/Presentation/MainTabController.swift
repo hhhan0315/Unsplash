@@ -22,7 +22,9 @@ private extension MainTabController {
     }
     
     func configureUI() {
-        let homeVC = self.configureTemplateNavigationController(unselectedImage: UIImage(systemName: "photo.fill"), selectedImage: UIImage(systemName: "photo.fill"), rootViewController: HomeViewController())
+        let homeViewModel = HomeViewModel(networkService: NetworkService())
+        let homeVC = self.configureTemplateNavigationController(unselectedImage: UIImage(systemName: "photo.fill"), selectedImage: UIImage(systemName: "photo.fill"), rootViewController: HomeViewController(viewModel: homeViewModel))
+        
         let searchVC = self.configureTemplateNavigationController(unselectedImage: UIImage(systemName: "magnifyingglass"), selectedImage: UIImage(systemName: "magnifyingglass"), rootViewController: SearchViewController())
         
         self.tabBar.tintColor = .white
