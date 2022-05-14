@@ -1,5 +1,5 @@
 //
-//  PhotoTopicRequest.swift
+//  TopicPhotoRequest.swift
 //  Unsplash
 //
 //  Created by rae on 2022/05/12.
@@ -7,10 +7,14 @@
 
 import Foundation
 
-struct PhotoTopicRequest: DataRequestable {
+struct TopicPhotoRequest: DataRequestable {
         
     private let apiKey: String = "ZwdzXjUXEW3Yfja3LfGMmPCPbrIvDDtgqXPtoxh7eKg"
-    var topic: Topic = .wallpapers
+    private let topic: Topic
+    
+    init(topic: Topic) {
+        self.topic = topic
+    }
     
     var url: String {
         let baseURL: String = "https://api.unsplash.com"
