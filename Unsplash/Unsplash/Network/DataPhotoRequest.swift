@@ -1,5 +1,5 @@
 //
-//  TopicPhotoRequest.swift
+//  DataPhotoRequest.swift
 //  Unsplash
 //
 //  Created by rae on 2022/05/12.
@@ -7,19 +7,29 @@
 
 import Foundation
 
-struct TopicPhotoRequest: DataRequestable {
+enum EndPointType {
+    case topic(Topic)
+    case search
+}
+
+struct DataPhotoRequest: DataRequestable {
         
     private let apiKey: String = "ZwdzXjUXEW3Yfja3LfGMmPCPbrIvDDtgqXPtoxh7eKg"
-    private let topic: Topic
+    private let endPointType: EndPointType
     
-    init(topic: Topic) {
-        self.topic = topic
+    init(endPointType: EndPointType) {
+        self.endPointType = endPointType
     }
     
     var url: String {
         let baseURL: String = "https://api.unsplash.com"
-        let path: String = "/topics/\(self.topic.rawValue)/photos"
-        return baseURL + path
+        switch self.endPointType {
+        case .topic(let topic):
+            return baseURL + "/topics/\(topic.rawValue)/photos"
+        case .search:
+            return baseURL + "/search/photos"
+            
+        }
     }
     
     var headers: [String : String] {
