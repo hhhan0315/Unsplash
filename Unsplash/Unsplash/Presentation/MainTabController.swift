@@ -7,7 +7,21 @@
 
 import UIKit
 
-class MainTabController: UITabBarController {
+final class MainTabController: UITabBarController {
+    
+    enum MainTabBarItem {
+        case home
+        case search
+        
+        var image: UIImage? {
+            switch self {
+            case .home:
+                return UIImage(systemName: "photo.fill")
+            case .search:
+                return UIImage(systemName: "magnifyingglass")
+            }
+        }
+    }
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -22,21 +36,25 @@ private extension MainTabController {
     }
     
     func configureUI() {
-        let homeViewModel = HomeViewModel(networkService: NetworkService())
-        let homeVC = self.configureTemplateNavigationController(unselectedImage: UIImage(systemName: "photo.fill"), selectedImage: UIImage(systemName: "photo.fill"), rootViewController: HomeViewController(viewModel: homeViewModel))
+        let homeTabBarItem = UITabBarItem(title: nil, image: MainTabBarItem.home.image, selectedImage: nil)
+        let searchTabBarItem = UITabBarItem(title: nil, image: MainTabBarItem.search.image, selectedImage: nil)
+                
+        let networkSerivce = NetworkService()
+        let defaultTopicPhotoRepository = DefaultTopicPhotoRepository(service: networkSerivce)
         
-        let searchVC = self.configureTemplateNavigationController(unselectedImage: UIImage(systemName: "magnifyingglass"), selectedImage: UIImage(systemName: "magnifyingglass"), rootViewController: SearchViewController())
+        let defaultTopicPhotoUseCase = DefaultTopicPhotoUseCase(topicPhotoRepository: defaultTopicPhotoRepository)
+        
+        let homeViewModel = HomeViewModel(topicPhotoUseCase: defaultTopicPhotoUseCase)
+                
+        let homeViewController = UINavigationController(rootViewController: HomeViewController(viewModel: homeViewModel))
+        homeViewController.tabBarItem = homeTabBarItem
+        
+        let searchViewController = UINavigationController(rootViewController: SearchViewController())
+        searchViewController.tabBarItem = searchTabBarItem
         
         self.tabBar.tintColor = .white
         self.tabBar.unselectedItemTintColor = .darkGray
         
-        self.viewControllers = [homeVC, searchVC]
-    }
-    
-    func configureTemplateNavigationController(unselectedImage: UIImage?, selectedImage: UIImage?, rootViewController: UIViewController) -> UINavigationController {
-        let nav = UINavigationController(rootViewController: rootViewController)
-        nav.tabBarItem.image = unselectedImage
-        nav.tabBarItem.selectedImage = selectedImage
-        return nav
+        self.viewControllers = [homeViewController, searchViewController]
     }
 }
