@@ -13,6 +13,7 @@ class PhotoCell: UICollectionViewCell {
     private let imageView: UIImageView = {
         let imageView = UIImageView()
         imageView.translatesAutoresizingMaskIntoConstraints = false
+        imageView.contentMode = .scaleAspectFill
         return imageView
     }()
     
@@ -27,9 +28,16 @@ class PhotoCell: UICollectionViewCell {
     }
     
     func setImage(_ indexPath: IndexPath, photo: Photo) {
-//        guard let url = URL(string: photo.urls.small) else { return }
-        ImageClient.shared.setImage(from: photo.urls.thumb, placeholder: nil) { [weak self] image in
-            self?.imageView.image = image
+        guard let url = URL(string: photo.urls.small) else { return }
+        
+        DispatchQueue.global().async {
+          if let data = try? Data(contentsOf: url){
+            if let image = UIImage(data: data){
+              DispatchQueue.main.async {
+                  self.imageView.image = image
+              }
+            }
+          }
         }
     }
 }
@@ -43,8 +51,6 @@ private extension PhotoCell {
         self.addSubview(self.imageView)
         
         NSLayoutConstraint.activate([
-//            self.imageView.centerXAnchor.constraint(equalTo: self.centerXAnchor),
-//            self.imageView.centerYAnchor.constraint(equalTo: self.centerYAnchor),
             imageView.topAnchor.constraint(equalTo: self.topAnchor),
             imageView.bottomAnchor.constraint(equalTo: self.bottomAnchor),
             imageView.leadingAnchor.constraint(equalTo: self.leadingAnchor),
