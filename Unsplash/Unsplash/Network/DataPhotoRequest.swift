@@ -16,9 +16,11 @@ struct DataPhotoRequest: DataRequestable {
         
     private let apiKey: String = "ZwdzXjUXEW3Yfja3LfGMmPCPbrIvDDtgqXPtoxh7eKg"
     private let endPointType: EndPointType
+    private let page: Int
     
-    init(endPointType: EndPointType) {
+    init(endPointType: EndPointType, page: Int) {
         self.endPointType = endPointType
+        self.page = page
     }
     
     var url: String {
@@ -37,7 +39,7 @@ struct DataPhotoRequest: DataRequestable {
     }
     
     var queryItems: [String : String] {
-        [:]
+        ["page": "\(self.page)"]
     }
     
     var method: HTTPMethod {
