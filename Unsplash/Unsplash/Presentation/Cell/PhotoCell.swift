@@ -10,21 +10,16 @@ import UIKit
 class PhotoCell: UICollectionViewCell {
     static let identifier: String = String(describing: PhotoCell.self)
     
-    private let imageView: UIImageView = {
-        let imageView = UIImageView()
-        imageView.translatesAutoresizingMaskIntoConstraints = false
-        imageView.contentMode = .scaleAspectFill
-        return imageView
-    }()
+    @IBOutlet weak var imageView: UIImageView!
     
-    override init(frame: CGRect) {
-        super.init(frame: frame)
-        
-        self.configure()
+    override func awakeFromNib() {
+        super.awakeFromNib()
+        self.imageView.contentMode = .scaleAspectFill
     }
     
-    required init?(coder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
+    override func prepareForReuse() {
+        super.prepareForReuse()
+        self.imageView.image = nil
     }
     
     func setImage(_ indexPath: IndexPath, photo: Photo) {
@@ -39,22 +34,5 @@ class PhotoCell: UICollectionViewCell {
             }
           }
         }
-    }
-}
-
-private extension PhotoCell {
-    func configure() {
-        self.configureUI()
-    }
-    
-    func configureUI() {
-        self.addSubview(self.imageView)
-        
-        NSLayoutConstraint.activate([
-            imageView.topAnchor.constraint(equalTo: self.topAnchor),
-            imageView.bottomAnchor.constraint(equalTo: self.bottomAnchor),
-            imageView.leadingAnchor.constraint(equalTo: self.leadingAnchor),
-            imageView.trailingAnchor.constraint(equalTo: self.trailingAnchor),
-        ])
     }
 }

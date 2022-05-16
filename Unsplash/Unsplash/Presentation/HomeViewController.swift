@@ -29,7 +29,7 @@ class HomeViewController: UIViewController {
     private let photoCollectionView: UICollectionView = {
         let collectionView = UICollectionView(frame: .zero, collectionViewLayout: UICollectionViewFlowLayout())
         collectionView.translatesAutoresizingMaskIntoConstraints = false
-        collectionView.register(PhotoCell.self, forCellWithReuseIdentifier: PhotoCell.identifier)
+        collectionView.register(UINib(nibName: PhotoCell.identifier, bundle: nil), forCellWithReuseIdentifier: PhotoCell.identifier)
         return collectionView
     }()
     
@@ -118,7 +118,7 @@ private extension HomeViewController {
             cell.button.addTarget(self, action: #selector(self.touchTopicButton(_:)), for: .touchUpInside)
             return cell
         })
-
+        
         var snapShot = NSDiffableDataSourceSnapshot<Section, Topic>()
         snapShot.appendSections([.topics])
         snapShot.appendItems(Topic.allCases, toSection: .topics)
@@ -137,9 +137,9 @@ private extension HomeViewController {
     
     func configurePhotoCollectionViewLayout() {
         let item = NSCollectionLayoutItem(layoutSize: NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0), heightDimension: .fractionalHeight(1.0)))
-        let group = NSCollectionLayoutGroup.vertical(layoutSize: NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0), heightDimension: .fractionalWidth(1.0)), subitem: item, count: 1)
+        let group = NSCollectionLayoutGroup.horizontal(layoutSize: NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0), heightDimension: .fractionalWidth(1.0)), subitem: item, count: 1)
         let section = NSCollectionLayoutSection(group: group)
-        section.interGroupSpacing = 10
+        section.interGroupSpacing = 5
         self.photoCollectionView.collectionViewLayout = UICollectionViewCompositionalLayout(section: section)
     }
 }
