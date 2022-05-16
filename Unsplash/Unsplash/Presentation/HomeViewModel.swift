@@ -8,26 +8,38 @@
 import Foundation
 
 class HomeViewModel {
-    private let networkService: NetworkService
-    
-    init(networkService: NetworkService) {
-        self.networkService = networkService
-    }
-    
-    var photos: [Photo] = []
+    private let topicPhotoUseCase: TopicPhotoUseCase
+    private(set) var photos: [Photo]
+    private(set) var topic: Topic
+    private(set) var page: Int
     var onFetchPhotoTopicSuccess: (() -> Void)?
     var onFetchPhotoTopicFailure: ((Error) -> Void)?
     
+    init(topicPhotoUseCase: TopicPhotoUseCase) {
+        self.topicPhotoUseCase = topicPhotoUseCase
+        self.photos = []
+        self.topic = .wallpapers
+        self.page = 1
+    }
+    
     func fetch() {
-        let request = PhotoTopicRequest()
-        networkService.request(request) { [weak self] result in
+        self.topicPhotoUseCase.fetch(topic: self.topic, page: self.page) { [weak self] result in
             switch result {
             case .success(let photos):
-                self?.photos = photos
+                self?.photos.append(contentsOf: photos)
+                self?.page += 1
                 self?.onFetchPhotoTopicSuccess?()
             case .failure(let error):
-                self?.onFetchPhotoTopicFailure?(error)
+                print(error.localizedDescription)
             }
         }
+    }
+    
+    func update(_ topic: Topic) {
+        guard self.topic != topic else { return }
+        self.topic = topic
+        self.photos = []
+        self.page = 1
+        self.fetch()
     }
 }

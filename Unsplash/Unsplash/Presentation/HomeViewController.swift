@@ -27,14 +27,9 @@ class HomeViewController: UIViewController {
     }()
     
     private let photoCollectionView: UICollectionView = {
-        let layout = UICollectionViewFlowLayout()
-        layout.scrollDirection = .vertical
-//        layout.estimatedItemSize = UICollectionViewFlowLayout.automaticSize
-        
-        let collectionView = UICollectionView(frame: .zero, collectionViewLayout: layout)
+        let collectionView = UICollectionView(frame: .zero, collectionViewLayout: UICollectionViewFlowLayout())
         collectionView.translatesAutoresizingMaskIntoConstraints = false
         collectionView.register(PhotoCell.self, forCellWithReuseIdentifier: PhotoCell.identifier)
-//        collectionView.showsVerticalScrollIndicator = false
         return collectionView
     }()
     
@@ -56,29 +51,39 @@ class HomeViewController: UIViewController {
         super.viewDidLoad()
         
         self.configure()
-        viewModel.fetch()
         
-        viewModel.onFetchPhotoTopicSuccess = { [weak self] in
+        self.viewModel.fetch()
+        
+        self.viewModel.onFetchPhotoTopicSuccess = { [weak self] in
             var snapShot = NSDiffableDataSourceSnapshot<Section, Photo>()
             snapShot.appendSections([Section.photos])
             snapShot.appendItems(self?.viewModel.photos ?? [])
             self?.photoDataSource?.apply(snapShot)
-            print(self?.viewModel.photos.count)
         }
     }
     
     @objc func touchTopicButton(_ sender: UIButton) {
-//        guard let title = sender.currentTitle, let topic = Topic(rawValue: title) else { return }
+        guard let title = sender.currentTitle, let topic = Topic(rawValue: title) else { return }
         
-        // 뷰모델에서 topic에 따른 메소드 실행
+        self.viewModel.update(topic)
+    }
+}
+
+extension HomeViewController: UICollectionViewDelegate {
+    func collectionView(_ collectionView: UICollectionView, willDisplay cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {
+        guard let itemCount = self.photoDataSource?.snapshot().numberOfItems else { return }
+        guard indexPath.item >= itemCount - 1 else { return }
+        self.viewModel.fetch()
     }
 }
 
 private extension HomeViewController {
     func configure() {
         self.configureUI()
+        self.configureDelegate()
         self.configureTopicDataSource()
         self.configurePhotoDataSource()
+        self.configurePhotoCollectionViewLayout()
     }
     
     func configureUI() {
@@ -100,6 +105,10 @@ private extension HomeViewController {
         ])
     }
     
+    func configureDelegate() {
+        self.photoCollectionView.delegate = self
+    }
+    
     func configureTopicDataSource() {
         self.topicDataSource = UICollectionViewDiffableDataSource<Section, Topic>(collectionView: self.topicCollectionView, cellProvider: { collectionView, indexPath, topic in
             guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: TopicCell.identifier, for: indexPath) as? TopicCell else {
@@ -109,7 +118,7 @@ private extension HomeViewController {
             cell.button.addTarget(self, action: #selector(self.touchTopicButton(_:)), for: .touchUpInside)
             return cell
         })
-        
+
         var snapShot = NSDiffableDataSourceSnapshot<Section, Topic>()
         snapShot.appendSections([.topics])
         snapShot.appendItems(Topic.allCases, toSection: .topics)
@@ -124,10 +133,13 @@ private extension HomeViewController {
             cell.setImage(indexPath, photo: photo)
             return cell
         })
-        
-//        var snapShot = NSDiffableDataSourceSnapshot<Section, Photo>()
-//        snapShot.appendSections([Section.photos])
-//        snapShot.appendItems(viewModel.photos)
-//        self.photoDataSource?.apply(snapShot)
+    }
+    
+    func configurePhotoCollectionViewLayout() {
+        let item = NSCollectionLayoutItem(layoutSize: NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0), heightDimension: .fractionalHeight(1.0)))
+        let group = NSCollectionLayoutGroup.vertical(layoutSize: NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0), heightDimension: .fractionalWidth(1.0)), subitem: item, count: 1)
+        let section = NSCollectionLayoutSection(group: group)
+        section.interGroupSpacing = 10
+        self.photoCollectionView.collectionViewLayout = UICollectionViewCompositionalLayout(section: section)
     }
 }
