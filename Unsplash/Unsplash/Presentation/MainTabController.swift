@@ -39,17 +39,17 @@ private extension MainTabController {
         let homeTabBarItem = UITabBarItem(title: nil, image: MainTabBarItem.home.image, selectedImage: nil)
         let searchTabBarItem = UITabBarItem(title: nil, image: MainTabBarItem.search.image, selectedImage: nil)
                 
-        let networkSerivce = NetworkService()
-        let defaultTopicPhotoRepository = DefaultTopicPhotoRepository(service: networkSerivce)
-        
+        let networkService = NetworkService()
+        let defaultTopicPhotoRepository = DefaultTopicPhotoRepository(networkService: networkService)
         let defaultTopicPhotoUseCase = DefaultTopicPhotoUseCase(topicPhotoRepository: defaultTopicPhotoRepository)
-        
         let homeViewModel = HomeViewModel(topicPhotoUseCase: defaultTopicPhotoUseCase)
-                
         let homeViewController = UINavigationController(rootViewController: HomeViewController(viewModel: homeViewModel))
         homeViewController.tabBarItem = homeTabBarItem
         
-        let searchViewController = UINavigationController(rootViewController: SearchViewController())
+        let defaultSearchPhotoRepository = DefaultSearchPhotoRepository(networkService: networkService)
+        let defaultSearchPhotoUseCase = DefaultSearchPhotoUseCase(searchPhotoRepository: defaultSearchPhotoRepository)
+        let searchViewModel = SearchViewModel(searchPhotoUseCase: defaultSearchPhotoUseCase)
+        let searchViewController = UINavigationController(rootViewController: SearchViewController(viewModel: searchViewModel))
         searchViewController.tabBarItem = searchTabBarItem
         
         self.tabBar.tintColor = .white
