@@ -7,31 +7,20 @@
 
 import Foundation
 
-enum EndPointType {
-    case topic(Topic)
-    case search
-}
-
-struct DataPhotoRequest: DataRequestable {
-        
+struct TopicPhotoRequest: DataRequestable {
+                
     private let apiKey: String = "ZwdzXjUXEW3Yfja3LfGMmPCPbrIvDDtgqXPtoxh7eKg"
-    private let endPointType: EndPointType
+    private let topic: Topic
     private let page: Int
     
-    init(endPointType: EndPointType, page: Int) {
-        self.endPointType = endPointType
+    init(topic: Topic, page: Int) {
+        self.topic = topic
         self.page = page
     }
-    
+
     var url: String {
         let baseURL: String = "https://api.unsplash.com"
-        switch self.endPointType {
-        case .topic(let topic):
-            return baseURL + "/topics/\(topic.rawValue)/photos"
-        case .search:
-            return baseURL + "/search/photos"
-            
-        }
+        return baseURL + "/topics/\(self.topic.rawValue)/photos"
     }
     
     var headers: [String : String] {
