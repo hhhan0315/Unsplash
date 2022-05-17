@@ -70,6 +70,8 @@ class HomeViewController: UIViewController {
     }
 }
 
+// MARK: - UICollectionViewDelegate
+
 extension HomeViewController: UICollectionViewDelegate {
     func collectionView(_ collectionView: UICollectionView, willDisplay cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {
         guard let itemCount = self.photoDataSource?.snapshot().numberOfItems else { return }
@@ -77,6 +79,8 @@ extension HomeViewController: UICollectionViewDelegate {
         self.viewModel.fetch()
     }
 }
+
+// MARK: - Private Function
 
 private extension HomeViewController {
     func configure() {

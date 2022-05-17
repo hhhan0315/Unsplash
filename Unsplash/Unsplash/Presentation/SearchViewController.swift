@@ -63,11 +63,22 @@ extension SearchViewController: UISearchBarDelegate {
     }
 }
 
-// MARK: - Private Function
+// MARK: - UICollectionViewDelegate
+
+extension SearchViewController: UICollectionViewDelegate {
+    func collectionView(_ collectionView: UICollectionView, willDisplay cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {
+        guard let itemCount = self.photoDataSource?.snapshot().numberOfItems else { return }
+        guard indexPath.item >= itemCount - 1 else { return }
+        self.viewModel.fetch()
+    }
+}
+
+// MARK: - Private Functions
 
 private extension SearchViewController {
     func configure() {
         self.configureUI()
+        self.configureDelegate()
         self.configureSearchController()
         self.configurePhotoDataSource()
         self.configurePhotoCollectionViewLayout()
@@ -84,6 +95,10 @@ private extension SearchViewController {
             self.photoCollectionView.trailingAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.trailingAnchor),
             self.photoCollectionView.bottomAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.bottomAnchor),
         ])
+    }
+    
+    func configureDelegate() {
+        self.photoCollectionView.delegate = self
     }
     
     func configureSearchController() {
