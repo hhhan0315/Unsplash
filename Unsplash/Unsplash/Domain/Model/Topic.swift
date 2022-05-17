@@ -18,4 +18,8 @@ enum Topic: String, CaseIterable {
     case interiors
     case travel
     case animals
+    
+    var title: String {
+        return self.rawValue.capitalized
+    }
 }

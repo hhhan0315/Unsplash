@@ -34,13 +34,13 @@ private extension TopicCell {
     }
     
     func configureUI() {
-        self.addSubview(self.button)
+        self.contentView.addSubview(self.button)
         
         NSLayoutConstraint.activate([
-            self.button.centerXAnchor.constraint(equalTo: self.centerXAnchor),
-            self.button.centerYAnchor.constraint(equalTo: self.centerYAnchor),
-            self.button.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: 8.0),
-            self.button.trailingAnchor.constraint(equalTo: self.trailingAnchor, constant: -8.0),
+            self.button.centerXAnchor.constraint(equalTo: self.contentView.centerXAnchor),
+            self.button.centerYAnchor.constraint(equalTo: self.contentView.centerYAnchor),
+            self.button.leadingAnchor.constraint(equalTo: self.contentView.leadingAnchor, constant: 8.0),
+            self.button.trailingAnchor.constraint(equalTo: self.contentView.trailingAnchor, constant: -8.0),
         ])
     }
 }

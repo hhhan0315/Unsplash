@@ -63,8 +63,7 @@ class HomeViewController: UIViewController {
     }
     
     @objc func touchTopicButton(_ sender: UIButton) {
-        guard let title = sender.currentTitle, let topic = Topic(rawValue: title) else { return }
-        
+        guard let title = sender.currentTitle, let topic = Topic(rawValue: title.lowercased()) else { return }
         self.viewModel.update(topic)
     }
 }
@@ -114,7 +113,7 @@ private extension HomeViewController {
             guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: TopicCell.identifier, for: indexPath) as? TopicCell else {
                 return TopicCell()
             }
-            cell.button.setTitle(topic.rawValue, for: .normal)
+            cell.button.setTitle(topic.title, for: .normal)
             cell.button.addTarget(self, action: #selector(self.touchTopicButton(_:)), for: .touchUpInside)
             return cell
         })
