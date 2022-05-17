@@ -55,10 +55,12 @@ class HomeViewController: UIViewController {
         self.viewModel.fetch()
         
         self.viewModel.onFetchPhotoTopicSuccess = { [weak self] in
-            var snapShot = NSDiffableDataSourceSnapshot<Section, Photo>()
-            snapShot.appendSections([Section.photos])
-            snapShot.appendItems(self?.viewModel.photos ?? [])
-            self?.photoDataSource?.apply(snapShot)
+            DispatchQueue.main.async {
+                var snapShot = NSDiffableDataSourceSnapshot<Section, Photo>()
+                snapShot.appendSections([Section.photos])
+                snapShot.appendItems(self?.viewModel.photos ?? [])
+                self?.photoDataSource?.apply(snapShot)
+            }
         }
     }
     
