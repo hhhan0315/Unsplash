@@ -214,9 +214,9 @@
 				01D9D2D6281F7A4F00E308D4 /* MainTabController.swift */,
 				01D9D2D8281F7B1500E308D4 /* HomeViewController.swift */,
 				016561DC282CFFB600437475 /* HomeViewModel.swift */,
-				0132BAF42820C62E00E7A81A /* DetailViewController.swift */,
 				01D9D2DA281F7B1B00E308D4 /* SearchViewController.swift */,
 				01C70DC6283345D800185DF0 /* SearchViewModel.swift */,
+				0132BAF42820C62E00E7A81A /* DetailViewController.swift */,
 			);
 			path = Presentation;
 			sourceTree = "<group>";

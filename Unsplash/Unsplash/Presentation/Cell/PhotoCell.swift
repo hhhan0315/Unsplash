@@ -17,11 +17,6 @@ class PhotoCell: UICollectionViewCell {
         self.imageView.contentMode = .scaleAspectFill
     }
     
-    override func prepareForReuse() {
-        super.prepareForReuse()
-        self.imageView.image = nil
-    }
-    
     func setImage(_ indexPath: IndexPath, photo: Photo) {
         guard let url = URL(string: photo.urls.small) else { return }
         
