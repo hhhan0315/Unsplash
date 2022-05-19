@@ -10,6 +10,7 @@ import Foundation
 struct Photo: Codable, Hashable, Equatable {
     let id: String
     let urls: Urls
+    let user: User
     
     static func == (lhs: Photo, rhs: Photo) -> Bool {
         return lhs.id == rhs.id
@@ -26,4 +27,8 @@ struct Urls: Codable {
     let regular: String
     let small: String
     let thumb: String
+}
+
+struct User: Codable {
+    let name: String
 }
