@@ -28,7 +28,7 @@ struct TopicPhotoRequest: DataRequestable {
     }
     
     var queryItems: [String : String] {
-        ["page": "\(self.page)"]
+        ["page": "\(self.page)", "per_page": "20"]
     }
     
     var method: HTTPMethod {

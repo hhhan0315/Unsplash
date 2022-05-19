@@ -28,7 +28,7 @@ struct SearchPhotoRequest: DataRequestable {
     }
     
     var queryItems: [String : String] {
-        ["query": self.query, "page": "\(self.page)"]
+        ["query": self.query, "page": "\(self.page)", "per_page": "20"]
     }
     
     var method: HTTPMethod {
