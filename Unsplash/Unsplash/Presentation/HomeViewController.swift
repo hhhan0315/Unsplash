@@ -145,8 +145,8 @@ private extension HomeViewController {
     }
     
     func configurePhotoCollectionViewLayout() {
-        let item = NSCollectionLayoutItem(layoutSize: NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0), heightDimension: .fractionalWidth(1.0)))
-        let group = NSCollectionLayoutGroup.horizontal(layoutSize: NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0), heightDimension: .fractionalWidth(1.0)), subitem: item, count: 1)
+        let item = NSCollectionLayoutItem(layoutSize: NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0), heightDimension: .estimated(488)))
+        let group = NSCollectionLayoutGroup.horizontal(layoutSize: NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0), heightDimension: .estimated(488)), subitem: item, count: 1)
         let section = NSCollectionLayoutSection(group: group)
         section.interGroupSpacing = 5
         self.photoCollectionView.collectionViewLayout = UICollectionViewCompositionalLayout(section: section)
