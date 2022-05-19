@@ -67,6 +67,10 @@ class HomeViewController: UIViewController {
     @objc func touchTopicButton(_ sender: UIButton) {
         guard let title = sender.currentTitle, let topic = Topic(rawValue: title.lowercased()) else { return }
         self.viewModel.update(topic)
+        
+        guard let itemCount = self.photoDataSource?.snapshot().numberOfItems else { return }
+        guard itemCount != 0 else { return }
+        self.photoCollectionView.scrollToItem(at: IndexPath(item: 0, section: 0), at: .centeredVertically, animated: true)
     }
 }
 
@@ -141,7 +145,7 @@ private extension HomeViewController {
     }
     
     func configurePhotoCollectionViewLayout() {
-        let item = NSCollectionLayoutItem(layoutSize: NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0), heightDimension: .fractionalHeight(1.0)))
+        let item = NSCollectionLayoutItem(layoutSize: NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0), heightDimension: .fractionalWidth(1.0)))
         let group = NSCollectionLayoutGroup.horizontal(layoutSize: NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0), heightDimension: .fractionalWidth(1.0)), subitem: item, count: 1)
         let section = NSCollectionLayoutSection(group: group)
         section.interGroupSpacing = 5
