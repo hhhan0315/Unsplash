@@ -37,7 +37,7 @@ class SearchViewController: UIViewController {
         super.viewDidLoad()
         
         self.configure()
-
+        
         self.viewModel.onFetchPhotoTopicSuccess = { [weak self] in
             DispatchQueue.main.async {
                 var snapShot = NSDiffableDataSourceSnapshot<Section, Photo>()
@@ -55,6 +55,10 @@ extension SearchViewController: UISearchBarDelegate {
     func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
         guard let query = searchBar.text else { return }
         self.viewModel.update(query)
+        
+        guard let itemCount = self.photoDataSource?.snapshot().numberOfItems else { return }
+        guard itemCount != 0 else { return }
+        self.photoCollectionView.scrollToItem(at: IndexPath(item: 0, section: 0), at: .centeredVertically, animated: true)
     }
     
     func searchBarCancelButtonClicked(_ searchBar: UISearchBar) {
@@ -123,8 +127,8 @@ private extension SearchViewController {
     }
     
     func configurePhotoCollectionViewLayout() {
-        let item = NSCollectionLayoutItem(layoutSize: NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0), heightDimension: .fractionalHeight(1.0)))
-        let group = NSCollectionLayoutGroup.horizontal(layoutSize: NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0), heightDimension: .fractionalWidth(1.0)), subitem: item, count: 1)
+        let item = NSCollectionLayoutItem(layoutSize: NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0), heightDimension: .estimated(488)))
+        let group = NSCollectionLayoutGroup.horizontal(layoutSize: NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0), heightDimension: .estimated(488)), subitem: item, count: 1)
         let section = NSCollectionLayoutSection(group: group)
         section.interGroupSpacing = 5
         self.photoCollectionView.collectionViewLayout = UICollectionViewCompositionalLayout(section: section)
