@@ -55,10 +55,6 @@ extension SearchViewController: UISearchBarDelegate {
     func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
         guard let query = searchBar.text else { return }
         self.viewModel.update(query)
-        
-        guard let itemCount = self.photoDataSource?.snapshot().numberOfItems else { return }
-        guard itemCount != 0 else { return }
-        self.photoCollectionView.scrollToItem(at: IndexPath(item: 0, section: 0), at: .centeredVertically, animated: true)
     }
     
     func searchBarCancelButtonClicked(_ searchBar: UISearchBar) {

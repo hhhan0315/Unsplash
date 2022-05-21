@@ -67,10 +67,6 @@ class HomeViewController: UIViewController {
     @objc func touchTopicButton(_ sender: UIButton) {
         guard let title = sender.currentTitle, let topic = Topic(rawValue: title.lowercased()) else { return }
         self.viewModel.update(topic)
-        
-        guard let itemCount = self.photoDataSource?.snapshot().numberOfItems else { return }
-        guard itemCount != 0 else { return }
-        self.photoCollectionView.scrollToItem(at: IndexPath(item: 0, section: 0), at: .centeredVertically, animated: true)
     }
 }
 
@@ -81,6 +77,13 @@ extension HomeViewController: UICollectionViewDelegate {
         guard let itemCount = self.photoDataSource?.snapshot().numberOfItems else { return }
         guard indexPath.item >= itemCount - 1 else { return }
         self.viewModel.fetch()
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        let detailViewController = DetailViewController(photos: self.viewModel.photos, indexPath: indexPath)
+        let nav = UINavigationController(rootViewController: detailViewController)
+        nav.modalPresentationStyle = .fullScreen
+        self.present(nav, animated: false)
     }
 }
 
