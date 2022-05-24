@@ -53,15 +53,6 @@ class HomeViewController: UIViewController {
         self.configure()
         
         self.viewModel.fetch()
-        
-        self.viewModel.onFetchPhotoTopicSuccess = { [weak self] in
-            DispatchQueue.main.async {
-                var snapShot = NSDiffableDataSourceSnapshot<Section, Photo>()
-                snapShot.appendSections([Section.photos])
-                snapShot.appendItems(self?.viewModel.photos ?? [])
-                self?.photoDataSource?.apply(snapShot)
-            }
-        }
     }
     
     @objc func touchTopicButton(_ sender: UIButton) {
@@ -80,7 +71,7 @@ extension HomeViewController: UICollectionViewDelegate {
     }
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        let detailViewController = DetailViewController(photos: self.viewModel.photos, indexPath: indexPath)
+        let detailViewController = DetailViewController(photos: self.viewModel.photos.value, indexPath: indexPath)
         let nav = UINavigationController(rootViewController: detailViewController)
         nav.modalPresentationStyle = .fullScreen
         self.present(nav, animated: false)
@@ -96,6 +87,7 @@ private extension HomeViewController {
         self.configureTopicDataSource()
         self.configurePhotoDataSource()
         self.configurePhotoCollectionViewLayout()
+        self.bind(to: self.viewModel)
     }
     
     func configureUI() {
@@ -153,5 +145,14 @@ private extension HomeViewController {
         let section = NSCollectionLayoutSection(group: group)
         section.interGroupSpacing = 5
         self.photoCollectionView.collectionViewLayout = UICollectionViewCompositionalLayout(section: section)
+    }
+    
+    func bind(to viewModel: HomeViewModel) {
+        viewModel.photos.observe(on: self) { [weak self] photos in
+            var snapShot = NSDiffableDataSourceSnapshot<Section, Photo>()
+            snapShot.appendSections([Section.photos])
+            snapShot.appendItems(photos)
+            self?.photoDataSource?.apply(snapShot)
+        }
     }
 }

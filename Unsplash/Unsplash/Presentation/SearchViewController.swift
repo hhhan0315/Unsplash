@@ -37,15 +37,6 @@ class SearchViewController: UIViewController {
         super.viewDidLoad()
         
         self.configure()
-        
-        self.viewModel.onFetchPhotoTopicSuccess = { [weak self] in
-            DispatchQueue.main.async {
-                var snapShot = NSDiffableDataSourceSnapshot<Section, Photo>()
-                snapShot.appendSections([Section.photos])
-                snapShot.appendItems(self?.viewModel.photos ?? [])
-                self?.photoDataSource?.apply(snapShot)
-            }
-        }
     }
 }
 
@@ -82,6 +73,7 @@ private extension SearchViewController {
         self.configureSearchController()
         self.configurePhotoDataSource()
         self.configurePhotoCollectionViewLayout()
+        self.bind(to: self.viewModel)
     }
     
     func configureUI() {
@@ -128,5 +120,14 @@ private extension SearchViewController {
         let section = NSCollectionLayoutSection(group: group)
         section.interGroupSpacing = 5
         self.photoCollectionView.collectionViewLayout = UICollectionViewCompositionalLayout(section: section)
+    }
+    
+    func bind(to viewModel: SearchViewModel) {
+        viewModel.photos.observe(on: self) { [weak self] photos in
+            var snapShot = NSDiffableDataSourceSnapshot<Section, Photo>()
+            snapShot.appendSections([Section.photos])
+            snapShot.appendItems(photos)
+            self?.photoDataSource?.apply(snapShot)
+        }
     }
 }
