@@ -117,12 +117,20 @@
 			path = Resources;
 			sourceTree = "<group>";
 		};
-		015C93B8283C711E009F2498 /* Utils */ = {
+		015C93B8283C711E009F2498 /* Util */ = {
 			isa = PBXGroup;
 			children = (
+				015C93BB283C7CED009F2498 /* Extension */,
 				015C93B9283C7132009F2498 /* Observable.swift */,
 			);
-			path = Utils;
+			path = Util;
+			sourceTree = "<group>";
+		};
+		015C93BB283C7CED009F2498 /* Extension */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = Extension;
 			sourceTree = "<group>";
 		};
 		016561CB282CDFCD00437475 /* Cell */ = {
@@ -265,7 +273,7 @@
 				016561CC282CE2F600437475 /* Domain */,
 				0194CD332822A5240006470D /* Presentation */,
 				016561CF282CE88400437475 /* Network */,
-				015C93B8283C711E009F2498 /* Utils */,
+				015C93B8283C711E009F2498 /* Util */,
 				01D9D2D0281F71C700E308D4 /* Info.plist */,
 				016561EE282F515900437475 /* Image */,
 			);

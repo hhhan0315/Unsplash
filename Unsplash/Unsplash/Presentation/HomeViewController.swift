@@ -27,7 +27,13 @@ class HomeViewController: UIViewController {
     }()
     
     private let photoCollectionView: UICollectionView = {
-        let collectionView = UICollectionView(frame: .zero, collectionViewLayout: UICollectionViewFlowLayout())
+        let item = NSCollectionLayoutItem(layoutSize: NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0), heightDimension: .estimated(488)))
+        let group = NSCollectionLayoutGroup.horizontal(layoutSize: NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0), heightDimension: .estimated(488)), subitem: item, count: 1)
+        let section = NSCollectionLayoutSection(group: group)
+        section.interGroupSpacing = 5
+        let layout = UICollectionViewCompositionalLayout(section: section)
+        
+        let collectionView = UICollectionView(frame: .zero, collectionViewLayout: layout)
         collectionView.translatesAutoresizingMaskIntoConstraints = false
         collectionView.register(UINib(nibName: PhotoCell.identifier, bundle: nil), forCellWithReuseIdentifier: PhotoCell.identifier)
         return collectionView
@@ -86,7 +92,6 @@ private extension HomeViewController {
         self.configureDelegate()
         self.configureTopicDataSource()
         self.configurePhotoDataSource()
-        self.configurePhotoCollectionViewLayout()
         self.bind(to: self.viewModel)
     }
     
@@ -139,20 +144,12 @@ private extension HomeViewController {
         })
     }
     
-    func configurePhotoCollectionViewLayout() {
-        let item = NSCollectionLayoutItem(layoutSize: NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0), heightDimension: .estimated(488)))
-        let group = NSCollectionLayoutGroup.horizontal(layoutSize: NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0), heightDimension: .estimated(488)), subitem: item, count: 1)
-        let section = NSCollectionLayoutSection(group: group)
-        section.interGroupSpacing = 5
-        self.photoCollectionView.collectionViewLayout = UICollectionViewCompositionalLayout(section: section)
-    }
-    
     func bind(to viewModel: HomeViewModel) {
         viewModel.photos.observe(on: self) { [weak self] photos in
             var snapShot = NSDiffableDataSourceSnapshot<Section, Photo>()
             snapShot.appendSections([Section.photos])
             snapShot.appendItems(photos)
-            self?.photoDataSource?.apply(snapShot)
+            self?.photoDataSource?.apply(snapShot, animatingDifferences: true)
         }
     }
 }
