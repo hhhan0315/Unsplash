@@ -14,7 +14,13 @@ class DetailViewController: UIViewController {
     }
     
     private let photoCollectionView: UICollectionView = {
-        let collectionView = UICollectionView(frame: .zero, collectionViewLayout: UICollectionViewFlowLayout())
+        let item = NSCollectionLayoutItem(layoutSize: NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0), heightDimension: .fractionalHeight(1.0)))
+        let group = NSCollectionLayoutGroup.horizontal(layoutSize: NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0), heightDimension: .fractionalHeight(1.0)), subitem: item, count: 1)
+        let section = NSCollectionLayoutSection(group: group)
+        section.orthogonalScrollingBehavior = .groupPaging
+        let layout = UICollectionViewCompositionalLayout(section: section)
+        
+        let collectionView = UICollectionView(frame: .zero, collectionViewLayout: layout)
         collectionView.translatesAutoresizingMaskIntoConstraints = false
         collectionView.register(UINib(nibName: PhotoDetailCell.identifier, bundle: nil), forCellWithReuseIdentifier: PhotoDetailCell.identifier)
         return collectionView
@@ -39,15 +45,11 @@ class DetailViewController: UIViewController {
         
         self.configure()
     }
-    
-    // 레이아웃 결정 후 뷰 위치 크기 조정, 데이터 reload, 뷰 컨텐츠 업데이트
-    
+        
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
-
+        
         self.photoCollectionView.scrollToItem(at: self.currentIndexPath, at: .centeredHorizontally, animated: false)
-        guard let photo = self.photoDataSource?.itemIdentifier(for: self.currentIndexPath) else { return }
-        self.navigationItem.title = photo.user.name
     }
 }
 
@@ -67,26 +69,21 @@ private extension DetailViewController {
         self.configureUI()
         self.configureDelegate()
         self.configurePhotoDataSource()
-        self.configurePhotoCollectionViewLayout()
     }
     
     func configureUI() {
-        let leftBarButton = UIBarButtonItem(image: UIImage(systemName: "chevron.left"), style: .plain, target: self, action: #selector(touchLeftBarButton))
+        let leftBarButton = UIBarButtonItem(image: UIImage(systemName: "chevron.left"), style: .plain, target: self, action: #selector(self.touchLeftBarButton))
         leftBarButton.tintColor = .white
         self.navigationItem.leftBarButtonItem = leftBarButton
         
         self.view.addSubview(self.photoCollectionView)
-        
+                
         NSLayoutConstraint.activate([
             self.photoCollectionView.topAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.topAnchor),
+            self.photoCollectionView.bottomAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.bottomAnchor),
             self.photoCollectionView.leadingAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.leadingAnchor),
             self.photoCollectionView.trailingAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.trailingAnchor),
-            self.photoCollectionView.bottomAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.bottomAnchor),
         ])
-    }
-    
-    @objc func touchLeftBarButton() {
-        self.dismiss(animated: false)
     }
     
     func configureDelegate() {
@@ -105,14 +102,10 @@ private extension DetailViewController {
         var snapshot = NSDiffableDataSourceSnapshot<Section, Photo>()
         snapshot.appendSections([Section.photos])
         snapshot.appendItems(self.photos)
-        self.photoDataSource?.apply(snapshot)
+        self.photoDataSource?.apply(snapshot, animatingDifferences: false)
     }
     
-    func configurePhotoCollectionViewLayout() {
-        let item = NSCollectionLayoutItem(layoutSize: NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0), heightDimension: .fractionalHeight(1.0)))
-        let group = NSCollectionLayoutGroup.horizontal(layoutSize: NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0), heightDimension: .fractionalHeight(1.0)), subitem: item, count: 1)
-        let section = NSCollectionLayoutSection(group: group)
-        section.orthogonalScrollingBehavior = .groupPaging
-        self.photoCollectionView.collectionViewLayout = UICollectionViewCompositionalLayout(section: section)
+    @objc func touchLeftBarButton() {
+        self.dismiss(animated: false)
     }
 }
