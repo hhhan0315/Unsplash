@@ -8,10 +8,9 @@
 import UIKit
 
 class PhotoTableViewCell: UITableViewCell {
-    
     static let identifier: String = String(describing: PhotoTableViewCell.self)
         
-    private lazy var photoImageView: UIImageView = {
+    private let photoImageView: UIImageView = {
         let imageView = UIImageView()
         return imageView
     }()

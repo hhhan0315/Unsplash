@@ -12,7 +12,6 @@ class TopicCollectionViewCell: UICollectionViewCell {
     
     let button: UIButton = {
         let button = UIButton(type: .system)
-        button.translatesAutoresizingMaskIntoConstraints = false
         button.setTitleColor(UIColor.white, for: .normal)
         return button
     }()
@@ -30,11 +29,16 @@ class TopicCollectionViewCell: UICollectionViewCell {
 
 private extension TopicCollectionViewCell {
     func configure() {
-        self.configureUI()
+        self.addViews()
+        self.makeConstraints()
     }
     
-    func configureUI() {
+    func addViews() {
         self.contentView.addSubview(self.button)
+    }
+    
+    func makeConstraints() {
+        button.translatesAutoresizingMaskIntoConstraints = false
         
         NSLayoutConstraint.activate([
             self.button.centerXAnchor.constraint(equalTo: self.contentView.centerXAnchor),
