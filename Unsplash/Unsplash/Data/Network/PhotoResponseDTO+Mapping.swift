@@ -28,6 +28,8 @@ extension PhotoResponseDTO {
 
 extension PhotoResponseDTO {
     func toDomain() -> Photo {
-        return Photo(image: nil, imageUrl: URL(string: urls.small))
+        return Photo(image: nil,
+                     imageUrl: URL(string: self.urls.small),
+                     userName: self.user.name)
     }
 }

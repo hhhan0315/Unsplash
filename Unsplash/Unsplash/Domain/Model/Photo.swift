@@ -8,13 +8,15 @@
 import UIKit
 
 class Photo {
+    var identifier = UUID()
     var image: UIImage?
     var imageUrl: URL?
-    var identifier = UUID()
+    var userName: String
 
-    init(image: UIImage?, imageUrl: URL?) {
+    init(image: UIImage?, imageUrl: URL?, userName: String) {
         self.image = image
         self.imageUrl = imageUrl
+        self.userName = userName
     }
 }
 
