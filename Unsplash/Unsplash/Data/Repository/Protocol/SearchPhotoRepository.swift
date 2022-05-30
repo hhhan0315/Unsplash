@@ -8,5 +8,5 @@
 import Foundation
 
 protocol SearchPhotoRepository {
-    func fetch(query: String, page: Int, completion: @escaping (Result<[Photo], Error>) -> Void)
+    func fetch(query: String, page: Int, completion: @escaping (Result<[PhotoResponseDTO], Error>) -> Void)
 }

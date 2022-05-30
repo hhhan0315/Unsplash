@@ -14,9 +14,9 @@ final class DefaultSearchPhotoRepository: SearchPhotoRepository {
         self.networkService = networkService
     }
     
-    func fetch(query: String, page: Int, completion: @escaping (Result<[Photo], Error>) -> Void) {
+    func fetch(query: String, page: Int, completion: @escaping (Result<[PhotoResponseDTO], Error>) -> Void) {
         let request = SearchPhotoRequest(query: query, page: page)
-        self.networkService.request(request) { (result: Result<SearchResult, NetworkError>) in
+        self.networkService.request(request) { (result: Result<SearchResponseDTO, NetworkError>) in
             switch result {
             case .success(let searchResult):
                 completion(.success(searchResult.results))
