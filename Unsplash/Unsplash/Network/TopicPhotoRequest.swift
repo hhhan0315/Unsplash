@@ -9,7 +9,7 @@ import Foundation
 
 struct TopicPhotoRequest: DataRequestable {
                 
-    private let apiKey: String = "ZwdzXjUXEW3Yfja3LfGMmPCPbrIvDDtgqXPtoxh7eKg"
+    private let apiKey: String = Constants.accessKey
     private let topic: Topic
     private let page: Int
     
@@ -28,16 +28,16 @@ struct TopicPhotoRequest: DataRequestable {
     }
     
     var queryItems: [String : String] {
-        ["page": "\(self.page)", "per_page": "20"]
+        ["page": "\(self.page)", "per_page": "10"]
     }
     
     var method: HTTPMethod {
         .get
     }
     
-    func decode(_ data: Data) throws -> [Photo] {
+    func decode(_ data: Data) throws -> [PhotoResponseDTO] {
         let decoder = JSONDecoder()
-        let response = try decoder.decode([Photo].self, from: data)
+        let response = try decoder.decode([PhotoResponseDTO].self, from: data)
         return response
     }
 }
