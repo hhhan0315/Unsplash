@@ -21,26 +21,21 @@ class HomeViewController: UIViewController {
         
         let collectionView = UICollectionView(frame: .zero, collectionViewLayout: layout)
         collectionView.translatesAutoresizingMaskIntoConstraints = false
-        collectionView.register(TopicCell.self, forCellWithReuseIdentifier: TopicCell.identifier)
+        collectionView.register(TopicCollectionViewCell.self, forCellWithReuseIdentifier: TopicCollectionViewCell.identifier)
         collectionView.showsHorizontalScrollIndicator = false
         return collectionView
     }()
     
-    private let photoCollectionView: UICollectionView = {
-        let item = NSCollectionLayoutItem(layoutSize: NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0), heightDimension: .estimated(488)))
-        let group = NSCollectionLayoutGroup.horizontal(layoutSize: NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0), heightDimension: .estimated(488)), subitem: item, count: 1)
-        let section = NSCollectionLayoutSection(group: group)
-        section.interGroupSpacing = 5
-        let layout = UICollectionViewCompositionalLayout(section: section)
-        
-        let collectionView = UICollectionView(frame: .zero, collectionViewLayout: layout)
-        collectionView.translatesAutoresizingMaskIntoConstraints = false
-        collectionView.register(UINib(nibName: PhotoCell.identifier, bundle: nil), forCellWithReuseIdentifier: PhotoCell.identifier)
-        return collectionView
+    private let photoTableView: UITableView = {
+        let tableView = UITableView()
+        tableView.translatesAutoresizingMaskIntoConstraints = false
+        tableView.register(PhotoTableViewCell.self, forCellReuseIdentifier: PhotoTableViewCell.identifier)
+        tableView.tableFooterView = UIView()
+        return tableView
     }()
     
     private var topicDataSource: UICollectionViewDiffableDataSource<Section, Topic>?
-    private var photoDataSource: UICollectionViewDiffableDataSource<Section, Photo>?
+    private var photoDataSource: UITableViewDiffableDataSource<Section, Photo>?
     
     private let viewModel: HomeViewModel
     
@@ -57,7 +52,6 @@ class HomeViewController: UIViewController {
         super.viewDidLoad()
         
         self.configure()
-        
         self.viewModel.fetch()
     }
     
@@ -67,20 +61,18 @@ class HomeViewController: UIViewController {
     }
 }
 
-// MARK: - UICollectionViewDelegate
+// MARK: - UITableViewDelegate
 
-extension HomeViewController: UICollectionViewDelegate {
-    func collectionView(_ collectionView: UICollectionView, willDisplay cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {
-        guard let itemCount = self.photoDataSource?.snapshot().numberOfItems else { return }
-        guard indexPath.item >= itemCount - 1 else { return }
-        self.viewModel.fetch()
-    }
-    
-    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        let detailViewController = DetailViewController(photos: self.viewModel.photos.value, indexPath: indexPath)
-        let nav = UINavigationController(rootViewController: detailViewController)
-        nav.modalPresentationStyle = .fullScreen
-        self.present(nav, animated: false)
+extension HomeViewController: UITableViewDelegate {
+    func scrollViewDidScroll(_ scrollView: UIScrollView) {
+        let contentHeight = scrollView.contentSize.height
+        let yOffset = scrollView.contentOffset.y
+        let heightRemainFromBottom = contentHeight - yOffset
+
+        let frameHeight = scrollView.frame.size.height
+        if heightRemainFromBottom < frameHeight {
+            self.viewModel.fetch()
+        }
     }
 }
 
@@ -99,7 +91,7 @@ private extension HomeViewController {
         self.navigationItem.title = "Unsplash"
         
         self.view.addSubview(self.topicCollectionView)
-        self.view.addSubview(self.photoCollectionView)
+        self.view.addSubview(self.photoTableView)
         
         NSLayoutConstraint.activate([
             self.topicCollectionView.topAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.topAnchor),
@@ -107,21 +99,21 @@ private extension HomeViewController {
             self.topicCollectionView.trailingAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.trailingAnchor),
             self.topicCollectionView.heightAnchor.constraint(equalToConstant: 60.0),
             
-            self.photoCollectionView.topAnchor.constraint(equalTo: self.topicCollectionView.bottomAnchor),
-            self.photoCollectionView.leadingAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.leadingAnchor),
-            self.photoCollectionView.trailingAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.trailingAnchor),
-            self.photoCollectionView.bottomAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.bottomAnchor),
+            self.photoTableView.topAnchor.constraint(equalTo: self.topicCollectionView.bottomAnchor),
+            self.photoTableView.leadingAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.leadingAnchor),
+            self.photoTableView.trailingAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.trailingAnchor),
+            self.photoTableView.bottomAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.bottomAnchor),
         ])
     }
     
     func configureDelegate() {
-        self.photoCollectionView.delegate = self
+        self.photoTableView.delegate = self
     }
     
     func configureTopicDataSource() {
         self.topicDataSource = UICollectionViewDiffableDataSource<Section, Topic>(collectionView: self.topicCollectionView, cellProvider: { collectionView, indexPath, topic in
-            guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: TopicCell.identifier, for: indexPath) as? TopicCell else {
-                return TopicCell()
+            guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: TopicCollectionViewCell.identifier, for: indexPath) as? TopicCollectionViewCell else {
+                return TopicCollectionViewCell()
             }
             cell.button.setTitle(topic.title, for: .normal)
             cell.button.addTarget(self, action: #selector(self.touchTopicButton(_:)), for: .touchUpInside)
@@ -129,27 +121,27 @@ private extension HomeViewController {
         })
         
         var snapShot = NSDiffableDataSourceSnapshot<Section, Topic>()
-        snapShot.appendSections([.topics])
-        snapShot.appendItems(Topic.allCases, toSection: .topics)
+        snapShot.appendSections([Section.topics])
+        snapShot.appendItems(Topic.allCases)
         self.topicDataSource?.apply(snapShot)
     }
     
     func configurePhotoDataSource() {
-        self.photoDataSource = UICollectionViewDiffableDataSource<Section, Photo>(collectionView: self.photoCollectionView, cellProvider: { collectionView, indexPath, photo in
-            guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: PhotoCell.identifier, for: indexPath) as? PhotoCell else {
-                return PhotoCell()
+        self.photoDataSource = UITableViewDiffableDataSource<Section, Photo>(tableView: self.photoTableView, cellProvider: { tableView, indexPath, photoItem in
+            guard let cell = tableView.dequeueReusableCell(withIdentifier: PhotoTableViewCell.identifier, for: indexPath) as? PhotoTableViewCell else {
+                return PhotoTableViewCell()
             }
-            cell.setImage(indexPath, photo: photo)
+            cell.setImage(photoItem)
             return cell
         })
     }
     
     func bind(to viewModel: HomeViewModel) {
-        viewModel.photos.observe(on: self) { [weak self] photos in
+        viewModel.photoItems.observe(on: self) { [weak self] photoItems in
             var snapShot = NSDiffableDataSourceSnapshot<Section, Photo>()
             snapShot.appendSections([Section.photos])
-            snapShot.appendItems(photos)
-            self?.photoDataSource?.apply(snapShot, animatingDifferences: true)
+            snapShot.appendItems(photoItems)
+            self?.photoDataSource?.apply(snapShot, animatingDifferences: false)
         }
     }
 }
