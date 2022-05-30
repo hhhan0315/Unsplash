@@ -17,7 +17,8 @@ class PhotoTableViewCell: UITableViewCell {
     
     private let nameLabel: UILabel = {
         let label = UILabel()
-        label.textColor = .white
+        label.textColor = UIColor.white
+        label.font = UIFont.boldSystemFont(ofSize: 16.0)
         return label
     }()
         
@@ -38,8 +39,9 @@ class PhotoTableViewCell: UITableViewCell {
         self.nameLabel.text = nil
     }
     
-    func setImage(_ photoItem: Photo) {
-        self.photoImageView.image = photoItem.image    
+    func set(_ photoItem: Photo) {
+        self.photoImageView.image = photoItem.image
+        self.nameLabel.text = photoItem.userName
     }
 }
 
@@ -51,16 +53,21 @@ private extension PhotoTableViewCell {
     
     func addSubviews() {
         self.contentView.addSubview(self.photoImageView)
+        self.contentView.addSubview(self.nameLabel)
     }
     
     func makeConstraints() {
         self.photoImageView.translatesAutoresizingMaskIntoConstraints = false
+        self.nameLabel.translatesAutoresizingMaskIntoConstraints = false
         
         NSLayoutConstraint.activate([
             self.photoImageView.topAnchor.constraint(equalTo: self.contentView.topAnchor),
             self.photoImageView.leadingAnchor.constraint(equalTo: self.contentView.leadingAnchor),
             self.photoImageView.bottomAnchor.constraint(equalTo: self.contentView.bottomAnchor),
             self.photoImageView.trailingAnchor.constraint(equalTo: self.contentView.trailingAnchor),
+            
+            self.nameLabel.leadingAnchor.constraint(equalTo: self.contentView.leadingAnchor, constant: 16.0),
+            self.nameLabel.bottomAnchor.constraint(equalTo: self.contentView.bottomAnchor,constant: -16.0),
         ])
     }
 }

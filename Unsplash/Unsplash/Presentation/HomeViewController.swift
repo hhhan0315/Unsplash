@@ -74,6 +74,11 @@ extension HomeViewController: UITableViewDelegate {
             self.viewModel.fetch()
         }
     }
+    
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        let detailViewController = DetailViewController(photos: self.viewModel.photos.value, indexPath: indexPath)
+        self.navigationController?.pushViewController(detailViewController, animated: true)
+    }
 }
 
 // MARK: - Private Function
@@ -89,6 +94,7 @@ private extension HomeViewController {
     
     func configureUI() {
         self.navigationItem.title = "Unsplash"
+        self.navigationItem.backButtonTitle = ""
         
         self.view.addSubview(self.topicCollectionView)
         self.view.addSubview(self.photoTableView)
@@ -131,7 +137,7 @@ private extension HomeViewController {
             guard let cell = tableView.dequeueReusableCell(withIdentifier: PhotoTableViewCell.identifier, for: indexPath) as? PhotoTableViewCell else {
                 return PhotoTableViewCell()
             }
-            cell.setImage(photoItem)
+            cell.set(photoItem)
             return cell
         })
     }

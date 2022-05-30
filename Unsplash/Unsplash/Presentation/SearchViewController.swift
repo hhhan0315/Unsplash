@@ -114,7 +114,7 @@ private extension SearchViewController {
             guard let cell = tableView.dequeueReusableCell(withIdentifier: PhotoTableViewCell.identifier, for: indexPath) as? PhotoTableViewCell else {
                 return PhotoTableViewCell()
             }
-            cell.setImage(photoItem)
+            cell.set(photoItem)
             return cell
         })
     }
