@@ -8,5 +8,5 @@
 import Foundation
 
 protocol TopicPhotoUseCase {
-    func fetch(topic: Topic, page: Int, completion: @escaping(Result<[Photo], Error>) -> Void)
+    func fetch(topic: Topic, page: Int, completion: @escaping(Result<[PhotoResponseDTO], Error>) -> Void)
 }
