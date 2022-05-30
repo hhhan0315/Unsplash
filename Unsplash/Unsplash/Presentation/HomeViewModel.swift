@@ -10,13 +10,13 @@ import UIKit
 class HomeViewModel {
     
     private let topicPhotoUseCase: TopicPhotoUseCase
-    private(set) var photoItems: Observable<[Photo]>
+    private(set) var photos: Observable<[Photo]>
     private(set) var topic: Topic
     private(set) var page: Int
     
     init(topicPhotoUseCase: TopicPhotoUseCase) {
         self.topicPhotoUseCase = topicPhotoUseCase
-        self.photoItems = Observable([])
+        self.photos = Observable([])
         self.topic = .wallpapers
         self.page = 1
     }
@@ -24,14 +24,14 @@ class HomeViewModel {
     func fetch() {
         self.topicPhotoUseCase.fetch(topic: self.topic, page: self.page) { [weak self] result in
             switch result {
-            case .success(let photos):
-                photos.forEach { photo in
+            case .success(let photoResponseDTOs):
+                photoResponseDTOs.forEach { photo in
                     let photoItem = photo.toDomain()
                     guard let url = photoItem.imageUrl else { return }
                     
                     ImageLoader.shared.load(url) { data in
                         photoItem.image = UIImage(data: data)
-                        self?.photoItems.value.append(photoItem)
+                        self?.photos.value.append(photoItem)
                     }
                 }
                 
@@ -45,7 +45,7 @@ class HomeViewModel {
     func update(_ topic: Topic) {
         guard self.topic != topic else { return }
         self.topic = topic
-        self.photoItems.value.removeAll()
+        self.photos.value.removeAll()
         self.page = 1
         self.fetch()
     }

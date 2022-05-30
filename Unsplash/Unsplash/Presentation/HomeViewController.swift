@@ -137,10 +137,10 @@ private extension HomeViewController {
     }
     
     func bind(to viewModel: HomeViewModel) {
-        viewModel.photoItems.observe(on: self) { [weak self] photoItems in
+        viewModel.photos.observe(on: self) { [weak self] photos in
             var snapShot = NSDiffableDataSourceSnapshot<Section, Photo>()
             snapShot.appendSections([Section.photos])
-            snapShot.appendItems(photoItems)
+            snapShot.appendItems(photos)
             self?.photoDataSource?.apply(snapShot, animatingDifferences: false)
         }
     }
