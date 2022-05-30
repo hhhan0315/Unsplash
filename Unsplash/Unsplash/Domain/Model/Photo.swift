@@ -2,33 +2,28 @@
 //  Photo.swift
 //  Unsplash
 //
-//  Created by rae on 2022/05/04.
+//  Created by rae on 2022/05/27.
 //
 
-import Foundation
+import UIKit
 
-struct Photo: Codable, Hashable, Equatable {
-    let id: String
-    let urls: Urls
-    let user: User
-    
-    static func == (lhs: Photo, rhs: Photo) -> Bool {
-        return lhs.id == rhs.id
+class Photo {
+    var image: UIImage?
+    var imageUrl: URL?
+    var identifier = UUID()
+
+    init(image: UIImage?, imageUrl: URL?) {
+        self.image = image
+        self.imageUrl = imageUrl
     }
-    
+}
+
+extension Photo: Hashable {
     func hash(into hasher: inout Hasher) {
-        hasher.combine(id)
+        hasher.combine(identifier)
     }
-}
 
-struct Urls: Codable {
-    let raw: String
-    let full: String
-    let regular: String
-    let small: String
-    let thumb: String
-}
-
-struct User: Codable {
-    let name: String
+    static func == (lhs: Photo, rhs: Photo) -> Bool {
+        return lhs.identifier == rhs.identifier
+    }
 }
