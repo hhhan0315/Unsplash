@@ -22,7 +22,7 @@ class DetailViewController: UIViewController {
         
         let collectionView = UICollectionView(frame: .zero, collectionViewLayout: layout)
         collectionView.translatesAutoresizingMaskIntoConstraints = false
-        collectionView.register(UINib(nibName: PhotoDetailCell.identifier, bundle: nil), forCellWithReuseIdentifier: PhotoDetailCell.identifier)
+        collectionView.register(PhotoDetailCollectionViewCell.self, forCellWithReuseIdentifier: PhotoDetailCollectionViewCell.identifier)
         return collectionView
     }()
     
@@ -56,10 +56,10 @@ class DetailViewController: UIViewController {
 // MARK: - UICollectionViewDelegate
 
 extension DetailViewController: UICollectionViewDelegate {
-    func collectionView(_ collectionView: UICollectionView, willDisplay cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {
-        guard let photo = self.photoDataSource?.itemIdentifier(for: indexPath) else { return }
-        self.navigationItem.title = photo.user.name
-    }
+//    func collectionView(_ collectionView: UICollectionView, willDisplay cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {
+//        guard let photo = self.photoDataSource?.itemIdentifier(for: indexPath) else { return }
+//        self.navigationItem.title = photo.userName
+//    }
 }
 
 // MARK: - Private Function
@@ -72,10 +72,6 @@ private extension DetailViewController {
     }
     
     func configureUI() {
-        let leftBarButton = UIBarButtonItem(image: UIImage(systemName: "chevron.left"), style: .plain, target: self, action: #selector(self.touchLeftBarButton))
-        leftBarButton.tintColor = .white
-        self.navigationItem.leftBarButtonItem = leftBarButton
-        
         self.view.addSubview(self.photoCollectionView)
                 
         NSLayoutConstraint.activate([
@@ -92,20 +88,16 @@ private extension DetailViewController {
     
     func configurePhotoDataSource() {
         self.photoDataSource = UICollectionViewDiffableDataSource<Section, Photo>(collectionView: self.photoCollectionView, cellProvider: { collectionView, indexPath, photo in
-            guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: PhotoDetailCell.identifier, for: indexPath) as? PhotoDetailCell else {
-                return PhotoDetailCell()
+            guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: PhotoDetailCollectionViewCell.identifier, for: indexPath) as? PhotoDetailCollectionViewCell else {
+                return PhotoDetailCollectionViewCell()
             }
-            cell.setImage(indexPath, photo: photo)
+            cell.setImage(photo)
             return cell
         })
-        
+
         var snapshot = NSDiffableDataSourceSnapshot<Section, Photo>()
         snapshot.appendSections([Section.photos])
         snapshot.appendItems(self.photos)
         self.photoDataSource?.apply(snapshot, animatingDifferences: false)
-    }
-    
-    @objc func touchLeftBarButton() {
-        self.dismiss(animated: false)
     }
 }
