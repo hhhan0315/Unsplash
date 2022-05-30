@@ -13,20 +13,15 @@ class SearchViewController: UIViewController {
         case photos
     }
     
-    private let photoCollectionView: UICollectionView = {
-        let item = NSCollectionLayoutItem(layoutSize: NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0), heightDimension: .estimated(488)))
-        let group = NSCollectionLayoutGroup.horizontal(layoutSize: NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0), heightDimension: .estimated(488)), subitem: item, count: 1)
-        let section = NSCollectionLayoutSection(group: group)
-        section.interGroupSpacing = 5
-        let layout = UICollectionViewCompositionalLayout(section: section)
-        
-        let collectionView = UICollectionView(frame: .zero, collectionViewLayout: layout)
-        collectionView.translatesAutoresizingMaskIntoConstraints = false
-        collectionView.register(UINib(nibName: PhotoCell.identifier, bundle: nil), forCellWithReuseIdentifier: PhotoCell.identifier)
-        return collectionView
+    private let photoTableView: UITableView = {
+        let tableView = UITableView()
+        tableView.translatesAutoresizingMaskIntoConstraints = false
+        tableView.register(PhotoTableViewCell.self, forCellReuseIdentifier: PhotoTableViewCell.identifier)
+        tableView.tableFooterView = UIView()
+        return tableView
     }()
     
-    private var photoDataSource: UICollectionViewDiffableDataSource<Section, Photo>?
+    private var photoDataSource: UITableViewDiffableDataSource<Section, Photo>?
     
     private let viewModel: SearchViewModel
     
@@ -60,13 +55,18 @@ extension SearchViewController: UISearchBarDelegate {
     }
 }
 
-// MARK: - UICollectionViewDelegate
+// MARK: - UITableViewDelegate
 
-extension SearchViewController: UICollectionViewDelegate {
-    func collectionView(_ collectionView: UICollectionView, willDisplay cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {
-        guard let itemCount = self.photoDataSource?.snapshot().numberOfItems else { return }
-        guard indexPath.item >= itemCount - 1 else { return }
-        self.viewModel.fetch()
+extension SearchViewController: UITableViewDelegate {
+    func scrollViewDidScroll(_ scrollView: UIScrollView) {
+        let contentHeight = scrollView.contentSize.height
+        let yOffset = scrollView.contentOffset.y
+        let heightRemainFromBottom = contentHeight - yOffset
+
+        let frameHeight = scrollView.frame.size.height
+        if heightRemainFromBottom < frameHeight {
+            self.viewModel.fetch()
+        }
     }
 }
 
@@ -84,18 +84,18 @@ private extension SearchViewController {
     func configureUI() {
         self.navigationItem.title = "Search"
         
-        self.view.addSubview(self.photoCollectionView)
+        self.view.addSubview(self.photoTableView)
 
         NSLayoutConstraint.activate([
-            self.photoCollectionView.topAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.topAnchor),
-            self.photoCollectionView.leadingAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.leadingAnchor),
-            self.photoCollectionView.trailingAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.trailingAnchor),
-            self.photoCollectionView.bottomAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.bottomAnchor),
+            self.photoTableView.topAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.topAnchor),
+            self.photoTableView.leadingAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.leadingAnchor),
+            self.photoTableView.trailingAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.trailingAnchor),
+            self.photoTableView.bottomAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.bottomAnchor),
         ])
     }
     
     func configureDelegate() {
-        self.photoCollectionView.delegate = self
+        self.photoTableView.delegate = self
     }
     
     func configureSearchController() {
@@ -110,11 +110,11 @@ private extension SearchViewController {
     }
     
     func configurePhotoDataSource() {
-        self.photoDataSource = UICollectionViewDiffableDataSource<Section, Photo>(collectionView: self.photoCollectionView, cellProvider: { collectionView, indexPath, photo in
-            guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: PhotoCell.identifier, for: indexPath) as? PhotoCell else {
-                return PhotoCell()
+        self.photoDataSource = UITableViewDiffableDataSource<Section, Photo>(tableView: self.photoTableView, cellProvider: { tableView, indexPath, photoItem in
+            guard let cell = tableView.dequeueReusableCell(withIdentifier: PhotoTableViewCell.identifier, for: indexPath) as? PhotoTableViewCell else {
+                return PhotoTableViewCell()
             }
-            cell.setImage(indexPath, photo: photo)
+            cell.setImage(photoItem)
             return cell
         })
     }
@@ -124,7 +124,7 @@ private extension SearchViewController {
             var snapShot = NSDiffableDataSourceSnapshot<Section, Photo>()
             snapShot.appendSections([Section.photos])
             snapShot.appendItems(photos)
-            self?.photoDataSource?.apply(snapShot, animatingDifferences: true)
+            self?.photoDataSource?.apply(snapShot, animatingDifferences: false)
         }
     }
 }
