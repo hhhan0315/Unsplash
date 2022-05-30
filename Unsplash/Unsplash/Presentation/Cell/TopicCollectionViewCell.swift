@@ -1,5 +1,5 @@
 //
-//  TopicCell.swift
+//  TopicCollectionViewCell.swift
 //  Unsplash
 //
 //  Created by rae on 2022/05/03.
@@ -7,8 +7,8 @@
 
 import UIKit
 
-class TopicCell: UICollectionViewCell {
-    static let identifier: String = String(describing: TopicCell.self)
+class TopicCollectionViewCell: UICollectionViewCell {
+    static let identifier: String = String(describing: TopicCollectionViewCell.self)
     
     let button: UIButton = {
         let button = UIButton(type: .system)
@@ -28,7 +28,7 @@ class TopicCell: UICollectionViewCell {
     }
 }
 
-private extension TopicCell {
+private extension TopicCollectionViewCell {
     func configure() {
         self.configureUI()
     }
