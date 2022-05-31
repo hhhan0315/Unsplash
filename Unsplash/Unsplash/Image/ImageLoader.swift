@@ -11,8 +11,11 @@ class ImageLoader {
     static let shared = ImageLoader()
     
     private let imageCacheManager = ImageCacheManager.shared
+    private let imageQueue = OperationQueue()
     
-    private init() { }
+    private init() {
+        self.imageQueue.maxConcurrentOperationCount = 1
+    }
     
     func load(_ url: URL, completion: @escaping (Data) -> Void) {
         let key = url as NSURL
@@ -21,10 +24,11 @@ class ImageLoader {
             return
         }
         
-        URLSession.shared.dataTask(with: url) { data, response, error in
-            guard let data = data else { return }
-            self.imageCacheManager.save(key, data)
+        let imageDownloadOperation = ImageDownloadOperation(url: url) { [weak self] data in
+            self?.imageCacheManager.save(key, data)
             completion(data)
-        }.resume()
+        }
+
+        self.imageQueue.addOperation(imageDownloadOperation)
     }
 }
