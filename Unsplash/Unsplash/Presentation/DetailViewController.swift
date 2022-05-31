@@ -13,11 +13,17 @@ class DetailViewController: UIViewController {
         case photos
     }
     
-    private let photoCollectionView: UICollectionView = {
+    private lazy var photoCollectionView: UICollectionView = {
         let item = NSCollectionLayoutItem(layoutSize: NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0), heightDimension: .fractionalHeight(1.0)))
         let group = NSCollectionLayoutGroup.horizontal(layoutSize: NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0), heightDimension: .fractionalHeight(1.0)), subitem: item, count: 1)
         let section = NSCollectionLayoutSection(group: group)
         section.orthogonalScrollingBehavior = .groupPaging
+        section.visibleItemsInvalidationHandler = { (visibleItems, scrollOffset, layoutEnvironment) in
+            visibleItems.forEach({ item in
+                guard let photo = self.photoDataSource?.itemIdentifier(for: item.indexPath) else { return }
+                self.navigationItem.title = photo.userName
+            })
+        }
         let layout = UICollectionViewCompositionalLayout(section: section)
         
         let collectionView = UICollectionView(frame: .zero, collectionViewLayout: layout)
@@ -44,6 +50,8 @@ class DetailViewController: UIViewController {
         super.viewDidLoad()
         
         self.configure()
+        
+        self.photoCollectionView.scrollToItem(at: self.currentIndexPath, at: .centeredHorizontally, animated: false)
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -57,21 +65,6 @@ class DetailViewController: UIViewController {
         
         self.tabBarController?.tabBar.isHidden = false
     }
-        
-    override func viewDidLayoutSubviews() {
-        super.viewDidLayoutSubviews()
-        
-        self.photoCollectionView.scrollToItem(at: self.currentIndexPath, at: .centeredHorizontally, animated: false)
-    }
-}
-
-// MARK: - UICollectionViewDelegate
-
-extension DetailViewController: UICollectionViewDelegate {
-//    func collectionView(_ collectionView: UICollectionView, willDisplay cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {
-//        guard let photo = self.photoDataSource?.itemIdentifier(for: indexPath) else { return }
-//        self.navigationItem.title = photo.userName
-//    }
 }
 
 // MARK: - Private Function
@@ -79,23 +72,18 @@ extension DetailViewController: UICollectionViewDelegate {
 private extension DetailViewController {
     func configure() {
         self.configureUI()
-        self.configureDelegate()
         self.configurePhotoDataSource()
     }
     
     func configureUI() {
         self.view.addSubview(self.photoCollectionView)
-                
+        
         NSLayoutConstraint.activate([
             self.photoCollectionView.topAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.topAnchor),
             self.photoCollectionView.bottomAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.bottomAnchor),
             self.photoCollectionView.leadingAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.leadingAnchor),
             self.photoCollectionView.trailingAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.trailingAnchor),
         ])
-    }
-    
-    func configureDelegate() {
-        self.photoCollectionView.delegate = self
     }
     
     func configurePhotoDataSource() {
@@ -106,7 +94,7 @@ private extension DetailViewController {
             cell.setImage(photo)
             return cell
         })
-
+        
         var snapshot = NSDiffableDataSourceSnapshot<Section, Photo>()
         snapshot.appendSections([Section.photos])
         snapshot.appendItems(self.photos)
