@@ -9,7 +9,7 @@ import UIKit
 
 class PhotoTableViewCell: UITableViewCell {
     static let identifier: String = String(describing: PhotoTableViewCell.self)
-        
+    
     private let photoImageView: UIImageView = {
         let imageView = UIImageView()
         return imageView
@@ -18,7 +18,7 @@ class PhotoTableViewCell: UITableViewCell {
     private let nameLabel: UILabel = {
         let label = UILabel()
         label.textColor = UIColor.white
-        label.font = UIFont.boldSystemFont(ofSize: 16.0)
+        label.font = UIFont.preferredFont(forTextStyle: .body)
         return label
     }()
         
@@ -39,9 +39,9 @@ class PhotoTableViewCell: UITableViewCell {
         self.nameLabel.text = nil
     }
     
-    func set(_ photoItem: Photo) {
-        self.photoImageView.image = photoItem.image
-        self.nameLabel.text = photoItem.userName
+    func set(_ photo: Photo) {
+        self.photoImageView.image = photo.image
+        self.nameLabel.text = photo.userName
     }
 }
 
