@@ -7,34 +7,50 @@
 
 import UIKit
 
+enum ViewModelState {
+    case ready
+    case loading
+}
+
 class HomeViewModel {
     
     private let topicPhotoUseCase: TopicPhotoUseCase
     private(set) var photos: Observable<[Photo]>
     private(set) var topic: Topic
     private(set) var page: Int
+    private var state: ViewModelState
     
     init(topicPhotoUseCase: TopicPhotoUseCase) {
         self.topicPhotoUseCase = topicPhotoUseCase
         self.photos = Observable([])
         self.topic = .wallpapers
         self.page = 1
+        self.state = .ready
     }
     
     func fetch() {
+        guard self.state == .ready else { return }
+        self.state = .loading
+
         self.topicPhotoUseCase.fetch(topic: self.topic, page: self.page) { [weak self] result in
             switch result {
             case .success(let photoResponseDTOs):
-                photoResponseDTOs.forEach { photo in
-                    let photoItem = photo.toDomain()
-                    guard let url = photoItem.imageUrl else { return }
-                    
+                var photos = [Photo]()
+                
+                photoResponseDTOs.forEach { photoResponseDTO in
+                    let photo = photoResponseDTO.toDomain()
+                    guard let url = photo.imageUrl else { return }
+
                     ImageLoader.shared.load(url) { data in
-                        photoItem.image = UIImage(data: data)
-                        self?.photos.value.append(photoItem)
+                        photo.image = UIImage(data: data)
+                        photos.append(photo)
+                        if photos.count == Constants.perPageCount {
+                            self?.photos.value.append(contentsOf: photos)
+                            self?.state = .ready
+                        }
                     }
                 }
-                
+
                 self?.page += 1
             case .failure(let error):
                 print(error.localizedDescription)
