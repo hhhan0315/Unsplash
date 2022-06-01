@@ -271,8 +271,8 @@
 				0194CD332822A5240006470D /* Presentation */,
 				016561CF282CE88400437475 /* Network */,
 				015C93B8283C711E009F2498 /* Util */,
-				01D9D2D0281F71C700E308D4 /* Info.plist */,
 				016561EE282F515900437475 /* Image */,
+				01D9D2D0281F71C700E308D4 /* Info.plist */,
 			);
 			path = Unsplash;
 			sourceTree = "<group>";
