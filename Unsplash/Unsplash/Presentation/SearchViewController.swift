@@ -9,23 +9,22 @@ import UIKit
 
 class SearchViewController: UIViewController {
     
-    enum Section {
-        case photos
-    }
-    
-    private let photoTableView: UITableView = {
-        let tableView = UITableView()
-        tableView.translatesAutoresizingMaskIntoConstraints = false
-        tableView.register(PhotoTableViewCell.self, forCellReuseIdentifier: PhotoTableViewCell.identifier)
-        tableView.tableFooterView = UIView()
-        return tableView
+    private lazy var photoCollectionView: UICollectionView = {
+        let layout = PinterestLayout()
+        layout.delegate = self
+        
+        let collectionView = UICollectionView(frame: .zero, collectionViewLayout: layout)
+        collectionView.translatesAutoresizingMaskIntoConstraints = false
+        collectionView.register(PhotoCollectionViewCell.self, forCellWithReuseIdentifier: PhotoCollectionViewCell.identifier)
+        return collectionView
     }()
-    
-    private var photoDataSource: UITableViewDiffableDataSource<Section, Photo>?
+        
+    private var photos: [Photo]
     
     private let viewModel: SearchViewModel
     
     init(viewModel: SearchViewModel) {
+        self.photos = []
         self.viewModel = viewModel
         super.init(nibName: nil, bundle: nil)
     }
@@ -46,27 +45,54 @@ class SearchViewController: UIViewController {
 extension SearchViewController: UISearchBarDelegate {
     func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
         guard let query = searchBar.text else { return }
+        self.photoCollectionView.setContentOffset(CGPoint.zero, animated: true)
         self.viewModel.update(query)
     }
     
     func searchBarCancelButtonClicked(_ searchBar: UISearchBar) {
         let emptyQuery = ""
+        self.photoCollectionView.setContentOffset(CGPoint.zero, animated: true)
         self.viewModel.update(emptyQuery)
     }
 }
 
-// MARK: - UITableViewDelegate
+// MARK: - PinterestLayoutDelegate
 
-extension SearchViewController: UITableViewDelegate {
-    func scrollViewDidScroll(_ scrollView: UIScrollView) {
-        let contentHeight = scrollView.contentSize.height
-        let yOffset = scrollView.contentOffset.y
-        let heightRemainFromBottom = contentHeight - yOffset
+extension SearchViewController: PinterestLayoutDelegate {
+    func collectionView(_ collectionView: UICollectionView, heightForPhotoAtIndexPath indexPath: IndexPath) -> CGFloat {
+        let cellWidth: CGFloat = (view.bounds.width - 4) / 2 // 셀 가로 크기
+        guard let imageHeight = self.photos[indexPath.item].image?.size.height else { return 0 }
+        guard let imageWidth = self.photos[indexPath.item].image?.size.width else { return 0 }
+        let imageRatio = imageHeight / imageWidth
+        
+        return CGFloat(imageRatio) * cellWidth
+    }
+}
 
-        let frameHeight = scrollView.frame.size.height
-        if heightRemainFromBottom < frameHeight {
-            self.viewModel.fetch()
+// MARK: - UICollectionViewDataSource
+
+extension SearchViewController: UICollectionViewDataSource {
+    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+        return self.photos.count
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+        guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: PhotoCollectionViewCell.identifier, for: indexPath) as? PhotoCollectionViewCell else {
+            return PhotoCollectionViewCell()
         }
+        
+        cell.set(photos[indexPath.row])
+        return cell
+    }
+}
+
+// MARK: - UICollectionViewDelegate
+
+extension SearchViewController: UICollectionViewDelegate {
+    func collectionView(_ collectionView: UICollectionView, willDisplay cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {
+        let photoCount = self.photos.count
+        guard indexPath.item >= photoCount - 1 else { return }
+        self.viewModel.fetch()
     }
 }
 
@@ -76,26 +102,30 @@ private extension SearchViewController {
     func configure() {
         self.configureUI()
         self.configureDelegate()
+        self.configureDataSource()
         self.configureSearchController()
-        self.configurePhotoDataSource()
         self.bind(to: self.viewModel)
     }
     
     func configureUI() {
         self.navigationItem.title = "Search"
         
-        self.view.addSubview(self.photoTableView)
+        self.view.addSubview(self.photoCollectionView)
 
         NSLayoutConstraint.activate([
-            self.photoTableView.topAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.topAnchor),
-            self.photoTableView.leadingAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.leadingAnchor),
-            self.photoTableView.trailingAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.trailingAnchor),
-            self.photoTableView.bottomAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.bottomAnchor),
+            self.photoCollectionView.topAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.topAnchor),
+            self.photoCollectionView.leadingAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.leadingAnchor),
+            self.photoCollectionView.trailingAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.trailingAnchor),
+            self.photoCollectionView.bottomAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.bottomAnchor),
         ])
     }
     
     func configureDelegate() {
-        self.photoTableView.delegate = self
+        self.photoCollectionView.delegate = self
+    }
+    
+    func configureDataSource() {
+        self.photoCollectionView.dataSource = self
     }
     
     func configureSearchController() {
@@ -109,22 +139,11 @@ private extension SearchViewController {
         self.navigationItem.hidesSearchBarWhenScrolling = false
     }
     
-    func configurePhotoDataSource() {
-        self.photoDataSource = UITableViewDiffableDataSource<Section, Photo>(tableView: self.photoTableView, cellProvider: { tableView, indexPath, photoItem in
-            guard let cell = tableView.dequeueReusableCell(withIdentifier: PhotoTableViewCell.identifier, for: indexPath) as? PhotoTableViewCell else {
-                return PhotoTableViewCell()
-            }
-            cell.set(photoItem)
-            return cell
-        })
-    }
-    
     func bind(to viewModel: SearchViewModel) {
         viewModel.photos.observe(on: self) { [weak self] photos in
-            var snapShot = NSDiffableDataSourceSnapshot<Section, Photo>()
-            snapShot.appendSections([Section.photos])
-            snapShot.appendItems(photos)
-            self?.photoDataSource?.apply(snapShot, animatingDifferences: false)
+            self?.photos = photos
+            self?.photoCollectionView.reloadData()
+            self?.photoCollectionView.collectionViewLayout.invalidateLayout()
         }
     }
 }
