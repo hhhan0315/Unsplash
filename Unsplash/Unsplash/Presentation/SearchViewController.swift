@@ -94,6 +94,11 @@ extension SearchViewController: UICollectionViewDelegate {
         guard indexPath.item >= photoCount - 1 else { return }
         self.viewModel.fetch()
     }
+    
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        let detailViewController = DetailViewController(photos: self.viewModel.photos.value, indexPath: indexPath)
+        self.navigationController?.pushViewController(detailViewController, animated: true)
+    }
 }
 
 // MARK: - Private Functions
@@ -109,6 +114,7 @@ private extension SearchViewController {
     
     func configureUI() {
         self.navigationItem.title = "Search"
+        self.navigationItem.backButtonTitle = ""
         
         self.view.addSubview(self.photoCollectionView)
 
