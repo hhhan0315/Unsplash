@@ -64,15 +64,10 @@ class HomeViewController: UIViewController {
 // MARK: - UITableViewDelegate
 
 extension HomeViewController: UITableViewDelegate {
-    func scrollViewDidScroll(_ scrollView: UIScrollView) {
-        let contentHeight = scrollView.contentSize.height
-        let yOffset = scrollView.contentOffset.y
-        let heightRemainFromBottom = contentHeight - yOffset
-
-        let frameHeight = scrollView.frame.size.height
-        if heightRemainFromBottom < frameHeight {
-            self.viewModel.fetch()
-        }
+    func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
+        guard let photoCount = self.photoDataSource?.snapshot().numberOfItems else { return }
+        guard indexPath.item >= photoCount - 2 else { return }
+        self.viewModel.fetch()
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
