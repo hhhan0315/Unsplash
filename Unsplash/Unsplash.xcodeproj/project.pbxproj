@@ -107,12 +107,12 @@
 			path = Model;
 			sourceTree = "<group>";
 		};
-		0132BAF3281FC09400E7A81A /* Resources */ = {
+		0132BAF3281FC09400E7A81A /* Resource */ = {
 			isa = PBXGroup;
 			children = (
 				01D9D2CB281F71C700E308D4 /* Assets.xcassets */,
 			);
-			path = Resources;
+			path = Resource;
 			sourceTree = "<group>";
 		};
 		015744F6284392D800B3A6F7 /* Network */ = {
@@ -127,6 +127,7 @@
 		015C93B8283C711E009F2498 /* Util */ = {
 			isa = PBXGroup;
 			children = (
+				016561EE282F515900437475 /* Image */,
 				015C93B9283C7132009F2498 /* Observable.swift */,
 			);
 			path = Util;
@@ -265,13 +266,12 @@
 			isa = PBXGroup;
 			children = (
 				016561CE282CE7B400437475 /* Application */,
-				0132BAF3281FC09400E7A81A /* Resources */,
 				016561E2282F380C00437475 /* Data */,
 				016561CC282CE2F600437475 /* Domain */,
 				0194CD332822A5240006470D /* Presentation */,
 				016561CF282CE88400437475 /* Network */,
+				0132BAF3281FC09400E7A81A /* Resource */,
 				015C93B8283C711E009F2498 /* Util */,
-				016561EE282F515900437475 /* Image */,
 				01D9D2D0281F71C700E308D4 /* Info.plist */,
 			);
 			path = Unsplash;
