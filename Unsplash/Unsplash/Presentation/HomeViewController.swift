@@ -132,7 +132,6 @@ private extension HomeViewController {
             guard let cell = tableView.dequeueReusableCell(withIdentifier: PhotoTableViewCell.identifier, for: indexPath) as? PhotoTableViewCell else {
                 return PhotoTableViewCell()
             }
-//            cell.set(photo)
             cell.photo = photo
             return cell
         })
