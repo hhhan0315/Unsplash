@@ -21,7 +21,14 @@ class PhotoTableViewCell: UITableViewCell {
         label.font = UIFont.preferredFont(forTextStyle: .body)
         return label
     }()
-        
+    
+    var photo: Photo! {
+        didSet {
+            self.photoImageView.image = photo.image
+            self.nameLabel.text = photo.userName
+        }
+    }
+    
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
         
@@ -37,11 +44,6 @@ class PhotoTableViewCell: UITableViewCell {
         
         self.photoImageView.image = nil
         self.nameLabel.text = nil
-    }
-    
-    func set(_ photo: Photo) {
-        self.photoImageView.image = photo.image
-        self.nameLabel.text = photo.userName
     }
 }
 

@@ -128,11 +128,12 @@ private extension HomeViewController {
     }
     
     func configurePhotoDataSource() {
-        self.photoDataSource = UITableViewDiffableDataSource<Section, Photo>(tableView: self.photoTableView, cellProvider: { tableView, indexPath, photoItem in
+        self.photoDataSource = UITableViewDiffableDataSource<Section, Photo>(tableView: self.photoTableView, cellProvider: { tableView, indexPath, photo in
             guard let cell = tableView.dequeueReusableCell(withIdentifier: PhotoTableViewCell.identifier, for: indexPath) as? PhotoTableViewCell else {
                 return PhotoTableViewCell()
             }
-            cell.set(photoItem)
+//            cell.set(photo)
+            cell.photo = photo
             return cell
         })
     }
