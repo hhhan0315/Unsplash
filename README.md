@@ -20,7 +20,7 @@ Unsplash Image API를 활용한 사진 앱
 - ViewModel은 데이터 관리 및 비즈니스 로직 담당
 > Clean Architecture
 - UseCase는 ViewModel의 비즈니스 로직 담당 (여기서는 포토 데이터 갱신)
-- Repository는 네트워크 등 외부으 데이터르 가져오는 객체
+- Repository는 네트워크 등 외부의 데이터를 가져오는 객체
 
 ## 커밋 메시지
 - Convention
