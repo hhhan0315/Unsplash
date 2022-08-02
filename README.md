@@ -8,10 +8,11 @@ Unsplash Image API를 활용한 사진 앱
 
 ## 기능
 |Pagination|세부 화면|검색|
-|--|--|
+|--|--|--|
 |<img src="https://github.com/hhhan0315/Unsplash/blob/main/screenshot/pagination.gif" width="220">|<img src="https://github.com/hhhan0315/Unsplash/blob/main/screenshot/detail.gif" width="220">|<img src="https://github.com/hhhan0315/Unsplash/blob/main/screenshot/search.gif" width="220">|
 
 |저장 권한 허용 및 성공|저장 권한 허용 요청|
+|--|--|
 |<img src="https://github.com/hhhan0315/Unsplash/blob/main/screenshot/save.gif" width="220">|<img src="https://github.com/hhhan0315/Unsplash/blob/main/screenshot/save_failure.gif" width="220">|
 
 ## 구조
@@ -21,9 +22,6 @@ Unsplash Image API를 활용한 사진 앱
 > MVVM
 - ViewController와 View는 UI 화면 담당
 - ViewModel은 데이터 관리 및 비즈니스 로직 담당
-> Clean Architecture
-- UseCase는 ViewModel의 비즈니스 로직 담당 (여기서는 포토 데이터 갱신)
-- Repository는 네트워크 등 외부의 데이터를 가져오는 객체
 
 ## 커밋 메시지
 - Convention
