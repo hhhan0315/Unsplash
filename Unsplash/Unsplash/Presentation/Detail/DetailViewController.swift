@@ -8,11 +8,7 @@
 import UIKit
 
 class DetailViewController: UIViewController {
-    
-    enum Section {
-        case photos
-    }
-    
+    // MARK: - View Define
     private lazy var photoCollectionView: UICollectionView = {
         let item = NSCollectionLayoutItem(layoutSize: NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0), heightDimension: .fractionalHeight(1.0)))
         let group = NSCollectionLayoutGroup.horizontal(layoutSize: NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0), heightDimension: .fractionalHeight(1.0)), subitem: item, count: 1)
@@ -20,22 +16,26 @@ class DetailViewController: UIViewController {
         section.orthogonalScrollingBehavior = .groupPaging
         section.visibleItemsInvalidationHandler = { (visibleItems, scrollOffset, layoutEnvironment) in
             visibleItems.forEach({ item in
-                guard let photo = self.photoDataSource?.itemIdentifier(for: item.indexPath) else { return }
-//                self.navigationItem.title = photo.userName
+                guard let photoResponse = self.photoDataSource?.itemIdentifier(for: item.indexPath) else { return }
+                self.navigationItem.title = photoResponse.user.name
             })
         }
         let layout = UICollectionViewCompositionalLayout(section: section)
         
         let collectionView = UICollectionView(frame: .zero, collectionViewLayout: layout)
-        collectionView.translatesAutoresizingMaskIntoConstraints = false
-        collectionView.register(PhotoDetailCollectionViewCell.self, forCellWithReuseIdentifier: PhotoDetailCollectionViewCell.identifier)
+        collectionView.register(DetailPhotoCollectionViewCell.self, forCellWithReuseIdentifier: DetailPhotoCollectionViewCell.identifier)
         return collectionView
     }()
     
+    // MARK: - Properties
+    enum Section {
+        case photo
+    }
     private var photoDataSource: UICollectionViewDiffableDataSource<Section, PhotoResponse>?
     private var photos: [PhotoResponse]
     private var currentIndexPath: IndexPath
     
+    // MARK: - View LifeCycle
     init(photos: [PhotoResponse], indexPath: IndexPath) {
         self.photos = photos
         self.currentIndexPath = indexPath
@@ -49,58 +49,44 @@ class DetailViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        self.configure()        
-    }
-    
-    override func viewWillAppear(_ animated: Bool) {
-        super.viewWillAppear(animated)
-        
-        self.tabBarController?.tabBar.isHidden = true
-    }
-    
-    override func viewWillDisappear(_ animated: Bool) {
-        super.viewWillDisappear(animated)
-        
-        self.tabBarController?.tabBar.isHidden = false
+        setViews()
     }
     
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
         
-        self.photoCollectionView.scrollToItem(at: self.currentIndexPath, at: .centeredHorizontally, animated: false)
-    }
-}
-
-// MARK: - Private Function
-
-private extension DetailViewController {
-    func configure() {
-        self.configureUI()
-        self.configurePhotoDataSource()
+        photoCollectionView.scrollToItem(at: currentIndexPath, at: .centeredHorizontally, animated: false)
     }
     
-    func configureUI() {
-        self.view.addSubview(self.photoCollectionView)
+    // MARK: - Layout
+    private func setViews() {
+        configureUI()
+        configurePhotoDataSource()
+    }
+    
+    private func configureUI() {
+        view.addSubview(photoCollectionView)
+        photoCollectionView.translatesAutoresizingMaskIntoConstraints = false
         
         NSLayoutConstraint.activate([
-            self.photoCollectionView.topAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.topAnchor),
-            self.photoCollectionView.bottomAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.bottomAnchor),
-            self.photoCollectionView.leadingAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.leadingAnchor),
-            self.photoCollectionView.trailingAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.trailingAnchor),
+            photoCollectionView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
+            photoCollectionView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor),
+            photoCollectionView.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor),
+            photoCollectionView.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor),
         ])
     }
     
-    func configurePhotoDataSource() {
-        self.photoDataSource = UICollectionViewDiffableDataSource<Section, PhotoResponse>(collectionView: self.photoCollectionView, cellProvider: { collectionView, indexPath, photo in
-            guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: PhotoDetailCollectionViewCell.identifier, for: indexPath) as? PhotoDetailCollectionViewCell else {
-                return PhotoDetailCollectionViewCell()
+    private func configurePhotoDataSource() {
+        photoDataSource = UICollectionViewDiffableDataSource<Section, PhotoResponse>(collectionView: photoCollectionView, cellProvider: { collectionView, indexPath, photoResponse in
+            guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: DetailPhotoCollectionViewCell.identifier, for: indexPath) as? DetailPhotoCollectionViewCell else {
+                return DetailPhotoCollectionViewCell()
             }
-//            cell.setImage(photo)
+            cell.configureCell(with: photoResponse)
             return cell
         })
         
         var snapshot = NSDiffableDataSourceSnapshot<Section, PhotoResponse>()
-        snapshot.appendSections([Section.photos])
+        snapshot.appendSections([Section.photo])
         snapshot.appendItems(self.photos)
         self.photoDataSource?.apply(snapshot, animatingDifferences: false)
     }

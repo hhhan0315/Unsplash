@@ -153,6 +153,11 @@ extension SearchViewController: UICollectionViewDelegate {
     }
 
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        // TODO: DetailViewController 전환
+        guard let photos = photoDataSource?.snapshot().itemIdentifiers else {
+            return
+        }
+        let detailViewController = DetailViewController(photos: photos, indexPath: indexPath)
+        detailViewController.hidesBottomBarWhenPushed = true
+        navigationController?.pushViewController(detailViewController, animated: true)
     }
 }
