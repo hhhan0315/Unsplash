@@ -12,9 +12,9 @@ class SearchViewModel {
     @Published var photos: [PhotoResponse]
     private var query: String
     private var page: Int
-    private let networkService: NetworkService
+    private let networkService: Networkable
     
-    init(networkService: NetworkService) {
+    init(networkService: Networkable) {
         self.photos  = []
         self.query = ""
         self.page = 1

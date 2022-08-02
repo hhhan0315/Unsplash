@@ -33,7 +33,7 @@ final class MainTabController: UITabBarController {
         let homeTabBarItem = UITabBarItem(title: nil, image: MainTabBarItem.home.image, selectedImage: nil)
         let searchTabBarItem = UITabBarItem(title: nil, image: MainTabBarItem.search.image, selectedImage: nil)
                 
-        let networkService = NetworkService()
+        let networkService: Networkable = NetworkService()
         let homeViewModel = HomeViewModel(networkService: networkService)
         let homeViewController = UINavigationController(rootViewController: HomeViewController(viewModel: homeViewModel))
         homeViewController.tabBarItem = homeTabBarItem

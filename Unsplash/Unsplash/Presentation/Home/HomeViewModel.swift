@@ -13,9 +13,9 @@ class HomeViewModel {
     private var topic: Topic
     private var page: Int
     
-    private let networkService: NetworkService
+    private let networkService: Networkable
     
-    init(networkService: NetworkService) {
+    init(networkService: Networkable) {
         self.photos = []
         self.topic = .wallpapers
         self.page = 1
