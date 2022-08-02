@@ -4,16 +4,19 @@ Unsplash Image API를 활용한 사진 앱
 ## Diagram
 |Home|Search|
 |--|--|
-|![home_diagram](https://github.com/hhhan0315/Unsplash/blob/main/스크린샷/home_diagram.png)|![search_diagram](https://github.com/hhhan0315/Unsplash/blob/main/스크린샷/search_diagram.png)|
+|<img src="https://github.com/hhhan0315/Unsplash/blob/main/screenshot/diagram1.png">|<img src="https://github.com/hhhan0315/Unsplash/blob/main/screenshot/diagram2.png">|
 
 ## 기능
-|Home|Search|
+|Pagination|세부 화면|검색|
 |--|--|
-|![home_feature](https://github.com/hhhan0315/Unsplash/blob/main/스크린샷/home_feature.gif)|![search_feature](https://github.com/hhhan0315/Unsplash/blob/main/스크린샷/search_feature.gif)|
+|<img src="https://github.com/hhhan0315/Unsplash/blob/main/screenshot/pagination.gif" width="220">|<img src="https://github.com/hhhan0315/Unsplash/blob/main/screenshot/detail.gif" width="220">|<img src="https://github.com/hhhan0315/Unsplash/blob/main/screenshot/search.gif" width="220">|
+
+|저장 권한 허용 및 성공|저장 권한 허용 요청|
+|<img src="https://github.com/hhhan0315/Unsplash/blob/main/screenshot/save.gif" width="220">|<img src="https://github.com/hhhan0315/Unsplash/blob/main/screenshot/save_failure.gif" width="220">|
 
 ## 구조
-![architecture](https://github.com/hhhan0315/Unsplash/blob/main/스크린샷/architecture1.png)
-![architecture2](https://github.com/hhhan0315/Unsplash/blob/main/스크린샷/architecture2.png)
+<img src="https://github.com/hhhan0315/Unsplash/blob/main/screenshot/architecture1.png">
+<img src="https://github.com/hhhan0315/Unsplash/blob/main/screenshot/architecture2.png">
 
 > MVVM
 - ViewController와 View는 UI 화면 담당
