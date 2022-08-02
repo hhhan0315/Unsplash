@@ -6,50 +6,50 @@
 //
 
 import UIKit
+import Combine
 
 class SearchViewModel {
     private let searchPhotoUseCase: SearchPhotoUseCase
-//    private(set) var photos: Observable<[Photo]>
-    private(set) var query: String
-    private(set) var page: Int
+    @Published var photos: [PhotoResponse]
+    private var query: String
+    private var page: Int
+    private let networkService = NetworkService()
     
     init(searchPhotoUseCase: SearchPhotoUseCase) {
         self.searchPhotoUseCase = searchPhotoUseCase
-//        self.photos = Observable([])
+        self.photos  = []
         self.query = ""
         self.page = 1
     }
     
+    func photosCount() -> Int {
+        return photos.count
+    }
+    
+    func photo(at index: Int) -> PhotoResponse {
+        return photos[index]
+    }
+    
     func fetch() {
-//        self.searchPhotoUseCase.fetch(query: self.query, page: self.page) { [weak self] result in
-//            switch result {
-//            case .success(let photoResponseDTOs):
-//                var photos = [Photo]()
-                
-//                photoResponseDTOs.forEach { photoResponseDTO in
-//                    let photo = photoResponseDTO.toDomain()
-//                    guard let url = photo.imageUrl else { return }
-                    
-//                    ImageLoader.shared.load(url) { data in
-//                        photo.image = UIImage(data: data)
-//                        photos.append(photo)
-//                        if photos.count == Constants.perPageCount {
-//                            self?.photos.value.append(contentsOf: photos)
-//                        }
-//                    }
-//                }
-                
-//                self?.page += 1
-//            case .failure(let error):
-//                print(error)
-//            }
+        let request = SearchPhotoRequest(query: query, page: page)
+        networkService.request(request) { (result: Result<SearchResponse, NetworkError>) in
+            switch result {
+            case .success(let searchResponse):
+                self.photos.append(contentsOf: searchResponse.results)
+                self.page += 1
+            case .failure(let error):
+                print(error.localizedDescription)
+            }
+        }
     }
     
     func update(_ query: String) {
-        guard self.query != query else { return }
-//        self.photos.value.removeAll()
+        guard self.query != query else {
+            return
+        }
         self.query = query
-        self.page = 1
-        self.fetch()
+        photos.removeAll()
+        page = 1
+        fetch()
     }
 }
