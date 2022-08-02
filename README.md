@@ -20,7 +20,7 @@ Unsplash Image API를 활용한 사진 앱
 <img src="https://github.com/hhhan0315/Unsplash/blob/main/screenshot/architecture2.png">
 
 > MVVM
-- ViewController와 View는 UI 화면 담당
+- ViewController는 UI 화면 담당
 - ViewModel은 데이터 관리 및 비즈니스 로직 담당
 
 ## 커밋 메시지
@@ -31,18 +31,26 @@ Unsplash Image API를 활용한 사진 앱
   - [Docs] : 문서 및 리드미 작성
   - [Refactor] : 리팩토링
 
-## 진행 과정
-> MVVM & Clean Architecture 구조에 대한 이해
-
-- 부스트캠프 멤버쉽 Swift 프로젝트 대부분이 해당 구조를 사용하고 있어서 공부
-- https://jeonyeohun.tistory.com/305?category=881841 참고
-
+## 과정
 > Diffable DataSource
-
-- Diffable DataSource 및 Compositional Layout으로 구성으로 초기 구현
-- Unsplash 앱 처럼 각 이미지의 크기에 알맞게 dynamic height를 구현을 위한 수정
-- UIImage를 변수로 가지고 있는 Photo 모델을 통해 SnapShot 구현으로 해결
-- https://ios-development.tistory.com/717 참고
+- UICollectionView Diffable DataSource 활용
+- iOS 13.0 이후부터 가능
 
 > Pinterest Layout
-- https://linux-studying.tistory.com/23 참고
+- 참고 : https://linux-studying.tistory.com/23
+- 각 이미지의 높이에 알맞게 구성해주기 위해 Pinterest Layout 활용
+
+> UICollectionView Compositional Layout
+- iOS 13.0 이후부터 가능
+- DetailViewController에서 전체 화면으로 가로 스크롤 구현에 활용
+- visibleItemsInvalidationHandler 활용해 각 아이템이 보여지기 전에 컨트롤 가능
+
+> UIImageWriteToSavedPhotosAlbum
+- 참고 : https://www.hackingwithswift.com/books/ios-swiftui/how-to-save-images-to-the-users-photo-library
+- 단순히 앨범에 저장하기 위해 사용
+- ImageSaver 클래스를 통해 성공, 실패 확인 가능
+- info.plist에 `Privacy - Photo Library Additions Usage Description` 추가
+
+> Image Cache
+- ImageCacheManager를 통해 캐시 구현
+- NSCache 활용
