@@ -154,6 +154,7 @@
 		015C93B8283C711E009F2498 /* Util */ = {
 			isa = PBXGroup;
 			children = (
+				013ED83D2846146F00B242FE /* PinterestLayout.swift */,
 				016561EE282F515900437475 /* Image */,
 				015C93B9283C7132009F2498 /* Observable.swift */,
 			);
@@ -244,7 +245,6 @@
 				015C93B4283880BA009F2498 /* ImageCacheManager.swift */,
 				015C93C0283D0E92009F2498 /* ImageDownloadOperation.swift */,
 				015C93C2283DC005009F2498 /* ImageLoader.swift */,
-				013ED83D2846146F00B242FE /* PinterestLayout.swift */,
 			);
 			path = Image;
 			sourceTree = "<group>";

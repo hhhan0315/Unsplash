@@ -19,17 +19,8 @@ class HomePhotoCollectionViewCell: UICollectionViewCell {
     
     private let nameLabel: UILabel = {
         let label = UILabel()
+        label.font = UIFont.systemFont(ofSize: 16.0, weight: .semibold)
         return label
-    }()
-    
-    private lazy var bottomStackView: UIStackView = {
-        let stackView = UIStackView(arrangedSubviews: [nameLabel])
-        stackView.axis = .horizontal
-        stackView.backgroundColor = .black
-        stackView.layer.opacity = 0.7
-        stackView.isLayoutMarginsRelativeArrangement = true
-        stackView.layoutMargins = UIEdgeInsets(top: 0, left: 8, bottom: 0, right: 0)
-        return stackView
     }()
     
     // MARK: - View LifeCycle
@@ -43,6 +34,16 @@ class HomePhotoCollectionViewCell: UICollectionViewCell {
         setupViews()
     }
     
+    // MARK: - Configure
+    func configureCell(with photoResponse: PhotoResponse) {
+        nameLabel.text = photoResponse.user.name
+        ImageLoader.shared.load(photoResponse.urls.small) { data in
+            DispatchQueue.main.async {
+                self.photoImageView.image = UIImage(data: data)
+            }
+        }
+    }
+    
     // MARK: - Layout
     private func setupViews() {
         addSubviews()
@@ -52,33 +53,21 @@ class HomePhotoCollectionViewCell: UICollectionViewCell {
     private func addSubviews() {
         contentView.addSubview(photoImageView)
         contentView.addSubview(nameLabel)
-        contentView.addSubview(bottomStackView)
     }
     
     private func makeConstraints() {
-        self.photoImageView.translatesAutoresizingMaskIntoConstraints = false
-        bottomStackView.translatesAutoresizingMaskIntoConstraints = false
+        photoImageView.translatesAutoresizingMaskIntoConstraints = false
+        nameLabel.translatesAutoresizingMaskIntoConstraints = false
         
         NSLayoutConstraint.activate([
-            self.photoImageView.topAnchor.constraint(equalTo: self.contentView.topAnchor),
-            self.photoImageView.leadingAnchor.constraint(equalTo: self.contentView.leadingAnchor),
-            self.photoImageView.bottomAnchor.constraint(equalTo: self.contentView.bottomAnchor),
-            self.photoImageView.trailingAnchor.constraint(equalTo: self.contentView.trailingAnchor),
+            photoImageView.topAnchor.constraint(equalTo: self.contentView.topAnchor),
+            photoImageView.leadingAnchor.constraint(equalTo: self.contentView.leadingAnchor),
+            photoImageView.bottomAnchor.constraint(equalTo: self.contentView.bottomAnchor),
+            photoImageView.trailingAnchor.constraint(equalTo: self.contentView.trailingAnchor),
             
-            bottomStackView.leadingAnchor.constraint(equalTo: contentView.safeAreaLayoutGuide.leadingAnchor),
-            bottomStackView.trailingAnchor.constraint(equalTo: contentView.safeAreaLayoutGuide.trailingAnchor),
-            bottomStackView.bottomAnchor.constraint(equalTo: contentView.safeAreaLayoutGuide.bottomAnchor),
+            nameLabel.leadingAnchor.constraint(equalTo: contentView.safeAreaLayoutGuide.leadingAnchor, constant: 8.0),
+            nameLabel.trailingAnchor.constraint(equalTo: contentView.safeAreaLayoutGuide.trailingAnchor),
+            nameLabel.bottomAnchor.constraint(equalTo: contentView.safeAreaLayoutGuide.bottomAnchor, constant: -8.0),
         ])
-    }
-    
-    // MARK: - Configure
-    func configureCell(with photoResponse: PhotoResponse) {
-        nameLabel.text = photoResponse.user.name
-        ImageLoader.shared.load(photoResponse.urls.small) { data in
-            DispatchQueue.main.async {
-                self.photoImageView.image = UIImage(data: data)
-            }
-        }
-        
     }
 }

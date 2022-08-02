@@ -7,17 +7,24 @@
 
 import UIKit
 
+protocol HomeTopicCollectionViewCellDelegate: AnyObject {
+    func touchTopicButton(title: String)
+}
+
 class HomeTopicCollectionViewCell: UICollectionViewCell {
     // MARK: - Properties
     static let identifier: String = String(describing: HomeTopicCollectionViewCell.self)
     
+    weak var delegate: HomeTopicCollectionViewCellDelegate?
+    
     // MARK: - UI Define
-    private let button: UIButton = {
+    private lazy var button: UIButton = {
         let button = UIButton(type: .custom)
+        button.addTarget(self, action: #selector(touchUpButton(_:)), for: .touchUpInside)
         return button
     }()
     
-    // MARK: - LifeCycles
+    // MARK: - View LifeCycle
     override init(frame: CGRect) {
         super.init(frame: frame)
         
@@ -28,12 +35,17 @@ class HomeTopicCollectionViewCell: UICollectionViewCell {
         fatalError("init(coder:) has not been implemented")
     }
     
-    func configure() {
+    // MARK: - Configure
+    func configureCell(with topic: Topic) {
+        button.setTitle(topic.title, for: .normal)
+    }
+    
+    // MARK: - Layout
+    private func configure() {
         self.addViews()
         self.makeConstraints()
     }
     
-    // MARK: - Layout
     private func addViews() {
         self.contentView.addSubview(self.button)
     }
@@ -49,8 +61,11 @@ class HomeTopicCollectionViewCell: UICollectionViewCell {
         ])
     }
     
-    // MARK: - Configure
-    func configureCell(with topic: Topic) {
-        button.setTitle(topic.title, for: .normal)
+    // MARK: - Objc
+    @objc private func touchUpButton(_ sender: UIButton) {
+        guard let title = sender.currentTitle else {
+            return
+        }
+        delegate?.touchTopicButton(title: title)
     }
 }
