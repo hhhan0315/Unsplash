@@ -48,8 +48,8 @@ class HomeViewModel {
     func update(with topic: Topic) {
         guard self.topic != topic else { return }
         self.topic = topic
-        self.photos.removeAll()
-        self.page = 1
-        self.fetch()
+        photos.removeAll()
+        page = 1
+        fetch()
     }
 }

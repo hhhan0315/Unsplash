@@ -44,7 +44,7 @@ class PinterestLayout: UICollectionViewLayout {
         cache.removeAll()
         guard cache.isEmpty, let collectionView = collectionView else { return }
 
-        let cellPadding: CGFloat = 0
+        let cellPadding: CGFloat = 1
         let columnWidth = contentWidth / CGFloat(numberOfColumns)
         
         var xOffset: [CGFloat] = []
@@ -69,7 +69,7 @@ class PinterestLayout: UICollectionViewLayout {
             contentHeight = max(contentHeight, frame.maxY)
             yOffset[column] = yOffset[column] + height
             
-            if column == 2 {
+            if numberOfColumns == 2 {
                 column = yOffset[0] > yOffset[1] ? 1 : 0
             }
         }

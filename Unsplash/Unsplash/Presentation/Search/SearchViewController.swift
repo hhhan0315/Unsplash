@@ -6,25 +6,35 @@
 //
 
 import UIKit
+import Combine
 
 class SearchViewController: UIViewController {
-    
+    // MARK: - View Define
     private lazy var photoCollectionView: UICollectionView = {
-        let layout = PinterestLayout(numberOfColumns: 2)
-//        layout.delegate = self
-        
-        let collectionView = UICollectionView(frame: .zero, collectionViewLayout: layout)
-        collectionView.translatesAutoresizingMaskIntoConstraints = false
-        collectionView.register(PhotoCollectionViewCell.self, forCellWithReuseIdentifier: PhotoCollectionViewCell.identifier)
+        let collectionView = UICollectionView(frame: .zero, collectionViewLayout: pinterestLayout)
+        collectionView.register(SearchPhotoCollectionViewCell.self, forCellWithReuseIdentifier: SearchPhotoCollectionViewCell.identifier)
+        collectionView.delegate = self
         return collectionView
     }()
     
-//    private var photos: [Photo]
+    private lazy var pinterestLayout: PinterestLayout = {
+        let layout = PinterestLayout(numberOfColumns: 2)
+        layout.delegate = self
+        return layout
+    }()
+    
+    // MARK: - Properties
+    enum Section {
+        case photo
+    }
+    
+    private var photoDataSource: UICollectionViewDiffableDataSource<Section, PhotoResponse>?
     
     private let viewModel: SearchViewModel
+    private var cancellable = Set<AnyCancellable>()
     
+    // MARK: - View LifeCycle
     init(viewModel: SearchViewModel) {
-//        self.photos = []
         self.viewModel = viewModel
         super.init(nibName: nil, bundle: nil)
     }
@@ -36,7 +46,70 @@ class SearchViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        self.configure()
+        setupViews()
+        setupPhotoDataSource()
+        setupBind()
+    }
+    
+    // MARK: - Layout
+    private func setupViews() {
+        setupNavigation()
+        addSubviews()
+        makeConstraints()
+    }
+    
+    private func setupNavigation() {
+        navigationItem.title = "Search"
+        navigationItem.backButtonTitle = ""
+        
+        let searchController = UISearchController(searchResultsController: nil)
+        searchController.searchBar.delegate = self
+        searchController.searchBar.placeholder = "Search photos"
+        searchController.hidesNavigationBarDuringPresentation = false
+        searchController.obscuresBackgroundDuringPresentation = false
+        
+        navigationItem.searchController = searchController
+        navigationItem.hidesSearchBarWhenScrolling = false
+    }
+    
+    private func addSubviews() {
+        view.addSubview(photoCollectionView)
+    }
+    
+    private func makeConstraints() {
+        photoCollectionView.translatesAutoresizingMaskIntoConstraints = false
+        NSLayoutConstraint.activate([
+            photoCollectionView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
+            photoCollectionView.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor),
+            photoCollectionView.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor),
+            photoCollectionView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor),
+        ])
+    }
+    
+    // MARK: - DataSource
+    private func setupPhotoDataSource() {
+        photoDataSource = UICollectionViewDiffableDataSource<Section, PhotoResponse>(collectionView: photoCollectionView, cellProvider: { collectionView, indexPath, photoResponse in
+            guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: SearchPhotoCollectionViewCell.identifier, for: indexPath) as? SearchPhotoCollectionViewCell else {
+                return .init()
+            }
+            
+            cell.configureCell(with: photoResponse)
+            return cell
+        })
+    }
+    
+    // MARK: - Bind
+    private func setupBind() {
+        viewModel.$photos
+            .receive(on: DispatchQueue.main)
+            .sink { photos in
+                var snapShot = NSDiffableDataSourceSnapshot<Section, PhotoResponse>()
+                snapShot.appendSections([Section.photo])
+                snapShot.appendItems(photos)
+                self.pinterestLayout.update(numberOfItems: snapShot.numberOfItems)
+                self.photoDataSource?.apply(snapShot, animatingDifferences: false)
+            }
+            .store(in: &cancellable)
     }
 }
 
@@ -44,112 +117,42 @@ class SearchViewController: UIViewController {
 
 extension SearchViewController: UISearchBarDelegate {
     func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
-        guard let query = searchBar.text else { return }
-        self.photoCollectionView.setContentOffset(CGPoint.zero, animated: true)
-        self.viewModel.update(query)
+        guard let query = searchBar.text else {
+            return
+        }
+        photoCollectionView.setContentOffset(CGPoint.zero, animated: true)
+        viewModel.update(query)
     }
     
     func searchBarCancelButtonClicked(_ searchBar: UISearchBar) {
         let emptyQuery = ""
-        self.photoCollectionView.setContentOffset(CGPoint.zero, animated: true)
-        self.viewModel.update(emptyQuery)
+        photoCollectionView.setContentOffset(CGPoint.zero, animated: true)
+        viewModel.update(emptyQuery)
     }
 }
 
 // MARK: - PinterestLayoutDelegate
-
-//extension SearchViewController: PinterestLayoutDelegate {
-//    func collectionView(_ collectionView: UICollectionView, heightForPhotoAtIndexPath indexPath: IndexPath) -> CGFloat {
-//        let cellWidth: CGFloat = (view.bounds.width - 4) / 2 // 셀 가로 크기
-//        guard let imageHeight = self.photos[indexPath.item].image?.size.height else { return 0 }
-//        guard let imageWidth = self.photos[indexPath.item].image?.size.width else { return 0 }
-//        let imageRatio = imageHeight / imageWidth
+extension SearchViewController: PinterestLayoutDelegate {
+    func collectionView(_ collectionView: UICollectionView, heightForPhotoAtIndexPath indexPath: IndexPath) -> CGFloat {
+        let cellWidth: CGFloat = view.bounds.width / 2 // 셀 가로 크기
+        let imageHeight: CGFloat = CGFloat(viewModel.photo(at: indexPath.item).height)
+        let imageWidth: CGFloat = CGFloat(viewModel.photo(at: indexPath.item).width)
+        let imageRatio = imageHeight / imageWidth
         
-//        return CGFloat(imageRatio) * cellWidth
-//    }
-//}
-
-// MARK: - UICollectionViewDataSource
-
-//extension SearchViewController: UICollectionViewDataSource {
-//    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-//        return self.photos.count
-//    }
-//
-//    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-//        guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: PhotoCollectionViewCell.identifier, for: indexPath) as? PhotoCollectionViewCell else {
-//            return PhotoCollectionViewCell()
-//        }
-//
-//        cell.set(photos[indexPath.row])
-//        return cell
-//    }
-//}
+        return CGFloat(imageRatio) * cellWidth
+    }
+}
 
 // MARK: - UICollectionViewDelegate
 
 extension SearchViewController: UICollectionViewDelegate {
-//    func collectionView(_ collectionView: UICollectionView, willDisplay cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {
-//        let photoCount = self.photos.count
-//        guard indexPath.item >= photoCount - 1 else { return }
-//        self.viewModel.fetch()
-//    }
-//
-//    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-//        let detailViewController = DetailViewController(photos: self.viewModel.photos.value, indexPath: indexPath)
-//        self.navigationController?.pushViewController(detailViewController, animated: true)
-//    }
-}
-
-// MARK: - Private Functions
-
-private extension SearchViewController {
-    func configure() {
-        self.configureUI()
-//        self.configureDelegate()
-//        self.configureDataSource()
-        self.configureSearchController()
-//        self.bind(to: self.viewModel)
+    func collectionView(_ collectionView: UICollectionView, willDisplay cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {
+        if indexPath.item == viewModel.photosCount() - 1 {
+            viewModel.fetch()
+        }
     }
-    
-    func configureUI() {
-        self.navigationItem.title = "Search"
-        self.navigationItem.backButtonTitle = ""
-        
-        self.view.addSubview(self.photoCollectionView)
 
-        NSLayoutConstraint.activate([
-            self.photoCollectionView.topAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.topAnchor),
-            self.photoCollectionView.leadingAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.leadingAnchor),
-            self.photoCollectionView.trailingAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.trailingAnchor),
-            self.photoCollectionView.bottomAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.bottomAnchor),
-        ])
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        // TODO: DetailViewController 전환
     }
-    
-//    func configureDelegate() {
-//        self.photoCollectionView.delegate = self
-//    }
-//
-//    func configureDataSource() {
-//        self.photoCollectionView.dataSource = self
-//    }
-    
-    func configureSearchController() {
-        let searchController = UISearchController(searchResultsController: nil)
-        searchController.searchBar.delegate = self
-        searchController.searchBar.placeholder = "Search photos"
-        searchController.hidesNavigationBarDuringPresentation = false
-        searchController.obscuresBackgroundDuringPresentation = false
-
-        self.navigationItem.searchController = searchController
-        self.navigationItem.hidesSearchBarWhenScrolling = false
-    }
-    
-//    func bind(to viewModel: SearchViewModel) {
-//        viewModel.photos.observe(on: self) { [weak self] photos in
-//            self?.photos = photos
-//            self?.photoCollectionView.reloadData()
-//            self?.photoCollectionView.collectionViewLayout.invalidateLayout()
-//        }
-//    }
 }
