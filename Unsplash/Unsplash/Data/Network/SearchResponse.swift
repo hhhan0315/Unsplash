@@ -7,6 +7,6 @@
 
 import Foundation
 
-struct SearchResponseDTO: Codable {
-    var results: [PhotoResponseDTO]
+struct SearchResponse: Decodable {
+    var results: [PhotoResponse]
 }

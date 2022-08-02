@@ -10,11 +10,11 @@ import Foundation
 class ImageDownloadOperation: Operation {
     
     private var task: URLSessionDataTask?
-    private let url: URL
+    private let urlString: String
     private let completion: ((Data) -> Void)
     
-    init(url: URL, completion: @escaping ((Data) -> Void)) {
-        self.url = url
+    init(urlString: String, completion: @escaping ((Data) -> Void)) {
+        self.urlString = urlString
         self.completion = completion
         super.init()
     }
@@ -22,14 +22,22 @@ class ImageDownloadOperation: Operation {
     override func main() {
         super.main()
         
-        if isCancelled { return }
+        if isCancelled {
+            return
+        }
         
-        self.task = URLSession.shared.dataTask(with: self.url) { data, response, error in
-            guard let data = data else { return }
+        guard let url = URL(string: urlString) else {
+            return
+        }
+        
+        task = URLSession.shared.dataTask(with: url) { data, response, error in
+            guard let data = data else {
+                return
+            }
             self.completion(data)
         }
         
-        self.task?.resume()
+        task?.resume()
     }
     
 //    override func cancel() {

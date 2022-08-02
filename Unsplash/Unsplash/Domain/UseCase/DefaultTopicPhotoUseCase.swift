@@ -14,7 +14,7 @@ final class DefaultTopicPhotoUseCase: TopicPhotoUseCase {
         self.topicPhotoRepository = topicPhotoRepository
     }
     
-    func fetch(topic: Topic, page: Int, completion: @escaping (Result<[PhotoResponseDTO], Error>) -> Void) {
+    func fetch(topic: Topic, page: Int, completion: @escaping (Result<[PhotoResponse], Error>) -> Void) {
         self.topicPhotoRepository.fetch(topic: topic, page: page) { result in
             switch result {
             case .success(let photos):

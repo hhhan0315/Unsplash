@@ -21,7 +21,7 @@ class DetailViewController: UIViewController {
         section.visibleItemsInvalidationHandler = { (visibleItems, scrollOffset, layoutEnvironment) in
             visibleItems.forEach({ item in
                 guard let photo = self.photoDataSource?.itemIdentifier(for: item.indexPath) else { return }
-                self.navigationItem.title = photo.userName
+//                self.navigationItem.title = photo.userName
             })
         }
         let layout = UICollectionViewCompositionalLayout(section: section)
@@ -32,11 +32,11 @@ class DetailViewController: UIViewController {
         return collectionView
     }()
     
-    private var photoDataSource: UICollectionViewDiffableDataSource<Section, Photo>?
-    private var photos: [Photo]
+    private var photoDataSource: UICollectionViewDiffableDataSource<Section, PhotoResponse>?
+    private var photos: [PhotoResponse]
     private var currentIndexPath: IndexPath
     
-    init(photos: [Photo], indexPath: IndexPath) {
+    init(photos: [PhotoResponse], indexPath: IndexPath) {
         self.photos = photos
         self.currentIndexPath = indexPath
         super.init(nibName: nil, bundle: nil)
@@ -91,15 +91,15 @@ private extension DetailViewController {
     }
     
     func configurePhotoDataSource() {
-        self.photoDataSource = UICollectionViewDiffableDataSource<Section, Photo>(collectionView: self.photoCollectionView, cellProvider: { collectionView, indexPath, photo in
+        self.photoDataSource = UICollectionViewDiffableDataSource<Section, PhotoResponse>(collectionView: self.photoCollectionView, cellProvider: { collectionView, indexPath, photo in
             guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: PhotoDetailCollectionViewCell.identifier, for: indexPath) as? PhotoDetailCollectionViewCell else {
                 return PhotoDetailCollectionViewCell()
             }
-            cell.setImage(photo)
+//            cell.setImage(photo)
             return cell
         })
         
-        var snapshot = NSDiffableDataSourceSnapshot<Section, Photo>()
+        var snapshot = NSDiffableDataSourceSnapshot<Section, PhotoResponse>()
         snapshot.appendSections([Section.photos])
         snapshot.appendItems(self.photos)
         self.photoDataSource?.apply(snapshot, animatingDifferences: false)
