@@ -8,7 +8,8 @@
 import UIKit
 
 protocol ImageSaverDelegate: AnyObject {
-    func saveError()
+    func saveFailure()
+    func saveSuccess()
 }
 
 class ImageSaver: NSObject {
@@ -20,9 +21,9 @@ class ImageSaver: NSObject {
 
     @objc func saveCompleted(_ image: UIImage, didFinishSavingWithError error: Error?, contextInfo: UnsafeRawPointer) {
         if let _ = error {
-            delegate?.saveError()
+            delegate?.saveFailure()
         } else {
-            print("Save finished!")
+            delegate?.saveSuccess()
         }
     }
 }

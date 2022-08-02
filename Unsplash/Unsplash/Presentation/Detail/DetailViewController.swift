@@ -86,8 +86,10 @@ class DetailViewController: UIViewController {
     private func configureUI() {
         view.addSubview(photoCollectionView)
         view.addSubview(downloadButton)
+        view.addSubview(activityIndicatorView)
         photoCollectionView.translatesAutoresizingMaskIntoConstraints = false
         downloadButton.translatesAutoresizingMaskIntoConstraints = false
+        activityIndicatorView.translatesAutoresizingMaskIntoConstraints = false
         
         NSLayoutConstraint.activate([
             photoCollectionView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
@@ -99,6 +101,11 @@ class DetailViewController: UIViewController {
             downloadButton.heightAnchor.constraint(equalToConstant: 50.0),
             downloadButton.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: -8.0),
             downloadButton.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: -32.0),
+            
+            activityIndicatorView.widthAnchor.constraint(equalToConstant: 50.0),
+            activityIndicatorView.heightAnchor.constraint(equalToConstant: 50.0),
+            activityIndicatorView.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: 8.0),
+            activityIndicatorView.bottomAnchor.constraint(equalTo: downloadButton.bottomAnchor),
         ])
     }
     
@@ -127,6 +134,7 @@ class DetailViewController: UIViewController {
             return
         }
         
+        activityIndicatorView.startAnimating()
         ImageLoader.shared.load(urlString) { data in
             if let image = UIImage(data: data) {
                 self.imageSaver.writeToPhotoAlbum(image: image)
@@ -137,7 +145,7 @@ class DetailViewController: UIViewController {
 
 // MARK: - ImageSaverDelegate
 extension DetailViewController: ImageSaverDelegate {
-    func saveError() {
+    func saveFailure() {
         let alertController = UIAlertController(title: "Photo Library Access Denied", message: "Allow Photos access in Settings to save photos to your Photo Library", preferredStyle: .alert)
         alertController.addAction(UIAlertAction(title: "Cancel", style: .cancel))
         alertController.addAction(UIAlertAction(title: "Settings", style: .default, handler: { _ in
@@ -150,5 +158,10 @@ extension DetailViewController: ImageSaverDelegate {
             }
         }))
         present(alertController, animated: true)
+        activityIndicatorView.stopAnimating()
+    }
+    
+    func saveSuccess() {
+        activityIndicatorView.stopAnimating()
     }
 }
