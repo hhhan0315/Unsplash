@@ -11,25 +11,26 @@ class ImageLoader {
     static let shared = ImageLoader()
     
     private let imageCacheManager = ImageCacheManager.shared
-    private let imageQueue = OperationQueue()
-    
-    private init() {
-        self.imageQueue.maxConcurrentOperationCount = 1
-    }
     
     func load(_ urlString: String, completion: @escaping (Data) -> Void) {
         let key = urlString as NSString
+                
+        guard let url = URL(string: urlString) else {
+            return
+        }
         
         if let cachedData = self.imageCacheManager.load(key) {
             completion(cachedData)
             return
         }
         
-        let imageDownloadOperation = ImageDownloadOperation(urlString: urlString) { [weak self] data in
-            self?.imageCacheManager.save(key, data)
+        URLSession.shared.dataTask(with: url) { data, response, error in
+            guard let data = data else {
+                return
+            }
+            
+            self.imageCacheManager.save(key, data)
             completion(data)
-        }
-
-        self.imageQueue.addOperation(imageDownloadOperation)
+        }.resume()
     }
 }
