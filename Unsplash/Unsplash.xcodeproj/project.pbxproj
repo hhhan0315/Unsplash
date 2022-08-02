@@ -22,16 +22,8 @@
 		016561D7282CEFDA00437475 /* NetworkService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 016561D6282CEFDA00437475 /* NetworkService.swift */; };
 		016561DB282CF64300437475 /* TopicPhotoRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 016561DA282CF64300437475 /* TopicPhotoRequest.swift */; };
 		016561DD282CFFB600437475 /* HomeViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 016561DC282CFFB600437475 /* HomeViewModel.swift */; };
-		016561E5282F385300437475 /* DefaultTopicPhotoRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = 016561E4282F385300437475 /* DefaultTopicPhotoRepository.swift */; };
-		016561E8282F3A8500437475 /* TopicPhotoRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = 016561E7282F3A8500437475 /* TopicPhotoRepository.swift */; };
-		016561EA282F3D3E00437475 /* TopicPhotoUseCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = 016561E9282F3D3E00437475 /* TopicPhotoUseCase.swift */; };
-		016561ED282F3DB600437475 /* DefaultTopicPhotoUseCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = 016561EC282F3DB600437475 /* DefaultTopicPhotoUseCase.swift */; };
 		0194CD2428221CE40006470D /* PhotoResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0194CD2328221CE40006470D /* PhotoResponse.swift */; };
 		01C70DC7283345D800185DF0 /* SearchViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01C70DC6283345D800185DF0 /* SearchViewModel.swift */; };
-		01C70DC92833485500185DF0 /* SearchPhotoUseCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01C70DC82833485500185DF0 /* SearchPhotoUseCase.swift */; };
-		01C70DCB283348AF00185DF0 /* DefaultSearchPhotoUseCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01C70DCA283348AF00185DF0 /* DefaultSearchPhotoUseCase.swift */; };
-		01C70DCD283348CA00185DF0 /* SearchPhotoRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01C70DCC283348CA00185DF0 /* SearchPhotoRepository.swift */; };
-		01C70DCF283348F700185DF0 /* DefaultSearchPhotoRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01C70DCE283348F700185DF0 /* DefaultSearchPhotoRepository.swift */; };
 		01C70DD128334D0E00185DF0 /* SearchPhotoRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01C70DD028334D0E00185DF0 /* SearchPhotoRequest.swift */; };
 		01C70DD32833849100185DF0 /* SearchResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01C70DD22833849100185DF0 /* SearchResponse.swift */; };
 		01D9D2C3281F71C400E308D4 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01D9D2C2281F71C400E308D4 /* AppDelegate.swift */; };
@@ -59,16 +51,8 @@
 		016561D6282CEFDA00437475 /* NetworkService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkService.swift; sourceTree = "<group>"; };
 		016561DA282CF64300437475 /* TopicPhotoRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TopicPhotoRequest.swift; sourceTree = "<group>"; };
 		016561DC282CFFB600437475 /* HomeViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeViewModel.swift; sourceTree = "<group>"; };
-		016561E4282F385300437475 /* DefaultTopicPhotoRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DefaultTopicPhotoRepository.swift; sourceTree = "<group>"; };
-		016561E7282F3A8500437475 /* TopicPhotoRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TopicPhotoRepository.swift; sourceTree = "<group>"; };
-		016561E9282F3D3E00437475 /* TopicPhotoUseCase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TopicPhotoUseCase.swift; sourceTree = "<group>"; };
-		016561EC282F3DB600437475 /* DefaultTopicPhotoUseCase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DefaultTopicPhotoUseCase.swift; sourceTree = "<group>"; };
 		0194CD2328221CE40006470D /* PhotoResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhotoResponse.swift; sourceTree = "<group>"; };
 		01C70DC6283345D800185DF0 /* SearchViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchViewModel.swift; sourceTree = "<group>"; };
-		01C70DC82833485500185DF0 /* SearchPhotoUseCase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchPhotoUseCase.swift; sourceTree = "<group>"; };
-		01C70DCA283348AF00185DF0 /* DefaultSearchPhotoUseCase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DefaultSearchPhotoUseCase.swift; sourceTree = "<group>"; };
-		01C70DCC283348CA00185DF0 /* SearchPhotoRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchPhotoRepository.swift; sourceTree = "<group>"; };
-		01C70DCE283348F700185DF0 /* DefaultSearchPhotoRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DefaultSearchPhotoRepository.swift; sourceTree = "<group>"; };
 		01C70DD028334D0E00185DF0 /* SearchPhotoRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchPhotoRequest.swift; sourceTree = "<group>"; };
 		01C70DD22833849100185DF0 /* SearchResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchResponse.swift; sourceTree = "<group>"; };
 		01D9D2BF281F71C400E308D4 /* Unsplash.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Unsplash.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -93,15 +77,6 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		01268B1B28294947007821E8 /* Model */ = {
-			isa = PBXGroup;
-			children = (
-				0132BAF62820D34000E7A81A /* Topic.swift */,
-				015744F72844586400B3A6F7 /* Constants.swift */,
-			);
-			path = Model;
-			sourceTree = "<group>";
-		};
 		0128D1A02897BF5800D17627 /* Home */ = {
 			isa = PBXGroup;
 			children = (
@@ -132,13 +107,25 @@
 			path = Detail;
 			sourceTree = "<group>";
 		};
-		015744F6284392D800B3A6F7 /* Network */ = {
+		0128D1AA289942E900D17627 /* Resource */ = {
+			isa = PBXGroup;
+			children = (
+				01D9D2D0281F71C700E308D4 /* Info.plist */,
+				01D9D2CD281F71C700E308D4 /* LaunchScreen.storyboard */,
+				01D9D2CB281F71C700E308D4 /* Assets.xcassets */,
+			);
+			path = Resource;
+			sourceTree = "<group>";
+		};
+		0128D1AB289943DA00D17627 /* Model */ = {
 			isa = PBXGroup;
 			children = (
 				0194CD2328221CE40006470D /* PhotoResponse.swift */,
 				01C70DD22833849100185DF0 /* SearchResponse.swift */,
+				0132BAF62820D34000E7A81A /* Topic.swift */,
+				015744F72844586400B3A6F7 /* Constants.swift */,
 			);
-			path = Network;
+			path = Model;
 			sourceTree = "<group>";
 		};
 		015C93B8283C711E009F2498 /* Util */ = {
@@ -152,32 +139,11 @@
 			path = Util;
 			sourceTree = "<group>";
 		};
-		016561CC282CE2F600437475 /* Domain */ = {
-			isa = PBXGroup;
-			children = (
-				01268B1B28294947007821E8 /* Model */,
-				016561CD282CE30800437475 /* UseCase */,
-			);
-			path = Domain;
-			sourceTree = "<group>";
-		};
-		016561CD282CE30800437475 /* UseCase */ = {
-			isa = PBXGroup;
-			children = (
-				016561EB282F3D9C00437475 /* Protocol */,
-				016561EC282F3DB600437475 /* DefaultTopicPhotoUseCase.swift */,
-				01C70DCA283348AF00185DF0 /* DefaultSearchPhotoUseCase.swift */,
-			);
-			path = UseCase;
-			sourceTree = "<group>";
-		};
 		016561CE282CE7B400437475 /* Application */ = {
 			isa = PBXGroup;
 			children = (
-				01D9D2CD281F71C700E308D4 /* LaunchScreen.storyboard */,
 				01D9D2C2281F71C400E308D4 /* AppDelegate.swift */,
 				01D9D2C4281F71C400E308D4 /* SceneDelegate.swift */,
-				01D9D2CB281F71C700E308D4 /* Assets.xcassets */,
 			);
 			path = Application;
 			sourceTree = "<group>";
@@ -191,43 +157,6 @@
 				016561D6282CEFDA00437475 /* NetworkService.swift */,
 			);
 			path = Network;
-			sourceTree = "<group>";
-		};
-		016561E2282F380C00437475 /* Data */ = {
-			isa = PBXGroup;
-			children = (
-				015744F6284392D800B3A6F7 /* Network */,
-				016561E3282F384600437475 /* Repository */,
-			);
-			path = Data;
-			sourceTree = "<group>";
-		};
-		016561E3282F384600437475 /* Repository */ = {
-			isa = PBXGroup;
-			children = (
-				016561E6282F389400437475 /* Protocol */,
-				016561E4282F385300437475 /* DefaultTopicPhotoRepository.swift */,
-				01C70DCE283348F700185DF0 /* DefaultSearchPhotoRepository.swift */,
-			);
-			path = Repository;
-			sourceTree = "<group>";
-		};
-		016561E6282F389400437475 /* Protocol */ = {
-			isa = PBXGroup;
-			children = (
-				016561E7282F3A8500437475 /* TopicPhotoRepository.swift */,
-				01C70DCC283348CA00185DF0 /* SearchPhotoRepository.swift */,
-			);
-			path = Protocol;
-			sourceTree = "<group>";
-		};
-		016561EB282F3D9C00437475 /* Protocol */ = {
-			isa = PBXGroup;
-			children = (
-				016561E9282F3D3E00437475 /* TopicPhotoUseCase.swift */,
-				01C70DC82833485500185DF0 /* SearchPhotoUseCase.swift */,
-			);
-			path = Protocol;
 			sourceTree = "<group>";
 		};
 		0194CD332822A5240006470D /* Presentation */ = {
@@ -261,12 +190,11 @@
 			isa = PBXGroup;
 			children = (
 				016561CE282CE7B400437475 /* Application */,
-				016561E2282F380C00437475 /* Data */,
-				016561CC282CE2F600437475 /* Domain */,
-				0194CD332822A5240006470D /* Presentation */,
+				0128D1AB289943DA00D17627 /* Model */,
 				016561CF282CE88400437475 /* Network */,
+				0194CD332822A5240006470D /* Presentation */,
+				0128D1AA289942E900D17627 /* Resource */,
 				015C93B8283C711E009F2498 /* Util */,
-				01D9D2D0281F71C700E308D4 /* Info.plist */,
 			);
 			path = Unsplash;
 			sourceTree = "<group>";
@@ -344,7 +272,6 @@
 				01C70DD128334D0E00185DF0 /* SearchPhotoRequest.swift in Sources */,
 				01D9D2DB281F7B1B00E308D4 /* SearchViewController.swift in Sources */,
 				01D9D2C3281F71C400E308D4 /* AppDelegate.swift in Sources */,
-				01C70DCB283348AF00185DF0 /* DefaultSearchPhotoUseCase.swift in Sources */,
 				015C93B5283880BA009F2498 /* ImageCacheManager.swift in Sources */,
 				01D9D2D7281F7A4F00E308D4 /* MainTabController.swift in Sources */,
 				0128D1A9289918A900D17627 /* ImageSaver.swift in Sources */,
@@ -355,23 +282,16 @@
 				01268B132827EF31007821E8 /* HomePhotoCollectionViewCell.swift in Sources */,
 				016561DB282CF64300437475 /* TopicPhotoRequest.swift in Sources */,
 				0194CD2428221CE40006470D /* PhotoResponse.swift in Sources */,
-				01C70DCD283348CA00185DF0 /* SearchPhotoRepository.swift in Sources */,
-				016561E8282F3A8500437475 /* TopicPhotoRepository.swift in Sources */,
 				0132BAF72820D34000E7A81A /* Topic.swift in Sources */,
-				01C70DCF283348F700185DF0 /* DefaultSearchPhotoRepository.swift in Sources */,
 				013ED83E2846146F00B242FE /* PinterestLayout.swift in Sources */,
 				01D9D2D9281F7B1500E308D4 /* HomeViewController.swift in Sources */,
 				0132BAF92820F69400E7A81A /* HomeTopicCollectionViewCell.swift in Sources */,
 				013ED840284618B800B242FE /* SearchPhotoCollectionViewCell.swift in Sources */,
-				016561E5282F385300437475 /* DefaultTopicPhotoRepository.swift in Sources */,
 				01C70DD32833849100185DF0 /* SearchResponse.swift in Sources */,
 				01C70DC7283345D800185DF0 /* SearchViewModel.swift in Sources */,
 				016561D7282CEFDA00437475 /* NetworkService.swift in Sources */,
-				016561EA282F3D3E00437475 /* TopicPhotoUseCase.swift in Sources */,
 				015C93C3283DC005009F2498 /* ImageLoader.swift in Sources */,
 				0132BAF52820C62E00E7A81A /* DetailViewController.swift in Sources */,
-				01C70DC92833485500185DF0 /* SearchPhotoUseCase.swift in Sources */,
-				016561ED282F3DB600437475 /* DefaultTopicPhotoUseCase.swift in Sources */,
 				015744F82844586400B3A6F7 /* Constants.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -513,7 +433,7 @@
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = WB3J5J4ZWS;
 				GENERATE_INFOPLIST_FILE = YES;
-				INFOPLIST_FILE = Unsplash/Info.plist;
+				INFOPLIST_FILE = Unsplash/Resource/Info.plist;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
@@ -542,7 +462,7 @@
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = WB3J5J4ZWS;
 				GENERATE_INFOPLIST_FILE = YES;
-				INFOPLIST_FILE = Unsplash/Info.plist;
+				INFOPLIST_FILE = Unsplash/Resource/Info.plist;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
