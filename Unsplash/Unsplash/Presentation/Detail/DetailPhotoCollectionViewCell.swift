@@ -9,7 +9,7 @@ import UIKit
 
 class DetailPhotoCollectionViewCell: UICollectionViewCell {
     static let identifier: String = String(describing: DetailPhotoCollectionViewCell.self)
-    
+        
     private let photoImageView: UIImageView = {
         let imageView = UIImageView()
         imageView.contentMode = .scaleAspectFit
@@ -19,7 +19,7 @@ class DetailPhotoCollectionViewCell: UICollectionViewCell {
     override init(frame: CGRect) {
         super.init(frame: frame)
         
-        self.configure()
+        configure()
     }
     
     required init?(coder: NSCoder) {
