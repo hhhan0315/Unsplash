@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		01268B132827EF31007821E8 /* HomePhotoCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01268B122827EF31007821E8 /* HomePhotoCollectionViewCell.swift */; };
+		0128D1A9289918A900D17627 /* ImageSaver.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0128D1A8289918A900D17627 /* ImageSaver.swift */; };
 		0132BAF52820C62E00E7A81A /* DetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0132BAF42820C62E00E7A81A /* DetailViewController.swift */; };
 		0132BAF72820D34000E7A81A /* Topic.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0132BAF62820D34000E7A81A /* Topic.swift */; };
 		0132BAF92820F69400E7A81A /* HomeTopicCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0132BAF82820F69400E7A81A /* HomeTopicCollectionViewCell.swift */; };
@@ -45,6 +46,7 @@
 
 /* Begin PBXFileReference section */
 		01268B122827EF31007821E8 /* HomePhotoCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomePhotoCollectionViewCell.swift; sourceTree = "<group>"; };
+		0128D1A8289918A900D17627 /* ImageSaver.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageSaver.swift; sourceTree = "<group>"; };
 		0132BAF42820C62E00E7A81A /* DetailViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailViewController.swift; sourceTree = "<group>"; };
 		0132BAF62820D34000E7A81A /* Topic.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Topic.swift; sourceTree = "<group>"; };
 		0132BAF82820F69400E7A81A /* HomeTopicCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeTopicCollectionViewCell.swift; sourceTree = "<group>"; };
@@ -144,6 +146,7 @@
 		015C93B8283C711E009F2498 /* Util */ = {
 			isa = PBXGroup;
 			children = (
+				0128D1A8289918A900D17627 /* ImageSaver.swift */,
 				013ED83D2846146F00B242FE /* PinterestLayout.swift */,
 				016561EE282F515900437475 /* Image */,
 			);
@@ -356,6 +359,7 @@
 				01C70DCB283348AF00185DF0 /* DefaultSearchPhotoUseCase.swift in Sources */,
 				015C93B5283880BA009F2498 /* ImageCacheManager.swift in Sources */,
 				01D9D2D7281F7A4F00E308D4 /* MainTabController.swift in Sources */,
+				0128D1A9289918A900D17627 /* ImageSaver.swift in Sources */,
 				016561DD282CFFB600437475 /* HomeViewModel.swift in Sources */,
 				016561D5282CECC100437475 /* DataRequestable.swift in Sources */,
 				015744FC28445B4B00B3A6F7 /* DetailPhotoCollectionViewCell.swift in Sources */,

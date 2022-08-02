@@ -36,6 +36,11 @@ class DetailViewController: UIViewController {
         return button
     }()
     
+    private let activityIndicatorView: UIActivityIndicatorView = {
+        let activityView = UIActivityIndicatorView()
+        return activityView
+    }()
+    
     // MARK: - Properties
     enum Section {
         case photo
@@ -43,11 +48,13 @@ class DetailViewController: UIViewController {
     private var photoDataSource: UICollectionViewDiffableDataSource<Section, PhotoResponse>?
     private var photos: [PhotoResponse]
     private var currentIndexPath: IndexPath
+    private let imageSaver: ImageSaver
     
     // MARK: - View LifeCycle
     init(photos: [PhotoResponse], indexPath: IndexPath) {
         self.photos = photos
         self.currentIndexPath = indexPath
+        self.imageSaver = ImageSaver()
         super.init(nibName: nil, bundle: nil)
     }
     
@@ -59,6 +66,7 @@ class DetailViewController: UIViewController {
         super.viewDidLoad()
         
         setViews()
+        imageSaver.delegate = self
     }
     
     override func viewDidLayoutSubviews() {
@@ -118,10 +126,29 @@ class DetailViewController: UIViewController {
         guard let urlString = photo?.urls.small else {
             return
         }
+        
         ImageLoader.shared.load(urlString) { data in
             if let image = UIImage(data: data) {
-                UIImageWriteToSavedPhotosAlbum(image, nil, nil, nil)
+                self.imageSaver.writeToPhotoAlbum(image: image)
             }
         }
+    }
+}
+
+// MARK: - ImageSaverDelegate
+extension DetailViewController: ImageSaverDelegate {
+    func saveError() {
+        let alertController = UIAlertController(title: "Photo Library Access Denied", message: "Allow Photos access in Settings to save photos to your Photo Library", preferredStyle: .alert)
+        alertController.addAction(UIAlertAction(title: "Cancel", style: .cancel))
+        alertController.addAction(UIAlertAction(title: "Settings", style: .default, handler: { _ in
+            guard let settingsUrl = URL(string: UIApplication.openSettingsURLString) else {
+                return
+            }
+
+            if UIApplication.shared.canOpenURL(settingsUrl) {
+                UIApplication.shared.open(settingsUrl)
+            }
+        }))
+        present(alertController, animated: true)
     }
 }
