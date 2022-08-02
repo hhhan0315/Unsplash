@@ -27,6 +27,15 @@ class DetailViewController: UIViewController {
         return collectionView
     }()
     
+    private lazy var downloadButton: UIButton = {
+        let button = UIButton(type: .system)
+        button.setImage(UIImage(systemName: "arrow.down"), for: .normal)
+        button.backgroundColor = .white
+        button.tintColor = .black
+        button.addTarget(self, action: #selector(touchDownloadButton(_:)), for: .touchUpInside)
+        return button
+    }()
+    
     // MARK: - Properties
     enum Section {
         case photo
@@ -56,6 +65,8 @@ class DetailViewController: UIViewController {
         super.viewDidLayoutSubviews()
         
         photoCollectionView.scrollToItem(at: currentIndexPath, at: .centeredHorizontally, animated: false)
+        downloadButton.layer.cornerRadius = downloadButton.frame.width / 2
+        downloadButton.clipsToBounds = true
     }
     
     // MARK: - Layout
@@ -66,13 +77,20 @@ class DetailViewController: UIViewController {
     
     private func configureUI() {
         view.addSubview(photoCollectionView)
+        view.addSubview(downloadButton)
         photoCollectionView.translatesAutoresizingMaskIntoConstraints = false
+        downloadButton.translatesAutoresizingMaskIntoConstraints = false
         
         NSLayoutConstraint.activate([
             photoCollectionView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
             photoCollectionView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor),
             photoCollectionView.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor),
             photoCollectionView.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor),
+            
+            downloadButton.widthAnchor.constraint(equalToConstant: 50.0),
+            downloadButton.heightAnchor.constraint(equalToConstant: 50.0),
+            downloadButton.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: -8.0),
+            downloadButton.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: -32.0),
         ])
     }
     
@@ -89,5 +107,21 @@ class DetailViewController: UIViewController {
         snapshot.appendSections([Section.photo])
         snapshot.appendItems(self.photos)
         self.photoDataSource?.apply(snapshot, animatingDifferences: false)
+    }
+    
+    // MARK: - Objc
+    @objc private func touchDownloadButton(_ sender: UIButton) {
+        guard let index = photoCollectionView.indexPathsForVisibleItems.first?.item else {
+            return
+        }
+        let photo = photoDataSource?.snapshot().itemIdentifiers[index]
+        guard let urlString = photo?.urls.small else {
+            return
+        }
+        ImageLoader.shared.load(urlString) { data in
+            if let image = UIImage(data: data) {
+                UIImageWriteToSavedPhotosAlbum(image, nil, nil, nil)
+            }
+        }
     }
 }
