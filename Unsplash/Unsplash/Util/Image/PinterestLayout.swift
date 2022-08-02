@@ -28,11 +28,23 @@ class PinterestLayout: UICollectionViewLayout {
     
     private var cache: [UICollectionViewLayoutAttributes] = []
     
+    private var numberOfColumns: Int
+    private var numberOfItems: Int = 0
+    
+    init(numberOfColumns: Int) {
+        self.numberOfColumns = numberOfColumns
+        super.init()
+    }
+    
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+    
     override func prepare() {
         cache.removeAll()
         guard cache.isEmpty, let collectionView = collectionView else { return }
 
-        let numberOfColumns: Int = 2
+//        let numberOfColumns: Int = 2
         let cellPadding: CGFloat = 2
         let columnWidth = contentWidth / CGFloat(numberOfColumns)
         
@@ -43,10 +55,10 @@ class PinterestLayout: UICollectionViewLayout {
         var yOffset: [CGFloat] = .init(repeating: 0, count: numberOfColumns)
         var column = 0
         
-        for item in 0..<collectionView.numberOfItems(inSection: 0) {
+        for item in 0..<numberOfItems {
             let indexPath = IndexPath(item: item, section: 0)
             
-            let photoHeight = delegate?.collectionView(collectionView, heightForPhotoAtIndexPath: indexPath) ?? 100
+            let photoHeight = delegate?.collectionView(collectionView, heightForPhotoAtIndexPath: indexPath) ?? 180
             let height = cellPadding * 2 + photoHeight
             let frame = CGRect(x: xOffset[column], y: yOffset[column], width: columnWidth, height: height)
             let insetFrame = frame.insetBy(dx: cellPadding, dy: cellPadding)
@@ -58,8 +70,10 @@ class PinterestLayout: UICollectionViewLayout {
             contentHeight = max(contentHeight, frame.maxY)
             yOffset[column] = yOffset[column] + height
             
-//            column = column < (numberOfColumns - 1) ? (column + 1) : 0
-            column = yOffset[0] > yOffset[1] ? 1 : 0
+            if column == 2 {
+                column = yOffset[0] > yOffset[1] ? 1 : 0
+            }
+            
         }
     }
     
@@ -77,5 +91,9 @@ class PinterestLayout: UICollectionViewLayout {
     
     override func layoutAttributesForItem(at indexPath: IndexPath) -> UICollectionViewLayoutAttributes? {
         return cache[indexPath.item]
+    }
+    
+    func update(numberOfItems: Int) {
+        self.numberOfItems = numberOfItems
     }
 }

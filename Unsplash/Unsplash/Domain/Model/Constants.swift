@@ -8,6 +8,6 @@
 import Foundation
 
 struct Constants {
-    static let accessKey = ""
+    static let accessKey = "ZwdzXjUXEW3Yfja3LfGMmPCPbrIvDDtgqXPtoxh7eKg"
     static let perPageCount = 10
 }

@@ -14,7 +14,7 @@ final class DefaultSearchPhotoUseCase: SearchPhotoUseCase {
         self.searchPhotoRepository = searchPhotoRepository
     }
     
-    func fetch(query: String, page: Int, completion: @escaping (Result<[PhotoResponseDTO], Error>) -> Void) {
+    func fetch(query: String, page: Int, completion: @escaping (Result<SearchResponse, Error>) -> Void) {
         self.searchPhotoRepository.fetch(query: query, page: page) { result in
             switch result {
             case .success(let photos):

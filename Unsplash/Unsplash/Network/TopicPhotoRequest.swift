@@ -35,9 +35,9 @@ struct TopicPhotoRequest: DataRequestable {
         .get
     }
     
-    func decode(_ data: Data) throws -> [PhotoResponseDTO] {
+    func decode(_ data: Data) throws -> [PhotoResponse] {
         let decoder = JSONDecoder()
-        let response = try decoder.decode([PhotoResponseDTO].self, from: data)
+        let response = try decoder.decode([PhotoResponse].self, from: data)
         return response
     }
 }

@@ -17,14 +17,15 @@ class ImageLoader {
         self.imageQueue.maxConcurrentOperationCount = 1
     }
     
-    func load(_ url: URL, completion: @escaping (Data) -> Void) {
-        let key = url as NSURL
+    func load(_ urlString: String, completion: @escaping (Data) -> Void) {
+        let key = urlString as NSString
+        
         if let cachedData = self.imageCacheManager.load(key) {
             completion(cachedData)
             return
         }
         
-        let imageDownloadOperation = ImageDownloadOperation(url: url) { [weak self] data in
+        let imageDownloadOperation = ImageDownloadOperation(urlString: urlString) { [weak self] data in
             self?.imageCacheManager.save(key, data)
             completion(data)
         }

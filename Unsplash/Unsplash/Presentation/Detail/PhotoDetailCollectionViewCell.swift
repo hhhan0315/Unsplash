@@ -1,25 +1,19 @@
 //
-//  PhotoCollectionViewCell.swift
+//  PhotoDetailCollectionViewCell.swift
 //  Unsplash
 //
-//  Created by rae on 2022/05/31.
+//  Created by rae on 2022/05/19.
 //
 
 import UIKit
 
-class PhotoCollectionViewCell: UICollectionViewCell {
-    static let identifier: String = String(describing: PhotoCollectionViewCell.self)
+class PhotoDetailCollectionViewCell: UICollectionViewCell {
+    static let identifier: String = String(describing: PhotoDetailCollectionViewCell.self)
     
     private let photoImageView: UIImageView = {
         let imageView = UIImageView()
+        imageView.contentMode = .scaleAspectFit
         return imageView
-    }()
-    
-    private let nameLabel: UILabel = {
-        let label = UILabel()
-        label.textColor = UIColor.white
-        label.font = UIFont.preferredFont(forTextStyle: .caption1)
-        return label
     }()
     
     override init(frame: CGRect) {
@@ -36,38 +30,31 @@ class PhotoCollectionViewCell: UICollectionViewCell {
         super.prepareForReuse()
         
         self.photoImageView.image = nil
-        self.nameLabel.text = nil
     }
     
-    func set(_ photo: Photo) {
-        self.photoImageView.image = photo.image
-        self.nameLabel.text = photo.userName
-    }
+//    func setImage(_ photo: Photo) {
+//        self.photoImageView.image = photo.image
+//    }
 }
 
-private extension PhotoCollectionViewCell {
+private extension PhotoDetailCollectionViewCell {
     func configure() {
-        self.addSubviews()
+        self.addViews()
         self.makeConstraints()
     }
     
-    func addSubviews() {
+    func addViews() {
         self.contentView.addSubview(self.photoImageView)
-        self.contentView.addSubview(self.nameLabel)
     }
     
     func makeConstraints() {
         self.photoImageView.translatesAutoresizingMaskIntoConstraints = false
-        self.nameLabel.translatesAutoresizingMaskIntoConstraints = false
         
         NSLayoutConstraint.activate([
             self.photoImageView.topAnchor.constraint(equalTo: self.contentView.topAnchor),
             self.photoImageView.leadingAnchor.constraint(equalTo: self.contentView.leadingAnchor),
             self.photoImageView.bottomAnchor.constraint(equalTo: self.contentView.bottomAnchor),
             self.photoImageView.trailingAnchor.constraint(equalTo: self.contentView.trailingAnchor),
-            
-            self.nameLabel.leadingAnchor.constraint(equalTo: self.contentView.leadingAnchor, constant: 8.0),
-            self.nameLabel.bottomAnchor.constraint(equalTo: self.contentView.bottomAnchor,constant: -8.0),
         ])
     }
 }

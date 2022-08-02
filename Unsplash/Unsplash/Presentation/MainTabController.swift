@@ -53,7 +53,6 @@ private extension MainTabController {
         searchViewController.tabBarItem = searchTabBarItem
         
         self.tabBar.tintColor = .white
-        self.tabBar.unselectedItemTintColor = .darkGray
         
         self.viewControllers = [homeViewController, searchViewController]
     }
