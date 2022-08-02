@@ -26,16 +26,10 @@ final class MainTabController: UITabBarController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        self.configure()
-    }
-}
-
-private extension MainTabController {
-    func configure() {
-        self.configureUI()
+        configureUI()
     }
     
-    func configureUI() {
+    private func configureUI() {
         let homeTabBarItem = UITabBarItem(title: nil, image: MainTabBarItem.home.image, selectedImage: nil)
         let searchTabBarItem = UITabBarItem(title: nil, image: MainTabBarItem.search.image, selectedImage: nil)
                 
