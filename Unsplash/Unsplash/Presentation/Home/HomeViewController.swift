@@ -68,34 +68,34 @@ class HomeViewController: UIViewController {
     // MARK: - Layout
     private func setupViews() {
         setupNavigation()
-        setupTopicCollectionView()
-        setupPhotoTableView()
+        addSubviews()
+        makeConstraints()
     }
     
     private func setupNavigation() {
-        self.navigationItem.title = "Unsplash"
-        self.navigationItem.backButtonTitle = ""
+        navigationItem.title = "Unsplash"
+        navigationItem.backButtonTitle = ""
     }
     
-    private func setupTopicCollectionView() {
+    private func addSubviews() {
         view.addSubview(topicCollectionView)
+        view.addSubview(photoCollectionView)
+    }
+    
+    private func makeConstraints() {
         topicCollectionView.translatesAutoresizingMaskIntoConstraints = false
+        photoCollectionView.translatesAutoresizingMaskIntoConstraints = false
+        
         NSLayoutConstraint.activate([
             topicCollectionView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
             topicCollectionView.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor),
             topicCollectionView.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor),
             topicCollectionView.heightAnchor.constraint(equalToConstant: 60.0),
-        ])
-    }
-    
-    private func setupPhotoTableView() {
-        view.addSubview(photoCollectionView)
-        photoCollectionView.translatesAutoresizingMaskIntoConstraints = false
-        NSLayoutConstraint.activate([
-            self.photoCollectionView.topAnchor.constraint(equalTo: topicCollectionView.bottomAnchor),
-            self.photoCollectionView.leadingAnchor.constraint(equalTo: topicCollectionView.leadingAnchor),
-            self.photoCollectionView.trailingAnchor.constraint(equalTo: topicCollectionView.trailingAnchor),
-            self.photoCollectionView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor),
+            
+            photoCollectionView.topAnchor.constraint(equalTo: topicCollectionView.bottomAnchor),
+            photoCollectionView.leadingAnchor.constraint(equalTo: topicCollectionView.leadingAnchor),
+            photoCollectionView.trailingAnchor.constraint(equalTo: topicCollectionView.trailingAnchor),
+            photoCollectionView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor),
         ])
     }
     
@@ -112,8 +112,7 @@ class HomeViewController: UIViewController {
             }
             
             cell.configureCell(with: topic)
-            // delegate로 구현
-//            cell.button.addTarget(self, action: #selector(self.touchTopicButton(_:)), for: .touchUpInside)
+            cell.delegate = self
             return cell
         })
         
@@ -147,32 +146,25 @@ class HomeViewController: UIViewController {
             }
             .store(in: &cancellable)
     }
-    
-    // MARK: - objc
-    // delegate extension 활용
-    @objc private func touchTopicButton(_ sender: UIButton) {
-        guard let title = sender.currentTitle, let topic = Topic(rawValue: title.lowercased()) else {
-            return
-        }
-        viewModel.update(with: topic)
-    }
 }
 
 // MARK: - UICollectionViewDelegate
-
 extension HomeViewController: UICollectionViewDelegate {
     func collectionView(_ collectionView: UICollectionView, willDisplay cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {
         if indexPath.item == viewModel.photosCount() - 1 {
             viewModel.fetch()
         }
     }
+    
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        // TODO: DetailViewController 전환
+    }
 }
 
 // MARK: - PinterestLayoutDelegate
-
 extension HomeViewController: PinterestLayoutDelegate {
     func collectionView(_ collectionView: UICollectionView, heightForPhotoAtIndexPath indexPath: IndexPath) -> CGFloat {
-        let cellWidth: CGFloat = (view.bounds.width - 4) / 1
+        let cellWidth: CGFloat = view.bounds.width
         let imageHeight: CGFloat = CGFloat(viewModel.photo(at: indexPath.item).height)
         let imageWidth: CGFloat = CGFloat(viewModel.photo(at: indexPath.item).width)
         let imageRatio = imageHeight / imageWidth
@@ -181,12 +173,12 @@ extension HomeViewController: PinterestLayoutDelegate {
     }
 }
 
-// MARK: - UITableViewDelegate
-
-//extension HomeViewController: UITableViewDelegate {
-//    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        // 뷰모델 없음
-//        let detailViewController = DetailViewController(photos: self.viewModel.photos.value, indexPath: indexPath)
-//        self.navigationController?.pushViewController(detailViewController, animated: true)
-//    }
-//}
+// MARK: - HomeTopicCollectionViewCellDelegate
+extension HomeViewController: HomeTopicCollectionViewCellDelegate {
+    func touchTopicButton(title: String) {
+        guard let topic = Topic(rawValue: title.lowercased()) else {
+            return
+        }
+        viewModel.update(with: topic)
+    }
+}
