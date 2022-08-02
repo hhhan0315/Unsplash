@@ -9,19 +9,17 @@ import UIKit
 import Combine
 
 class HomeViewModel {
-    
-    private let topicPhotoUseCase: TopicPhotoUseCase
     @Published var photos: [PhotoResponse]
     private var topic: Topic
     private var page: Int
     
-    private let networkService = NetworkService()
+    private let networkService: NetworkService
     
-    init(topicPhotoUseCase: TopicPhotoUseCase) {
-        self.topicPhotoUseCase = topicPhotoUseCase
+    init(networkService: NetworkService) {
         self.photos = []
         self.topic = .wallpapers
         self.page = 1
+        self.networkService = networkService
     }
     
     func photosCount() -> Int {

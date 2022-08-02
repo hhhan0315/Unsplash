@@ -9,17 +9,16 @@ import UIKit
 import Combine
 
 class SearchViewModel {
-    private let searchPhotoUseCase: SearchPhotoUseCase
     @Published var photos: [PhotoResponse]
     private var query: String
     private var page: Int
-    private let networkService = NetworkService()
+    private let networkService: NetworkService
     
-    init(searchPhotoUseCase: SearchPhotoUseCase) {
-        self.searchPhotoUseCase = searchPhotoUseCase
+    init(networkService: NetworkService) {
         self.photos  = []
         self.query = ""
         self.page = 1
+        self.networkService = networkService
     }
     
     func photosCount() -> Int {

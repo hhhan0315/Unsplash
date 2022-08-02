@@ -34,15 +34,11 @@ final class MainTabController: UITabBarController {
         let searchTabBarItem = UITabBarItem(title: nil, image: MainTabBarItem.search.image, selectedImage: nil)
                 
         let networkService = NetworkService()
-        let defaultTopicPhotoRepository = DefaultTopicPhotoRepository(networkService: networkService)
-        let defaultTopicPhotoUseCase = DefaultTopicPhotoUseCase(topicPhotoRepository: defaultTopicPhotoRepository)
-        let homeViewModel = HomeViewModel(topicPhotoUseCase: defaultTopicPhotoUseCase)
+        let homeViewModel = HomeViewModel(networkService: networkService)
         let homeViewController = UINavigationController(rootViewController: HomeViewController(viewModel: homeViewModel))
         homeViewController.tabBarItem = homeTabBarItem
         
-        let defaultSearchPhotoRepository = DefaultSearchPhotoRepository(networkService: networkService)
-        let defaultSearchPhotoUseCase = DefaultSearchPhotoUseCase(searchPhotoRepository: defaultSearchPhotoRepository)
-        let searchViewModel = SearchViewModel(searchPhotoUseCase: defaultSearchPhotoUseCase)
+        let searchViewModel = SearchViewModel(networkService: networkService)
         let searchViewController = UINavigationController(rootViewController: SearchViewController(viewModel: searchViewModel))
         searchViewController.tabBarItem = searchTabBarItem
         
