@@ -50,6 +50,8 @@ class DetailViewController: UIViewController {
     private var currentIndexPath: IndexPath
     private let imageSaver: ImageSaver
     
+    private let imageLoader = ImageLoader()
+    
     // MARK: - View LifeCycle
     init(photos: [PhotoResponse], indexPath: IndexPath) {
         self.photos = photos
@@ -135,7 +137,7 @@ class DetailViewController: UIViewController {
         }
         
         activityIndicatorView.startAnimating()
-        ImageLoader.shared.load(urlString) { data in
+        imageLoader.load(urlString) { data in
             if let image = UIImage(data: data) {
                 self.imageSaver.writeToPhotoAlbum(image: image)
             }

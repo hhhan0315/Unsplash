@@ -9,6 +9,8 @@ import UIKit
 
 class DetailPhotoCollectionViewCell: UICollectionViewCell {
     static let identifier: String = String(describing: DetailPhotoCollectionViewCell.self)
+    
+    private let imageLoader = ImageLoader()
         
     private let photoImageView: UIImageView = {
         let imageView = UIImageView()
@@ -27,7 +29,7 @@ class DetailPhotoCollectionViewCell: UICollectionViewCell {
     }
     
     func configureCell(with photoResponse: PhotoResponse) {
-        ImageLoader.shared.load(photoResponse.urls.small) { data in
+        imageLoader.load(photoResponse.urls.small) { data in
             DispatchQueue.main.async {
                 self.photoImageView.image = UIImage(data: data)
             }

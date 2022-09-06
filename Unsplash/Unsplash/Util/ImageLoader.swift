@@ -8,13 +8,11 @@
 import Foundation
 
 class ImageLoader {
-    static let shared = ImageLoader()
-    
-    private let imageCacheManager = ImageCacheManager.shared
+    private let imageCacheManager = ImageCacheManager()
     
     func load(_ urlString: String, completion: @escaping (Data) -> Void) {
         let key = urlString as NSString
-                
+        
         guard let url = URL(string: urlString) else {
             return
         }
