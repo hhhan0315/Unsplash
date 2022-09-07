@@ -4,7 +4,7 @@ Unsplash Image API를 활용한 사진 앱
 ## Diagram
 |Home|Search|
 |--|--|
-|<img src="https://github.com/hhhan0315/Unsplash/blob/main/screenshot/diagram1.png">|<img src="https://github.com/hhhan0315/Unsplash/blob/main/screenshot/diagram2.png">|
+|<img src="https://github.com/hhhan0315/Unsplash/blob/main/screenshot/diagram1.jpg">|<img src="https://github.com/hhhan0315/Unsplash/blob/main/screenshot/diagram2.jpg">|
 
 ## 기능
 |Pagination|세부 화면|검색|
