@@ -7,12 +7,10 @@
 
 import UIKit
 
-class SearchPhotoCollectionViewCell: UICollectionViewCell {
+final class SearchPhotoCollectionViewCell: UICollectionViewCell {
     // MARK: - Properties
     static let identifier: String = String(describing: SearchPhotoCollectionViewCell.self)
-    
-    private let imageLoader = ImageLoader()
-    
+        
     // MARK: - UI Define
     private let photoImageView: UIImageView = {
         let imageView = UIImageView()
@@ -39,11 +37,7 @@ class SearchPhotoCollectionViewCell: UICollectionViewCell {
     // MARK: - Configure
     func configureCell(with photoResponse: PhotoResponse) {
         nameLabel.text = photoResponse.user.name
-        imageLoader.load(photoResponse.urls.small) { data in
-            DispatchQueue.main.async {
-                self.photoImageView.image = UIImage(data: data)
-            }
-        }
+        photoImageView.downloadImage(with: photoResponse.urls.small)
     }
     
     // MARK: - Layout

@@ -7,11 +7,9 @@
 
 import UIKit
 
-class DetailPhotoCollectionViewCell: UICollectionViewCell {
+final class DetailPhotoCollectionViewCell: UICollectionViewCell {
     static let identifier: String = String(describing: DetailPhotoCollectionViewCell.self)
-    
-    private let imageLoader = ImageLoader()
-        
+            
     private let photoImageView: UIImageView = {
         let imageView = UIImageView()
         imageView.contentMode = .scaleAspectFit
@@ -29,11 +27,7 @@ class DetailPhotoCollectionViewCell: UICollectionViewCell {
     }
     
     func configureCell(with photoResponse: PhotoResponse) {
-        imageLoader.load(photoResponse.urls.small) { data in
-            DispatchQueue.main.async {
-                self.photoImageView.image = UIImage(data: data)
-            }
-        }
+        photoImageView.downloadImage(with: photoResponse.urls.small)
     }
     
     private func configure() {

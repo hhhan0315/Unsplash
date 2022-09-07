@@ -7,17 +7,13 @@
 
 import Foundation
 
-class ImageLoader {
-    private let imageCacheManager = ImageCacheManager()
-    
-    func load(_ urlString: String, completion: @escaping (Data) -> Void) {
-        let key = urlString as NSString
-        
-        guard let url = URL(string: urlString) else {
+final class ImageLoader {
+    func load(with string: String, completion: @escaping (Data) -> Void) {
+        guard let url = URL(string: string) else {
             return
         }
         
-        if let cachedData = self.imageCacheManager.load(key) {
+        if let cachedData = ImageCacheManager.shared.load(with: string) {
             completion(cachedData)
             return
         }
@@ -27,7 +23,7 @@ class ImageLoader {
                 return
             }
             
-            self.imageCacheManager.save(key, data)
+            ImageCacheManager.shared.save(with: string, data: data)
             completion(data)
         }.resume()
     }

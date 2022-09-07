@@ -7,7 +7,7 @@
 
 import UIKit
 
-class DetailViewController: UIViewController {
+final class DetailViewController: UIViewController {
     // MARK: - View Define
     private lazy var photoCollectionView: UICollectionView = {
         let item = NSCollectionLayoutItem(layoutSize: NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0), heightDimension: .fractionalHeight(1.0)))
@@ -137,7 +137,8 @@ class DetailViewController: UIViewController {
         }
         
         activityIndicatorView.startAnimating()
-        imageLoader.load(urlString) { data in
+        
+        imageLoader.load(with: urlString) { data in
             if let image = UIImage(data: data) {
                 self.imageSaver.writeToPhotoAlbum(image: image)
             }
@@ -154,7 +155,7 @@ extension DetailViewController: ImageSaverDelegate {
             guard let settingsUrl = URL(string: UIApplication.openSettingsURLString) else {
                 return
             }
-
+            
             if UIApplication.shared.canOpenURL(settingsUrl) {
                 UIApplication.shared.open(settingsUrl)
             }
@@ -164,6 +165,7 @@ extension DetailViewController: ImageSaverDelegate {
     }
     
     func saveSuccess() {
+        // TODO: Custom AlertController
         activityIndicatorView.stopAnimating()
     }
 }
