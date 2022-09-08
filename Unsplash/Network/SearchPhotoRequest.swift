@@ -9,7 +9,6 @@ import Foundation
 
 struct SearchPhotoRequest: DataRequestable {
     
-    private let apiKey: String = Constants.accessKey
     private let query: String
     private let page: Int
     
@@ -24,11 +23,11 @@ struct SearchPhotoRequest: DataRequestable {
     }
     
     var headers: [String : String] {
-        ["Authorization": "Client-ID \(self.apiKey)"]
+        ["Authorization": "Client-ID \(Constants.apiKey)"]
     }
     
     var queryItems: [String : String] {
-        ["query": self.query, "page": "\(self.page)", "per_page": "\(Constants.perPageCount)"]
+        ["query": self.query, "page": "\(self.page)"]
     }
     
     var method: HTTPMethod {

@@ -9,7 +9,6 @@ import Foundation
 
 struct TopicPhotoRequest: DataRequestable {
                 
-    private let apiKey: String = Constants.accessKey
     private let topic: Topic
     private let page: Int
     
@@ -24,11 +23,11 @@ struct TopicPhotoRequest: DataRequestable {
     }
     
     var headers: [String : String] {
-        ["Authorization": "Client-ID \(self.apiKey)"]
+        ["Authorization": "Client-ID \(Constants.apiKey)"]
     }
     
     var queryItems: [String : String] {
-        ["page": "\(self.page)", "per_page": "\(Constants.perPageCount)"]
+        ["page": "\(self.page)"]
     }
     
     var method: HTTPMethod {

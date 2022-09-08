@@ -38,6 +38,14 @@ Unsplash Image API를 활용한 사진 앱
 - 해당 블로그를 읽고난 후에 싱글톤에는 분명한 단점이 존재하며 그 중에 쉽게 접근할 수 있는 탓에 프로젝트 어디서든 사용할 수 있고 어떤 객체와 연결되어 있는지 확인하기 힘든 문제가 존재한다는 글을 읽었다.
 - 그래서 ImageCacheManager만 싱글톤으로 구현했으며 그 이유는 해당 객체 안에 NSCache라는 메모리 캐시를 활용하는데 사용할 때마다 객체를 생성한다면 캐시가 새롭게 생성되기 때문에 이미지 데이터를 캐시로 불어올 수 없어서 전역 객체를 만들어서 캐시에 언제든 접근할 수 있도록 구현했다.
 
+> MVC 패턴
+- 객체지향, MVC, MVVM 패턴 등은 모두 코드를 유지보수하기 쉽고 읽기 쉽게 만들기 위한 방법이라고 생각이 들었다.
+- 다른 플랫폼의 MVP는 개념적으로는 iOS MVC와 같지만 실제로 UIKit에서의 MVC는 View, ViewController(Controller) 간의 결합이 너무 강하다.
+- 그래서 iOS에서 MVP, MVVM을 이야기 할때는 둘 다 공통적으로 ViewController도 View 취급을 하는 것이며 이걸 해결한 것이 위와 같은 패턴들이다.
+- 참고
+  - https://velog.io/@eddy_song/mvc
+  - https://velog.io/@eddy_song/ios-mvc
+
 > Diffable DataSource
 - UICollectionView Diffable DataSource 활용
 - iOS 13.0 이후부터 가능
