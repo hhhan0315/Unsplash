@@ -11,14 +11,13 @@ class HomeViewModel {
     @Published var photos: [PhotoResponse]
     private var topic: Topic
     private var page: Int
+    private let apiCaller: APICaller
     
-    private let networkService: Networkable
-    
-    init(networkService: Networkable) {
+    init() {
         self.photos = []
         self.topic = .wallpapers
         self.page = 1
-        self.networkService = networkService
+        self.apiCaller = APICaller()
     }
     
     func photosCount() -> Int {
@@ -30,12 +29,14 @@ class HomeViewModel {
     }
     
     func fetch() {
-        let request = TopicPhotoRequest(topic: topic, page: page)
-        networkService.request(request) { (result: Result<[PhotoResponse], NetworkError>) in
+        apiCaller.request(.getTopic(topic: topic, page: page)) { [weak self] result in
             switch result {
-            case .success(let photoResponses):
-                self.photos.append(contentsOf: photoResponses)
-                self.page += 1
+            case .success(let data):
+                guard let photos = try? JSONDecoder().decode([PhotoResponse].self, from: data) else {
+                    return
+                }
+                self?.photos.append(contentsOf: photos)
+                self?.page += 1
             case .failure(let error):
                 print(error.localizedDescription)
             }

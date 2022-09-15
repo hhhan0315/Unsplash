@@ -32,13 +32,12 @@ final class MainTabController: UITabBarController {
     private func configureUI() {
         let homeTabBarItem = UITabBarItem(title: nil, image: MainTabBarItem.home.image, selectedImage: nil)
         let searchTabBarItem = UITabBarItem(title: nil, image: MainTabBarItem.search.image, selectedImage: nil)
-                
-        let networkService: Networkable = NetworkService()
-        let homeViewModel = HomeViewModel(networkService: networkService)
+        
+        let homeViewModel = HomeViewModel()
         let homeViewController = UINavigationController(rootViewController: HomeViewController(viewModel: homeViewModel))
         homeViewController.tabBarItem = homeTabBarItem
         
-        let searchViewModel = SearchViewModel(networkService: networkService)
+        let searchViewModel = SearchViewModel()
         let searchViewController = UINavigationController(rootViewController: SearchViewController(viewModel: searchViewModel))
         searchViewController.tabBarItem = searchTabBarItem
         

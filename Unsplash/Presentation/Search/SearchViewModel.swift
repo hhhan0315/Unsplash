@@ -11,13 +11,13 @@ class SearchViewModel {
     @Published var photos: [PhotoResponse]
     private var query: String
     private var page: Int
-    private let networkService: Networkable
+    private let apiCaller: APICaller
     
-    init(networkService: Networkable) {
+    init() {
         self.photos  = []
         self.query = ""
         self.page = 1
-        self.networkService = networkService
+        self.apiCaller = APICaller()
     }
     
     func photosCount() -> Int {
@@ -29,12 +29,14 @@ class SearchViewModel {
     }
     
     func fetch() {
-        let request = SearchPhotoRequest(query: query, page: page)
-        networkService.request(request) { (result: Result<SearchResponse, NetworkError>) in
+        apiCaller.request(.getSearch(query: query, page: page)) { [weak self] result in
             switch result {
-            case .success(let searchResponse):
-                self.photos.append(contentsOf: searchResponse.results)
-                self.page += 1
+            case .success(let data):
+                guard let searchResponse = try? JSONDecoder().decode(SearchResponse.self, from: data) else {
+                    return
+                }
+                self?.photos.append(contentsOf: searchResponse.results)
+                self?.page += 1
             case .failure(let error):
                 print(error.localizedDescription)
             }
