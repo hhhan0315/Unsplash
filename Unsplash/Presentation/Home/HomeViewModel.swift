@@ -29,12 +29,10 @@ class HomeViewModel {
     }
     
     func fetch() {
-        apiCaller.request(.getTopic(topic: topic, page: page)) { [weak self] result in
+        apiCaller.request(api: .getTopic(topic: topic, page: page),
+                          dataType: [PhotoResponse].self) { [weak self] result in
             switch result {
-            case .success(let data):
-                guard let photos = try? JSONDecoder().decode([PhotoResponse].self, from: data) else {
-                    return
-                }
+            case .success(let photos):
                 self?.photos.append(contentsOf: photos)
                 self?.page += 1
             case .failure(let error):

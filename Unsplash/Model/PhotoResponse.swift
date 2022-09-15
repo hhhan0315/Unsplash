@@ -1,5 +1,5 @@
 //
-//  PhotoResponseDTO.swift
+//  PhotoResponse.swift
 //  Unsplash
 //
 //  Created by rae on 2022/05/04.

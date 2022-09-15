@@ -12,10 +12,11 @@ enum APICallError: Error {
     case NoData
     case ServerError(_ statusCode: Int)
     case UnknownError
+    case DecodeError
 }
 
 final class APICaller {
-    func request(_ api: API, completion: @escaping (Result<Data, APICallError>) -> Void) {
+    func request<T: Decodable>(api: API, dataType: T.Type, completion: @escaping (Result<T, APICallError>) -> Void) {
         guard var urlComponents = URLComponents(string: api.baseURL + api.path) else {
             completion(.failure(.URLError))
             return
@@ -53,7 +54,12 @@ final class APICaller {
                 return
             }
             
-            completion(.success(data))
+            guard let decodeData = try? JSONDecoder().decode(T.self, from: data) else {
+                completion(.failure(.DecodeError))
+                return
+            }
+            
+            completion(.success(decodeData))
         }.resume()
     }
 }

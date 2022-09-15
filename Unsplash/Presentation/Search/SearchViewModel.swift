@@ -29,12 +29,10 @@ class SearchViewModel {
     }
     
     func fetch() {
-        apiCaller.request(.getSearch(query: query, page: page)) { [weak self] result in
+        apiCaller.request(api: .getSearch(query: query, page: page),
+                          dataType: SearchResponse.self) { [weak self] result in
             switch result {
-            case .success(let data):
-                guard let searchResponse = try? JSONDecoder().decode(SearchResponse.self, from: data) else {
-                    return
-                }
+            case .success(let searchResponse):
                 self?.photos.append(contentsOf: searchResponse.results)
                 self?.page += 1
             case .failure(let error):
