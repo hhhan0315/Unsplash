@@ -31,12 +31,22 @@ Unsplash Image API를 활용한 사진 앱
   - [docs] : 문서 및 리드미 작성
   - [refactor] : 리팩토링
 
-## 과정
+## 회고
 > 싱글톤을 선택한 이유
 - URLSession.shared를 이용해 data를 completion으로 전달해주는 NetworkManager, URL로 이미지 데이터를 가져오는 ImageLoader, 이미지 캐시를 관리해주는 ImageCacheManager에 싱글톤을 구현했었다.
-- 참고 : https://medium.com/hcleedev/swift-singleton-싱글톤-패턴-b84cfe57c541
-- 해당 블로그를 읽고난 후에 싱글톤에는 분명한 단점이 존재하며 그 중에 쉽게 접근할 수 있는 탓에 프로젝트 어디서든 사용할 수 있고 어떤 객체와 연결되어 있는지 확인하기 힘든 문제가 존재한다는 글을 읽었다.
+- 싱글톤의 분명한 단점들 중에 쉽게 접근할 수 있는 탓에 프로젝트 어디서든 사용할 수 있고 어떤 객체와 연결되어 있는지 확인하기 힘든 문제가 존재한다는 단점이 눈에 들어왔다.
 - 그래서 ImageCacheManager만 싱글톤으로 구현했으며 그 이유는 해당 객체 안에 NSCache라는 메모리 캐시를 활용하는데 사용할 때마다 객체를 생성한다면 캐시가 새롭게 생성되기 때문에 이미지 데이터를 캐시로 불어올 수 없어서 전역 객체를 만들어서 캐시에 언제든 접근할 수 있도록 구현했다.
+- 참고 : https://medium.com/hcleedev/swift-singleton-싱글톤-패턴-b84cfe57c541
+
+> Moya 참고해 Network 설계
+- Moya 라이브러리 중 TargetType 참고
+- `API`
+  - https://github.com/hhhan0315/Unsplash/blob/main/Unsplash/Model/API.swift
+  - enum 타입으로 구현 및 연관값, 변수에 바인딩해서 주소 분리
+- `APICaller`
+  - https://github.com/hhhan0315/Unsplash/blob/main/Unsplash/Model/APICaller.swift
+  - API 열거형, Generic을 활용해 Decodable한 객체를 completion으로 전달해주는 역할
+- 참고 : https://jiseobkim.github.io/swift/2021/08/16/swift-내가-쓰는-Network-Request-스타일(Moya-착안).html
 
 > MVC 패턴
 - 객체지향, MVC, MVVM 패턴 등은 모두 코드를 유지보수하기 쉽고 읽기 쉽게 만들기 위한 방법이라고 생각이 들었다.
@@ -64,7 +74,3 @@ Unsplash Image API를 활용한 사진 앱
 - 단순히 앨범에 저장하기 위해 사용
 - ImageSaver 클래스를 통해 성공, 실패 확인 가능
 - info.plist에 `Privacy - Photo Library Additions Usage Description` 추가
-
-> Image Cache
-- ImageCacheManager를 통해 캐시 구현
-- NSCache 활용
