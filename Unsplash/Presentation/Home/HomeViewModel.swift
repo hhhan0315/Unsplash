@@ -8,32 +8,42 @@
 import UIKit
 
 class HomeViewModel {
-    @Published var photos: [PhotoResponse]
-    private var topic: Topic
+    @Published var photoResponses: [PhotoResponse]
+    private var topics: [Topic]
+    private var currentTopic: Topic
     private var page: Int
     private let apiCaller: APICaller
     
     init() {
-        self.photos = []
-        self.topic = .wallpapers
+        self.photoResponses = []
+        self.topics = Topic.allCases
+        self.currentTopic = .wallpapers
         self.page = 1
         self.apiCaller = APICaller()
     }
     
-    func photosCount() -> Int {
-        return photos.count
+    func photoResponsesCount() -> Int {
+        return photoResponses.count
     }
     
-    func photo(at index: Int) -> PhotoResponse {
-        return photos[index]
+    func photoResponse(at index: Int) -> PhotoResponse {
+        return photoResponses[index]
+    }
+    
+    func topicsCount() -> Int {
+        return topics.count
+    }
+    
+    func topic(at index: Int) -> Topic {
+        return topics[index]
     }
     
     func fetch() {
-        apiCaller.request(api: .getTopic(topic: topic, page: page),
+        apiCaller.request(api: .getTopic(topic: currentTopic, page: page),
                           dataType: [PhotoResponse].self) { [weak self] result in
             switch result {
-            case .success(let photos):
-                self?.photos.append(contentsOf: photos)
+            case .success(let photoResponses):
+                self?.photoResponses.append(contentsOf: photoResponses)
                 self?.page += 1
             case .failure(let error):
                 print(error.localizedDescription)
@@ -42,9 +52,9 @@ class HomeViewModel {
     }
     
     func update(with topic: Topic) {
-        guard self.topic != topic else { return }
-        self.topic = topic
-        photos.removeAll()
+        guard self.currentTopic != currentTopic else { return }
+        self.currentTopic = topic
+        photoResponses.removeAll()
         page = 1
         fetch()
     }

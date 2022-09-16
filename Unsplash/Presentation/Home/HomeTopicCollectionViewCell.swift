@@ -12,23 +12,26 @@ protocol HomeTopicCollectionViewCellDelegate: AnyObject {
 }
 
 class HomeTopicCollectionViewCell: UICollectionViewCell {
+    
     // MARK: - Properties
     static let identifier: String = String(describing: HomeTopicCollectionViewCell.self)
     
     weak var delegate: HomeTopicCollectionViewCellDelegate?
     
     // MARK: - UI Define
-    private lazy var button: UIButton = {
+    
+    private lazy var titleButton: UIButton = {
         let button = UIButton(type: .custom)
         button.addTarget(self, action: #selector(touchUpButton(_:)), for: .touchUpInside)
         return button
     }()
     
     // MARK: - View LifeCycle
+    
     override init(frame: CGRect) {
         super.init(frame: frame)
         
-        self.configure()
+        setupViews()
     }
     
     required init?(coder: NSCoder) {
@@ -36,32 +39,30 @@ class HomeTopicCollectionViewCell: UICollectionViewCell {
     }
     
     // MARK: - Configure
+    
     func configureCell(with topic: Topic) {
-        button.setTitle(topic.title, for: .normal)
+        titleButton.setTitle(topic.title, for: .normal)
     }
     
     // MARK: - Layout
-    private func configure() {
-        self.addViews()
-        self.makeConstraints()
+    
+    private func setupViews() {
+        setupTitleButton()
     }
     
-    private func addViews() {
-        self.contentView.addSubview(self.button)
-    }
-    
-    private func makeConstraints() {
-        button.translatesAutoresizingMaskIntoConstraints = false
-        
+    private func setupTitleButton() {
+        contentView.addSubview(titleButton)
+        titleButton.translatesAutoresizingMaskIntoConstraints = false
         NSLayoutConstraint.activate([
-            self.button.centerXAnchor.constraint(equalTo: self.contentView.centerXAnchor),
-            self.button.centerYAnchor.constraint(equalTo: self.contentView.centerYAnchor),
-            self.button.leadingAnchor.constraint(equalTo: self.contentView.leadingAnchor, constant: 8.0),
-            self.button.trailingAnchor.constraint(equalTo: self.contentView.trailingAnchor, constant: -8.0),
+            titleButton.centerXAnchor.constraint(equalTo: contentView.centerXAnchor),
+            titleButton.centerYAnchor.constraint(equalTo: contentView.centerYAnchor),
+            titleButton.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 8.0),
+            titleButton.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -8.0),
         ])
     }
     
     // MARK: - Objc
+    
     @objc private func touchUpButton(_ sender: UIButton) {
         guard let title = sender.currentTitle else {
             return
