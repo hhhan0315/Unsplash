@@ -28,7 +28,7 @@ class SearchViewController: UIViewController {
         case photo
     }
     
-    private var photoDataSource: UICollectionViewDiffableDataSource<Section, PhotoResponse>?
+//    private var photoDataSource: UICollectionViewDiffableDataSource<Section, PhotoResponse>?
     
     private let viewModel: SearchViewModel
     private var cancellable = Set<AnyCancellable>()
@@ -47,7 +47,7 @@ class SearchViewController: UIViewController {
         super.viewDidLoad()
         
         setupViews()
-        setupPhotoDataSource()
+//        setupPhotoDataSource()
         setupBind()
     }
     
@@ -87,27 +87,27 @@ class SearchViewController: UIViewController {
     }
     
     // MARK: - DataSource
-    private func setupPhotoDataSource() {
-        photoDataSource = UICollectionViewDiffableDataSource<Section, PhotoResponse>(collectionView: photoCollectionView, cellProvider: { collectionView, indexPath, photoResponse in
-            guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: SearchPhotoCollectionViewCell.identifier, for: indexPath) as? SearchPhotoCollectionViewCell else {
-                return .init()
-            }
-            
-            cell.configureCell(with: photoResponse)
-            return cell
-        })
-    }
+//    private func setupPhotoDataSource() {
+//        photoDataSource = UICollectionViewDiffableDataSource<Section, PhotoResponse>(collectionView: photoCollectionView, cellProvider: { collectionView, indexPath, photoResponse in
+//            guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: SearchPhotoCollectionViewCell.identifier, for: indexPath) as? SearchPhotoCollectionViewCell else {
+//                return .init()
+//            }
+//
+//            cell.configureCell(with: photoResponse)
+//            return cell
+//        })
+//    }
     
     // MARK: - Bind
     private func setupBind() {
         viewModel.$photos
             .receive(on: DispatchQueue.main)
             .sink { photos in
-                var snapShot = NSDiffableDataSourceSnapshot<Section, PhotoResponse>()
-                snapShot.appendSections([Section.photo])
-                snapShot.appendItems(photos)
-                self.pinterestLayout.update(numberOfItems: snapShot.numberOfItems)
-                self.photoDataSource?.apply(snapShot, animatingDifferences: false)
+//                var snapShot = NSDiffableDataSourceSnapshot<Section, PhotoResponse>()
+//                snapShot.appendSections([Section.photo])
+//                snapShot.appendItems(photos)
+//                self.pinterestLayout.update(numberOfItems: snapShot.numberOfItems)
+//                self.photoDataSource?.apply(snapShot, animatingDifferences: false)
             }
             .store(in: &cancellable)
     }
@@ -153,11 +153,11 @@ extension SearchViewController: UICollectionViewDelegate {
     }
 
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        guard let photos = photoDataSource?.snapshot().itemIdentifiers else {
-            return
-        }
-        let detailViewController = DetailViewController(photos: photos, indexPath: indexPath)
-        detailViewController.hidesBottomBarWhenPushed = true
-        navigationController?.pushViewController(detailViewController, animated: true)
+//        guard let photos = photoDataSource?.snapshot().itemIdentifiers else {
+//            return
+//        }
+//        let detailViewController = DetailViewController(photos: photos, indexPath: indexPath)
+//        detailViewController.hidesBottomBarWhenPushed = true
+//        navigationController?.pushViewController(detailViewController, animated: true)
     }
 }

@@ -1,5 +1,5 @@
 //
-//  PhotoResponse.swift
+//  PhotoEntity.swift
 //  Unsplash
 //
 //  Created by rae on 2022/05/04.
@@ -7,7 +7,7 @@
 
 import Foundation
 
-struct PhotoResponse: Decodable {
+struct PhotoEntity: Decodable {
     let id: String
     let width: Int
     let height: Int
@@ -15,7 +15,7 @@ struct PhotoResponse: Decodable {
     let user: User
 }
 
-extension PhotoResponse {
+extension PhotoEntity {
     struct URLs: Decodable {
         let raw: String
         let full: String
@@ -26,15 +26,5 @@ extension PhotoResponse {
 
     struct User: Decodable {
         let name: String
-    }
-}
-
-extension PhotoResponse: Hashable {
-    func hash(into hasher: inout Hasher) {
-        hasher.combine(id)
-    }
-
-    static func == (lhs: PhotoResponse, rhs: PhotoResponse) -> Bool {
-        return lhs.id == rhs.id
     }
 }

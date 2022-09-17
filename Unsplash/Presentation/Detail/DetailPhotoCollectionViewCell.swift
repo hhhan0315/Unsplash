@@ -26,8 +26,8 @@ final class DetailPhotoCollectionViewCell: UICollectionViewCell {
         fatalError("init(coder:) has not been implemented")
     }
     
-    func configureCell(with photoResponse: PhotoResponse) {
-        photoImageView.downloadImage(with: photoResponse.urls.small)
+    func configureCell(with photo: Photo) {
+        photoImageView.downloadImage(with: photo.url)
     }
     
     private func configure() {

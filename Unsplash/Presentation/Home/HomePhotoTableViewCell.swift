@@ -40,9 +40,9 @@ class HomePhotoTableViewCell: UITableViewCell {
     
     // MARK: - Configure
     
-    func configureCell(with photoResponse: PhotoResponse) {
-        nameLabel.text = photoResponse.user.name
-        photoImageView.downloadImage(with: photoResponse.urls.small)
+    func configureCell(with photo: Photo) {
+        nameLabel.text = photo.user
+        photoImageView.downloadImage(with: photo.url)
     }
     
     // MARK: - Layout

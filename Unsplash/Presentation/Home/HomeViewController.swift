@@ -6,7 +6,6 @@
 //
 
 import UIKit
-import Combine
 
 class HomeViewController: UIViewController {
     
@@ -35,7 +34,6 @@ class HomeViewController: UIViewController {
     // MARK: - Properties
     
     private let viewModel: HomeViewModel
-    private var cancellable = Set<AnyCancellable>()
     
     // MARK: - View LifeCycle
     
@@ -94,12 +92,11 @@ class HomeViewController: UIViewController {
     // MARK: - Bind
     
     private func setupBind() {
-        viewModel.$photoResponses
-            .receive(on: DispatchQueue.main)
-            .sink { _ in
-                self.photoTableView.reloadData()
+        viewModel.fetchEnded = { [weak self] in
+            DispatchQueue.main.async {
+                self?.photoTableView.reloadData()
             }
-            .store(in: &cancellable)
+        }
     }
 }
 
@@ -127,7 +124,7 @@ extension HomeViewController: UICollectionViewDataSource {
 
 extension HomeViewController: UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return viewModel.photoResponsesCount()
+        return viewModel.photosCount()
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
@@ -135,7 +132,7 @@ extension HomeViewController: UITableViewDataSource {
             return .init()
         }
         
-        let photoResponse = viewModel.photoResponse(at: indexPath.row)
+        let photoResponse = viewModel.photo(at: indexPath.row)
         cell.configureCell(with: photoResponse)
         
         return cell
@@ -147,15 +144,15 @@ extension HomeViewController: UITableViewDataSource {
 extension HomeViewController: UITableViewDelegate {
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         let cellWidth: CGFloat = view.bounds.width
-        let imageHeight: CGFloat = CGFloat(viewModel.photoResponse(at: indexPath.item).height)
-        let imageWidth: CGFloat = CGFloat(viewModel.photoResponse(at: indexPath.item).width)
+        let imageHeight: CGFloat = CGFloat(viewModel.photo(at: indexPath.item).height)
+        let imageWidth: CGFloat = CGFloat(viewModel.photo(at: indexPath.item).width)
         let imageRatio = imageHeight / imageWidth
         
         return imageRatio * cellWidth
     }
     
     func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
-        if indexPath.row == viewModel.photoResponsesCount() - 1 {
+        if indexPath.row == viewModel.photosCount() - 1 {
             viewModel.fetch()
         }
     }

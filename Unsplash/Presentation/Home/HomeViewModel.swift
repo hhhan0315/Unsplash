@@ -8,26 +8,28 @@
 import UIKit
 
 class HomeViewModel {
-    @Published var photoResponses: [PhotoResponse]
+    private var photos: [Photo]
     private var topics: [Topic]
     private var currentTopic: Topic
     private var page: Int
-    private let apiCaller: APICaller
+    private let photoService: PhotoService
+    
+    var fetchEnded: () -> Void = {}
     
     init() {
-        self.photoResponses = []
+        self.photos = []
         self.topics = Topic.allCases
         self.currentTopic = .wallpapers
         self.page = 1
-        self.apiCaller = APICaller()
+        self.photoService = PhotoService()
     }
     
-    func photoResponsesCount() -> Int {
-        return photoResponses.count
+    func photosCount() -> Int {
+        return photos.count
     }
     
-    func photoResponse(at index: Int) -> PhotoResponse {
-        return photoResponses[index]
+    func photo(at index: Int) -> Photo {
+        return photos[index]
     }
     
     func topicsCount() -> Int {
@@ -39,12 +41,11 @@ class HomeViewModel {
     }
     
     func fetch() {
-        apiCaller.request(api: .getTopic(topic: currentTopic, page: page),
-                          dataType: [PhotoResponse].self) { [weak self] result in
+        photoService.fetch(topic: currentTopic, page: page) { [weak self] result in
             switch result {
-            case .success(let photoResponses):
-                self?.photoResponses.append(contentsOf: photoResponses)
-                self?.page += 1
+            case .success(let photos):
+                self?.photos.append(contentsOf: photos)
+                self?.fetchEnded()
             case .failure(let error):
                 print(error.localizedDescription)
             }
@@ -54,7 +55,7 @@ class HomeViewModel {
     func update(with topic: Topic) {
         guard self.currentTopic != currentTopic else { return }
         self.currentTopic = topic
-        photoResponses.removeAll()
+        photos.removeAll()
         page = 1
         fetch()
     }

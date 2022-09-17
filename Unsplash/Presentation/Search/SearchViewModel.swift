@@ -8,7 +8,7 @@
 import UIKit
 
 class SearchViewModel {
-    @Published var photos: [PhotoResponse]
+    @Published var photos: [Photo]
     private var query: String
     private var page: Int
     private let apiCaller: APICaller
@@ -24,21 +24,21 @@ class SearchViewModel {
         return photos.count
     }
     
-    func photo(at index: Int) -> PhotoResponse {
+    func photo(at index: Int) -> Photo {
         return photos[index]
     }
     
     func fetch() {
-        apiCaller.request(api: .getSearch(query: query, page: page),
-                          dataType: SearchResponse.self) { [weak self] result in
-            switch result {
-            case .success(let searchResponse):
-                self?.photos.append(contentsOf: searchResponse.results)
-                self?.page += 1
-            case .failure(let error):
-                print(error.localizedDescription)
-            }
-        }
+//        apiCaller.request(api: .getSearch(query: query, page: page),
+//                          dataType: SearchEntity.self) { [weak self] result in
+//            switch result {
+//            case .success(let searchResponse):
+//                self?.photos.append(contentsOf: searchResponse.results)
+//                self?.page += 1
+//            case .failure(let error):
+//                print(error.localizedDescription)
+//            }
+//        }
     }
     
     func update(_ query: String) {
