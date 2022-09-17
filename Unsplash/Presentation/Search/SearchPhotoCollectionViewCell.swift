@@ -8,10 +8,13 @@
 import UIKit
 
 final class SearchPhotoCollectionViewCell: UICollectionViewCell {
+    
     // MARK: - Properties
+    
     static let identifier: String = String(describing: SearchPhotoCollectionViewCell.self)
         
     // MARK: - UI Define
+    
     private let photoImageView: UIImageView = {
         let imageView = UIImageView()
         return imageView
@@ -24,10 +27,11 @@ final class SearchPhotoCollectionViewCell: UICollectionViewCell {
     }()
     
     // MARK: - View LifeCycle
+    
     override init(frame: CGRect) {
         super.init(frame: frame)
         
-        self.configure()
+        setupViews()
     }
     
     required init?(coder: NSCoder) {
@@ -35,32 +39,34 @@ final class SearchPhotoCollectionViewCell: UICollectionViewCell {
     }
     
     // MARK: - Configure
+    
     func configureCell(with photo: Photo) {
         nameLabel.text = photo.user
         photoImageView.downloadImage(with: photo.url)
     }
     
     // MARK: - Layout
-    private func configure() {
-        addSubviews()
-        makeConstraints()
+    
+    private func setupViews() {
+        setupPhotoImageView()
+        setupNameLabel()
     }
     
-    private func addSubviews() {
+    private func setupPhotoImageView() {
         contentView.addSubview(photoImageView)
-        contentView.addSubview(nameLabel)
-    }
-    
-    private func makeConstraints() {
         photoImageView.translatesAutoresizingMaskIntoConstraints = false
-        nameLabel.translatesAutoresizingMaskIntoConstraints = false
-        
         NSLayoutConstraint.activate([
             photoImageView.topAnchor.constraint(equalTo: contentView.topAnchor),
             photoImageView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor),
             photoImageView.bottomAnchor.constraint(equalTo: contentView.bottomAnchor),
             photoImageView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor),
-            
+        ])
+    }
+    
+    private func setupNameLabel() {
+        contentView.addSubview(nameLabel)
+        nameLabel.translatesAutoresizingMaskIntoConstraints = false
+        NSLayoutConstraint.activate([
             nameLabel.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 8.0),
             nameLabel.bottomAnchor.constraint(equalTo: contentView.bottomAnchor,constant: -8.0),
         ])

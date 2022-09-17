@@ -28,17 +28,7 @@ class PinterestLayout: UICollectionViewLayout {
     
     private var cache: [UICollectionViewLayoutAttributes] = []
     
-    private var numberOfColumns: Int
-    private var numberOfItems: Int = 0
-    
-    init(numberOfColumns: Int) {
-        self.numberOfColumns = numberOfColumns
-        super.init()
-    }
-    
-    required init?(coder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
-    }
+    private var numberOfColumns: Int = 2
     
     override func prepare() {
         cache.removeAll()
@@ -54,7 +44,7 @@ class PinterestLayout: UICollectionViewLayout {
         var yOffset: [CGFloat] = .init(repeating: 0, count: numberOfColumns)
         var column = 0
         
-        for item in 0..<numberOfItems {
+        for item in 0..<collectionView.numberOfItems(inSection: 0) {
             let indexPath = IndexPath(item: item, section: 0)
             
             let photoHeight = delegate?.collectionView(collectionView, heightForPhotoAtIndexPath: indexPath) ?? 180
@@ -89,9 +79,5 @@ class PinterestLayout: UICollectionViewLayout {
     
     override func layoutAttributesForItem(at indexPath: IndexPath) -> UICollectionViewLayoutAttributes? {
         return cache[indexPath.item]
-    }
-    
-    func update(numberOfItems: Int) {
-        self.numberOfItems = numberOfItems
     }
 }
