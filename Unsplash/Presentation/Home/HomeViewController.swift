@@ -158,13 +158,9 @@ extension HomeViewController: UITableViewDelegate {
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-//        guard let photos = photoDataSource?.snapshot().itemIdentifiers else {
-//            return
-//        }
-        
-//        let detailViewController = DetailViewController(photos: photos, indexPath: indexPath)
-//        detailViewController.hidesBottomBarWhenPushed = true
-//        navigationController?.pushViewController(detailViewController, animated: true)
+        let detailViewController = DetailViewController(photos: viewModel.photos, indexPath: indexPath)
+        detailViewController.modalPresentationStyle = .fullScreen
+        present(detailViewController, animated: true)
     }
 }
 

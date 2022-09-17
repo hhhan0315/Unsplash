@@ -8,7 +8,7 @@
 import UIKit
 
 class HomeViewModel {
-    private var photos: [Photo]
+    private(set) var photos: [Photo]
     private var topics: [Topic]
     private var currentTopic: Topic
     private var page: Int

@@ -16,10 +16,17 @@ final class DetailPhotoCollectionViewCell: UICollectionViewCell {
         return imageView
     }()
     
+    private let titleLabel: UILabel = {
+        let label = UILabel()
+        label.font = UIFont.systemFont(ofSize: 17.0, weight: .semibold)
+        label.textAlignment = .center
+        return label
+    }()
+    
     override init(frame: CGRect) {
         super.init(frame: frame)
         
-        configure()
+        setupViews()
     }
     
     required init?(coder: NSCoder) {
@@ -27,26 +34,34 @@ final class DetailPhotoCollectionViewCell: UICollectionViewCell {
     }
     
     func configureCell(with photo: Photo) {
+        titleLabel.text = photo.user
         photoImageView.downloadImage(with: photo.url)
     }
     
-    private func configure() {
-        addSubviews()
-        makeConstraints()
+    private func setupViews() {
+        setupPhotoImageView()
+        setupTitleLabel()
     }
     
-    private func addSubviews() {
+    private func setupPhotoImageView() {
         contentView.addSubview(photoImageView)
-    }
-    
-    private func makeConstraints() {
         photoImageView.translatesAutoresizingMaskIntoConstraints = false
-        
         NSLayoutConstraint.activate([
             photoImageView.topAnchor.constraint(equalTo: contentView.topAnchor),
             photoImageView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor),
             photoImageView.bottomAnchor.constraint(equalTo: contentView.bottomAnchor),
             photoImageView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor),
+        ])
+    }
+    
+    private func setupTitleLabel() {
+        contentView.addSubview(titleLabel)
+        titleLabel.translatesAutoresizingMaskIntoConstraints = false
+        NSLayoutConstraint.activate([
+            titleLabel.topAnchor.constraint(equalTo: contentView.topAnchor, constant: 8.0),
+            titleLabel.leadingAnchor.constraint(equalTo: contentView.leadingAnchor),
+            titleLabel.trailingAnchor.constraint(equalTo: contentView.trailingAnchor),
+            titleLabel.heightAnchor.constraint(equalToConstant: 50.0),
         ])
     }
 }

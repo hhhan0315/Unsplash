@@ -8,7 +8,7 @@
 import UIKit
 
 class SearchViewModel {
-    private var photos: [Photo]
+    private(set) var photos: [Photo]
     private var query: String
     private var page: Int
     private let searchService: SearchService
