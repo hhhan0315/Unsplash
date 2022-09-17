@@ -19,9 +19,13 @@ Unsplash Image API를 활용한 사진 앱
 <img src="https://github.com/hhhan0315/Unsplash/blob/main/screenshot/architecture1.png">
 <img src="https://github.com/hhhan0315/Unsplash/blob/main/screenshot/architecture2.png">
 
-> MVVM
-- ViewController는 UI 화면 담당
-- ViewModel은 데이터 관리 및 비즈니스 로직 담당
+> MVVM 패턴
+- `ViewController` -> `ViewModel` -> `Service` -> `Repository`
+- `ViewController` : ViewModel을 활용해 화면 표현
+- `ViewModel` : Service를 활용해 화면에서 보여질 데이터 처리
+- `Service` : Repository를 활용해 서비스 로직에서 사용하는 데이터 모델로 변환
+- `Repository` : Server Model 전달
+- 참고 : https://www.youtube.com/watch?v=M58LqynqQHc
 
 ## 커밋 메시지
 - Convention
@@ -47,10 +51,6 @@ Unsplash Image API를 활용한 사진 앱
   - https://github.com/hhhan0315/Unsplash/blob/main/Unsplash/Model/APICaller.swift
   - API 열거형, Generic을 활용해 Decodable한 객체를 completion으로 전달해주는 역할
 - 참고 : https://jiseobkim.github.io/swift/2021/08/16/swift-내가-쓰는-Network-Request-스타일(Moya-착안).html
-
-> MVVM 패턴
-- `ViewController` -> `ViewModel` -> `Service` -> `Repository`
-- 참고 : https://www.youtube.com/watch?v=M58LqynqQHc
 
 > Pinterest Layout
 - 참고 : https://linux-studying.tistory.com/23
