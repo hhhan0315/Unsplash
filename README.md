@@ -48,26 +48,12 @@ Unsplash Image API를 활용한 사진 앱
   - API 열거형, Generic을 활용해 Decodable한 객체를 completion으로 전달해주는 역할
 - 참고 : https://jiseobkim.github.io/swift/2021/08/16/swift-내가-쓰는-Network-Request-스타일(Moya-착안).html
 
-> MVC 패턴
-- 객체지향, MVC, MVVM 패턴 등은 모두 코드를 유지보수하기 쉽고 읽기 쉽게 만들기 위한 방법이라고 생각이 들었다.
-- 다른 플랫폼의 MVP는 개념적으로는 iOS MVC와 같지만 실제로 UIKit에서의 MVC는 View, ViewController(Controller) 간의 결합이 너무 강하다.
-- 그래서 iOS에서 MVP, MVVM을 이야기 할때는 둘 다 공통적으로 ViewController도 View 취급을 하는 것이며 이걸 해결한 것이 위와 같은 패턴들이다.
-- 참고
-  - https://velog.io/@eddy_song/mvc
-  - https://velog.io/@eddy_song/ios-mvc
-
-> Diffable DataSource
-- UICollectionView Diffable DataSource 활용
-- iOS 13.0 이후부터 가능
+> MVVM 패턴
+- `ViewController` -> `ViewModel` -> `Service` -> `Repository`
+- 참고 : https://www.youtube.com/watch?v=M58LqynqQHc
 
 > Pinterest Layout
 - 참고 : https://linux-studying.tistory.com/23
-- 각 이미지의 높이에 알맞게 구성해주기 위해 Pinterest Layout 활용
-
-> UICollectionView Compositional Layout
-- iOS 13.0 이후부터 가능
-- DetailViewController에서 전체 화면으로 가로 스크롤 구현에 활용
-- visibleItemsInvalidationHandler 활용해 각 아이템이 보여지기 전에 컨트롤 가능
 
 > UIImageWriteToSavedPhotosAlbum
 - 참고 : https://www.hackingwithswift.com/books/ios-swiftui/how-to-save-images-to-the-users-photo-library
