@@ -13,13 +13,17 @@ class SearchViewModel {
     private var page: Int
     private let searchService: SearchService
     
+    private var updating: Bool
+    
     var fetchEnded: () -> Void = {}
+    var updateEnded: () -> Void = {}
     
     init() {
         self.photos  = []
         self.query = ""
         self.page = 1
         self.searchService = SearchService()
+        self.updating = false
     }
     
     func photosCount() -> Int {
@@ -37,6 +41,11 @@ class SearchViewModel {
                 self?.photos.append(contentsOf: photos)
                 self?.page += 1
                 self?.fetchEnded()
+                
+                if self?.updating == true {
+                    self?.updateEnded()
+                    self?.updating = false
+                }
             case .failure(let error):
                 print(error.localizedDescription)
             }
@@ -50,6 +59,7 @@ class SearchViewModel {
         self.query = query
         photos.removeAll()
         page = 1
+        updating = true
         fetch()
     }
 }

@@ -81,7 +81,13 @@ class SearchViewController: UIViewController {
     private func setupBind() {
         viewModel.fetchEnded = { [weak self] in
             DispatchQueue.main.async {
-                self?.photoCollectionView.reloadData()
+                self?.photoCollectionView.reloadSections(IndexSet(integer: 0))
+            }
+        }
+        
+        viewModel.updateEnded = { [weak self] in
+            DispatchQueue.main.async {
+                self?.photoCollectionView.setContentOffset(.zero, animated: false)
             }
         }
     }
@@ -94,13 +100,11 @@ extension SearchViewController: UISearchBarDelegate {
         guard let query = searchBar.text else {
             return
         }
-        photoCollectionView.setContentOffset(CGPoint.zero, animated: true)
         viewModel.update(query)
     }
     
     func searchBarCancelButtonClicked(_ searchBar: UISearchBar) {
         let emptyQuery = ""
-        photoCollectionView.setContentOffset(CGPoint.zero, animated: true)
         viewModel.update(emptyQuery)
     }
 }
