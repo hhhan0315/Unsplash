@@ -97,6 +97,12 @@ class HomeViewController: UIViewController {
                 self?.photoTableView.reloadData()
             }
         }
+        
+        viewModel.updateEnded = { [weak self] in
+            DispatchQueue.main.async {
+                self?.photoTableView.scrollToRow(at: IndexPath(row: 0, section: 0), at: .top, animated: true)
+            }
+        }
     }
 }
 

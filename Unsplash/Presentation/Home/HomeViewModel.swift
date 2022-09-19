@@ -14,7 +14,10 @@ class HomeViewModel {
     private var page: Int
     private let photoService: PhotoService
     
+    private var updating: Bool
+    
     var fetchEnded: () -> Void = {}
+    var updateEnded: () -> Void = {}
     
     init() {
         self.photos = []
@@ -22,6 +25,7 @@ class HomeViewModel {
         self.currentTopic = .wallpapers
         self.page = 1
         self.photoService = PhotoService()
+        self.updating = false
     }
     
     func photosCount() -> Int {
@@ -45,7 +49,13 @@ class HomeViewModel {
             switch result {
             case .success(let photos):
                 self?.photos.append(contentsOf: photos)
+                self?.page += 1
                 self?.fetchEnded()
+                
+                if self?.updating == true {
+                    self?.updateEnded()
+                    self?.updating = false
+                }
             case .failure(let error):
                 print(error.localizedDescription)
             }
@@ -59,6 +69,7 @@ class HomeViewModel {
         currentTopic = topic
         photos.removeAll()
         page = 1
+        updating = true
         fetch()
     }
 }

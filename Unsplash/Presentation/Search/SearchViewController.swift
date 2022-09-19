@@ -87,7 +87,7 @@ class SearchViewController: UIViewController {
         
         viewModel.updateEnded = { [weak self] in
             DispatchQueue.main.async {
-                self?.photoCollectionView.setContentOffset(.zero, animated: false)
+                self?.photoCollectionView.scrollToItem(at: IndexPath(item: 0, section: 0), at: .top, animated: true)
             }
         }
     }
