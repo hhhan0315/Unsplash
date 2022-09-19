@@ -10,7 +10,7 @@ import Foundation
 class PhotoService {
     private let photoRepository = PhotoRepository()
     
-    func fetch(topic: Topic, page: Int, completion: @escaping (Result<[Photo], APICallError>) -> Void) {
+    func fetch(topic: Topic, page: Int, completion: @escaping (Result<[Photo], APIError>) -> Void) {
         photoRepository.fetch(topic: topic, page: page) { result in
             switch result {
             case .success(let photoEntities):

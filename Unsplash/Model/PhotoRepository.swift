@@ -10,7 +10,7 @@ import Foundation
 class PhotoRepository {
     private let apiCaller = APICaller()
     
-    func fetch(topic: Topic, page: Int, completion: @escaping (Result<[PhotoEntity], APICallError>) -> Void) {
+    func fetch(topic: Topic, page: Int, completion: @escaping (Result<[PhotoEntity], APIError>) -> Void) {
         apiCaller.request(api: .getTopic(topic: topic, page: page)) { result in
             switch result {
             case .success(let data):

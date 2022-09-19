@@ -7,7 +7,7 @@
 
 import Foundation
 
-enum APICallError: Error {
+enum APIError: Error {
     case URLError
     case NoData
     case ServerError(_ statusCode: Int)
@@ -16,7 +16,7 @@ enum APICallError: Error {
 }
 
 final class APICaller {
-    func request(api: API, completion: @escaping (Result<Data, APICallError>) -> Void) {
+    func request(api: API, completion: @escaping (Result<Data, APIError>) -> Void) {
         guard var urlComponents = URLComponents(string: api.baseURL + api.path) else {
             completion(.failure(.URLError))
             return

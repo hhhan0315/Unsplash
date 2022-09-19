@@ -10,7 +10,7 @@ import Foundation
 class SearchService {
     private let searchRepository = SearchRepository()
     
-    func fetch(query: String, page: Int, completion: @escaping (Result<[Photo], APICallError>) -> Void) {
+    func fetch(query: String, page: Int, completion: @escaping (Result<[Photo], APIError>) -> Void) {
         searchRepository.fetch(query: query, page: page) { result in
             switch result {
             case .success(let searchEntity):
