@@ -7,14 +7,13 @@
 
 import Foundation
 
-// 열거형을 사용해 구현(열거형을 선택한 이유는 네트워크 주소 case에 따라 구분 가능)
 enum API {
     enum HTTPMethod: String {
         case get = "GET"
         case post = "POST"
     }
     
-    // 연관값을 활용해 구체적인 정보 저장
+    case getPhotos(page: Int)
     case getTopic(topic: Topic, page: Int)
     case getSearch(query: String, page: Int)
     
@@ -28,7 +27,8 @@ enum API {
     
     var path: String {
         switch self {
-        // 변수에 바인딩해서 사용 (방법 1)
+        case .getPhotos:
+            return "/photos"
         case .getTopic(let topic, _):
             return "/topics/\(topic.rawValue)/photos"
         case .getSearch:
@@ -38,7 +38,8 @@ enum API {
     
     var query: [String: String] {
         switch self {
-        // 변수에 바인딩해서 사용 (방법 2)
+        case let .getPhotos(page):
+            return ["page": "\(page)"]
         case let .getTopic(_, page):
             return ["page": "\(page)"]
         case let .getSearch(query, page):
@@ -47,6 +48,6 @@ enum API {
     }
     
     var header: [String: String] {
-        return ["Authorization": "Client-ID \(Constants.apiKey)"]
+        return ["Authorization": "Client-ID \(Secrets.clientID)"]
     }
 }

@@ -1,5 +1,5 @@
 //
-//  HomePhotoTableViewCell.swift
+//  CategoryPhotoTableViewCell.swift
 //  Unsplash
 //
 //  Created by rae on 2022/09/15.
@@ -7,11 +7,11 @@
 
 import UIKit
 
-class HomePhotoTableViewCell: UITableViewCell {
+class CategoryPhotoTableViewCell: UITableViewCell {
     
     // MARK: - Properties
     
-    static let identifier: String = String(describing: HomePhotoTableViewCell.self)
+    static let identifier: String = String(describing: CategoryPhotoTableViewCell.self)
         
     // MARK: - UI Define
     

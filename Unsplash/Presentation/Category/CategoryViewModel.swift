@@ -1,23 +1,25 @@
 //
-//  SearchViewModel.swift
+//  CategoryViewModel.swift
 //  Unsplash
 //
-//  Created by rae on 2022/05/17.
+//  Created by rae on 2022/05/12.
 //
 
 import UIKit
 
-class SearchViewModel {
+class CategoryViewModel {
     @Published var photos: [Photo]
-    private var query: String
+    private var topics: [Topic]
+    private var currentTopic: Topic
     private var page: Int
-    private let searchService: SearchService
+    private let photoService: PhotoService
     
     init() {
-        self.photos  = []
-        self.query = ""
+        self.photos = []
+        self.topics = Topic.allCases
+        self.currentTopic = .wallpapers
         self.page = 1
-        self.searchService = SearchService()
+        self.photoService = PhotoService()
     }
     
     func photosCount() -> Int {
@@ -28,8 +30,16 @@ class SearchViewModel {
         return photos[index]
     }
     
+    func topicsCount() -> Int {
+        return topics.count
+    }
+    
+    func topic(at index: Int) -> Topic {
+        return topics[index]
+    }
+    
     func fetch() {
-        searchService.fetch(query: query, page: page) { [weak self] result in
+        photoService.fetch(topic: currentTopic, page: page) { [weak self] result in
             switch result {
             case .success(let photos):
                 self?.photos.append(contentsOf: photos)
@@ -40,11 +50,11 @@ class SearchViewModel {
         }
     }
     
-    func update(_ query: String) {
-        guard self.query != query else {
+    func update(with topic: Topic) {
+        guard currentTopic != topic else {
             return
         }
-        self.query = query
+        currentTopic = topic
         photos.removeAll()
         page = 1
         fetch()

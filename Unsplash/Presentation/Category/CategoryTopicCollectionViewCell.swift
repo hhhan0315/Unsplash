@@ -1,5 +1,5 @@
 //
-//  HomeTopicCollectionViewCell.swift
+//  CategoryTopicCollectionViewCell.swift
 //  Unsplash
 //
 //  Created by rae on 2022/05/03.
@@ -7,16 +7,16 @@
 
 import UIKit
 
-protocol HomeTopicCollectionViewCellDelegate: AnyObject {
+protocol CategoryTopicCollectionViewCellDelegate: AnyObject {
     func touchTopicButton(title: String)
 }
 
-class HomeTopicCollectionViewCell: UICollectionViewCell {
+class CategoryTopicCollectionViewCell: UICollectionViewCell {
     
     // MARK: - Properties
-    static let identifier: String = String(describing: HomeTopicCollectionViewCell.self)
+    static let identifier: String = String(describing: CategoryTopicCollectionViewCell.self)
     
-    weak var delegate: HomeTopicCollectionViewCellDelegate?
+    weak var delegate: CategoryTopicCollectionViewCellDelegate?
     
     // MARK: - UI Define
     

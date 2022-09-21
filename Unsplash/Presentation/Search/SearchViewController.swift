@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import Combine
 
 class SearchViewController: UIViewController {
     
@@ -22,9 +23,23 @@ class SearchViewController: UIViewController {
         return collectionView
     }()
     
+    private let infoLabel: UILabel = {
+        let label = UILabel()
+        label.text = "No Photos"
+        label.isHidden = true
+        return label
+    }()
+    
+    private let activityIndicatorView: UIActivityIndicatorView = {
+        let activityIndicatorView = UIActivityIndicatorView()
+        activityIndicatorView.style = .large
+        return activityIndicatorView
+    }()
+    
     // MARK: - Properties
     
     private let viewModel: SearchViewModel
+    private var cancellable = Set<AnyCancellable>()
     
     // MARK: - View LifeCycle
     
@@ -49,6 +64,8 @@ class SearchViewController: UIViewController {
     private func setupViews() {
         setupNavigation()
         setupPhotoCollectionView()
+        setupInfoLabel()
+        setupActivityIndicatorView()
     }
     
     private func setupNavigation() {
@@ -75,21 +92,40 @@ class SearchViewController: UIViewController {
             photoCollectionView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor),
         ])
     }
+    
+    private func setupInfoLabel() {
+        view.addSubview(infoLabel)
+        infoLabel.translatesAutoresizingMaskIntoConstraints = false
+        NSLayoutConstraint.activate([
+            infoLabel.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+            infoLabel.centerYAnchor.constraint(equalTo: view.centerYAnchor),
+        ])
+    }
+    
+    private func setupActivityIndicatorView() {
+        view.addSubview(activityIndicatorView)
+        activityIndicatorView.translatesAutoresizingMaskIntoConstraints = false
+        NSLayoutConstraint.activate([
+            activityIndicatorView.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+            activityIndicatorView.centerYAnchor.constraint(equalTo: view.centerYAnchor),
+        ])
+    }
         
     // MARK: - Bind
     
     private func setupBind() {
-        viewModel.fetchEnded = { [weak self] in
-            DispatchQueue.main.async {
+        viewModel.$photos
+            .receive(on: DispatchQueue.main)
+            .sink { [weak self] photos in
+                if photos.isEmpty {
+                    self?.infoLabel.isHidden = false
+                    self?.photoCollectionView.setContentOffset(.zero, animated: false)
+                } else {
+                    self?.infoLabel.isHidden = true
+                }
                 self?.photoCollectionView.reloadSections(IndexSet(integer: 0))
             }
-        }
-        
-        viewModel.updateEnded = { [weak self] in
-            DispatchQueue.main.async {
-                self?.photoCollectionView.scrollToItem(at: IndexPath(item: 0, section: 0), at: .top, animated: true)
-            }
-        }
+            .store(in: &cancellable)
     }
 }
 

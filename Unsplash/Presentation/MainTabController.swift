@@ -12,6 +12,7 @@ final class MainTabController: UITabBarController {
     enum MainTabBarItem {
         case home
         case search
+        case heart
         
         var image: UIImage? {
             switch self {
@@ -19,6 +20,8 @@ final class MainTabController: UITabBarController {
                 return UIImage(systemName: "photo.fill")
             case .search:
                 return UIImage(systemName: "magnifyingglass")
+            case .heart:
+                return UIImage(systemName: "heart.fill")
             }
         }
     }
@@ -32,17 +35,23 @@ final class MainTabController: UITabBarController {
     private func configureUI() {
         let homeTabBarItem = UITabBarItem(title: nil, image: MainTabBarItem.home.image, selectedImage: nil)
         let searchTabBarItem = UITabBarItem(title: nil, image: MainTabBarItem.search.image, selectedImage: nil)
+        let heartTabBarItem = UITabBarItem(title: nil, image: MainTabBarItem.heart.image, selectedImage: nil)
         
-        let homeViewModel = HomeViewModel()
-        let homeViewController = UINavigationController(rootViewController: HomeViewController(viewModel: homeViewModel))
+//        let homeViewModel = CategoryViewModel()
+//        let homeViewController = UINavigationController(rootViewController: CategoryViewController(viewModel: homeViewModel))
+//        homeViewController.tabBarItem = homeTabBarItem
+        let homeViewController = UINavigationController(rootViewController: HomeViewController())
         homeViewController.tabBarItem = homeTabBarItem
         
         let searchViewModel = SearchViewModel()
         let searchViewController = UINavigationController(rootViewController: SearchViewController(viewModel: searchViewModel))
         searchViewController.tabBarItem = searchTabBarItem
         
-        self.tabBar.tintColor = .white
+        let heartViewController = UINavigationController(rootViewController: HeartViewController())
+        heartViewController.tabBarItem = heartTabBarItem
         
-        self.viewControllers = [homeViewController, searchViewController]
+        self.tabBar.tintColor = .label
+        
+        self.viewControllers = [homeViewController, searchViewController, heartViewController]
     }
 }
