@@ -31,6 +31,8 @@
 		01C0C99E28D8A19B00D655BD /* HeartViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01C0C99D28D8A19B00D655BD /* HeartViewController.swift */; };
 		01C0C9A428DA98F900D655BD /* HomeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01C0C9A328DA98F900D655BD /* HomeViewController.swift */; };
 		01C0C9A728DA9FCA00D655BD /* HomeViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01C0C9A628DA9FCA00D655BD /* HomeViewModel.swift */; };
+		01C0C9AC28DADE4E00D655BD /* UIViewController+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01C0C9AB28DADE4E00D655BD /* UIViewController+Extension.swift */; };
+		01C0C9AE28DAE30D00D655BD /* Alert.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01C0C9AD28DAE30D00D655BD /* Alert.swift */; };
 		01C70DC7283345D800185DF0 /* SearchViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01C70DC6283345D800185DF0 /* SearchViewModel.swift */; };
 		01C70DD32833849100185DF0 /* SearchEntity.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01C70DD22833849100185DF0 /* SearchEntity.swift */; };
 		01D9D2C3281F71C400E308D4 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01D9D2C2281F71C400E308D4 /* AppDelegate.swift */; };
@@ -67,6 +69,8 @@
 		01C0C99D28D8A19B00D655BD /* HeartViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HeartViewController.swift; sourceTree = "<group>"; };
 		01C0C9A328DA98F900D655BD /* HomeViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeViewController.swift; sourceTree = "<group>"; };
 		01C0C9A628DA9FCA00D655BD /* HomeViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeViewModel.swift; sourceTree = "<group>"; };
+		01C0C9AB28DADE4E00D655BD /* UIViewController+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIViewController+Extension.swift"; sourceTree = "<group>"; };
+		01C0C9AD28DAE30D00D655BD /* Alert.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Alert.swift; sourceTree = "<group>"; };
 		01C70DC6283345D800185DF0 /* SearchViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchViewModel.swift; sourceTree = "<group>"; };
 		01C70DD22833849100185DF0 /* SearchEntity.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchEntity.swift; sourceTree = "<group>"; };
 		01D9D2BF281F71C400E308D4 /* Unsplash.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Unsplash.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -135,9 +139,9 @@
 		0128D1AB289943DA00D17627 /* Model */ = {
 			isa = PBXGroup;
 			children = (
+				01C0C9AD28DAE30D00D655BD /* Alert.swift */,
 				019D78CC28C9BA2E00EB3FEB /* API.swift */,
 				019D78CE28C9C01F00EB3FEB /* APICaller.swift */,
-				015744F72844586400B3A6F7 /* Secrets.swift */,
 				019CE07F28D45F4C009D4696 /* Photo.swift */,
 				0194CD2328221CE40006470D /* PhotoEntity.swift */,
 				019CE08128D46A26009D4696 /* PhotoRepository.swift */,
@@ -145,6 +149,7 @@
 				01C70DD22833849100185DF0 /* SearchEntity.swift */,
 				019CE08528D591CA009D4696 /* SearchRepository.swift */,
 				019CE08728D59230009D4696 /* SearchService.swift */,
+				015744F72844586400B3A6F7 /* Secrets.swift */,
 				0132BAF62820D34000E7A81A /* Topic.swift */,
 			);
 			path = Model;
@@ -186,6 +191,7 @@
 			isa = PBXGroup;
 			children = (
 				019D78C728C872D200EB3FEB /* UIImageView+Extension.swift */,
+				01C0C9AB28DADE4E00D655BD /* UIViewController+Extension.swift */,
 			);
 			path = Extension;
 			sourceTree = "<group>";
@@ -314,6 +320,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				01C0C9AC28DADE4E00D655BD /* UIViewController+Extension.swift in Sources */,
 				01C0C99E28D8A19B00D655BD /* HeartViewController.swift in Sources */,
 				01D9D2DB281F7B1B00E308D4 /* SearchViewController.swift in Sources */,
 				01C0C9A428DA98F900D655BD /* HomeViewController.swift in Sources */,
@@ -343,6 +350,7 @@
 				019D78CF28C9C01F00EB3FEB /* APICaller.swift in Sources */,
 				01C70DC7283345D800185DF0 /* SearchViewModel.swift in Sources */,
 				019CE08828D59230009D4696 /* SearchService.swift in Sources */,
+				01C0C9AE28DAE30D00D655BD /* Alert.swift in Sources */,
 				0132BAF52820C62E00E7A81A /* DetailViewController.swift in Sources */,
 				015744F82844586400B3A6F7 /* Secrets.swift in Sources */,
 			);
