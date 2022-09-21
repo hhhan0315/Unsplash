@@ -15,7 +15,7 @@ class SearchRepository {
             switch result {
             case .success(let data):
                 guard let decodedData = try? JSONDecoder().decode(SearchEntity.self, from: data) else {
-                    completion(.failure(.DecodeError))
+                    completion(.failure(.decodeError))
                     return
                 }
                 completion(.success(decodedData))

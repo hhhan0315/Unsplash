@@ -39,15 +39,15 @@ class CategoryViewModel {
     }
     
     func fetch() {
-        photoService.fetch(topic: currentTopic, page: page) { [weak self] result in
-            switch result {
-            case .success(let photos):
-                self?.photos.append(contentsOf: photos)
-                self?.page += 1
-            case .failure(let error):
-                print(error.localizedDescription)
-            }
-        }
+//        photoService.fetch(topic: currentTopic, page: page) { [weak self] result in
+//            switch result {
+//            case .success(let photos):
+//                self?.photos.append(contentsOf: photos)
+//                self?.page += 1
+//            case .failure(let error):
+//                print(error.localizedDescription)
+//            }
+//        }
     }
     
     func update(with topic: Topic) {
