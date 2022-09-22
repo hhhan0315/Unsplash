@@ -35,6 +35,8 @@
 		01C0C9AE28DAE30D00D655BD /* Alert.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01C0C9AD28DAE30D00D655BD /* Alert.swift */; };
 		01C0C9B128DAEB9F00D655BD /* APIError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01C0C9B028DAEB9F00D655BD /* APIError.swift */; };
 		01C0C9B328DAF48100D655BD /* HomeTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01C0C9B228DAF48100D655BD /* HomeTableViewCell.swift */; };
+		01C0C9B728DB414000D655BD /* HomeTableLoadingCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01C0C9B628DB414000D655BD /* HomeTableLoadingCell.swift */; };
+		01C0C9B928DC3D1D00D655BD /* Query.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01C0C9B828DC3D1D00D655BD /* Query.swift */; };
 		01C70DC7283345D800185DF0 /* SearchViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01C70DC6283345D800185DF0 /* SearchViewModel.swift */; };
 		01C70DD32833849100185DF0 /* SearchEntity.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01C70DD22833849100185DF0 /* SearchEntity.swift */; };
 		01D9D2C3281F71C400E308D4 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01D9D2C2281F71C400E308D4 /* AppDelegate.swift */; };
@@ -75,6 +77,8 @@
 		01C0C9AD28DAE30D00D655BD /* Alert.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Alert.swift; sourceTree = "<group>"; };
 		01C0C9B028DAEB9F00D655BD /* APIError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = APIError.swift; sourceTree = "<group>"; };
 		01C0C9B228DAF48100D655BD /* HomeTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeTableViewCell.swift; sourceTree = "<group>"; };
+		01C0C9B628DB414000D655BD /* HomeTableLoadingCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeTableLoadingCell.swift; sourceTree = "<group>"; };
+		01C0C9B828DC3D1D00D655BD /* Query.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Query.swift; sourceTree = "<group>"; };
 		01C70DC6283345D800185DF0 /* SearchViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchViewModel.swift; sourceTree = "<group>"; };
 		01C70DD22833849100185DF0 /* SearchEntity.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchEntity.swift; sourceTree = "<group>"; };
 		01D9D2BF281F71C400E308D4 /* Unsplash.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Unsplash.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -208,6 +212,7 @@
 			isa = PBXGroup;
 			children = (
 				01C0C9B228DAF48100D655BD /* HomeTableViewCell.swift */,
+				01C0C9B628DB414000D655BD /* HomeTableLoadingCell.swift */,
 				01C0C9A328DA98F900D655BD /* HomeViewController.swift */,
 				01C0C9A628DA9FCA00D655BD /* HomeViewModel.swift */,
 			);
@@ -230,6 +235,7 @@
 				019D78CC28C9BA2E00EB3FEB /* API.swift */,
 				019D78CE28C9C01F00EB3FEB /* APICaller.swift */,
 				01C0C9B028DAEB9F00D655BD /* APIError.swift */,
+				01C0C9B828DC3D1D00D655BD /* Query.swift */,
 				015744F72844586400B3A6F7 /* Secrets.swift */,
 			);
 			path = Network;
@@ -346,6 +352,7 @@
 				0128D1A9289918A900D17627 /* ImageSaver.swift in Sources */,
 				016561DD282CFFB600437475 /* CategoryViewModel.swift in Sources */,
 				019CE08628D591CA009D4696 /* SearchRepository.swift in Sources */,
+				01C0C9B728DB414000D655BD /* HomeTableLoadingCell.swift in Sources */,
 				019CE08428D4753D009D4696 /* PhotoService.swift in Sources */,
 				019D78CD28C9BA2E00EB3FEB /* API.swift in Sources */,
 				015744FC28445B4B00B3A6F7 /* DetailPhotoCollectionViewCell.swift in Sources */,
@@ -354,6 +361,7 @@
 				019D78C828C872D200EB3FEB /* UIImageView+Extension.swift in Sources */,
 				0194CD2428221CE40006470D /* PhotoEntity.swift in Sources */,
 				019CE08228D46A26009D4696 /* PhotoRepository.swift in Sources */,
+				01C0C9B928DC3D1D00D655BD /* Query.swift in Sources */,
 				0132BAF72820D34000E7A81A /* Topic.swift in Sources */,
 				019CE07E28D3188A009D4696 /* CategoryPhotoTableViewCell.swift in Sources */,
 				019CE08028D45F4C009D4696 /* Photo.swift in Sources */,

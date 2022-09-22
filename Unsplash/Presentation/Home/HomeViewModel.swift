@@ -10,19 +10,29 @@ import Foundation
 final class HomeViewModel {
     private let photoService = PhotoService()
     
-    var photos: [Photo] = []
+    @Published var range: Range<Int>? = nil
+    @Published var error: APIError? = nil
     
-    var fetchSucceed: (() -> Void)?
-    var fetchFail: ((APIError) -> Void)?
+    private var photos: [Photo] = []
+    
+    func photosCount() -> Int {
+        return photos.count
+    }
+    
+    func photo(at index: Int) -> Photo {
+        return photos[index]
+    }
     
     func fetch() {
+        let count = self.photosCount()
+        
         photoService.fetch { result in
             switch result {
             case .success(let photos):
                 self.photos.append(contentsOf: photos)
-                self.fetchSucceed?()
+                self.range = count..<count + Query.perPage
             case .failure(let apiError):
-                self.fetchFail?(apiError)
+                self.error = apiError
             }
         }
     }
