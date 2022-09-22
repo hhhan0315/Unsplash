@@ -1,39 +1,13 @@
 # Unsplash
 Unsplash Image API를 활용한 사진 앱
+> Network - Secrets - clientID에 Unsplash API Key 입력 후 실행
 
-## Diagram
-|Home|Search|
-|--|--|
-|<img src="https://github.com/hhhan0315/Unsplash/blob/main/screenshot/diagram1.jpg">|<img src="https://github.com/hhhan0315/Unsplash/blob/main/screenshot/diagram2.jpg">|
+## Screenshot
+
+## 구현 내용
+- [MVVM 패턴](https://github.com/hhhan0315/Unsplash/tree/main/markdown/MVVM.md)
 
 ## 기능
-|Pagination|세부 화면|검색|
-|--|--|--|
-|<img src="https://github.com/hhhan0315/Unsplash/blob/main/screenshot/pagination.gif" width="220">|<img src="https://github.com/hhhan0315/Unsplash/blob/main/screenshot/detail.gif" width="220">|<img src="https://github.com/hhhan0315/Unsplash/blob/main/screenshot/search.gif" width="220">|
-
-|저장 권한 허용 및 성공|저장 권한 허용 요청|
-|--|--|
-|<img src="https://github.com/hhhan0315/Unsplash/blob/main/screenshot/save.gif" width="220">|<img src="https://github.com/hhhan0315/Unsplash/blob/main/screenshot/save_failure.gif" width="220">|
-
-## 구조
-<img src="https://github.com/hhhan0315/Unsplash/blob/main/screenshot/architecture1.png">
-<img src="https://github.com/hhhan0315/Unsplash/blob/main/screenshot/architecture2.png">
-
-> MVVM 패턴
-- `ViewController` -> `ViewModel` -> `Service` -> `Repository`
-- `ViewController` : ViewModel을 활용해 화면 표현
-- `ViewModel` : Service를 활용해 화면에서 보여질 데이터 처리
-- `Service` : Repository를 활용해 서비스 로직에서 사용하는 데이터 모델로 변환
-- `Repository` : Server Model 전달
-- 참고 : https://www.youtube.com/watch?v=M58LqynqQHc
-
-## 커밋 메시지
-- Convention
-  - [feat] : 기능 추가 / 새로운 로직
-  - [fix] : 버그 수정
-  - [chore] : 간단한 수정
-  - [docs] : 문서 및 리드미 작성
-  - [refactor] : 리팩토링
 
 ## 회고
 > 싱글톤을 선택한 이유
