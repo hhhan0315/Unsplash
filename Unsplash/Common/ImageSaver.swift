@@ -12,7 +12,7 @@ protocol ImageSaverDelegate: AnyObject {
     func saveSuccess()
 }
 
-class ImageSaver: NSObject {
+final class ImageSaver: NSObject {
     weak var delegate: ImageSaverDelegate?
     
     func writeToPhotoAlbum(image: UIImage) {

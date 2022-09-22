@@ -159,16 +159,6 @@
 			path = Model;
 			sourceTree = "<group>";
 		};
-		015C93B8283C711E009F2498 /* Util */ = {
-			isa = PBXGroup;
-			children = (
-				0128D1A8289918A900D17627 /* ImageSaver.swift */,
-				019D78C928C87DA700EB3FEB /* ImageLoader.swift */,
-				015C93B4283880BA009F2498 /* ImageCacheManager.swift */,
-			);
-			path = Util;
-			sourceTree = "<group>";
-		};
 		016561CE282CE7B400437475 /* Application */ = {
 			isa = PBXGroup;
 			children = (
@@ -223,6 +213,8 @@
 			isa = PBXGroup;
 			children = (
 				01C0C9AD28DAE30D00D655BD /* Alert.swift */,
+				0128D1A8289918A900D17627 /* ImageSaver.swift */,
+				015C93B4283880BA009F2498 /* ImageCacheManager.swift */,
 				019D78CB28C8B1BB00EB3FEB /* Extension */,
 				0128D1AB289943DA00D17627 /* Model */,
 			);
@@ -237,6 +229,7 @@
 				01C0C9B028DAEB9F00D655BD /* APIError.swift */,
 				01C0C9B828DC3D1D00D655BD /* Query.swift */,
 				015744F72844586400B3A6F7 /* Secrets.swift */,
+				019D78C928C87DA700EB3FEB /* ImageLoader.swift */,
 			);
 			path = Network;
 			sourceTree = "<group>";
@@ -265,7 +258,6 @@
 				01C0C9AF28DAE39F00D655BD /* Network */,
 				0194CD332822A5240006470D /* Presentation */,
 				0128D1AA289942E900D17627 /* Resource */,
-				015C93B8283C711E009F2498 /* Util */,
 			);
 			path = Unsplash;
 			sourceTree = "<group>";
