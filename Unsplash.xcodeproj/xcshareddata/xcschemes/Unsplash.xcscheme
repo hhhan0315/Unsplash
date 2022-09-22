@@ -32,7 +32,7 @@
             skipped = "NO">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "013ED844284C52C700B242FE"
+               BlueprintIdentifier = "01C0C9BD28DC443600D655BD"
                BuildableName = "UnsplashTests.xctest"
                BlueprintName = "UnsplashTests"
                ReferencedContainer = "container:Unsplash.xcodeproj">

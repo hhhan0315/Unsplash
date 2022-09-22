@@ -8,7 +8,15 @@
 import Foundation
 
 final class APICaller {
-    func request(api: API, completion: @escaping (Result<Data, APIError>) -> Void) {
+    var urlSession: URLSessionProtocol
+    
+    init(urlSession: URLSessionProtocol = URLSession.shared) {
+        self.urlSession = urlSession
+    }
+    
+    func request<T: Decodable>(api: API,
+                               dataType: T.Type,
+                               completion: @escaping (Result<T, APIError>) -> Void) {
         guard var urlComponents = URLComponents(string: api.baseURL + api.path) else {
             completion(.failure(.invalidURLError))
             return
@@ -25,7 +33,7 @@ final class APICaller {
         urlRequest.httpMethod = api.method.rawValue
         urlRequest.allHTTPHeaderFields = api.header
         
-        URLSession.shared.dataTask(with: urlRequest) { data, response, error in
+        let task = urlSession.dataTask(with: urlRequest) { data, response, error in
             guard let httpResponse = response as? HTTPURLResponse else {
                 completion(.failure(.unknownError))
                 return
@@ -46,7 +54,14 @@ final class APICaller {
                 return
             }
             
-            completion(.success(data))
-        }.resume()
+            do {
+                let decodeData = try JSONDecoder().decode(T.self, from: data)
+                completion(.success(decodeData))
+            } catch {
+                completion(.failure(.decodeError))
+            }
+        }
+        
+        task.resume()
     }
 }
