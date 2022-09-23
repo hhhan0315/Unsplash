@@ -17,16 +17,6 @@ Unsplash Image API를 활용한 사진 앱
 - 그래서 ImageCacheManager만 싱글톤으로 구현했으며 그 이유는 해당 객체 안에 NSCache라는 메모리 캐시를 활용하는데 사용할 때마다 객체를 생성한다면 캐시가 새롭게 생성되기 때문에 이미지 데이터를 캐시로 불어올 수 없어서 전역 객체를 만들어서 캐시에 언제든 접근할 수 있도록 구현했다.
 - 참고 : https://medium.com/hcleedev/swift-singleton-싱글톤-패턴-b84cfe57c541
 
-> Moya 참고해 Network 설계
-- Moya 라이브러리 중 TargetType 참고
-- `API`
-  - https://github.com/hhhan0315/Unsplash/blob/main/Unsplash/Model/API.swift
-  - enum 타입으로 구현 및 연관값, 변수에 바인딩해서 주소 분리
-- `APICaller`
-  - https://github.com/hhhan0315/Unsplash/blob/main/Unsplash/Model/APICaller.swift
-  - API 열거형, Generic을 활용해 Decodable한 객체를 completion으로 전달해주는 역할
-- 참고 : https://jiseobkim.github.io/swift/2021/08/16/swift-내가-쓰는-Network-Request-스타일(Moya-착안).html
-
 > Pinterest Layout
 - 참고 : https://linux-studying.tistory.com/23
 

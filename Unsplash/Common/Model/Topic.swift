@@ -7,19 +7,8 @@
 
 import Foundation
 
-enum Topic: String, CaseIterable {
-    case wallpapers
-    case experimental
-    case architecture
-    case nature
-    case fashion
-    case film
-    case people
-    case interiors
-    case travel
-    case animals
-    
-    var title: String {
-        return self.rawValue.capitalized
-    }
+struct Topic {
+    let title: String
+    let slug: String
+    let coverPhotoURL: String
 }

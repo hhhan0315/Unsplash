@@ -2,7 +2,6 @@
 # enum API
 - Moya TargetType 스타일을 참고
 - 네트워크 통신을 하면서 기본적인 정보를 저장하는 역할
-- case문을 사용함으로 각 주소별로 필요한 정보를 저장할 수 있다.
 
 ```swift
 enum API {
@@ -41,6 +40,9 @@ enum API {
 }
 ```
 
+- case문을 사용함으로 각 주소별로 필요한 정보를 저장할 수 있다.
+- 연관값을 사용하며 바인딩을 통해 page, query 등 변화하는 값을 전달해서 주소를 생성할 수 있다.
+
 # APICaller
 
 ```swift
@@ -59,8 +61,8 @@ final class APICaller {
 }
 ```
 
+- API, Generic을 활용해 원하는 Decodable한 dataType으로 리턴해주는 역할
 - URLSessionProtocol 의존성 주입을 통해 URLSession을 test 환경에서는 다른걸 사용할 수 있도록 구현했다.
-- request 시 API Enum을 활용해 URLRequest로 dataTask를 처리하며 dataType을 통해 decode된 결과값을 리턴해준다.
 
 # Test
 - 네트워크 통신이 되지 않더라도 테스트를 할 수 있는 환경을 구현할 수 있었다.

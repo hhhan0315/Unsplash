@@ -8,5 +8,5 @@
 import Foundation
 
 struct SearchEntity: Decodable {
-    var results: [PhotoEntity]
+    let results: [PhotoEntity]
 }

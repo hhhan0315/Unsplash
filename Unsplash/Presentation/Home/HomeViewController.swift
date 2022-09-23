@@ -37,7 +37,7 @@ final class HomeViewController: UIViewController {
         setupLayout()
         setupBind()
         
-        viewModel.fetch()
+//        viewModel.fetch()
     }
     
     // MARK: - Layout

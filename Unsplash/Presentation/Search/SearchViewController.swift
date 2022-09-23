@@ -8,124 +8,139 @@
 import UIKit
 import Combine
 
-class SearchViewController: UIViewController {
+final class SearchViewController: UIViewController {
     
-    // MARK: - View Define
+    // MARK: - UI Define
     
-    private lazy var photoCollectionView: UICollectionView = {
-        let layout = PinterestLayout()
-        layout.delegate = self
+    private let topicCollectionView: UICollectionView = {
+        let itemSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(0.5), heightDimension: .fractionalHeight(1.0))
+        let item = NSCollectionLayoutItem(layoutSize: itemSize)
+        item.contentInsets = NSDirectionalEdgeInsets(top: 2.0, leading: 2.0, bottom: 2.0, trailing: 2.0)
+        
+        let groupSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0), heightDimension: .fractionalWidth(0.5))
+        let group = NSCollectionLayoutGroup.horizontal(layoutSize: groupSize, subitems: [item])
+        
+        let section = NSCollectionLayoutSection(group: group)
+        let layout = UICollectionViewCompositionalLayout(section: section)
         
         let collectionView = UICollectionView(frame: .zero, collectionViewLayout: layout)
-        collectionView.register(SearchPhotoCollectionViewCell.self, forCellWithReuseIdentifier: SearchPhotoCollectionViewCell.identifier)
-        collectionView.delegate = self
-        collectionView.dataSource = self
+        collectionView.register(TopicCollectionViewCell.self, forCellWithReuseIdentifier: TopicCollectionViewCell.identifier)
         return collectionView
     }()
     
-    private let infoLabel: UILabel = {
-        let label = UILabel()
-        label.text = "No Photos"
-        label.isHidden = true
-        return label
-    }()
-    
-    private let activityIndicatorView: UIActivityIndicatorView = {
-        let activityIndicatorView = UIActivityIndicatorView()
-        activityIndicatorView.style = .large
-        return activityIndicatorView
-    }()
+//    private lazy var photoCollectionView: UICollectionView = {
+//        let layout = PinterestLayout()
+//        layout.delegate = self
+//
+//        let collectionView = UICollectionView(frame: .zero, collectionViewLayout: layout)
+//        collectionView.register(SearchPhotoCollectionViewCell.self, forCellWithReuseIdentifier: SearchPhotoCollectionViewCell.identifier)
+//        collectionView.delegate = self
+//        collectionView.dataSource = self
+//        return collectionView
+//    }()
     
     // MARK: - Properties
     
-    private let viewModel: SearchViewModel
+    private let viewModel = SearchViewModel()
     private var cancellable = Set<AnyCancellable>()
     
     // MARK: - View LifeCycle
     
-    init(viewModel: SearchViewModel) {
-        self.viewModel = viewModel
-        super.init(nibName: nil, bundle: nil)
-    }
-    
-    required init?(coder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
-    }
-    
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        setupViews()
+        setupLayout()
         setupBind()
+        
+        viewModel.fetch()
     }
     
     // MARK: - Layout
     
-    private func setupViews() {
-        setupNavigation()
-        setupPhotoCollectionView()
-        setupInfoLabel()
-        setupActivityIndicatorView()
+    private func setupLayout() {
+        view.backgroundColor = .systemBackground
+        setupNavigationBar()
+        setupSearchController()
+        setupTopicCollectionView()
+//        setupPhotoCollectionView()
     }
     
-    private func setupNavigation() {
+    private func setupNavigationBar() {
         navigationItem.title = "Search"
-        navigationItem.backButtonTitle = ""
-        
+        navigationItem.backButtonTitle = nil
+    }
+    
+    private func setupSearchController() {
         let searchController = UISearchController(searchResultsController: nil)
         searchController.searchBar.delegate = self
         searchController.searchBar.placeholder = "Search photos"
         searchController.hidesNavigationBarDuringPresentation = false
-        searchController.obscuresBackgroundDuringPresentation = false
         
-        navigationItem.searchController = searchController
         navigationItem.hidesSearchBarWhenScrolling = false
+        navigationItem.searchController = searchController
     }
     
-    private func setupPhotoCollectionView() {
-        view.addSubview(photoCollectionView)
-        photoCollectionView.translatesAutoresizingMaskIntoConstraints = false
-        NSLayoutConstraint.activate([
-            photoCollectionView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
-            photoCollectionView.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor),
-            photoCollectionView.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor),
-            photoCollectionView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor),
-        ])
-    }
-    
-    private func setupInfoLabel() {
-        view.addSubview(infoLabel)
-        infoLabel.translatesAutoresizingMaskIntoConstraints = false
-        NSLayoutConstraint.activate([
-            infoLabel.centerXAnchor.constraint(equalTo: view.centerXAnchor),
-            infoLabel.centerYAnchor.constraint(equalTo: view.centerYAnchor),
-        ])
-    }
-    
-    private func setupActivityIndicatorView() {
-        view.addSubview(activityIndicatorView)
-        activityIndicatorView.translatesAutoresizingMaskIntoConstraints = false
-        NSLayoutConstraint.activate([
-            activityIndicatorView.centerXAnchor.constraint(equalTo: view.centerXAnchor),
-            activityIndicatorView.centerYAnchor.constraint(equalTo: view.centerYAnchor),
-        ])
-    }
+    private func setupTopicCollectionView() {
+        topicCollectionView.dataSource = self
+        topicCollectionView.delegate = self
         
+        view.addSubview(topicCollectionView)
+        topicCollectionView.translatesAutoresizingMaskIntoConstraints = false
+        NSLayoutConstraint.activate([
+            topicCollectionView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
+            topicCollectionView.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor),
+            topicCollectionView.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor),
+            topicCollectionView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor),
+        ])
+    }
+    
+//    private func setupPhotoCollectionView() {
+//        view.addSubview(photoCollectionView)
+//        photoCollectionView.translatesAutoresizingMaskIntoConstraints = false
+//        NSLayoutConstraint.activate([
+//            photoCollectionView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
+//            photoCollectionView.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor),
+//            photoCollectionView.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor),
+//            photoCollectionView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor),
+//        ])
+//    }
+            
     // MARK: - Bind
     
     private func setupBind() {
-        viewModel.$photos
+        viewModel.$range
             .receive(on: DispatchQueue.main)
-            .sink { [weak self] photos in
-                if photos.isEmpty {
-                    self?.infoLabel.isHidden = false
-                    self?.photoCollectionView.setContentOffset(.zero, animated: false)
-                } else {
-                    self?.infoLabel.isHidden = true
+            .sink { range in
+                guard let range = range else {
+                    return
                 }
-                self?.photoCollectionView.reloadSections(IndexSet(integer: 0))
+                let indexPaths = range.map { IndexPath(row: $0, section: 0) }
+                self.topicCollectionView.insertItems(at: indexPaths)
             }
             .store(in: &cancellable)
+        
+        viewModel.$error
+            .receive(on: DispatchQueue.main)
+            .sink { apiError in
+                guard let apiError = apiError else {
+                    return
+                }
+                self.showAlert(message: apiError.errorDescription)
+            }
+            .store(in: &cancellable)
+//        viewModel.$photos
+//            .receive(on: DispatchQueue.main)
+//            .sink { [weak self] photos in
+////                self?.photoCollectionView.reloadSections(IndexSet(integer: 0))
+//            }
+//            .store(in: &cancellable)
+//
+//        viewModel.$topics
+//            .receive(on: DispatchQueue.main)
+//            .sink { topics in
+//                self.topicCollectionView.reloadData()
+//            }
+//            .store(in: &cancellable)
     }
 }
 
@@ -147,31 +162,45 @@ extension SearchViewController: UISearchBarDelegate {
 
 // MARK: - PinterestLayoutDelegate
 
-extension SearchViewController: PinterestLayoutDelegate {
-    func collectionView(_ collectionView: UICollectionView, heightForPhotoAtIndexPath indexPath: IndexPath) -> CGFloat {
-        let cellWidth: CGFloat = view.bounds.width / 2
-        let imageHeight: CGFloat = CGFloat(viewModel.photo(at: indexPath.item).height)
-        let imageWidth: CGFloat = CGFloat(viewModel.photo(at: indexPath.item).width)
-        let imageRatio = imageHeight / imageWidth
-        
-        return CGFloat(imageRatio) * cellWidth
-    }
-}
+//extension SearchViewController: PinterestLayoutDelegate {
+//    func collectionView(_ collectionView: UICollectionView, heightForPhotoAtIndexPath indexPath: IndexPath) -> CGFloat {
+//        let cellWidth: CGFloat = view.bounds.width / 2
+//        let imageHeight: CGFloat = CGFloat(viewModel.photo(at: indexPath.item).height)
+//        let imageWidth: CGFloat = CGFloat(viewModel.photo(at: indexPath.item).width)
+//        let imageRatio = imageHeight / imageWidth
+//
+//        return CGFloat(imageRatio) * cellWidth
+//    }
+//}
 
 // MARK: - UICollectionViewDataSource
 
 extension SearchViewController: UICollectionViewDataSource {
+//    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+//        return viewModel.photosCount()
+//    }
+//
+//    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+//        guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: SearchPhotoCollectionViewCell.identifier, for: indexPath) as? SearchPhotoCollectionViewCell else {
+//            return .init()
+//        }
+//
+//        let photo = viewModel.photo(at: indexPath.item)
+//        cell.configureCell(with: photo)
+//
+//        return cell
+//    }
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return viewModel.photosCount()
+        return viewModel.topicsCount()
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: SearchPhotoCollectionViewCell.identifier, for: indexPath) as? SearchPhotoCollectionViewCell else {
+        guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: TopicCollectionViewCell.identifier, for: indexPath) as? TopicCollectionViewCell else {
             return .init()
         }
         
-        let photo = viewModel.photo(at: indexPath.item)
-        cell.configureCell(with: photo)
+        let topic = viewModel.topic(at: indexPath.item)
+        cell.configureCell(with: topic)
         
         return cell
     }
@@ -181,14 +210,15 @@ extension SearchViewController: UICollectionViewDataSource {
 
 extension SearchViewController: UICollectionViewDelegate {
     func collectionView(_ collectionView: UICollectionView, willDisplay cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {
-        if indexPath.item == viewModel.photosCount() - 1 {
+        if indexPath.item == viewModel.topicsCount() - 1 {
             viewModel.fetch()
         }
     }
-
-    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        let detailViewController = DetailViewController(photos: viewModel.photos, indexPath: indexPath)
-        detailViewController.modalPresentationStyle = .fullScreen
-        present(detailViewController, animated: true)
-    }
+//
+//    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+//        let detailViewController = DetailViewController(photos: viewModel.photos, indexPath: indexPath)
+//        detailViewController.modalPresentationStyle = .fullScreen
+//        present(detailViewController, animated: true)
+//    }
+//
 }

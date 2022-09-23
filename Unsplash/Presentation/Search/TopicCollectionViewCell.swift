@@ -1,29 +1,32 @@
 //
-//  HomeTableViewCell.swift
+//  TopicCollectionViewCell.swift
 //  Unsplash
 //
-//  Created by rae on 2022/09/21.
+//  Created by rae on 2022/09/23.
 //
 
 import UIKit
 
-final class HomeTableViewCell: UITableViewCell {
-
+final class TopicCollectionViewCell: UICollectionViewCell {
+    
     // MARK: - Properties
     
-    static let identifier = String(describing: HomeTableViewCell.self)
-        
+    static let identifier = String(describing: TopicCollectionViewCell.self)
+    
     // MARK: - UI Define
     
     private let photoImageView: UIImageView = {
         let imageView = UIImageView()
+        imageView.contentMode = .scaleAspectFill
+        imageView.clipsToBounds = true
         return imageView
     }()
     
-    private let nameLabel: UILabel = {
+    private let titleLabel: UILabel = {
         let label = UILabel()
-        label.font = UIFont.systemFont(ofSize: 16.0, weight: .semibold)
+        label.font = UIFont.systemFont(ofSize: 17.0, weight: .semibold)
         label.textColor = .white
+        label.numberOfLines = 0
         label.shadowColor = .black
         label.shadowOffset = CGSize(width: 1, height: 1)
         return label
@@ -31,10 +34,10 @@ final class HomeTableViewCell: UITableViewCell {
     
     // MARK: - View LifeCycle
     
-    override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
-        super.init(style: style, reuseIdentifier: reuseIdentifier)
+    override init(frame: CGRect) {
+        super.init(frame: frame)
         
-        setupViews()
+        setupLayout()
     }
     
     required init?(coder: NSCoder) {
@@ -45,21 +48,27 @@ final class HomeTableViewCell: UITableViewCell {
         super.prepareForReuse()
         
         photoImageView.image = nil
-        nameLabel.text = nil
+        titleLabel.text = nil
+    }
+    
+    override func layoutSubviews() {
+        super.layoutSubviews()
+
+        photoImageView.layer.cornerRadius = 10
     }
     
     // MARK: - Configure
     
-    func configureCell(with photo: Photo) {
-        nameLabel.text = photo.user
-        photoImageView.downloadImage(with: photo.url)
+    func configureCell(with topic: Topic) {
+        titleLabel.text = topic.title
+        photoImageView.downloadImage(with: topic.coverPhotoURL)
     }
     
     // MARK: - Layout
     
-    private func setupViews() {
+    private func setupLayout() {
         setupPhotoImageView()
-        setupNameLabel()
+        setupTitleLabel()
     }
     
     private func setupPhotoImageView() {
@@ -73,14 +82,12 @@ final class HomeTableViewCell: UITableViewCell {
         ])
     }
     
-    private func setupNameLabel() {
-        contentView.addSubview(nameLabel)
-        nameLabel.translatesAutoresizingMaskIntoConstraints = false
+    private func setupTitleLabel() {
+        contentView.addSubview(titleLabel)
+        titleLabel.translatesAutoresizingMaskIntoConstraints = false
         NSLayoutConstraint.activate([
-            nameLabel.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 8.0),
-            nameLabel.trailingAnchor.constraint(equalTo: contentView.trailingAnchor),
-            nameLabel.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -8.0),
+            titleLabel.centerXAnchor.constraint(equalTo: contentView.centerXAnchor),
+            titleLabel.centerYAnchor.constraint(equalTo: contentView.centerYAnchor),
         ])
     }
-
 }

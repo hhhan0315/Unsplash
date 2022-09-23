@@ -37,14 +37,10 @@ final class MainTabController: UITabBarController {
         let searchTabBarItem = UITabBarItem(title: nil, image: MainTabBarItem.search.image, selectedImage: nil)
         let heartTabBarItem = UITabBarItem(title: nil, image: MainTabBarItem.heart.image, selectedImage: nil)
         
-//        let homeViewModel = CategoryViewModel()
-//        let homeViewController = UINavigationController(rootViewController: CategoryViewController(viewModel: homeViewModel))
-//        homeViewController.tabBarItem = homeTabBarItem
         let homeViewController = UINavigationController(rootViewController: HomeViewController())
         homeViewController.tabBarItem = homeTabBarItem
         
-        let searchViewModel = SearchViewModel()
-        let searchViewController = UINavigationController(rootViewController: SearchViewController(viewModel: searchViewModel))
+        let searchViewController = UINavigationController(rootViewController: SearchViewController())
         searchViewController.tabBarItem = searchTabBarItem
         
         let heartViewController = UINavigationController(rootViewController: HeartViewController())

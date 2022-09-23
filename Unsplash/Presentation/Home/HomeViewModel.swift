@@ -8,11 +8,10 @@
 import Foundation
 
 final class HomeViewModel {
-    private let photoService = PhotoService()
-    
     @Published var range: Range<Int>? = nil
     @Published var error: APIError? = nil
     
+    private let photoService = PhotoService()
     private var photos: [Photo] = []
     
     func photosCount() -> Int {
@@ -24,13 +23,13 @@ final class HomeViewModel {
     }
     
     func fetch() {
-        let count = self.photosCount()
+        let previousCount = photosCount()
         
         photoService.fetch { result in
             switch result {
             case .success(let photos):
                 self.photos.append(contentsOf: photos)
-                self.range = count..<count + Query.perPage
+                self.range = previousCount..<self.photosCount()
             case .failure(let apiError):
                 self.error = apiError
             }

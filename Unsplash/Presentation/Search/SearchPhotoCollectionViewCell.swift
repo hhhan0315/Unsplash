@@ -23,6 +23,7 @@ final class SearchPhotoCollectionViewCell: UICollectionViewCell {
     private let nameLabel: UILabel = {
         let label = UILabel()
         label.font = UIFont.systemFont(ofSize: 13.0, weight: .semibold)
+        label.textColor = .white
         return label
     }()
     
