@@ -79,4 +79,32 @@ final class APICallerTests: XCTestCase {
         let expectation = APIError.serverError(statusCode: 400)
         XCTAssertEqual(result?.errorDescription, expectation.errorDescription)
     }
+    
+    func test_request호출시_실패하며_decodeError_발생하는지() {
+        // given
+        let data = """
+        [
+            {
+                "user": {
+                    "name": "name_example"
+                }
+            }
+        ]
+        """.data(using: .utf8)!
+        let mockURLSession = MockURLSession.make(url: URL(string: "test.com")!, data: data, statusCode: 200)
+        sut.urlSession = mockURLSession
+        
+        // when
+        var result: APIError?
+        sut.request(api: .getPhotos(page: 1),
+                    dataType: [PhotoEntity].self) { response in
+            if case let .failure(apiError) = response {
+                result = apiError
+            }
+        }
+        
+        // then
+        let expectation = APIError.decodeError
+        XCTAssertEqual(result?.errorDescription, expectation.errorDescription)
+    }
 }

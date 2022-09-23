@@ -112,11 +112,5 @@
     }
     ```
     
-- 참고 : https://www.youtube.com/watch?v=M58LqynqQHc
-
-
-
-
-
-
-
+- 참고
+    - https://www.youtube.com/watch?v=M58LqynqQHc
