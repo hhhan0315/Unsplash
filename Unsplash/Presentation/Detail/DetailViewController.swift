@@ -1,4 +1,4 @@
-//
+
 //  DetailViewController.swift
 //  Unsplash
 //
@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import Combine
 
 final class DetailViewController: UIViewController {
     
@@ -19,33 +20,45 @@ final class DetailViewController: UIViewController {
         let group = NSCollectionLayoutGroup.horizontal(layoutSize: groupSize, subitems: [item])
         
         let section = NSCollectionLayoutSection(group: group)
-        section.orthogonalScrollingBehavior = .groupPaging
+        section.orthogonalScrollingBehavior = .paging
+        section.visibleItemsInvalidationHandler = { [weak self] visibleItems, point, environment in
+            guard let index = visibleItems.last?.indexPath.item else {
+                return
+            }
+            DispatchQueue.main.async {
+                self?.navigationItem.title = self?.viewModel.photo(at: index).user
+            }
+        }
         
         let layout = UICollectionViewCompositionalLayout(section: section)
         
         let collectionView = UICollectionView(frame: .zero, collectionViewLayout: layout)
         collectionView.register(DetailPhotoCollectionViewCell.self, forCellWithReuseIdentifier: DetailPhotoCollectionViewCell.identifier)
         collectionView.dataSource = self
+        collectionView.delegate = self
+        collectionView.alwaysBounceVertical = false
         return collectionView
     }()
     
     private lazy var downloadButton: UIButton = {
         let button = UIButton(type: .system)
         button.setImage(UIImage(systemName: "arrow.down"), for: .normal)
-        button.backgroundColor = .white
-        button.tintColor = .black
+        button.backgroundColor = .label
+        button.tintColor = .systemBackground
         button.addTarget(self, action: #selector(touchDownloadButton(_:)), for: .touchUpInside)
         return button
     }()
     
     private let activityIndicatorView: UIActivityIndicatorView = {
         let activityView = UIActivityIndicatorView()
+        activityView.style = .large
         return activityView
     }()
     
     // MARK: - Properties
     
-    private var photos: [Photo]
+    private var viewModel: HomeViewModel
+    private var cancellable = Set<AnyCancellable>()
     private var currentIndexPath: IndexPath
     
     private let imageSaver = ImageSaver()
@@ -53,8 +66,8 @@ final class DetailViewController: UIViewController {
     
     // MARK: - View LifeCycle
     
-    init(photos: [Photo], indexPath: IndexPath) {
-        self.photos = photos
+    init(viewModel: HomeViewModel, indexPath: IndexPath) {
+        self.viewModel = viewModel
         self.currentIndexPath = indexPath
         super.init(nibName: nil, bundle: nil)
     }
@@ -67,6 +80,7 @@ final class DetailViewController: UIViewController {
         super.viewDidLoad()
         
         setupLayout()
+        setupBind()
         imageSaver.delegate = self
     }
     
@@ -90,6 +104,7 @@ final class DetailViewController: UIViewController {
     
     private func setupNavigationBar() {
         navigationController?.navigationBar.tintColor = .label
+        navigationItem.title = viewModel.photo(at: currentIndexPath.item).user
     }
     
     private func setupPhotoCollectionView() {
@@ -125,6 +140,29 @@ final class DetailViewController: UIViewController {
         ])
     }
     
+    private func setupBind() {
+        viewModel.$range
+            .receive(on: DispatchQueue.main)
+            .sink { range in
+                guard let range = range else {
+                    return
+                }
+                let indexPaths = range.map { IndexPath(item: $0, section: 0) }
+                self.photoCollectionView.insertItems(at: indexPaths)
+            }
+            .store(in: &cancellable)
+        
+        viewModel.$error
+            .receive(on: DispatchQueue.main)
+            .sink { apiError in
+                guard let apiError = apiError else {
+                    return
+                }
+                self.showAlert(message: apiError.errorDescription)
+            }
+            .store(in: &cancellable)
+    }
+    
     // MARK: - Objc
     
     @objc private func touchExitButton(_ sender: UIButton) {
@@ -135,7 +173,7 @@ final class DetailViewController: UIViewController {
         guard let index = photoCollectionView.indexPathsForVisibleItems.first?.item else {
             return
         }
-        let photo = photos[index]
+        let photo = viewModel.photo(at: index)
         
         activityIndicatorView.startAnimating()
         
@@ -151,7 +189,7 @@ final class DetailViewController: UIViewController {
 
 extension DetailViewController: UICollectionViewDataSource {
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return photos.count
+        return viewModel.photosCount()
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
@@ -159,10 +197,20 @@ extension DetailViewController: UICollectionViewDataSource {
             return .init()
         }
         
-        let photo = photos[indexPath.item]
+        let photo = viewModel.photo(at: indexPath.item)
         cell.configureCell(with: photo)
         
         return cell
+    }
+}
+
+// MARK: - UICollectionViewDelegate
+
+extension DetailViewController: UICollectionViewDelegate {
+    func collectionView(_ collectionView: UICollectionView, willDisplay cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {
+        if indexPath.item == viewModel.photosCount() - 1 {
+            viewModel.fetch()
+        }
     }
 }
 
@@ -186,9 +234,7 @@ extension DetailViewController: ImageSaverDelegate {
     }
     
     func saveSuccess() {
-        let alertController = UIAlertController(title: "Save Success", message: nil, preferredStyle: .alert)
-        alertController.addAction(UIAlertAction(title: "Ok", style: .default))
-        present(alertController, animated: true)
+        showAlert(title: "저장 성공")
         activityIndicatorView.stopAnimating()
     }
 }

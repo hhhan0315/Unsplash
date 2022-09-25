@@ -165,7 +165,9 @@ extension HomeViewController: UITableViewDelegate {
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        let detailViewController = DetailViewController(photos: viewModel.photos, indexPath: indexPath)
+//        let detailViewController = DetailViewController(photos: viewModel.photos, indexPath: indexPath)
+        let detailViewController = DetailViewController(viewModel: viewModel, indexPath: indexPath)
+        detailViewController.hidesBottomBarWhenPushed = true
         navigationController?.pushViewController(detailViewController, animated: true)
     }
 }
