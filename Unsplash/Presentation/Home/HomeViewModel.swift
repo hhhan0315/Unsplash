@@ -12,7 +12,7 @@ final class HomeViewModel {
     @Published var error: APIError? = nil
     
     private let photoService = PhotoService()
-    private var photos: [Photo] = []
+    var photos: [Photo] = []
     
     func photosCount() -> Int {
         return photos.count

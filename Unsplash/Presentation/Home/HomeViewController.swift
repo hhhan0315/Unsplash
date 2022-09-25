@@ -12,10 +12,12 @@ final class HomeViewController: UIViewController {
     
     // MARK: - UI Define
     
-    private let photoTableView: UITableView = {
+    private lazy var photoTableView: UITableView = {
         let tableView = UITableView()
         tableView.register(HomeTableViewCell.self, forCellReuseIdentifier: HomeTableViewCell.identifier)
         tableView.register(HomeTableLoadingCell.self, forCellReuseIdentifier: HomeTableLoadingCell.identifier)
+        tableView.dataSource = self
+        tableView.delegate = self
         return tableView
     }()
     
@@ -37,7 +39,7 @@ final class HomeViewController: UIViewController {
         setupLayout()
         setupBind()
         
-//        viewModel.fetch()
+        viewModel.fetch()
     }
     
     // MARK: - Layout
@@ -50,12 +52,10 @@ final class HomeViewController: UIViewController {
     
     private func setupNavigationBar() {
         navigationItem.title = "Unsplash"
+        navigationItem.backButtonTitle = ""
     }
     
     private func setupPhotoTableView() {
-        photoTableView.dataSource = self
-        photoTableView.delegate = self
-        
         view.addSubview(photoTableView)
         photoTableView.translatesAutoresizingMaskIntoConstraints = false
         NSLayoutConstraint.activate([
@@ -162,5 +162,10 @@ extension HomeViewController: UITableViewDelegate {
         if indexPath.row == viewModel.photosCount() - 1 {
             viewModel.fetch()
         }
+    }
+    
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        let detailViewController = DetailViewController(photos: viewModel.photos, indexPath: indexPath)
+        navigationController?.pushViewController(detailViewController, animated: true)
     }
 }

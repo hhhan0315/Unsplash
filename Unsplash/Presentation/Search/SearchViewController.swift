@@ -128,19 +128,6 @@ final class SearchViewController: UIViewController {
                 self.showAlert(message: apiError.errorDescription)
             }
             .store(in: &cancellable)
-//        viewModel.$photos
-//            .receive(on: DispatchQueue.main)
-//            .sink { [weak self] photos in
-////                self?.photoCollectionView.reloadSections(IndexSet(integer: 0))
-//            }
-//            .store(in: &cancellable)
-//
-//        viewModel.$topics
-//            .receive(on: DispatchQueue.main)
-//            .sink { topics in
-//                self.topicCollectionView.reloadData()
-//            }
-//            .store(in: &cancellable)
     }
 }
 
@@ -176,20 +163,6 @@ extension SearchViewController: UISearchBarDelegate {
 // MARK: - UICollectionViewDataSource
 
 extension SearchViewController: UICollectionViewDataSource {
-//    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-//        return viewModel.photosCount()
-//    }
-//
-//    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-//        guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: SearchPhotoCollectionViewCell.identifier, for: indexPath) as? SearchPhotoCollectionViewCell else {
-//            return .init()
-//        }
-//
-//        let photo = viewModel.photo(at: indexPath.item)
-//        cell.configureCell(with: photo)
-//
-//        return cell
-//    }
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         return viewModel.topicsCount()
     }
@@ -214,11 +187,10 @@ extension SearchViewController: UICollectionViewDelegate {
             viewModel.fetch()
         }
     }
-//
-//    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
 //        let detailViewController = DetailViewController(photos: viewModel.photos, indexPath: indexPath)
 //        detailViewController.modalPresentationStyle = .fullScreen
 //        present(detailViewController, animated: true)
-//    }
-//
+    }
 }

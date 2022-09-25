@@ -7,13 +7,16 @@
 
 import UIKit
 
-class DetailViewController: UIViewController {
+final class DetailViewController: UIViewController {
     
     // MARK: - View Define
     
     private lazy var photoCollectionView: UICollectionView = {
-        let item = NSCollectionLayoutItem(layoutSize: NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0), heightDimension: .fractionalHeight(1.0)))
-        let group = NSCollectionLayoutGroup.horizontal(layoutSize: NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0), heightDimension: .fractionalHeight(1.0)), subitem: item, count: 1)
+        let itemSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0), heightDimension: .fractionalHeight(1.0))
+        let item = NSCollectionLayoutItem(layoutSize: itemSize)
+        
+        let groupSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0), heightDimension: .fractionalHeight(1.0))
+        let group = NSCollectionLayoutGroup.horizontal(layoutSize: groupSize, subitems: [item])
         
         let section = NSCollectionLayoutSection(group: group)
         section.orthogonalScrollingBehavior = .groupPaging
@@ -24,14 +27,6 @@ class DetailViewController: UIViewController {
         collectionView.register(DetailPhotoCollectionViewCell.self, forCellWithReuseIdentifier: DetailPhotoCollectionViewCell.identifier)
         collectionView.dataSource = self
         return collectionView
-    }()
-    
-    private lazy var exitButton: UIButton = {
-        let button = UIButton(type: .system)
-        button.setImage(UIImage(systemName: "multiply"), for: .normal)
-        button.tintColor = .white
-        button.addTarget(self, action: #selector(touchExitButton(_:)), for: .touchUpInside)
-        return button
     }()
     
     private lazy var downloadButton: UIButton = {
@@ -52,8 +47,8 @@ class DetailViewController: UIViewController {
     
     private var photos: [Photo]
     private var currentIndexPath: IndexPath
-    private let imageSaver: ImageSaver
     
+    private let imageSaver = ImageSaver()
     private let imageLoader = ImageLoader()
     
     // MARK: - View LifeCycle
@@ -61,7 +56,6 @@ class DetailViewController: UIViewController {
     init(photos: [Photo], indexPath: IndexPath) {
         self.photos = photos
         self.currentIndexPath = indexPath
-        self.imageSaver = ImageSaver()
         super.init(nibName: nil, bundle: nil)
     }
     
@@ -72,7 +66,7 @@ class DetailViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        setupViews()
+        setupLayout()
         imageSaver.delegate = self
     }
     
@@ -86,11 +80,16 @@ class DetailViewController: UIViewController {
     
     // MARK: - Layout
     
-    private func setupViews() {
+    private func setupLayout() {
+        view.backgroundColor = .systemBackground
+        setupNavigationBar()
         setupPhotoCollectionView()
-        setupExitButton()
         setupDownloadButton()
         setupActivityIndicatorView()
+    }
+    
+    private func setupNavigationBar() {
+        navigationController?.navigationBar.tintColor = .label
     }
     
     private func setupPhotoCollectionView() {
@@ -101,17 +100,6 @@ class DetailViewController: UIViewController {
             photoCollectionView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor),
             photoCollectionView.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor),
             photoCollectionView.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor),
-        ])
-    }
-    
-    private func setupExitButton() {
-        view.addSubview(exitButton)
-        exitButton.translatesAutoresizingMaskIntoConstraints = false
-        NSLayoutConstraint.activate([
-            exitButton.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 8.0),
-            exitButton.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor),
-            exitButton.widthAnchor.constraint(equalToConstant: 50.0),
-            exitButton.heightAnchor.constraint(equalToConstant: 50.0),
         ])
     }
     
