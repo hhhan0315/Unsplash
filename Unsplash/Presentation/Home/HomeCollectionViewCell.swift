@@ -22,7 +22,7 @@ final class HomeCollectionViewCell: UICollectionViewCell {
     
     private let nameLabel: UILabel = {
         let label = UILabel()
-        label.font = UIFont.systemFont(ofSize: 17.0, weight: .semibold)
+        label.font = UIFont.systemFont(ofSize: 13.0, weight: .semibold)
         label.textColor = .white
         label.numberOfLines = 0
         label.layer.shadowColor = UIColor.black.cgColor

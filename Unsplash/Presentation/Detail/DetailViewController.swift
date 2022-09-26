@@ -15,7 +15,7 @@ final class DetailViewController: UIViewController {
         let button = UIButton(type: .system)
         button.setImage(UIImage(systemName: "multiply"), for: .normal)
         button.tintColor = .label
-        button.setPreferredSymbolConfiguration(.init(pointSize: 20.0), forImageIn: .normal)
+        button.setPreferredSymbolConfiguration(.init(scale: .large), forImageIn: .normal)
         button.addTarget(self, action: #selector(touchExitButton(_:)), for: .touchUpInside)
         return button
     }()
@@ -23,7 +23,7 @@ final class DetailViewController: UIViewController {
     private lazy var titleLabel: UILabel = {
         let label = UILabel()
         label.textColor = .label
-        label.font = UIFont.systemFont(ofSize: 20.0, weight: .semibold)
+        label.font = UIFont.systemFont(ofSize: 17.0, weight: .semibold)
         label.text = photo.user
         return label
     }()
