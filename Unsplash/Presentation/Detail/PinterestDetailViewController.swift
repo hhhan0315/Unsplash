@@ -20,6 +20,7 @@ final class PinterestDetailViewController: UIViewController {
         collectionView.register(HomeCollectionViewCell.self, forCellWithReuseIdentifier: HomeCollectionViewCell.identifier)
         collectionView.dataSource = photoDataSource
         collectionView.delegate = self
+        collectionView.backgroundColor = .systemBackground
         return collectionView
     }()
     
@@ -97,21 +98,21 @@ final class PinterestDetailViewController: UIViewController {
     private func setupBind() {
         viewModel.$photos
             .receive(on: DispatchQueue.main)
-            .sink { photos in
+            .sink { [weak self] photos in
                 var snapShot = NSDiffableDataSourceSnapshot<Section, Photo>()
                 snapShot.appendSections([Section.photos])
                 snapShot.appendItems(photos)
-                self.photoDataSource?.apply(snapShot)
+                self?.photoDataSource?.apply(snapShot)
             }
             .store(in: &cancellable)
         
         viewModel.$error
             .receive(on: DispatchQueue.main)
-            .sink { apiError in
+            .sink { [weak self] apiError in
                 guard let apiError = apiError else {
                     return
                 }
-                self.showAlert(message: apiError.errorDescription)
+                self?.showAlert(message: apiError.errorDescription)
             }
             .store(in: &cancellable)
     }

@@ -27,6 +27,7 @@ final class SearchViewController: UIViewController {
         collectionView.register(TopicCollectionViewCell.self, forCellWithReuseIdentifier: TopicCollectionViewCell.identifier)
         collectionView.dataSource = topicDataSource
         collectionView.delegate = self
+        collectionView.backgroundColor = .systemBackground
         return collectionView
     }()
     
@@ -126,21 +127,21 @@ final class SearchViewController: UIViewController {
     private func setupBind() {
         viewModel.$topics
             .receive(on: DispatchQueue.main)
-            .sink { topics in
+            .sink { [weak self] topics in
                 var snapShot = NSDiffableDataSourceSnapshot<Section, Topic>()
                 snapShot.appendSections([Section.topic])
                 snapShot.appendItems(topics)
-                self.topicDataSource?.apply(snapShot)
+                self?.topicDataSource?.apply(snapShot)
             }
             .store(in: &cancellable)
         
         viewModel.$error
             .receive(on: DispatchQueue.main)
-            .sink { apiError in
+            .sink { [weak self] apiError in
                 guard let apiError = apiError else {
                     return
                 }
-                self.showAlert(message: apiError.errorDescription)
+                self?.showAlert(message: apiError.errorDescription)
             }
             .store(in: &cancellable)
     }
