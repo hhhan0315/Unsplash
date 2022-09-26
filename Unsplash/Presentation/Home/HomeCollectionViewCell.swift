@@ -1,5 +1,5 @@
 //
-//  HomeTableViewCell.swift
+//  HomeCollectionViewCell.swift
 //  Unsplash
 //
 //  Created by rae on 2022/09/21.
@@ -7,11 +7,11 @@
 
 import UIKit
 
-final class HomeTableViewCell: UITableViewCell {
+final class HomeCollectionViewCell: UICollectionViewCell {
 
     // MARK: - Properties
     
-    static let identifier = String(describing: HomeTableViewCell.self)
+    static let identifier = String(describing: HomeCollectionViewCell.self)
         
     // MARK: - UI Define
     
@@ -24,6 +24,7 @@ final class HomeTableViewCell: UITableViewCell {
         let label = UILabel()
         label.font = UIFont.systemFont(ofSize: 17.0, weight: .semibold)
         label.textColor = .white
+        label.numberOfLines = 0
         label.layer.shadowColor = UIColor.black.cgColor
         label.layer.shadowRadius = 3.0
         label.layer.shadowOpacity = 1.0
@@ -33,8 +34,8 @@ final class HomeTableViewCell: UITableViewCell {
     
     // MARK: - View LifeCycle
     
-    override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
-        super.init(style: style, reuseIdentifier: reuseIdentifier)
+    override init(frame: CGRect) {
+        super.init(frame: frame)
         
         setupViews()
     }

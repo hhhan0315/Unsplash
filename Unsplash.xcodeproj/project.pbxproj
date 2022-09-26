@@ -30,7 +30,7 @@
 		01C0C9AC28DADE4E00D655BD /* UIViewController+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01C0C9AB28DADE4E00D655BD /* UIViewController+Extension.swift */; };
 		01C0C9AE28DAE30D00D655BD /* Alert.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01C0C9AD28DAE30D00D655BD /* Alert.swift */; };
 		01C0C9B128DAEB9F00D655BD /* APIError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01C0C9B028DAEB9F00D655BD /* APIError.swift */; };
-		01C0C9B328DAF48100D655BD /* HomeTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01C0C9B228DAF48100D655BD /* HomeTableViewCell.swift */; };
+		01C0C9B328DAF48100D655BD /* HomeCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01C0C9B228DAF48100D655BD /* HomeCollectionViewCell.swift */; };
 		01C0C9C828DC45BE00D655BD /* APICallerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01C0C9C728DC45BE00D655BD /* APICallerTests.swift */; };
 		01C0C9CF28DC8B7300D655BD /* URLSessionProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01C0C9CE28DC8B7300D655BD /* URLSessionProtocol.swift */; };
 		01C0C9D128DC8FD300D655BD /* URLSessionDataTaskProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01C0C9D028DC8FD300D655BD /* URLSessionDataTaskProtocol.swift */; };
@@ -41,6 +41,9 @@
 		01C0C9DE28DDC4FC00D655BD /* TopicService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01C0C9DD28DDC4FC00D655BD /* TopicService.swift */; };
 		01C0C9E028DDD85800D655BD /* TopicCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01C0C9DF28DDD85800D655BD /* TopicCollectionViewCell.swift */; };
 		01C0C9E228DE973900D655BD /* PinterestDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01C0C9E128DE973900D655BD /* PinterestDetailViewController.swift */; };
+		01C0C9E628E18BE300D655BD /* PinterestDetailViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01C0C9E528E18BE300D655BD /* PinterestDetailViewModel.swift */; };
+		01C0C9E828E18E4400D655BD /* TopicPhotoRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01C0C9E728E18E4400D655BD /* TopicPhotoRepository.swift */; };
+		01C0C9EA28E18E7800D655BD /* TopicPhotoService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01C0C9E928E18E7800D655BD /* TopicPhotoService.swift */; };
 		01C70DC7283345D800185DF0 /* SearchViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01C70DC6283345D800185DF0 /* SearchViewModel.swift */; };
 		01C70DD32833849100185DF0 /* SearchEntity.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01C70DD22833849100185DF0 /* SearchEntity.swift */; };
 		01D9D2C3281F71C400E308D4 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01D9D2C2281F71C400E308D4 /* AppDelegate.swift */; };
@@ -85,7 +88,7 @@
 		01C0C9AB28DADE4E00D655BD /* UIViewController+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIViewController+Extension.swift"; sourceTree = "<group>"; };
 		01C0C9AD28DAE30D00D655BD /* Alert.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Alert.swift; sourceTree = "<group>"; };
 		01C0C9B028DAEB9F00D655BD /* APIError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = APIError.swift; sourceTree = "<group>"; };
-		01C0C9B228DAF48100D655BD /* HomeTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeTableViewCell.swift; sourceTree = "<group>"; };
+		01C0C9B228DAF48100D655BD /* HomeCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeCollectionViewCell.swift; sourceTree = "<group>"; };
 		01C0C9BE28DC443600D655BD /* UnsplashTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = UnsplashTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		01C0C9C728DC45BE00D655BD /* APICallerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = APICallerTests.swift; sourceTree = "<group>"; };
 		01C0C9CE28DC8B7300D655BD /* URLSessionProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = URLSessionProtocol.swift; sourceTree = "<group>"; };
@@ -97,6 +100,9 @@
 		01C0C9DD28DDC4FC00D655BD /* TopicService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TopicService.swift; sourceTree = "<group>"; };
 		01C0C9DF28DDD85800D655BD /* TopicCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TopicCollectionViewCell.swift; sourceTree = "<group>"; };
 		01C0C9E128DE973900D655BD /* PinterestDetailViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PinterestDetailViewController.swift; sourceTree = "<group>"; };
+		01C0C9E528E18BE300D655BD /* PinterestDetailViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PinterestDetailViewModel.swift; sourceTree = "<group>"; };
+		01C0C9E728E18E4400D655BD /* TopicPhotoRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TopicPhotoRepository.swift; sourceTree = "<group>"; };
+		01C0C9E928E18E7800D655BD /* TopicPhotoService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TopicPhotoService.swift; sourceTree = "<group>"; };
 		01C70DC6283345D800185DF0 /* SearchViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchViewModel.swift; sourceTree = "<group>"; };
 		01C70DD22833849100185DF0 /* SearchEntity.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchEntity.swift; sourceTree = "<group>"; };
 		01D9D2BF281F71C400E308D4 /* Unsplash.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Unsplash.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -130,7 +136,6 @@
 		0128D1A12897BF5F00D17627 /* Search */ = {
 			isa = PBXGroup;
 			children = (
-				013ED83D2846146F00B242FE /* PinterestLayout.swift */,
 				013ED83F284618B800B242FE /* SearchPhotoCollectionViewCell.swift */,
 				01D9D2DA281F7B1B00E308D4 /* SearchViewController.swift */,
 				01C70DC6283345D800185DF0 /* SearchViewModel.swift */,
@@ -144,6 +149,7 @@
 			children = (
 				0132BAF42820C62E00E7A81A /* DetailViewController.swift */,
 				01C0C9E128DE973900D655BD /* PinterestDetailViewController.swift */,
+				01C0C9E528E18BE300D655BD /* PinterestDetailViewModel.swift */,
 			);
 			path = Detail;
 			sourceTree = "<group>";
@@ -211,7 +217,7 @@
 		01C0C9A528DA98FD00D655BD /* Home */ = {
 			isa = PBXGroup;
 			children = (
-				01C0C9B228DAF48100D655BD /* HomeTableViewCell.swift */,
+				01C0C9B228DAF48100D655BD /* HomeCollectionViewCell.swift */,
 				01C0C9A328DA98F900D655BD /* HomeViewController.swift */,
 				01C0C9A628DA9FCA00D655BD /* HomeViewModel.swift */,
 			);
@@ -224,6 +230,7 @@
 				01C0C9AD28DAE30D00D655BD /* Alert.swift */,
 				015C93B4283880BA009F2498 /* ImageCacheManager.swift */,
 				0128D1A8289918A900D17627 /* ImageSaver.swift */,
+				013ED83D2846146F00B242FE /* PinterestLayout.swift */,
 				019D78CB28C8B1BB00EB3FEB /* Extension */,
 				0128D1AB289943DA00D17627 /* Model */,
 				01C0C9CC28DC728E00D655BD /* Repository */,
@@ -259,6 +266,7 @@
 			children = (
 				019CE08128D46A26009D4696 /* PhotoRepository.swift */,
 				019CE08528D591CA009D4696 /* SearchRepository.swift */,
+				01C0C9E728E18E4400D655BD /* TopicPhotoRepository.swift */,
 				01C0C9DB28DDC4AF00D655BD /* TopicRepository.swift */,
 			);
 			path = Repository;
@@ -269,6 +277,7 @@
 			children = (
 				019CE08328D4753D009D4696 /* PhotoService.swift */,
 				019CE08728D59230009D4696 /* SearchService.swift */,
+				01C0C9E928E18E7800D655BD /* TopicPhotoService.swift */,
 				01C0C9DD28DDC4FC00D655BD /* TopicService.swift */,
 			);
 			path = Service;
@@ -428,6 +437,7 @@
 				01C0C99E28D8A19B00D655BD /* HeartViewController.swift in Sources */,
 				01D9D2DB281F7B1B00E308D4 /* SearchViewController.swift in Sources */,
 				01C0C9B128DAEB9F00D655BD /* APIError.swift in Sources */,
+				01C0C9EA28E18E7800D655BD /* TopicPhotoService.swift in Sources */,
 				01C0C9A428DA98F900D655BD /* HomeViewController.swift in Sources */,
 				01C0C9A728DA9FCA00D655BD /* HomeViewModel.swift in Sources */,
 				01D9D2C3281F71C400E308D4 /* AppDelegate.swift in Sources */,
@@ -441,7 +451,7 @@
 				01C0C9DC28DDC4AF00D655BD /* TopicRepository.swift in Sources */,
 				019D78CD28C9BA2E00EB3FEB /* API.swift in Sources */,
 				01D9D2C5281F71C400E308D4 /* SceneDelegate.swift in Sources */,
-				01C0C9B328DAF48100D655BD /* HomeTableViewCell.swift in Sources */,
+				01C0C9B328DAF48100D655BD /* HomeCollectionViewCell.swift in Sources */,
 				019D78C828C872D200EB3FEB /* UIImageView+Extension.swift in Sources */,
 				0194CD2428221CE40006470D /* PhotoEntity.swift in Sources */,
 				019CE08228D46A26009D4696 /* PhotoRepository.swift in Sources */,
@@ -452,8 +462,10 @@
 				013ED840284618B800B242FE /* SearchPhotoCollectionViewCell.swift in Sources */,
 				01C70DD32833849100185DF0 /* SearchEntity.swift in Sources */,
 				01C0C9DA28DDC20500D655BD /* TopicEntity.swift in Sources */,
+				01C0C9E828E18E4400D655BD /* TopicPhotoRepository.swift in Sources */,
 				01C0C9E228DE973900D655BD /* PinterestDetailViewController.swift in Sources */,
 				019D78CF28C9C01F00EB3FEB /* APICaller.swift in Sources */,
+				01C0C9E628E18BE300D655BD /* PinterestDetailViewModel.swift in Sources */,
 				01C70DC7283345D800185DF0 /* SearchViewModel.swift in Sources */,
 				019CE08828D59230009D4696 /* SearchService.swift in Sources */,
 				01C0C9D128DC8FD300D655BD /* URLSessionDataTaskProtocol.swift in Sources */,

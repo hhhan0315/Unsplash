@@ -46,7 +46,7 @@ enum API {
         case .getTopics(let page):
             return ["page": "\(page)", "per_page": "30"]
         case .getTopicPhotos(_, let page):
-            return ["page": "\(page)"]
+            return ["page": "\(page)", "per_page": "20"]
         case let .getSearch(query, page):
             return ["query": query, "page": "\(page)"]
         }

@@ -26,7 +26,7 @@ final class SearchViewController: UIViewController {
         let collectionView = UICollectionView(frame: .zero, collectionViewLayout: layout)
         collectionView.register(TopicCollectionViewCell.self, forCellWithReuseIdentifier: TopicCollectionViewCell.identifier)
         collectionView.dataSource = topicDataSource
-//        collectionView.delegate = self
+        collectionView.delegate = self
         return collectionView
     }()
     
@@ -76,7 +76,6 @@ final class SearchViewController: UIViewController {
     
     private func setupNavigationBar() {
         navigationItem.title = "Search"
-        navigationItem.backButtonTitle = nil
     }
     
     private func setupSearchController() {
@@ -176,31 +175,12 @@ extension SearchViewController: UISearchBarDelegate {
 //    }
 //}
 
-// MARK: - UICollectionViewDataSource
-
-//extension SearchViewController: UICollectionViewDataSource {
-//    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-//        return viewModel.topicsCount()
-//    }
-//
-//    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-//        guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: TopicCollectionViewCell.identifier, for: indexPath) as? TopicCollectionViewCell else {
-//            return .init()
-//        }
-//
-//        let topic = viewModel.topic(at: indexPath.item)
-//        cell.configureCell(with: topic)
-//
-//        return cell
-//    }
-//}
-
 // MARK: - UICollectionViewDelegate
 
-//extension SearchViewController: UICollectionViewDelegate {
-//    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-//        let detailViewController = DetailViewController(photos: viewModel.photos, indexPath: indexPath)
-//        detailViewController.modalPresentationStyle = .fullScreen
-//        present(detailViewController, animated: true)
-//    }
-//}
+extension SearchViewController: UICollectionViewDelegate {
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        let topic = viewModel.topic(at: indexPath.item)
+        let pinterestDetailViewController = PinterestDetailViewController(slug: topic.slug, title: topic.title)
+        navigationController?.pushViewController(pinterestDetailViewController, animated: true)
+    }
+}

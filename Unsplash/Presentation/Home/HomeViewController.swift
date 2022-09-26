@@ -12,12 +12,15 @@ final class HomeViewController: UIViewController {
     
     // MARK: - UI Define
     
-    private lazy var photoTableView: UITableView = {
-        let tableView = UITableView()
-        tableView.register(HomeTableViewCell.self, forCellReuseIdentifier: HomeTableViewCell.identifier)
-        tableView.dataSource = photoDataSource
-        tableView.delegate = self
-        return tableView
+    private lazy var photoCollectionView: UICollectionView = {
+        let layout = UICollectionViewFlowLayout()
+        layout.minimumLineSpacing = 0
+        
+        let collectionView = UICollectionView(frame: .zero, collectionViewLayout: layout)
+        collectionView.register(HomeCollectionViewCell.self, forCellWithReuseIdentifier: HomeCollectionViewCell.identifier)
+        collectionView.dataSource = photoDataSource
+        collectionView.delegate = self
+        return collectionView
     }()
     
     // MARK: - Properties
@@ -25,7 +28,7 @@ final class HomeViewController: UIViewController {
     private let viewModel = HomeViewModel()
     private var cancellable = Set<AnyCancellable>()
     
-    private var photoDataSource: UITableViewDiffableDataSource<Section, Photo>?
+    private var photoDataSource: UICollectionViewDiffableDataSource<Section, Photo>?
     
     enum Section {
         case photos
@@ -47,29 +50,28 @@ final class HomeViewController: UIViewController {
     private func setupLayout() {
         view.backgroundColor = .systemBackground
         setupNavigationBar()
-        setupPhotoTableView()
+        setupPhotoCollectionView()
         setupPhotoDataSource()
     }
     
     private func setupNavigationBar() {
         navigationItem.title = "Unsplash"
-        navigationItem.backButtonTitle = ""
     }
     
-    private func setupPhotoTableView() {
-        view.addSubview(photoTableView)
-        photoTableView.translatesAutoresizingMaskIntoConstraints = false
+    private func setupPhotoCollectionView() {
+        view.addSubview(photoCollectionView)
+        photoCollectionView.translatesAutoresizingMaskIntoConstraints = false
         NSLayoutConstraint.activate([
-            photoTableView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
-            photoTableView.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor),
-            photoTableView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor),
-            photoTableView.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor),
+            photoCollectionView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
+            photoCollectionView.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor),
+            photoCollectionView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor),
+            photoCollectionView.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor),
         ])
     }
     
     private func setupPhotoDataSource() {
-        photoDataSource = UITableViewDiffableDataSource(tableView: photoTableView, cellProvider: { tableView, indexPath, photo in
-            guard let cell = tableView.dequeueReusableCell(withIdentifier: HomeTableViewCell.identifier, for: indexPath) as? HomeTableViewCell else {
+        photoDataSource = UICollectionViewDiffableDataSource(collectionView: photoCollectionView, cellProvider: { collectionView, indexPath, photo in
+            guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: HomeCollectionViewCell.identifier, for: indexPath) as? HomeCollectionViewCell else {
                 return .init()
             }
             cell.configureCell(with: photo)
@@ -102,27 +104,31 @@ final class HomeViewController: UIViewController {
     }
 }
 
-// MARK: - UITableViewDelegate
+// MARK: - UICollectionViewDelegate
 
-extension HomeViewController: UITableViewDelegate {
-    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        let cellWidth = view.bounds.width
-        let imageHeight = CGFloat(viewModel.photo(at: indexPath.row).height)
-        let imageWidth = CGFloat(viewModel.photo(at: indexPath.row).width)
-        let imageRatio = imageHeight / imageWidth
-        
-        return imageRatio * cellWidth
-    }
-    
-    func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
-        if indexPath.row == viewModel.photosCount() - 1 {
+extension HomeViewController: UICollectionViewDelegate {
+    func collectionView(_ collectionView: UICollectionView, willDisplay cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {
+        if indexPath.item == viewModel.photosCount() - 1 {
             viewModel.fetch()
         }
     }
     
-    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         let detailViewController = DetailViewController(photo: viewModel.photo(at: indexPath.item))
         detailViewController.hidesBottomBarWhenPushed = true
         navigationController?.pushViewController(detailViewController, animated: true)
+    }
+}
+
+// MARK: - UICollectionViewDelegateFlowLayout
+
+extension HomeViewController: UICollectionViewDelegateFlowLayout {
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
+        let cellWidth = view.bounds.width
+        let imageHeight = CGFloat(viewModel.photo(at: indexPath.row).height)
+        let imageWidth = CGFloat(viewModel.photo(at: indexPath.row).width)
+        let imageRatio = imageHeight / imageWidth
+
+        return CGSize(width: cellWidth, height: imageRatio * cellWidth)
     }
 }
