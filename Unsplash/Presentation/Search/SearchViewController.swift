@@ -12,7 +12,7 @@ final class SearchViewController: UIViewController {
     
     // MARK: - UI Define
     
-    private let topicCollectionView: UICollectionView = {
+    private lazy var topicCollectionView: UICollectionView = {
         let itemSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(0.5), heightDimension: .fractionalHeight(1.0))
         let item = NSCollectionLayoutItem(layoutSize: itemSize)
         item.contentInsets = NSDirectionalEdgeInsets(top: 2.0, leading: 2.0, bottom: 2.0, trailing: 2.0)
@@ -25,6 +25,8 @@ final class SearchViewController: UIViewController {
         
         let collectionView = UICollectionView(frame: .zero, collectionViewLayout: layout)
         collectionView.register(TopicCollectionViewCell.self, forCellWithReuseIdentifier: TopicCollectionViewCell.identifier)
+        collectionView.dataSource = topicDataSource
+//        collectionView.delegate = self
         return collectionView
     }()
     
@@ -44,6 +46,12 @@ final class SearchViewController: UIViewController {
     private let viewModel = SearchViewModel()
     private var cancellable = Set<AnyCancellable>()
     
+    private var topicDataSource: UICollectionViewDiffableDataSource<Section, Topic>?
+    
+    enum Section {
+        case topic
+    }
+    
     // MARK: - View LifeCycle
     
     override func viewDidLoad() {
@@ -62,6 +70,7 @@ final class SearchViewController: UIViewController {
         setupNavigationBar()
         setupSearchController()
         setupTopicCollectionView()
+        setupTopicDataSource()
 //        setupPhotoCollectionView()
     }
     
@@ -81,9 +90,6 @@ final class SearchViewController: UIViewController {
     }
     
     private func setupTopicCollectionView() {
-        topicCollectionView.dataSource = self
-        topicCollectionView.delegate = self
-        
         view.addSubview(topicCollectionView)
         topicCollectionView.translatesAutoresizingMaskIntoConstraints = false
         NSLayoutConstraint.activate([
@@ -92,6 +98,17 @@ final class SearchViewController: UIViewController {
             topicCollectionView.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor),
             topicCollectionView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor),
         ])
+    }
+    
+    private func setupTopicDataSource() {
+        topicDataSource = UICollectionViewDiffableDataSource(collectionView: topicCollectionView, cellProvider: { collectionView, indexPath, topic in
+            guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: TopicCollectionViewCell.identifier, for: indexPath) as? TopicCollectionViewCell else {
+                return .init()
+            }
+            
+            cell.configureCell(with: topic)
+            return cell
+        })
     }
     
 //    private func setupPhotoCollectionView() {
@@ -108,14 +125,13 @@ final class SearchViewController: UIViewController {
     // MARK: - Bind
     
     private func setupBind() {
-        viewModel.$range
+        viewModel.$topics
             .receive(on: DispatchQueue.main)
-            .sink { range in
-                guard let range = range else {
-                    return
-                }
-                let indexPaths = range.map { IndexPath(row: $0, section: 0) }
-                self.topicCollectionView.insertItems(at: indexPaths)
+            .sink { topics in
+                var snapShot = NSDiffableDataSourceSnapshot<Section, Topic>()
+                snapShot.appendSections([Section.topic])
+                snapShot.appendItems(topics)
+                self.topicDataSource?.apply(snapShot)
             }
             .store(in: &cancellable)
         
@@ -162,35 +178,29 @@ extension SearchViewController: UISearchBarDelegate {
 
 // MARK: - UICollectionViewDataSource
 
-extension SearchViewController: UICollectionViewDataSource {
-    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return viewModel.topicsCount()
-    }
-    
-    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: TopicCollectionViewCell.identifier, for: indexPath) as? TopicCollectionViewCell else {
-            return .init()
-        }
-        
-        let topic = viewModel.topic(at: indexPath.item)
-        cell.configureCell(with: topic)
-        
-        return cell
-    }
-}
+//extension SearchViewController: UICollectionViewDataSource {
+//    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+//        return viewModel.topicsCount()
+//    }
+//
+//    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+//        guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: TopicCollectionViewCell.identifier, for: indexPath) as? TopicCollectionViewCell else {
+//            return .init()
+//        }
+//
+//        let topic = viewModel.topic(at: indexPath.item)
+//        cell.configureCell(with: topic)
+//
+//        return cell
+//    }
+//}
 
 // MARK: - UICollectionViewDelegate
 
-extension SearchViewController: UICollectionViewDelegate {
-    func collectionView(_ collectionView: UICollectionView, willDisplay cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {
-        if indexPath.item == viewModel.topicsCount() - 1 {
-            viewModel.fetch()
-        }
-    }
-
-    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+//extension SearchViewController: UICollectionViewDelegate {
+//    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
 //        let detailViewController = DetailViewController(photos: viewModel.photos, indexPath: indexPath)
 //        detailViewController.modalPresentationStyle = .fullScreen
 //        present(detailViewController, animated: true)
-    }
-}
+//    }
+//}

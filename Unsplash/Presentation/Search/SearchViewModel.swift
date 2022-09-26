@@ -8,11 +8,10 @@
 import UIKit
 
 final class SearchViewModel {
-    @Published var range: Range<Int>? = nil
+    @Published var topics: [Topic] = []
     @Published var error: APIError? = nil
     
     private let topicService = TopicService()
-    private var topics: [Topic] = []
     
     func topicsCount() -> Int {
         return topics.count
@@ -23,13 +22,10 @@ final class SearchViewModel {
     }
     
     func fetch() {
-        let previousCount = topicsCount()
-        
         topicService.fetch { result in
             switch result {
             case .success(let topics):
                 self.topics.append(contentsOf: topics)
-                self.range = previousCount..<self.topicsCount()
             case .failure(let apiError):
                 self.error = apiError
             }

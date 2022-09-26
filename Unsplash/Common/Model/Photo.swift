@@ -14,3 +14,9 @@ struct Photo {
     let url: String
     let user: String
 }
+
+extension Photo: Hashable {
+    func hash(into hasher: inout Hasher) {
+        hasher.combine(id)
+    }
+}

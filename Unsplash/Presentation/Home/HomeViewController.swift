@@ -15,8 +15,7 @@ final class HomeViewController: UIViewController {
     private lazy var photoTableView: UITableView = {
         let tableView = UITableView()
         tableView.register(HomeTableViewCell.self, forCellReuseIdentifier: HomeTableViewCell.identifier)
-        tableView.register(HomeTableLoadingCell.self, forCellReuseIdentifier: HomeTableLoadingCell.identifier)
-        tableView.dataSource = self
+        tableView.dataSource = photoDataSource
         tableView.delegate = self
         return tableView
     }()
@@ -25,10 +24,11 @@ final class HomeViewController: UIViewController {
     
     private let viewModel = HomeViewModel()
     private var cancellable = Set<AnyCancellable>()
-            
-    enum TableSection: Int, CaseIterable {
-        case photos = 0
-        case loading = 1
+    
+    private var photoDataSource: UITableViewDiffableDataSource<Section, Photo>?
+    
+    enum Section {
+        case photos
     }
     
     // MARK: - View LifeCycle
@@ -48,6 +48,7 @@ final class HomeViewController: UIViewController {
         view.backgroundColor = .systemBackground
         setupNavigationBar()
         setupPhotoTableView()
+        setupPhotoDataSource()
     }
     
     private func setupNavigationBar() {
@@ -66,17 +67,26 @@ final class HomeViewController: UIViewController {
         ])
     }
     
+    private func setupPhotoDataSource() {
+        photoDataSource = UITableViewDiffableDataSource(tableView: photoTableView, cellProvider: { tableView, indexPath, photo in
+            guard let cell = tableView.dequeueReusableCell(withIdentifier: HomeTableViewCell.identifier, for: indexPath) as? HomeTableViewCell else {
+                return .init()
+            }
+            cell.configureCell(with: photo)
+            return cell
+        })
+    }
+    
     // MARK: - Bind
     
     private func setupBind() {
-        viewModel.$range
+        viewModel.$photos
             .receive(on: DispatchQueue.main)
-            .sink { range in
-                guard let range = range else {
-                    return
-                }
-                let indexPaths = range.map { IndexPath(row: $0, section: TableSection.photos.rawValue) }
-                self.photoTableView.insertRows(at: indexPaths, with: .none)
+            .sink { photos in
+                var snapShot = NSDiffableDataSourceSnapshot<Section, Photo>()
+                snapShot.appendSections([Section.photos])
+                snapShot.appendItems(photos)
+                self.photoDataSource?.apply(snapShot)
             }
             .store(in: &cancellable)
         
@@ -92,70 +102,16 @@ final class HomeViewController: UIViewController {
     }
 }
 
-// MARK: - UITableViewDataSource
-
-extension HomeViewController: UITableViewDataSource {
-    func numberOfSections(in tableView: UITableView) -> Int {
-        return TableSection.allCases.count
-    }
-    
-    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        guard let tableSection = TableSection(rawValue: section) else {
-            return 0
-        }
-        switch tableSection {
-        case .photos:
-            return viewModel.photosCount()
-        case .loading:
-            return 1
-        }
-    }
-    
-    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        guard let tableSection = TableSection(rawValue: indexPath.section) else {
-            return .init()
-        }
-        
-        switch tableSection {
-        case .photos:
-            guard let cell = tableView.dequeueReusableCell(withIdentifier: HomeTableViewCell.identifier, for: indexPath) as? HomeTableViewCell else {
-                return .init()
-            }
-            
-            let photo = viewModel.photo(at: indexPath.row)
-            cell.configureCell(with: photo)
-            
-            return cell
-        case .loading:
-            guard let cell = tableView.dequeueReusableCell(withIdentifier: HomeTableLoadingCell.identifier, for: indexPath) as? HomeTableLoadingCell else {
-                return .init()
-            }
-            cell.animate(isLoading: true)
-            
-            return cell
-        }
-    }
-}
-
 // MARK: - UITableViewDelegate
 
 extension HomeViewController: UITableViewDelegate {
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        guard let tableSection = TableSection(rawValue: indexPath.section) else {
-            return 0
-        }
+        let cellWidth = view.bounds.width
+        let imageHeight = CGFloat(viewModel.photo(at: indexPath.row).height)
+        let imageWidth = CGFloat(viewModel.photo(at: indexPath.row).width)
+        let imageRatio = imageHeight / imageWidth
         
-        switch tableSection {
-        case .photos:
-            let cellWidth = view.bounds.width
-            let imageHeight = CGFloat(viewModel.photo(at: indexPath.row).height)
-            let imageWidth = CGFloat(viewModel.photo(at: indexPath.row).width)
-            let imageRatio = imageHeight / imageWidth
-            
-            return imageRatio * cellWidth
-        case .loading:
-            return 44.0
-        }
+        return imageRatio * cellWidth
     }
     
     func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
@@ -165,9 +121,20 @@ extension HomeViewController: UITableViewDelegate {
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-//        let detailViewController = DetailViewController(photos: viewModel.photos, indexPath: indexPath)
         let detailViewController = DetailViewController(viewModel: viewModel, indexPath: indexPath)
         detailViewController.hidesBottomBarWhenPushed = true
+        detailViewController.delegate = self
         navigationController?.pushViewController(detailViewController, animated: true)
+    }
+}
+
+// MARK: - DetailViewControllerDelegate
+
+extension HomeViewController: DetailViewControllerDelegate {
+    func scrollTo(indexPath: IndexPath?) {
+        guard let indexPath = indexPath else {
+            return
+        }
+        photoTableView.scrollToRow(at: indexPath, at: .middle, animated: false)
     }
 }

@@ -41,9 +41,11 @@ enum API {
     
     var query: [String: String] {
         switch self {
-        case    .getPhotos(let page),
-                .getTopics(let page),
-                .getTopicPhotos(_, let page):
+        case .getPhotos(let page):
+            return ["page": "\(page)"]
+        case .getTopics(let page):
+            return ["page": "\(page)", "per_page": "30"]
+        case .getTopicPhotos(_, let page):
             return ["page": "\(page)"]
         case let .getSearch(query, page):
             return ["query": query, "page": "\(page)"]

@@ -17,7 +17,8 @@ final class TopicService {
             switch result {
             case .success(let topicEntities):
                 let topics = topicEntities.map {
-                    Topic(title: $0.title,
+                    Topic(id: $0.id,
+                          title: $0.title,
                           slug: $0.slug,
                           coverPhotoURL: $0.coverPhoto.urls.small)
                 }

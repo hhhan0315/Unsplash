@@ -22,6 +22,13 @@ final class TopicCollectionViewCell: UICollectionViewCell {
         return imageView
     }()
     
+    private let blackImageView: UIImageView = {
+        let imageView = UIImageView()
+        imageView.backgroundColor = .black
+        imageView.layer.opacity = 0.3
+        return imageView
+    }()
+    
     private let titleLabel: UILabel = {
         let label = UILabel()
         label.font = UIFont.systemFont(ofSize: 17.0, weight: .semibold)
@@ -70,6 +77,7 @@ final class TopicCollectionViewCell: UICollectionViewCell {
     
     private func setupLayout() {
         setupPhotoImageView()
+        setupBlackImageView()
         setupTitleLabel()
     }
     
@@ -81,6 +89,17 @@ final class TopicCollectionViewCell: UICollectionViewCell {
             photoImageView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor),
             photoImageView.bottomAnchor.constraint(equalTo: contentView.bottomAnchor),
             photoImageView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor),
+        ])
+    }
+    
+    private func setupBlackImageView() {
+        contentView.addSubview(blackImageView)
+        blackImageView.translatesAutoresizingMaskIntoConstraints = false
+        NSLayoutConstraint.activate([
+            blackImageView.topAnchor.constraint(equalTo: contentView.topAnchor),
+            blackImageView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor),
+            blackImageView.bottomAnchor.constraint(equalTo: contentView.bottomAnchor),
+            blackImageView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor),
         ])
     }
     

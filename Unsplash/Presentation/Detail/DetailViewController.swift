@@ -8,6 +8,10 @@
 import UIKit
 import Combine
 
+protocol DetailViewControllerDelegate: AnyObject {
+    func scrollTo(indexPath: IndexPath?)
+}
+
 final class DetailViewController: UIViewController {
     
     // MARK: - View Define
@@ -61,6 +65,8 @@ final class DetailViewController: UIViewController {
     private var cancellable = Set<AnyCancellable>()
     private var currentIndexPath: IndexPath
     
+    weak var delegate: DetailViewControllerDelegate?
+    
     private let imageSaver = ImageSaver()
     private let imageLoader = ImageLoader()
     
@@ -82,6 +88,13 @@ final class DetailViewController: UIViewController {
         setupLayout()
         setupBind()
         imageSaver.delegate = self
+    }
+    
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        
+        let currentIndexPath = photoCollectionView.indexPathsForVisibleItems.first
+        delegate?.scrollTo(indexPath: currentIndexPath)
     }
     
     override func viewDidLayoutSubviews() {
@@ -141,26 +154,28 @@ final class DetailViewController: UIViewController {
     }
     
     private func setupBind() {
-        viewModel.$range
-            .receive(on: DispatchQueue.main)
-            .sink { range in
-                guard let range = range else {
-                    return
-                }
-                let indexPaths = range.map { IndexPath(item: $0, section: 0) }
-                self.photoCollectionView.insertItems(at: indexPaths)
-            }
-            .store(in: &cancellable)
+//        viewModel.$range
+//            .receive(on: DispatchQueue.main)
+//            .sink { range in
+//                guard let range = range else {
+//                    return
+//                }
+//                let indexPaths = range.map { IndexPath(item: $0, section: 0) }
+//                self.photoCollectionView.insertItems(at: indexPaths)
+//                self.photoCollectionView.reloadData()
+//                self.photoCollectionView.reloadSections(IndexSet(integer: 0))
+//            }
+//            .store(in: &cancellable)
         
-        viewModel.$error
-            .receive(on: DispatchQueue.main)
-            .sink { apiError in
-                guard let apiError = apiError else {
-                    return
-                }
-                self.showAlert(message: apiError.errorDescription)
-            }
-            .store(in: &cancellable)
+//        viewModel.$error
+//            .receive(on: DispatchQueue.main)
+//            .sink { apiError in
+//                guard let apiError = apiError else {
+//                    return
+//                }
+//                self.showAlert(message: apiError.errorDescription)
+//            }
+//            .store(in: &cancellable)
     }
     
     // MARK: - Objc
