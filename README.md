@@ -7,6 +7,7 @@ Unsplash Image API를 활용한 사진 앱
 ## 구현 내용
 - [MVVM 패턴](https://github.com/hhhan0315/Unsplash/tree/main/markdown/MVVM.md)
 - [네트워크 객체](https://github.com/hhhan0315/Unsplash/tree/main/markdown/Network.md)
+- [Combine 메모리 해제](https://github.com/hhhan0315/Unsplash/tree/main/markdown/Combine_Memory_Leak.md)
 
 ## 기능
 
