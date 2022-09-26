@@ -11,9 +11,27 @@ final class DetailViewController: UIViewController {
     
     // MARK: - View Define
     
-    private let photoImageView: UIImageView = {
+    private lazy var exitButton: UIButton = {
+        let button = UIButton(type: .system)
+        button.setImage(UIImage(systemName: "multiply"), for: .normal)
+        button.tintColor = .label
+        button.setPreferredSymbolConfiguration(.init(pointSize: 20.0), forImageIn: .normal)
+        button.addTarget(self, action: #selector(touchExitButton(_:)), for: .touchUpInside)
+        return button
+    }()
+    
+    private lazy var titleLabel: UILabel = {
+        let label = UILabel()
+        label.textColor = .label
+        label.font = UIFont.systemFont(ofSize: 20.0, weight: .semibold)
+        label.text = photo.user
+        return label
+    }()
+    
+    private lazy var photoImageView: UIImageView = {
         let imageView = UIImageView()
         imageView.contentMode = .scaleAspectFit
+        imageView.downloadImage(with: photo.url)
         return imageView
     }()
     
@@ -23,6 +41,17 @@ final class DetailViewController: UIViewController {
         button.backgroundColor = .label
         button.tintColor = .systemBackground
         button.addTarget(self, action: #selector(touchDownloadButton(_:)), for: .touchUpInside)
+        button.setPreferredSymbolConfiguration(.init(scale: .large), forImageIn: .normal)
+        return button
+    }()
+    
+    private lazy var heartButton: UIButton = {
+        let button = UIButton(type: .custom)
+        button.setImage(UIImage(systemName: "heart.fill"), for: .normal)
+        button.backgroundColor = .label
+        button.tintColor = .systemBackground
+        button.addTarget(self, action: #selector(touchHeartButton(_:)), for: .touchUpInside)
+        button.setPreferredSymbolConfiguration(.init(scale: .large), forImageIn: .normal)
         return button
     }()
     
@@ -54,7 +83,6 @@ final class DetailViewController: UIViewController {
         super.viewDidLoad()
         
         setupLayout()
-        photoImageView.downloadImage(with: photo.url)
         imageSaver.delegate = self
     }
     
@@ -63,28 +91,53 @@ final class DetailViewController: UIViewController {
         
         downloadButton.layer.cornerRadius = downloadButton.frame.width / 2
         downloadButton.clipsToBounds = true
+        
+        heartButton.layer.cornerRadius = heartButton.frame.width / 2
+        heartButton.clipsToBounds = true
     }
     
     // MARK: - Layout
     
     private func setupLayout() {
-        view.backgroundColor = .systemBackground
-        setupNavigationBar()
+        setupView()
+        setupExitButton()
+        setupTitleLabel()
         setupPhotoImageView()
         setupDownloadButton()
+        setupHeartButton()
         setupActivityIndicatorView()
     }
     
-    private func setupNavigationBar() {
-        navigationController?.navigationBar.tintColor = .label
-        navigationItem.title = photo.user
+    private func setupView() {
+        view.backgroundColor = .systemBackground
+        //        view.addGestureRecognizer(UIPanGestureRecognizer(target: self, action: #selector(handleDismiss(_:))))
+    }
+    
+    private func setupExitButton() {
+        view.addSubview(exitButton)
+        exitButton.translatesAutoresizingMaskIntoConstraints = false
+        NSLayoutConstraint.activate([
+            exitButton.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 8.0),
+            exitButton.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: 16.0),
+            exitButton.heightAnchor.constraint(equalToConstant: 44.0),
+        ])
+    }
+    
+    private func setupTitleLabel() {
+        view.addSubview(titleLabel)
+        titleLabel.translatesAutoresizingMaskIntoConstraints = false
+        NSLayoutConstraint.activate([
+            titleLabel.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 8.0),
+            titleLabel.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+            titleLabel.heightAnchor.constraint(equalToConstant: 44.0),
+        ])
     }
     
     private func setupPhotoImageView() {
         view.addSubview(photoImageView)
         photoImageView.translatesAutoresizingMaskIntoConstraints = false
         NSLayoutConstraint.activate([
-            photoImageView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
+            photoImageView.topAnchor.constraint(equalTo: titleLabel.bottomAnchor),
             photoImageView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor),
             photoImageView.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor),
             photoImageView.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor),
@@ -95,10 +148,21 @@ final class DetailViewController: UIViewController {
         view.addSubview(downloadButton)
         downloadButton.translatesAutoresizingMaskIntoConstraints = false
         NSLayoutConstraint.activate([
-            downloadButton.widthAnchor.constraint(equalToConstant: 50.0),
-            downloadButton.heightAnchor.constraint(equalToConstant: 50.0),
+            downloadButton.widthAnchor.constraint(equalToConstant: 60.0),
+            downloadButton.heightAnchor.constraint(equalToConstant: 60.0),
             downloadButton.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: -8.0),
             downloadButton.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: -32.0),
+        ])
+    }
+    
+    private func setupHeartButton() {
+        view.addSubview(heartButton)
+        heartButton.translatesAutoresizingMaskIntoConstraints = false
+        NSLayoutConstraint.activate([
+            heartButton.widthAnchor.constraint(equalToConstant: 60.0),
+            heartButton.heightAnchor.constraint(equalToConstant: 60.0),
+            heartButton.bottomAnchor.constraint(equalTo: downloadButton.topAnchor, constant: -16.0),
+            heartButton.trailingAnchor.constraint(equalTo: downloadButton.trailingAnchor),
         ])
     }
     
@@ -115,6 +179,10 @@ final class DetailViewController: UIViewController {
     
     // MARK: - Objc
     
+    @objc private func touchExitButton(_ sender: UIButton) {
+        dismiss(animated: true)
+    }
+    
     @objc private func touchDownloadButton(_ sender: UIButton) {
         activityIndicatorView.startAnimating()
         
@@ -123,6 +191,11 @@ final class DetailViewController: UIViewController {
                 self.imageSaver.writeToPhotoAlbum(image: image)
             }
         }
+    }
+    
+    @objc private func touchHeartButton(_ sender: UIButton) {
+        sender.isSelected.toggle()
+        sender.tintColor = sender.isSelected ? .red : .systemBackground
     }
 }
 

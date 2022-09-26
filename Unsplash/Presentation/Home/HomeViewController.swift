@@ -116,8 +116,8 @@ extension HomeViewController: UICollectionViewDelegate {
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         let detailViewController = DetailViewController(photo: viewModel.photo(at: indexPath.item))
-        detailViewController.hidesBottomBarWhenPushed = true
-        navigationController?.pushViewController(detailViewController, animated: true)
+        detailViewController.modalPresentationStyle = .fullScreen
+        present(detailViewController, animated: true)
     }
 }
 
