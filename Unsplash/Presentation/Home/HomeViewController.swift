@@ -121,20 +121,8 @@ extension HomeViewController: UITableViewDelegate {
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        let detailViewController = DetailViewController(viewModel: viewModel, indexPath: indexPath)
+        let detailViewController = DetailViewController(photo: viewModel.photo(at: indexPath.item))
         detailViewController.hidesBottomBarWhenPushed = true
-        detailViewController.delegate = self
         navigationController?.pushViewController(detailViewController, animated: true)
-    }
-}
-
-// MARK: - DetailViewControllerDelegate
-
-extension HomeViewController: DetailViewControllerDelegate {
-    func scrollTo(indexPath: IndexPath?) {
-        guard let indexPath = indexPath else {
-            return
-        }
-        photoTableView.scrollToRow(at: indexPath, at: .middle, animated: false)
     }
 }
