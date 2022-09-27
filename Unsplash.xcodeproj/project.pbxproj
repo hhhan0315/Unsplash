@@ -38,7 +38,7 @@
 		01C0C9DA28DDC20500D655BD /* TopicEntity.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01C0C9D928DDC20400D655BD /* TopicEntity.swift */; };
 		01C0C9DC28DDC4AF00D655BD /* TopicRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01C0C9DB28DDC4AF00D655BD /* TopicRepository.swift */; };
 		01C0C9DE28DDC4FC00D655BD /* TopicService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01C0C9DD28DDC4FC00D655BD /* TopicService.swift */; };
-		01C0C9E028DDD85800D655BD /* TopicCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01C0C9DF28DDD85800D655BD /* TopicCollectionViewCell.swift */; };
+		01C0C9E028DDD85800D655BD /* TopicPhotoCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01C0C9DF28DDD85800D655BD /* TopicPhotoCollectionViewCell.swift */; };
 		01C0C9E228DE973900D655BD /* PinterestDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01C0C9E128DE973900D655BD /* PinterestDetailViewController.swift */; };
 		01C0C9E628E18BE300D655BD /* PinterestDetailViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01C0C9E528E18BE300D655BD /* PinterestDetailViewModel.swift */; };
 		01C0C9E828E18E4400D655BD /* TopicPhotoRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01C0C9E728E18E4400D655BD /* TopicPhotoRepository.swift */; };
@@ -98,7 +98,7 @@
 		01C0C9D928DDC20400D655BD /* TopicEntity.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TopicEntity.swift; sourceTree = "<group>"; };
 		01C0C9DB28DDC4AF00D655BD /* TopicRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TopicRepository.swift; sourceTree = "<group>"; };
 		01C0C9DD28DDC4FC00D655BD /* TopicService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TopicService.swift; sourceTree = "<group>"; };
-		01C0C9DF28DDD85800D655BD /* TopicCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TopicCollectionViewCell.swift; sourceTree = "<group>"; };
+		01C0C9DF28DDD85800D655BD /* TopicPhotoCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TopicPhotoCollectionViewCell.swift; sourceTree = "<group>"; };
 		01C0C9E128DE973900D655BD /* PinterestDetailViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PinterestDetailViewController.swift; sourceTree = "<group>"; };
 		01C0C9E528E18BE300D655BD /* PinterestDetailViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PinterestDetailViewModel.swift; sourceTree = "<group>"; };
 		01C0C9E728E18E4400D655BD /* TopicPhotoRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TopicPhotoRepository.swift; sourceTree = "<group>"; };
@@ -297,7 +297,7 @@
 		01C0C9F228E286E700D655BD /* Topic */ = {
 			isa = PBXGroup;
 			children = (
-				01C0C9DF28DDD85800D655BD /* TopicCollectionViewCell.swift */,
+				01C0C9DF28DDD85800D655BD /* TopicPhotoCollectionViewCell.swift */,
 				01D9D2DA281F7B1B00E308D4 /* TopicViewController.swift */,
 				01C70DC6283345D800185DF0 /* TopicViewModel.swift */,
 			);
@@ -380,7 +380,7 @@
 			attributes = {
 				BuildIndependentTargetsInParallel = 1;
 				LastSwiftUpdateCheck = 1400;
-				LastUpgradeCheck = 1330;
+				LastUpgradeCheck = 1400;
 				TargetAttributes = {
 					01C0C9BD28DC443600D655BD = {
 						CreatedOnToolsVersion = 14.0;
@@ -457,7 +457,7 @@
 				0128D1A9289918A900D17627 /* ImageSaver.swift in Sources */,
 				019CE08628D591CA009D4696 /* SearchRepository.swift in Sources */,
 				01C0C9CF28DC8B7300D655BD /* URLSessionProtocol.swift in Sources */,
-				01C0C9E028DDD85800D655BD /* TopicCollectionViewCell.swift in Sources */,
+				01C0C9E028DDD85800D655BD /* TopicPhotoCollectionViewCell.swift in Sources */,
 				019CE08428D4753D009D4696 /* PhotoService.swift in Sources */,
 				01C0C9DC28DDC4AF00D655BD /* TopicRepository.swift in Sources */,
 				019D78CD28C9BA2E00EB3FEB /* API.swift in Sources */,
@@ -517,6 +517,7 @@
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
+				DEAD_CODE_STRIPPING = YES;
 				DEVELOPMENT_TEAM = WB3J5J4ZWS;
 				GENERATE_INFOPLIST_FILE = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
@@ -540,6 +541,7 @@
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
+				DEAD_CODE_STRIPPING = YES;
 				DEVELOPMENT_TEAM = WB3J5J4ZWS;
 				GENERATE_INFOPLIST_FILE = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 16.0;

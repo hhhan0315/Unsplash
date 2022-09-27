@@ -137,6 +137,7 @@ extension SearchViewController: UISearchBarDelegate {
         guard let query = searchBar.text else {
             return
         }
+        photoCollectionView.setContentOffset(.zero, animated: false)
         viewModel.update(query)
     }
     

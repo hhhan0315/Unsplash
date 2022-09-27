@@ -24,7 +24,7 @@ final class TopicViewController: UIViewController {
         let layout = UICollectionViewCompositionalLayout(section: section)
         
         let collectionView = UICollectionView(frame: .zero, collectionViewLayout: layout)
-        collectionView.register(TopicCollectionViewCell.self, forCellWithReuseIdentifier: TopicCollectionViewCell.identifier)
+        collectionView.register(TopicPhotoCollectionViewCell.self, forCellWithReuseIdentifier: TopicPhotoCollectionViewCell.identifier)
         collectionView.dataSource = topicDataSource
         collectionView.delegate = self
         collectionView.backgroundColor = .systemBackground
@@ -73,6 +73,7 @@ final class TopicViewController: UIViewController {
         searchController.searchBar.delegate = searchViewController
         searchController.searchBar.placeholder = "Search photos"
         searchController.hidesNavigationBarDuringPresentation = false
+        searchController.showsSearchResultsController = true
         
         navigationItem.hidesSearchBarWhenScrolling = false
         navigationItem.searchController = searchController
@@ -91,7 +92,7 @@ final class TopicViewController: UIViewController {
     
     private func setupTopicDataSource() {
         topicDataSource = UICollectionViewDiffableDataSource(collectionView: topicCollectionView, cellProvider: { collectionView, indexPath, topic in
-            guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: TopicCollectionViewCell.identifier, for: indexPath) as? TopicCollectionViewCell else {
+            guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: TopicPhotoCollectionViewCell.identifier, for: indexPath) as? TopicPhotoCollectionViewCell else {
                 return .init()
             }
             

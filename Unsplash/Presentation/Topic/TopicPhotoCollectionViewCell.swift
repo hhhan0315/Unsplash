@@ -1,5 +1,5 @@
 //
-//  TopicCollectionViewCell.swift
+//  TopicPhotoCollectionViewCell.swift
 //  Unsplash
 //
 //  Created by rae on 2022/09/23.
@@ -7,11 +7,11 @@
 
 import UIKit
 
-final class TopicCollectionViewCell: UICollectionViewCell {
+final class TopicPhotoCollectionViewCell: UICollectionViewCell {
     
     // MARK: - Properties
     
-    static let identifier = String(describing: TopicCollectionViewCell.self)
+    static let identifier = String(describing: TopicPhotoCollectionViewCell.self)
     
     // MARK: - UI Define
     
