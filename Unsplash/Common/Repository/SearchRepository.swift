@@ -7,7 +7,7 @@
 
 import Foundation
 
-class SearchRepository {
+final class SearchRepository {
     private let apiCaller = APICaller()
     
     func fetch(query: String, page: Int, completion: @escaping (Result<SearchEntity, APIError>) -> Void) {

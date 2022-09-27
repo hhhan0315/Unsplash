@@ -40,14 +40,14 @@ final class MainTabController: UITabBarController {
         let homeViewController = UINavigationController(rootViewController: HomeViewController())
         homeViewController.tabBarItem = homeTabBarItem
         
-        let searchViewController = UINavigationController(rootViewController: SearchViewController())
-        searchViewController.tabBarItem = searchTabBarItem
+        let topicViewController = UINavigationController(rootViewController: TopicViewController())
+        topicViewController.tabBarItem = searchTabBarItem
         
         let heartViewController = UINavigationController(rootViewController: HeartViewController())
         heartViewController.tabBarItem = heartTabBarItem
         
         self.tabBar.tintColor = .label
         
-        self.viewControllers = [homeViewController, searchViewController, heartViewController]
+        self.viewControllers = [homeViewController, topicViewController, heartViewController]
     }
 }

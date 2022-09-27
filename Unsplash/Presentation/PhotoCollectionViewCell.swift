@@ -1,5 +1,5 @@
 //
-//  HomeCollectionViewCell.swift
+//  PhotoCollectionViewCell.swift
 //  Unsplash
 //
 //  Created by rae on 2022/09/21.
@@ -7,11 +7,11 @@
 
 import UIKit
 
-final class HomeCollectionViewCell: UICollectionViewCell {
+final class PhotoCollectionViewCell: UICollectionViewCell {
 
     // MARK: - Properties
     
-    static let identifier = String(describing: HomeCollectionViewCell.self)
+    static let identifier = String(describing: PhotoCollectionViewCell.self)
         
     // MARK: - UI Define
     

@@ -7,10 +7,12 @@
 
 import Foundation
 
-class SearchService {
+final class SearchService {
     private let searchRepository = SearchRepository()
     
-    func fetch(query: String, page: Int, completion: @escaping (Result<[Photo], APIError>) -> Void) {
+    private var page: Int = 1
+    
+    func fetch(query: String, completion: @escaping (Result<[Photo], APIError>) -> Void) {
         searchRepository.fetch(query: query, page: page) { result in
             switch result {
             case .success(let searchEntity):
@@ -21,10 +23,15 @@ class SearchService {
                           url: $0.urls.small,
                           user: $0.user.name)
                 }
+                self.page += 1
                 completion(.success(photos))
             case .failure(let error):
                 completion(.failure(error))
             }
         }
+    }
+    
+    func resetPage() {
+        page = 1
     }
 }
