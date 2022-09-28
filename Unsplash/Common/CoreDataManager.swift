@@ -28,17 +28,18 @@ final class CoreDataManager {
         return persistentContainer.viewContext
     }
     
-    func fetchPhotoEntity() -> [PhotoCoreData] {
+    func fetchPhotoCoreData(completion: (Result<[PhotoCoreData], Error>) -> Void) {
         let request = PhotoCoreData.fetchRequest()
         let dateOrder = NSSortDescriptor(key: "date", ascending: false)
         request.sortDescriptors = [dateOrder]
         
         do {
             let fetchResult = try context.fetch(request)
-            return fetchResult
+            completion(.success(fetchResult))
         } catch {
-            print(error.localizedDescription)
-            return []
+            completion(.failure(error))
+//            print(error.localizedDescription)
+//            return []
         }
     }
     
@@ -48,7 +49,10 @@ final class CoreDataManager {
         if let entity = entity {
             let managedObject = NSManagedObject(entity: entity, insertInto: context)
             managedObject.setValue(photo.id, forKey: "id")
-            managedObject.setValue(photo.url, forKey: "imageURL")
+            managedObject.setValue(photo.url, forKey: "url")
+            managedObject.setValue(photo.user, forKey: "user")
+            managedObject.setValue(photo.width, forKey: "width")
+            managedObject.setValue(photo.height, forKey: "height")
             managedObject.setValue(Date(), forKey: "date")
             
             do {
