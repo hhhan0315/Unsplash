@@ -1,5 +1,5 @@
 //
-//  SearchViewController.swift
+//  SearchResultViewController.swift
 //  Unsplash
 //
 //  Created by rae on 2022/09/27.
@@ -8,7 +8,7 @@
 import UIKit
 import Combine
 
-final class SearchViewController: UIViewController {
+final class SearchResultViewController: UIViewController {
     
     private lazy var photoCollectionView: UICollectionView = {
         let layout = PinterestLayout()
@@ -24,7 +24,7 @@ final class SearchViewController: UIViewController {
     
     // MARK: - Properties
     
-    private let viewModel = SearchViewModel()
+    private let viewModel = SearchResultViewModel()
     
     private var cancellable = Set<AnyCancellable>()
     
@@ -99,7 +99,7 @@ final class SearchViewController: UIViewController {
 
 // MARK: - UICollectionViewDelegate
 
-extension SearchViewController: UICollectionViewDelegate {
+extension SearchResultViewController: UICollectionViewDelegate {
     func collectionView(_ collectionView: UICollectionView, willDisplay cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {
         if indexPath.item == viewModel.photosCount() - 1 {
             viewModel.fetch()
@@ -115,7 +115,7 @@ extension SearchViewController: UICollectionViewDelegate {
 
 // MARK: - PinterestLayoutDelegate
 
-extension SearchViewController: PinterestLayoutDelegate {
+extension SearchResultViewController: PinterestLayoutDelegate {
     func collectionView(_ collectionView: UICollectionView, heightForPhotoAtIndexPath indexPath: IndexPath) -> CGFloat {
         let cellWidth: CGFloat = view.bounds.width / 2
         let imageHeight: CGFloat = CGFloat(viewModel.photo(at: indexPath.item).height)
@@ -132,7 +132,7 @@ extension SearchViewController: PinterestLayoutDelegate {
 
 // MARK: - UISearchBarDelegate
 
-extension SearchViewController: UISearchBarDelegate {
+extension SearchResultViewController: UISearchBarDelegate {
     func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
         guard let query = searchBar.text else {
             return

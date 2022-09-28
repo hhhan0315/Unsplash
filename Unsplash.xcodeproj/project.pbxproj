@@ -43,8 +43,8 @@
 		01C0C9E628E18BE300D655BD /* PinterestDetailViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01C0C9E528E18BE300D655BD /* PinterestDetailViewModel.swift */; };
 		01C0C9E828E18E4400D655BD /* TopicPhotoRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01C0C9E728E18E4400D655BD /* TopicPhotoRepository.swift */; };
 		01C0C9EA28E18E7800D655BD /* TopicPhotoService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01C0C9E928E18E7800D655BD /* TopicPhotoService.swift */; };
-		01C0C9F128E286D400D655BD /* SearchViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01C0C9F028E286D400D655BD /* SearchViewController.swift */; };
-		01C0C9F428E287D200D655BD /* SearchViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01C0C9F328E287D200D655BD /* SearchViewModel.swift */; };
+		01C0C9F128E286D400D655BD /* SearchResultViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01C0C9F028E286D400D655BD /* SearchResultViewController.swift */; };
+		01C0C9F428E287D200D655BD /* SearchResultViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01C0C9F328E287D200D655BD /* SearchResultViewModel.swift */; };
 		01C70DC7283345D800185DF0 /* TopicViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01C70DC6283345D800185DF0 /* TopicViewModel.swift */; };
 		01C70DD32833849100185DF0 /* SearchEntity.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01C70DD22833849100185DF0 /* SearchEntity.swift */; };
 		01D9D2C3281F71C400E308D4 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01D9D2C2281F71C400E308D4 /* AppDelegate.swift */; };
@@ -103,8 +103,8 @@
 		01C0C9E528E18BE300D655BD /* PinterestDetailViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PinterestDetailViewModel.swift; sourceTree = "<group>"; };
 		01C0C9E728E18E4400D655BD /* TopicPhotoRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TopicPhotoRepository.swift; sourceTree = "<group>"; };
 		01C0C9E928E18E7800D655BD /* TopicPhotoService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TopicPhotoService.swift; sourceTree = "<group>"; };
-		01C0C9F028E286D400D655BD /* SearchViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchViewController.swift; sourceTree = "<group>"; };
-		01C0C9F328E287D200D655BD /* SearchViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchViewModel.swift; sourceTree = "<group>"; };
+		01C0C9F028E286D400D655BD /* SearchResultViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchResultViewController.swift; sourceTree = "<group>"; };
+		01C0C9F328E287D200D655BD /* SearchResultViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchResultViewModel.swift; sourceTree = "<group>"; };
 		01C70DC6283345D800185DF0 /* TopicViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TopicViewModel.swift; sourceTree = "<group>"; };
 		01C70DD22833849100185DF0 /* SearchEntity.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchEntity.swift; sourceTree = "<group>"; };
 		01D9D2BF281F71C400E308D4 /* Unsplash.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Unsplash.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -135,13 +135,13 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		0128D1A12897BF5F00D17627 /* Search */ = {
+		0128D1A12897BF5F00D17627 /* SearchResult */ = {
 			isa = PBXGroup;
 			children = (
-				01C0C9F028E286D400D655BD /* SearchViewController.swift */,
-				01C0C9F328E287D200D655BD /* SearchViewModel.swift */,
+				01C0C9F028E286D400D655BD /* SearchResultViewController.swift */,
+				01C0C9F328E287D200D655BD /* SearchResultViewModel.swift */,
 			);
-			path = Search;
+			path = SearchResult;
 			sourceTree = "<group>";
 		};
 		0128D1A22897BF6C00D17627 /* Detail */ = {
@@ -190,10 +190,9 @@
 			children = (
 				01D9D2D6281F7A4F00E308D4 /* MainTabController.swift */,
 				01C0C9B228DAF48100D655BD /* PhotoCollectionViewCell.swift */,
-				01C0C9A528DA98FD00D655BD /* Home */,
-				01C0C9F228E286E700D655BD /* Topic */,
-				0128D1A12897BF5F00D17627 /* Search */,
 				0128D1A22897BF6C00D17627 /* Detail */,
+				01C0C9A528DA98FD00D655BD /* Home */,
+				01C0C9F528E3DC3B00D655BD /* Search */,
 				01C0C99C28D8A18700D655BD /* Heart */,
 			);
 			path = Presentation;
@@ -302,6 +301,15 @@
 				01C70DC6283345D800185DF0 /* TopicViewModel.swift */,
 			);
 			path = Topic;
+			sourceTree = "<group>";
+		};
+		01C0C9F528E3DC3B00D655BD /* Search */ = {
+			isa = PBXGroup;
+			children = (
+				01C0C9F228E286E700D655BD /* Topic */,
+				0128D1A12897BF5F00D17627 /* SearchResult */,
+			);
+			path = Search;
 			sourceTree = "<group>";
 		};
 		01D9D2B6281F71C400E308D4 = {
@@ -472,14 +480,14 @@
 				019D78CA28C87DA700EB3FEB /* ImageLoader.swift in Sources */,
 				01C70DD32833849100185DF0 /* SearchEntity.swift in Sources */,
 				01C0C9DA28DDC20500D655BD /* TopicEntity.swift in Sources */,
-				01C0C9F128E286D400D655BD /* SearchViewController.swift in Sources */,
+				01C0C9F128E286D400D655BD /* SearchResultViewController.swift in Sources */,
 				01C0C9E828E18E4400D655BD /* TopicPhotoRepository.swift in Sources */,
 				01C0C9E228DE973900D655BD /* PinterestDetailViewController.swift in Sources */,
 				019D78CF28C9C01F00EB3FEB /* APICaller.swift in Sources */,
 				01C0C9E628E18BE300D655BD /* PinterestDetailViewModel.swift in Sources */,
 				01C70DC7283345D800185DF0 /* TopicViewModel.swift in Sources */,
 				019CE08828D59230009D4696 /* SearchService.swift in Sources */,
-				01C0C9F428E287D200D655BD /* SearchViewModel.swift in Sources */,
+				01C0C9F428E287D200D655BD /* SearchResultViewModel.swift in Sources */,
 				01C0C9D128DC8FD300D655BD /* URLSessionDataTaskProtocol.swift in Sources */,
 				01C0C9AE28DAE30D00D655BD /* Alert.swift in Sources */,
 				01C0C9DE28DDC4FC00D655BD /* TopicService.swift in Sources */,

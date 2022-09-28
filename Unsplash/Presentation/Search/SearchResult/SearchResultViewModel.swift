@@ -1,5 +1,5 @@
 //
-//  SearchViewModel.swift
+//  SearchResultViewModel.swift
 //  Unsplash
 //
 //  Created by rae on 2022/09/27.
@@ -7,7 +7,7 @@
 
 import Foundation
 
-final class SearchViewModel {
+final class SearchResultViewModel {
     @Published var photos: [Photo] = []
     @Published var error: APIError? = nil
     

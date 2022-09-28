@@ -68,9 +68,9 @@ final class TopicViewController: UIViewController {
     }
     
     private func setupSearchController() {
-        let searchViewController = SearchViewController()
-        let searchController = UISearchController(searchResultsController: searchViewController)
-        searchController.searchBar.delegate = searchViewController
+        let searchResultViewController = SearchResultViewController()
+        let searchController = UISearchController(searchResultsController: searchResultViewController)
+        searchController.searchBar.delegate = searchResultViewController
         searchController.searchBar.placeholder = "Search photos"
         searchController.hidesNavigationBarDuringPresentation = false
         searchController.showsSearchResultsController = true
