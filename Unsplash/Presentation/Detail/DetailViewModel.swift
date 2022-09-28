@@ -9,6 +9,7 @@ import Foundation
 
 final class DetailViewModel {
     @Published var isHeartSelected: Bool = false
+    @Published var error: Error? = nil
     
     private var photo: Photo
     
@@ -30,15 +31,46 @@ final class DetailViewModel {
     func fetchPhotoLike() {
         imageFileManager.existImageInFile(id: photo.id) { isExist in
             if isExist {
-                self.imageFileManager.deleteImage(id: self.photo.id)
-                self.coreDataManager.deletePhotoCoreData(photo: self.photo) { _ in
-                    self.isHeartSelected = false
+                self.imageFileManager.deleteImage(id: self.photo.id) { result in
+                    switch result {
+                    case .success(let success):
+                        if success {
+                            self.coreDataManager.deletePhotoCoreData(photo: self.photo) { result in
+                                switch result {
+                                case .success(let success):
+                                    if success {
+                                        self.isHeartSelected = false
+                                    }
+                                case .failure(let error):
+                                    self.error = error
+                                }
+                            }
+                        }
+                    case .failure(let error):
+                        self.error = error
+                    }
                 }
             } else {
                 self.imageLoader.load(with: self.photo.url) { data in
-                    self.imageFileManager.saveImage(id: self.photo.id, data: data)
-                    self.coreDataManager.savePhotoCoreData(photo: self.photo)
-                    self.isHeartSelected = true
+                    self.imageFileManager.saveImage(id: self.photo.id, data: data) { result in
+                        switch result {
+                        case .success(let success):
+                            if success {
+                                self.coreDataManager.savePhotoCoreData(photo: self.photo) { result in
+                                    switch result {
+                                    case .success(let success):
+                                        if success {
+                                            self.isHeartSelected = true
+                                        }
+                                    case .failure(let error):
+                                        self.error = error
+                                    }
+                                }
+                            }
+                        case .failure(let error):
+                            self.error = error
+                        }
+                    }
                 }
             }
         }

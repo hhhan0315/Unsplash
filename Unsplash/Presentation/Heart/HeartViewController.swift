@@ -79,7 +79,7 @@ final class HeartViewController: UIViewController {
             guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: PhotoCollectionViewCell.identifier, for: indexPath) as? PhotoCollectionViewCell else {
                 return .init()
             }
-            cell.configureCell(with: photo)
+            cell.configureCellWithFileManager(with: photo)
             return cell
         })
     }

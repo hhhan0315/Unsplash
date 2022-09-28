@@ -25,7 +25,11 @@ final class ImageFileManager {
         }
     }
     
-    func saveImage(id: String, data: Data) {
+    private func fetchImageURLString(id: String) -> String {
+        return directoryURL.appendingPathComponent(id).appendingPathExtension("png").path
+    }
+    
+    func saveImage(id: String, data: Data, completion: @escaping (Result<Bool, Error>) -> Void) {
         guard let image = UIImage(data: data) else {
             return
         }
@@ -38,29 +42,27 @@ final class ImageFileManager {
         
         do {
             try imageData.write(to: fileURL)
+            completion(.success(true))
         } catch {
-            print(error.localizedDescription)
+            completion(.failure(error))
         }
     }
     
-    private func fetchImageURLString(id: String) -> String {
-        return directoryURL.appendingPathComponent(id).appendingPathExtension("png").path
+    func deleteImage(id: String, completion: @escaping (Result<Bool, Error>) -> Void) {
+        do {
+            try fileManager.removeItem(atPath: fetchImageURLString(id: id))
+            completion(.success(true))
+        } catch {
+            completion(.failure(error))
+        }
     }
     
-//    func fetchImage(id: String) -> UIImage? {
-//        return UIImage(contentsOfFile: fetchImageURLString(id: id))
-//    }
+    func fetchImage(id: String) -> UIImage? {
+        return UIImage(contentsOfFile: fetchImageURLString(id: id))
+    }
     
     func existImageInFile(id: String, completion: @escaping (Bool) -> Void) {
         let path = fetchImageURLString(id: id)
         fileManager.fileExists(atPath: path) ? completion(true) : completion(false)
-    }
-    
-    func deleteImage(id: String) {
-        do {
-            try fileManager.removeItem(atPath: fetchImageURLString(id: id))
-        } catch {
-            print(error.localizedDescription)
-        }
     }
 }

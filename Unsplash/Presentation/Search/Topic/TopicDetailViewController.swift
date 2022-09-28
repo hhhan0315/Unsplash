@@ -1,5 +1,5 @@
 //
-//  PinterestDetailViewController.swift
+//  TopicDetailViewController.swift
 //  Unsplash
 //
 //  Created by rae on 2022/09/24.
@@ -8,7 +8,7 @@
 import UIKit
 import Combine
 
-final class PinterestDetailViewController: UIViewController {
+final class TopicDetailViewController: UIViewController {
     
     // MARK: - UI Define
     
@@ -26,7 +26,7 @@ final class PinterestDetailViewController: UIViewController {
     
     // MARK: - Properties
     
-    private let viewModel: PinterestDetailViewModel
+    private let viewModel: TopicDetailViewModel
     private let titleString: String
     
     private var cancellable = Set<AnyCancellable>()
@@ -40,7 +40,7 @@ final class PinterestDetailViewController: UIViewController {
     // MARK: - View LifeCycle
     
     init(slug: String, title: String) {
-        self.viewModel = PinterestDetailViewModel(slug: slug)
+        self.viewModel = TopicDetailViewModel(slug: slug)
         self.titleString = title
         super.init(nibName: nil, bundle: nil)
     }
@@ -120,7 +120,7 @@ final class PinterestDetailViewController: UIViewController {
 
 // MARK: - UICollectionViewDelegate
 
-extension PinterestDetailViewController: UICollectionViewDelegate {
+extension TopicDetailViewController: UICollectionViewDelegate {
     func collectionView(_ collectionView: UICollectionView, willDisplay cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {
         if indexPath.item == viewModel.photosCount() - 1 {
             viewModel.fetch()
@@ -136,7 +136,7 @@ extension PinterestDetailViewController: UICollectionViewDelegate {
 
 // MARK: - PinterestLayoutDelegate
 
-extension PinterestDetailViewController: PinterestLayoutDelegate {
+extension TopicDetailViewController: PinterestLayoutDelegate {
     func collectionView(_ collectionView: UICollectionView, heightForPhotoAtIndexPath indexPath: IndexPath) -> CGFloat {
         let cellWidth: CGFloat = view.bounds.width / 2
         let imageHeight: CGFloat = CGFloat(viewModel.photo(at: indexPath.item).height)

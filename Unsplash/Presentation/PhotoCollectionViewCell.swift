@@ -58,6 +58,11 @@ final class PhotoCollectionViewCell: UICollectionViewCell {
         photoImageView.downloadImage(with: photo.url)
     }
     
+    func configureCellWithFileManager(with photo: Photo) {
+        nameLabel.text = photo.user
+        photoImageView.image = ImageFileManager().fetchImage(id: photo.id)
+    }
+    
     // MARK: - Layout
     
     private func setupViews() {

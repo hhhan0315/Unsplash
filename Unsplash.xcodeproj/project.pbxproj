@@ -39,8 +39,8 @@
 		01C0C9DC28DDC4AF00D655BD /* TopicRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01C0C9DB28DDC4AF00D655BD /* TopicRepository.swift */; };
 		01C0C9DE28DDC4FC00D655BD /* TopicService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01C0C9DD28DDC4FC00D655BD /* TopicService.swift */; };
 		01C0C9E028DDD85800D655BD /* TopicPhotoCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01C0C9DF28DDD85800D655BD /* TopicPhotoCollectionViewCell.swift */; };
-		01C0C9E228DE973900D655BD /* PinterestDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01C0C9E128DE973900D655BD /* PinterestDetailViewController.swift */; };
-		01C0C9E628E18BE300D655BD /* PinterestDetailViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01C0C9E528E18BE300D655BD /* PinterestDetailViewModel.swift */; };
+		01C0C9E228DE973900D655BD /* TopicDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01C0C9E128DE973900D655BD /* TopicDetailViewController.swift */; };
+		01C0C9E628E18BE300D655BD /* TopicDetailViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01C0C9E528E18BE300D655BD /* TopicDetailViewModel.swift */; };
 		01C0C9E828E18E4400D655BD /* TopicPhotoRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01C0C9E728E18E4400D655BD /* TopicPhotoRepository.swift */; };
 		01C0C9EA28E18E7800D655BD /* TopicPhotoService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01C0C9E928E18E7800D655BD /* TopicPhotoService.swift */; };
 		01C0C9F128E286D400D655BD /* SearchResultViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01C0C9F028E286D400D655BD /* SearchResultViewController.swift */; };
@@ -105,8 +105,8 @@
 		01C0C9DB28DDC4AF00D655BD /* TopicRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TopicRepository.swift; sourceTree = "<group>"; };
 		01C0C9DD28DDC4FC00D655BD /* TopicService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TopicService.swift; sourceTree = "<group>"; };
 		01C0C9DF28DDD85800D655BD /* TopicPhotoCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TopicPhotoCollectionViewCell.swift; sourceTree = "<group>"; };
-		01C0C9E128DE973900D655BD /* PinterestDetailViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PinterestDetailViewController.swift; sourceTree = "<group>"; };
-		01C0C9E528E18BE300D655BD /* PinterestDetailViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PinterestDetailViewModel.swift; sourceTree = "<group>"; };
+		01C0C9E128DE973900D655BD /* TopicDetailViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TopicDetailViewController.swift; sourceTree = "<group>"; };
+		01C0C9E528E18BE300D655BD /* TopicDetailViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TopicDetailViewModel.swift; sourceTree = "<group>"; };
 		01C0C9E728E18E4400D655BD /* TopicPhotoRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TopicPhotoRepository.swift; sourceTree = "<group>"; };
 		01C0C9E928E18E7800D655BD /* TopicPhotoService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TopicPhotoService.swift; sourceTree = "<group>"; };
 		01C0C9F028E286D400D655BD /* SearchResultViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchResultViewController.swift; sourceTree = "<group>"; };
@@ -161,8 +161,6 @@
 			children = (
 				0132BAF42820C62E00E7A81A /* DetailViewController.swift */,
 				01C0CA0128E3E72C00D655BD /* DetailViewModel.swift */,
-				01C0C9E128DE973900D655BD /* PinterestDetailViewController.swift */,
-				01C0C9E528E18BE300D655BD /* PinterestDetailViewModel.swift */,
 			);
 			path = Detail;
 			sourceTree = "<group>";
@@ -314,6 +312,8 @@
 		01C0C9F228E286E700D655BD /* Topic */ = {
 			isa = PBXGroup;
 			children = (
+				01C0C9E128DE973900D655BD /* TopicDetailViewController.swift */,
+				01C0C9E528E18BE300D655BD /* TopicDetailViewModel.swift */,
 				01C0C9DF28DDD85800D655BD /* TopicPhotoCollectionViewCell.swift */,
 				01D9D2DA281F7B1B00E308D4 /* TopicViewController.swift */,
 				01C70DC6283345D800185DF0 /* TopicViewModel.swift */,
@@ -506,9 +506,9 @@
 				01C0C9DA28DDC20500D655BD /* TopicEntity.swift in Sources */,
 				01C0C9F128E286D400D655BD /* SearchResultViewController.swift in Sources */,
 				01C0C9E828E18E4400D655BD /* TopicPhotoRepository.swift in Sources */,
-				01C0C9E228DE973900D655BD /* PinterestDetailViewController.swift in Sources */,
+				01C0C9E228DE973900D655BD /* TopicDetailViewController.swift in Sources */,
 				019D78CF28C9C01F00EB3FEB /* APICaller.swift in Sources */,
-				01C0C9E628E18BE300D655BD /* PinterestDetailViewModel.swift in Sources */,
+				01C0C9E628E18BE300D655BD /* TopicDetailViewModel.swift in Sources */,
 				01C70DC7283345D800185DF0 /* TopicViewModel.swift in Sources */,
 				019CE08828D59230009D4696 /* SearchService.swift in Sources */,
 				01C0C9F428E287D200D655BD /* SearchResultViewModel.swift in Sources */,

@@ -1,5 +1,5 @@
 //
-//  PinterestDetailViewModel.swift
+//  TopicDetailViewModel.swift
 //  Unsplash
 //
 //  Created by rae on 2022/09/26.
@@ -7,7 +7,7 @@
 
 import Foundation
 
-final class PinterestDetailViewModel {
+final class TopicDetailViewModel {
     @Published var photos: [Photo] = []
     @Published var error: APIError? = nil
     

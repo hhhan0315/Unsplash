@@ -192,6 +192,16 @@ final class DetailViewController: UIViewController {
                 self?.heartButton.tintColor = isHeartSelected ? .red : .systemBackground
             }
             .store(in: &cancellable)
+        
+        viewModel.$error
+            .receive(on: DispatchQueue.main)
+            .sink { [weak self] error in
+                guard let error = error else {
+                    return
+                }
+                self?.showAlert(message: error.localizedDescription)
+            }
+            .store(in: &cancellable)
     }
     
     // MARK: - Objc
