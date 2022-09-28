@@ -15,6 +15,19 @@ viewModel.$photos
 ```
 
 # 해결방법 1
+- reloadSections 활용
+- reloadData보다는 자연스러운 애니메이션이지만 여전히 이미 존재하는 이미지들이 새로고침되기 때문에 새로운 이미지만 새로고침하는 방법을 생각해봤다.
+
+```swift
+viewModel.$photos
+    .receive(on: DispatchQueue.main)
+    .sink { [weak self] photos in
+        self?.photoTableView.reloadSections(IndexSet(integer: 0), with: .automatic)
+    }
+    .store(in: &cancellable)
+```
+
+# 해결방법 2
 - ViewModel을 활용해 Range<Int>를 활용
 
 ```swift
