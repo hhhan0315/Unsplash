@@ -118,10 +118,10 @@ final class DetailViewController: UIViewController {
     
     private func setupLayout() {
         setupView()
-        setupExitButton()
-        setupTitleLabel()
         setupScrollView()
         setupPhotoImageView()
+        setupExitButton()
+        setupTitleLabel()
         setupDownloadButton()
         setupHeartButton()
         setupActivityIndicatorView()
@@ -131,6 +131,30 @@ final class DetailViewController: UIViewController {
         view.backgroundColor = .systemBackground
         view.addGestureRecognizer(UIPanGestureRecognizer(target: self, action: #selector(handleDismiss(_:))))
         view.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(handleTap(_:))))
+    }
+    
+    private func setupScrollView() {
+        view.addSubview(scrollView)
+        scrollView.translatesAutoresizingMaskIntoConstraints = false
+        NSLayoutConstraint.activate([
+            scrollView.topAnchor.constraint(equalTo: view.topAnchor),
+            scrollView.bottomAnchor.constraint(equalTo: view.bottomAnchor),
+            scrollView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
+            scrollView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
+        ])
+    }
+    
+    private func setupPhotoImageView() {
+        scrollView.addSubview(photoImageView)
+        photoImageView.translatesAutoresizingMaskIntoConstraints = false
+        NSLayoutConstraint.activate([
+            photoImageView.topAnchor.constraint(equalTo: scrollView.topAnchor),
+            photoImageView.bottomAnchor.constraint(equalTo: scrollView.bottomAnchor),
+            photoImageView.leadingAnchor.constraint(equalTo: scrollView.leadingAnchor),
+            photoImageView.trailingAnchor.constraint(equalTo: scrollView.trailingAnchor),
+            photoImageView.widthAnchor.constraint(equalTo: scrollView.widthAnchor),
+            photoImageView.heightAnchor.constraint(equalTo: scrollView.heightAnchor),
+        ])
     }
     
     private func setupExitButton() {
@@ -153,29 +177,7 @@ final class DetailViewController: UIViewController {
         ])
     }
     
-    private func setupScrollView() {
-        view.addSubview(scrollView)
-        scrollView.translatesAutoresizingMaskIntoConstraints = false
-        NSLayoutConstraint.activate([
-            scrollView.topAnchor.constraint(equalTo: titleLabel.bottomAnchor),
-            scrollView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor),
-            scrollView.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor),
-            scrollView.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor),
-        ])
-    }
     
-    private func setupPhotoImageView() {
-        scrollView.addSubview(photoImageView)
-        photoImageView.translatesAutoresizingMaskIntoConstraints = false
-        NSLayoutConstraint.activate([
-            photoImageView.topAnchor.constraint(equalTo: scrollView.topAnchor),
-            photoImageView.bottomAnchor.constraint(equalTo: scrollView.bottomAnchor),
-            photoImageView.leadingAnchor.constraint(equalTo: scrollView.leadingAnchor),
-            photoImageView.trailingAnchor.constraint(equalTo: scrollView.trailingAnchor),
-            photoImageView.widthAnchor.constraint(equalTo: scrollView.widthAnchor),
-            photoImageView.heightAnchor.constraint(equalTo: scrollView.heightAnchor),
-        ])
-    }
     
     private func setupDownloadButton() {
         view.addSubview(downloadButton)
