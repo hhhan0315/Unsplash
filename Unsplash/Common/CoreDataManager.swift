@@ -28,7 +28,7 @@ final class CoreDataManager {
         return persistentContainer.viewContext
     }
     
-    func fetchPhotoCoreData(completion: @escaping (Result<[PhotoCoreData], Error>) -> Void) {
+    func fetchPhotoCoreData(completion: (Result<[PhotoCoreData], Error>) -> Void) {
         let request = PhotoCoreData.fetchRequest()
         let dateOrder = NSSortDescriptor(key: "date", ascending: false)
         request.sortDescriptors = [dateOrder]
@@ -41,7 +41,7 @@ final class CoreDataManager {
         }
     }
     
-    func savePhotoCoreData(photo: Photo, completion: @escaping (Result<Bool, Error>) -> Void) {
+    func savePhotoCoreData(photo: Photo, completion: (Result<Bool, Error>) -> Void) {
         let entity = NSEntityDescription.entity(forEntityName: CoreDataConstants.entityName, in: context)
         
         if let entity = entity {
@@ -62,7 +62,7 @@ final class CoreDataManager {
         }
     }
     
-    func deletePhotoCoreData(photo: Photo, completion: @escaping (Result<Bool, Error>) -> Void) {
+    func deletePhotoCoreData(photo: Photo, completion: (Result<Bool, Error>) -> Void) {
         let id = photo.id
         
         let request = PhotoCoreData.fetchRequest()
@@ -86,7 +86,7 @@ final class CoreDataManager {
         }
     }
     
-    func isExistPhotoCoreData(id: String, completion: @escaping (Result<Bool, Error>) -> Void) {
+    func isExistPhotoCoreData(id: String, completion: (Result<Bool, Error>) -> Void) {
         let request = PhotoCoreData.fetchRequest()
         request.predicate = NSPredicate(format: "id = %@", id as CVarArg)
         

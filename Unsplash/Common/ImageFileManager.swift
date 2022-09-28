@@ -29,7 +29,7 @@ final class ImageFileManager {
         return directoryURL.appendingPathComponent(id).appendingPathExtension("png").path
     }
     
-    func saveImage(id: String, data: Data, completion: @escaping (Result<Bool, Error>) -> Void) {
+    func saveImage(id: String, data: Data, completion: (Result<Bool, Error>) -> Void) {
         guard let image = UIImage(data: data) else {
             return
         }
@@ -48,7 +48,7 @@ final class ImageFileManager {
         }
     }
     
-    func deleteImage(id: String, completion: @escaping (Result<Bool, Error>) -> Void) {
+    func deleteImage(id: String, completion: (Result<Bool, Error>) -> Void) {
         do {
             try fileManager.removeItem(atPath: fetchImageURLString(id: id))
             completion(.success(true))
@@ -61,7 +61,7 @@ final class ImageFileManager {
         return UIImage(contentsOfFile: fetchImageURLString(id: id))
     }
     
-    func existImageInFile(id: String, completion: @escaping (Bool) -> Void) {
+    func existImageInFile(id: String, completion: (Bool) -> Void) {
         let path = fetchImageURLString(id: id)
         fileManager.fileExists(atPath: path) ? completion(true) : completion(false)
     }
