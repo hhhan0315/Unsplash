@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import Combine
 
 final class DetailViewController: UIViewController {
     
@@ -64,6 +65,9 @@ final class DetailViewController: UIViewController {
     // MARK: - Properties
     
     private var photo: Photo
+    
+    private let viewModel: DetailViewModel
+    private var cancellable = Set<AnyCancellable>()
         
     private let imageSaver = ImageSaver()
     private let imageLoader = ImageLoader()
@@ -72,6 +76,7 @@ final class DetailViewController: UIViewController {
     
     init(photo: Photo) {
         self.photo = photo
+        self.viewModel = DetailViewModel(photo: photo)
         super.init(nibName: nil, bundle: nil)
     }
     
@@ -83,6 +88,7 @@ final class DetailViewController: UIViewController {
         super.viewDidLoad()
         
         setupLayout()
+        setupBind()
         imageSaver.delegate = self
     }
     
@@ -177,6 +183,17 @@ final class DetailViewController: UIViewController {
         ])
     }
     
+    // MARK: - Bind
+    
+    private func setupBind() {
+        viewModel.$isHeartSelected
+            .receive(on: DispatchQueue.main)
+            .sink { [weak self] isHeartSelected in
+                self?.heartButton.tintColor = isHeartSelected ? .red : .systemBackground
+            }
+            .store(in: &cancellable)
+    }
+    
     // MARK: - Objc
     
     @objc private func touchExitButton(_ sender: UIButton) {
@@ -194,8 +211,7 @@ final class DetailViewController: UIViewController {
     }
     
     @objc private func touchHeartButton(_ sender: UIButton) {
-        sender.isSelected.toggle()
-        sender.tintColor = sender.isSelected ? .red : .systemBackground
+        viewModel.fetchPhotoLike()
     }
 }
 
@@ -203,18 +219,7 @@ final class DetailViewController: UIViewController {
 
 extension DetailViewController: ImageSaverDelegate {
     func saveFailure() {
-        let alertController = UIAlertController(title: "Photo Library Access Denied", message: "Allow Photos access in Settings to save photos to your Photo Library", preferredStyle: .alert)
-        alertController.addAction(UIAlertAction(title: "Cancel", style: .cancel))
-        alertController.addAction(UIAlertAction(title: "Settings", style: .default, handler: { _ in
-            guard let settingsUrl = URL(string: UIApplication.openSettingsURLString) else {
-                return
-            }
-            
-            if UIApplication.shared.canOpenURL(settingsUrl) {
-                UIApplication.shared.open(settingsUrl)
-            }
-        }))
-        present(alertController, animated: true)
+        showPhotoSettingAlert()
         activityIndicatorView.stopAnimating()
     }
     

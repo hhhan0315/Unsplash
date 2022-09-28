@@ -45,6 +45,12 @@
 		01C0C9EA28E18E7800D655BD /* TopicPhotoService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01C0C9E928E18E7800D655BD /* TopicPhotoService.swift */; };
 		01C0C9F128E286D400D655BD /* SearchResultViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01C0C9F028E286D400D655BD /* SearchResultViewController.swift */; };
 		01C0C9F428E287D200D655BD /* SearchResultViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01C0C9F328E287D200D655BD /* SearchResultViewModel.swift */; };
+		01C0C9F828E3E1F000D655BD /* Unsplash.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 01C0C9F628E3E1F000D655BD /* Unsplash.xcdatamodeld */; };
+		01C0C9FA28E3E33100D655BD /* CoreDataManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01C0C9F928E3E33100D655BD /* CoreDataManager.swift */; };
+		01C0C9FD28E3E45400D655BD /* PhotoCoreData+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01C0C9FB28E3E45400D655BD /* PhotoCoreData+CoreDataClass.swift */; };
+		01C0CA0028E3E57900D655BD /* ImageFileManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01C0C9FF28E3E57900D655BD /* ImageFileManager.swift */; };
+		01C0CA0228E3E72C00D655BD /* DetailViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01C0CA0128E3E72C00D655BD /* DetailViewModel.swift */; };
+		01C0CA0428E4121800D655BD /* HeartViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01C0CA0328E4121800D655BD /* HeartViewModel.swift */; };
 		01C70DC7283345D800185DF0 /* TopicViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01C70DC6283345D800185DF0 /* TopicViewModel.swift */; };
 		01C70DD32833849100185DF0 /* SearchEntity.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01C70DD22833849100185DF0 /* SearchEntity.swift */; };
 		01D9D2C3281F71C400E308D4 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01D9D2C2281F71C400E308D4 /* AppDelegate.swift */; };
@@ -105,6 +111,12 @@
 		01C0C9E928E18E7800D655BD /* TopicPhotoService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TopicPhotoService.swift; sourceTree = "<group>"; };
 		01C0C9F028E286D400D655BD /* SearchResultViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchResultViewController.swift; sourceTree = "<group>"; };
 		01C0C9F328E287D200D655BD /* SearchResultViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchResultViewModel.swift; sourceTree = "<group>"; };
+		01C0C9F728E3E1F000D655BD /* Unsplash.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = Unsplash.xcdatamodel; sourceTree = "<group>"; };
+		01C0C9F928E3E33100D655BD /* CoreDataManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoreDataManager.swift; sourceTree = "<group>"; };
+		01C0C9FB28E3E45400D655BD /* PhotoCoreData+CoreDataClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "PhotoCoreData+CoreDataClass.swift"; sourceTree = "<group>"; };
+		01C0C9FF28E3E57900D655BD /* ImageFileManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageFileManager.swift; sourceTree = "<group>"; };
+		01C0CA0128E3E72C00D655BD /* DetailViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailViewModel.swift; sourceTree = "<group>"; };
+		01C0CA0328E4121800D655BD /* HeartViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HeartViewModel.swift; sourceTree = "<group>"; };
 		01C70DC6283345D800185DF0 /* TopicViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TopicViewModel.swift; sourceTree = "<group>"; };
 		01C70DD22833849100185DF0 /* SearchEntity.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchEntity.swift; sourceTree = "<group>"; };
 		01D9D2BF281F71C400E308D4 /* Unsplash.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Unsplash.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -148,6 +160,7 @@
 			isa = PBXGroup;
 			children = (
 				0132BAF42820C62E00E7A81A /* DetailViewController.swift */,
+				01C0CA0128E3E72C00D655BD /* DetailViewModel.swift */,
 				01C0C9E128DE973900D655BD /* PinterestDetailViewController.swift */,
 				01C0C9E528E18BE300D655BD /* PinterestDetailViewModel.swift */,
 			);
@@ -160,6 +173,7 @@
 				01D9D2D0281F71C700E308D4 /* Info.plist */,
 				01D9D2CD281F71C700E308D4 /* LaunchScreen.storyboard */,
 				01D9D2CB281F71C700E308D4 /* Assets.xcassets */,
+				01C0C9F628E3E1F000D655BD /* Unsplash.xcdatamodeld */,
 			);
 			path = Resource;
 			sourceTree = "<group>";
@@ -168,6 +182,7 @@
 			isa = PBXGroup;
 			children = (
 				019CE07F28D45F4C009D4696 /* Photo.swift */,
+				01C0C9FB28E3E45400D655BD /* PhotoCoreData+CoreDataClass.swift */,
 				0194CD2328221CE40006470D /* PhotoEntity.swift */,
 				01C70DD22833849100185DF0 /* SearchEntity.swift */,
 				0132BAF62820D34000E7A81A /* Topic.swift */,
@@ -211,6 +226,7 @@
 			isa = PBXGroup;
 			children = (
 				01C0C99D28D8A19B00D655BD /* HeartViewController.swift */,
+				01C0CA0328E4121800D655BD /* HeartViewModel.swift */,
 			);
 			path = Heart;
 			sourceTree = "<group>";
@@ -228,7 +244,9 @@
 			isa = PBXGroup;
 			children = (
 				01C0C9AD28DAE30D00D655BD /* Alert.swift */,
+				01C0C9F928E3E33100D655BD /* CoreDataManager.swift */,
 				015C93B4283880BA009F2498 /* ImageCacheManager.swift */,
+				01C0C9FF28E3E57900D655BD /* ImageFileManager.swift */,
 				0128D1A8289918A900D17627 /* ImageSaver.swift */,
 				013ED83D2846146F00B242FE /* PinterestLayout.swift */,
 				019D78CB28C8B1BB00EB3FEB /* Extension */,
@@ -462,7 +480,9 @@
 				01D9D2C3281F71C400E308D4 /* AppDelegate.swift in Sources */,
 				015C93B5283880BA009F2498 /* ImageCacheManager.swift in Sources */,
 				01D9D2D7281F7A4F00E308D4 /* MainTabController.swift in Sources */,
+				01C0CA0428E4121800D655BD /* HeartViewModel.swift in Sources */,
 				0128D1A9289918A900D17627 /* ImageSaver.swift in Sources */,
+				01C0CA0228E3E72C00D655BD /* DetailViewModel.swift in Sources */,
 				019CE08628D591CA009D4696 /* SearchRepository.swift in Sources */,
 				01C0C9CF28DC8B7300D655BD /* URLSessionProtocol.swift in Sources */,
 				01C0C9E028DDD85800D655BD /* TopicPhotoCollectionViewCell.swift in Sources */,
@@ -473,8 +493,11 @@
 				01C0C9B328DAF48100D655BD /* PhotoCollectionViewCell.swift in Sources */,
 				019D78C828C872D200EB3FEB /* UIImageView+Extension.swift in Sources */,
 				0194CD2428221CE40006470D /* PhotoEntity.swift in Sources */,
+				01C0C9F828E3E1F000D655BD /* Unsplash.xcdatamodeld in Sources */,
+				01C0C9FA28E3E33100D655BD /* CoreDataManager.swift in Sources */,
 				019CE08228D46A26009D4696 /* PhotoRepository.swift in Sources */,
 				0132BAF72820D34000E7A81A /* Topic.swift in Sources */,
+				01C0CA0028E3E57900D655BD /* ImageFileManager.swift in Sources */,
 				019CE08028D45F4C009D4696 /* Photo.swift in Sources */,
 				013ED83E2846146F00B242FE /* PinterestLayout.swift in Sources */,
 				019D78CA28C87DA700EB3FEB /* ImageLoader.swift in Sources */,
@@ -485,6 +508,7 @@
 				01C0C9E228DE973900D655BD /* PinterestDetailViewController.swift in Sources */,
 				019D78CF28C9C01F00EB3FEB /* APICaller.swift in Sources */,
 				01C0C9E628E18BE300D655BD /* PinterestDetailViewModel.swift in Sources */,
+				01C0C9FD28E3E45400D655BD /* PhotoCoreData+CoreDataClass.swift in Sources */,
 				01C70DC7283345D800185DF0 /* TopicViewModel.swift in Sources */,
 				019CE08828D59230009D4696 /* SearchService.swift in Sources */,
 				01C0C9F428E287D200D655BD /* SearchResultViewModel.swift in Sources */,
@@ -769,6 +793,19 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCVersionGroup section */
+		01C0C9F628E3E1F000D655BD /* Unsplash.xcdatamodeld */ = {
+			isa = XCVersionGroup;
+			children = (
+				01C0C9F728E3E1F000D655BD /* Unsplash.xcdatamodel */,
+			);
+			currentVersion = 01C0C9F728E3E1F000D655BD /* Unsplash.xcdatamodel */;
+			path = Unsplash.xcdatamodeld;
+			sourceTree = "<group>";
+			versionGroupType = wrapper.xcdatamodel;
+		};
+/* End XCVersionGroup section */
 	};
 	rootObject = 01D9D2B7281F71C400E308D4 /* Project object */;
 }
