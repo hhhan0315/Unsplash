@@ -72,6 +72,8 @@ final class DetailViewController: UIViewController {
     private let imageSaver = ImageSaver()
     private let imageLoader = ImageLoader()
     
+    private var isLabelButtonHidden = false
+    
     // MARK: - View LifeCycle
     
     init(photo: Photo) {
@@ -117,6 +119,7 @@ final class DetailViewController: UIViewController {
     private func setupView() {
         view.backgroundColor = .systemBackground
         view.addGestureRecognizer(UIPanGestureRecognizer(target: self, action: #selector(handleDismiss(_:))))
+        view.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(handleTap(_:))))
     }
     
     private func setupExitButton() {
@@ -243,6 +246,16 @@ final class DetailViewController: UIViewController {
                 }
             }
         default: break
+        }
+    }
+    
+    @objc private func handleTap(_ gesture: UITapGestureRecognizer) {
+        isLabelButtonHidden.toggle()
+        UIView.animate(withDuration: 0.5) {
+            self.exitButton.alpha = self.isLabelButtonHidden ? 0 : 1
+            self.titleLabel.alpha = self.isLabelButtonHidden ? 0 : 1
+            self.heartButton.alpha = self.isLabelButtonHidden ? 0 : 1
+            self.downloadButton.alpha = self.isLabelButtonHidden ? 0 : 1
         }
     }
 }
