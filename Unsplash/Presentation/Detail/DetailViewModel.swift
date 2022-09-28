@@ -32,9 +32,11 @@ final class DetailViewModel {
         imageFileManager.existImageInFile(id: photo.id) { isExist in
             if isExist {
                 self.deleteFileManagerImage()
+                self.postNotificationHeart()
             } else {
                 self.imageLoader.load(with: self.photo.url) { data in
                     self.saveFileManagerImage(data)
+                    self.postNotificationHeart()
                 }
             }
         }
@@ -90,5 +92,9 @@ final class DetailViewModel {
                 self.error = error
             }
         }
+    }
+    
+    private func postNotificationHeart() {
+        NotificationCenter.default.post(name: Notification.Name.heartButtonClicked, object: nil)
     }
 }

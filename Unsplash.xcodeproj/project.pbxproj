@@ -51,6 +51,7 @@
 		01C0CA0228E3E72C00D655BD /* DetailViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01C0CA0128E3E72C00D655BD /* DetailViewModel.swift */; };
 		01C0CA0428E4121800D655BD /* HeartViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01C0CA0328E4121800D655BD /* HeartViewModel.swift */; };
 		01C0CA0728E4150000D655BD /* PhotoCoreData+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01C0CA0528E4150000D655BD /* PhotoCoreData+CoreDataClass.swift */; };
+		01C0CA0A28E47C8F00D655BD /* NotificationName+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01C0CA0928E47C8F00D655BD /* NotificationName+Extension.swift */; };
 		01C70DC7283345D800185DF0 /* TopicViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01C70DC6283345D800185DF0 /* TopicViewModel.swift */; };
 		01C70DD32833849100185DF0 /* SearchEntity.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01C70DD22833849100185DF0 /* SearchEntity.swift */; };
 		01D9D2C3281F71C400E308D4 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01D9D2C2281F71C400E308D4 /* AppDelegate.swift */; };
@@ -117,6 +118,7 @@
 		01C0CA0128E3E72C00D655BD /* DetailViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailViewModel.swift; sourceTree = "<group>"; };
 		01C0CA0328E4121800D655BD /* HeartViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HeartViewModel.swift; sourceTree = "<group>"; };
 		01C0CA0528E4150000D655BD /* PhotoCoreData+CoreDataClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "PhotoCoreData+CoreDataClass.swift"; sourceTree = "<group>"; };
+		01C0CA0928E47C8F00D655BD /* NotificationName+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "NotificationName+Extension.swift"; sourceTree = "<group>"; };
 		01C70DC6283345D800185DF0 /* TopicViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TopicViewModel.swift; sourceTree = "<group>"; };
 		01C70DD22833849100185DF0 /* SearchEntity.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchEntity.swift; sourceTree = "<group>"; };
 		01D9D2BF281F71C400E308D4 /* Unsplash.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Unsplash.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -214,6 +216,7 @@
 		019D78CB28C8B1BB00EB3FEB /* Extension */ = {
 			isa = PBXGroup;
 			children = (
+				01C0CA0928E47C8F00D655BD /* NotificationName+Extension.swift */,
 				019D78C728C872D200EB3FEB /* UIImageView+Extension.swift */,
 				01C0C9AB28DADE4E00D655BD /* UIViewController+Extension.swift */,
 			);
@@ -508,6 +511,7 @@
 				01C0C9E828E18E4400D655BD /* TopicPhotoRepository.swift in Sources */,
 				01C0C9E228DE973900D655BD /* TopicDetailViewController.swift in Sources */,
 				019D78CF28C9C01F00EB3FEB /* APICaller.swift in Sources */,
+				01C0CA0A28E47C8F00D655BD /* NotificationName+Extension.swift in Sources */,
 				01C0C9E628E18BE300D655BD /* TopicDetailViewModel.swift in Sources */,
 				01C70DC7283345D800185DF0 /* TopicViewModel.swift in Sources */,
 				019CE08828D59230009D4696 /* SearchService.swift in Sources */,

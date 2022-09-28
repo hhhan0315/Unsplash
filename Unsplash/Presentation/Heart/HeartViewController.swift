@@ -42,10 +42,7 @@ final class HeartViewController: UIViewController {
         
         setupLayout()
         setupBind()
-    }
-    
-    override func viewWillAppear(_ animated: Bool) {
-        super.viewWillAppear(animated)
+        setupNotificationCenter()
         
         viewModel.fetch()
     }
@@ -106,6 +103,18 @@ final class HeartViewController: UIViewController {
                 self?.showAlert(message: error.localizedDescription)
             }
             .store(in: &cancellable)
+    }
+    
+    // MARK: - NotificationCenter
+    
+    private func setupNotificationCenter() {
+        NotificationCenter.default.addObserver(self, selector: #selector(fetch), name: Notification.Name.heartButtonClicked, object: nil)
+    }
+    
+    // MARK: - Objc
+    
+    @objc private func fetch() {
+        viewModel.fetch()
     }
 }
 
