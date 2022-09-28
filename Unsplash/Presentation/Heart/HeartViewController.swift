@@ -114,7 +114,7 @@ final class HeartViewController: UIViewController {
 extension HeartViewController: UICollectionViewDelegate {
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         let detailViewController = DetailViewController(photo: viewModel.photo(at: indexPath.item))
-        detailViewController.modalPresentationStyle = .fullScreen
+        detailViewController.modalPresentationStyle = .overFullScreen
         present(detailViewController, animated: true)
     }
 }

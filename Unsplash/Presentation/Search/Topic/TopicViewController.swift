@@ -131,7 +131,7 @@ final class TopicViewController: UIViewController {
 extension TopicViewController: UICollectionViewDelegate {
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         let topic = viewModel.topic(at: indexPath.item)
-        let pinterestDetailViewController = TopicDetailViewController(slug: topic.slug, title: topic.title)
-        navigationController?.pushViewController(pinterestDetailViewController, animated: true)
+        let topicDetailViewController = TopicDetailViewController(slug: topic.slug, title: topic.title)
+        navigationController?.pushViewController(topicDetailViewController, animated: true)
     }
 }

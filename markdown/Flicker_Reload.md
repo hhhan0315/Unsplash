@@ -67,7 +67,7 @@ final class HomeViewModel {
 
 - 변화된 범위만큼만 저장 후 범위만큼만 애니메이션 동작
 
-# 해결방법 2
+# 해결방법 3
 - UICollectionViewDiffableDataSource 사용
 - UITableView에서 UICollectionView로 변경한 이유는 PinterestLayout을 사용하기 위해서고 중복을 방지하기 위해 모든 뷰를 UICollectionView로 변경
 - Unique Identifier로 업데이트 실시

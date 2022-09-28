@@ -116,7 +116,7 @@ final class DetailViewController: UIViewController {
     
     private func setupView() {
         view.backgroundColor = .systemBackground
-        //        view.addGestureRecognizer(UIPanGestureRecognizer(target: self, action: #selector(handleDismiss(_:))))
+        view.addGestureRecognizer(UIPanGestureRecognizer(target: self, action: #selector(handleDismiss(_:))))
     }
     
     private func setupExitButton() {
@@ -222,6 +222,28 @@ final class DetailViewController: UIViewController {
     
     @objc private func touchHeartButton(_ sender: UIButton) {
         viewModel.fetchPhotoLike()
+    }
+    
+    @objc private func handleDismiss(_ gesture: UIPanGestureRecognizer) {
+        let width: CGFloat = 100
+        let height: CGFloat = 200
+        let translation = gesture.translation(in: view)
+        
+        switch gesture.state {
+        case .began:
+            break
+        case .changed:
+            view.transform = CGAffineTransform(translationX: translation.x, y: translation.y)
+        case .ended:
+            if translation.x > width || translation.y > height || translation.x < -width {
+                dismiss(animated: true)
+            } else {
+                UIView.animate(withDuration: 0.5) {
+                    self.view.transform = .identity
+                }
+            }
+        default: break
+        }
     }
 }
 
