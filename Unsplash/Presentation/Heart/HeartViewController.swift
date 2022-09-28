@@ -42,6 +42,10 @@ final class HeartViewController: UIViewController {
         
         setupLayout()
         setupBind()
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
         
         viewModel.fetch()
     }
