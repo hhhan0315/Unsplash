@@ -29,6 +29,16 @@ final class DetailViewController: UIViewController {
         return label
     }()
     
+    private lazy var scrollView: UIScrollView = {
+        let scrollView = UIScrollView()
+        scrollView.alwaysBounceVertical = false
+        scrollView.alwaysBounceHorizontal = false
+        scrollView.minimumZoomScale = 1.0
+        scrollView.maximumZoomScale = 2.0
+        scrollView.delegate = self
+        return scrollView
+    }()
+    
     private lazy var photoImageView: UIImageView = {
         let imageView = UIImageView()
         imageView.contentMode = .scaleAspectFit
@@ -68,7 +78,7 @@ final class DetailViewController: UIViewController {
     
     private let viewModel: DetailViewModel
     private var cancellable = Set<AnyCancellable>()
-        
+    
     private let imageSaver = ImageSaver()
     private let imageLoader = ImageLoader()
     
@@ -110,6 +120,7 @@ final class DetailViewController: UIViewController {
         setupView()
         setupExitButton()
         setupTitleLabel()
+        setupScrollView()
         setupPhotoImageView()
         setupDownloadButton()
         setupHeartButton()
@@ -142,14 +153,27 @@ final class DetailViewController: UIViewController {
         ])
     }
     
+    private func setupScrollView() {
+        view.addSubview(scrollView)
+        scrollView.translatesAutoresizingMaskIntoConstraints = false
+        NSLayoutConstraint.activate([
+            scrollView.topAnchor.constraint(equalTo: titleLabel.bottomAnchor),
+            scrollView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor),
+            scrollView.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor),
+            scrollView.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor),
+        ])
+    }
+    
     private func setupPhotoImageView() {
-        view.addSubview(photoImageView)
+        scrollView.addSubview(photoImageView)
         photoImageView.translatesAutoresizingMaskIntoConstraints = false
         NSLayoutConstraint.activate([
-            photoImageView.topAnchor.constraint(equalTo: titleLabel.bottomAnchor),
-            photoImageView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor),
-            photoImageView.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor),
-            photoImageView.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor),
+            photoImageView.topAnchor.constraint(equalTo: scrollView.topAnchor),
+            photoImageView.bottomAnchor.constraint(equalTo: scrollView.bottomAnchor),
+            photoImageView.leadingAnchor.constraint(equalTo: scrollView.leadingAnchor),
+            photoImageView.trailingAnchor.constraint(equalTo: scrollView.trailingAnchor),
+            photoImageView.widthAnchor.constraint(equalTo: scrollView.widthAnchor),
+            photoImageView.heightAnchor.constraint(equalTo: scrollView.heightAnchor),
         ])
     }
     
@@ -271,5 +295,13 @@ extension DetailViewController: ImageSaverDelegate {
     func saveSuccess() {
         showAlert(title: "저장 성공")
         activityIndicatorView.stopAnimating()
+    }
+}
+
+// MARK: - UIScrollViewDelegate
+
+extension DetailViewController: UIScrollViewDelegate {
+    func viewForZooming(in scrollView: UIScrollView) -> UIView? {
+        return photoImageView
     }
 }
