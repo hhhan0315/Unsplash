@@ -161,7 +161,7 @@ final class DetailViewController: UIViewController {
         view.addSubview(exitButton)
         exitButton.translatesAutoresizingMaskIntoConstraints = false
         NSLayoutConstraint.activate([
-            exitButton.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 8.0),
+            exitButton.topAnchor.constraint(equalTo: view.topAnchor, constant: 50.0),
             exitButton.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: 16.0),
             exitButton.heightAnchor.constraint(equalToConstant: 44.0),
         ])
@@ -171,13 +171,11 @@ final class DetailViewController: UIViewController {
         view.addSubview(titleLabel)
         titleLabel.translatesAutoresizingMaskIntoConstraints = false
         NSLayoutConstraint.activate([
-            titleLabel.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 8.0),
+            titleLabel.topAnchor.constraint(equalTo: exitButton.topAnchor),
             titleLabel.centerXAnchor.constraint(equalTo: view.centerXAnchor),
             titleLabel.heightAnchor.constraint(equalToConstant: 44.0),
         ])
     }
-    
-    
     
     private func setupDownloadButton() {
         view.addSubview(downloadButton)
@@ -186,7 +184,7 @@ final class DetailViewController: UIViewController {
             downloadButton.widthAnchor.constraint(equalToConstant: 60.0),
             downloadButton.heightAnchor.constraint(equalToConstant: 60.0),
             downloadButton.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: -8.0),
-            downloadButton.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: -32.0),
+            downloadButton.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: -50.0),
         ])
     }
     
