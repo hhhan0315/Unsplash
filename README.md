@@ -1,6 +1,8 @@
 # Unsplash
 Unsplash Image API를 활용한 사진 앱
+
 Unsplash unofficial app for iOS
+
 > Network - Secrets - clientID에 Unsplash API Key 입력 후 실행
 
 > iOS 13.0
@@ -20,8 +22,17 @@ Unsplash unofficial app for iOS
 - [Combine 메모리 해제](https://github.com/hhhan0315/Unsplash/tree/main/markdown/Combine_Memory_Leak.md)
 - [ImageCacheManager 싱글톤 선택 이유](https://github.com/hhhan0315/Unsplash/tree/main/markdown/Singleton.md)
 - [UITableView, UICollectionView reloadData 시 깜빡거림 해결](https://github.com/hhhan0315/Unsplash/tree/main/markdown/Flicker_Reload.md)
+- [DetailViewController 다양한 기능들](https://github.com/hhhan0315/Unsplash/tree/main/markdown/DetailViewController.md)
 
 ## 기능
+
+### 사진 리스트 화면(홈)
+
+### 검색 화면
+
+### 좋아요 화면
+
+### 사진 상세 화면
 
 ## 회고
 > UIImageWriteToSavedPhotosAlbum
