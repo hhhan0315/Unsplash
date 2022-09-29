@@ -52,6 +52,7 @@ Unsplash unofficial app for iOS
 - 좋아요 기능
 - 앨범에 사진 저장 기능
 - UITapGesutre, UIPanGesture, UIScrollView를 활용해 다양한 제스처 기능
+- [DetailViewController 다양한 기능들](https://github.com/hhhan0315/Unsplash/tree/main/markdown/DetailViewController.md)
 
 <p>
   <img src="https://github.com/hhhan0315/Unsplash/blob/main/screenshot/feature_detail.gif" width="25%"/>
@@ -61,7 +62,6 @@ Unsplash unofficial app for iOS
 - 좋아요 표시한 사진들을 보여준다.
 - CoreData를 활용한 사진 정보 저장
 - FileManager를 활용한 사진 저장 및 불러오기
-- [DetailViewController 다양한 기능들](https://github.com/hhhan0315/Unsplash/tree/main/markdown/DetailViewController.md)
 
 <p>
   <img src="https://github.com/hhhan0315/Unsplash/blob/main/screenshot/feature_heart.gif" width="25%"/>
