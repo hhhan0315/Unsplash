@@ -61,15 +61,8 @@ Unsplash unofficial app for iOS
 - 좋아요 표시한 사진들을 보여준다.
 - CoreData를 활용한 사진 정보 저장
 - FileManager를 활용한 사진 저장 및 불러오기
+- [DetailViewController 다양한 기능들](https://github.com/hhhan0315/Unsplash/tree/main/markdown/DetailViewController.md)
 
 <p>
   <img src="https://github.com/hhhan0315/Unsplash/blob/main/screenshot/feature_heart.gif" width="25%"/>
 </p>
-
-
-## 회고
-> UIImageWriteToSavedPhotosAlbum
-- 참고 : https://www.hackingwithswift.com/books/ios-swiftui/how-to-save-images-to-the-users-photo-library
-- 단순히 앨범에 저장하기 위해 사용
-- ImageSaver 클래스를 통해 성공, 실패 확인 가능
-- info.plist에 `Privacy - Photo Library Additions Usage Description` 추가
