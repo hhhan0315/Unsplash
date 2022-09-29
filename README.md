@@ -1,8 +1,16 @@
 # Unsplash
 Unsplash Image API를 활용한 사진 앱
+Unsplash unofficial app for iOS
 > Network - Secrets - clientID에 Unsplash API Key 입력 후 실행
 
-## Screenshot
+<p float="right">
+  <img src="https://github.com/hhhan0315/Unsplash/blob/main/screenshot/intro_home.png" width="24%"/>
+  <img src="https://github.com/hhhan0315/Unsplash/blob/main/screenshot/intro_topic.png" width="24%"/>
+  <img src="https://github.com/hhhan0315/Unsplash/blob/main/screenshot/intro_topic_photo.png" width="24%"/>
+  <img src="https://github.com/hhhan0315/Unsplash/blob/main/screenshot/intro_search.png" width="24%"/>
+  <img src="https://github.com/hhhan0315/Unsplash/blob/main/screenshot/intro_like.png" width="24%"/>
+  <img src="https://github.com/hhhan0315/Unsplash/blob/main/screenshot/intro_like_detail.png" width="24%"/>
+</p>
 
 ## 구현 내용
 - [MVVM 패턴](https://github.com/hhhan0315/Unsplash/tree/main/markdown/MVVM.md)
