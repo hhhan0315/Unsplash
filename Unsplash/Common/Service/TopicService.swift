@@ -20,7 +20,7 @@ final class TopicService {
                     Topic(id: $0.id,
                           title: $0.title,
                           slug: $0.slug,
-                          coverPhotoURL: $0.coverPhoto.urls.small)
+                          coverPhotoURL: $0.coverPhoto.urls.regular)
                 }
                 self.page += 1
                 completion(.success(topics))

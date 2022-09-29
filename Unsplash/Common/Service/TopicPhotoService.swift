@@ -20,7 +20,7 @@ final class TopicPhotoService {
                     Photo(id: $0.id,
                           width: $0.width,
                           height: $0.height,
-                          url: $0.urls.small,
+                          url: $0.urls.regular,
                           user: $0.user.name)
                 }
                 self.page += 1
