@@ -130,7 +130,15 @@ final class DetailViewController: UIViewController {
     private func setupView() {
         view.backgroundColor = .systemBackground
         view.addGestureRecognizer(UIPanGestureRecognizer(target: self, action: #selector(handleDismiss(_:))))
-        view.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(handleTap(_:))))
+        
+        let doubleTapGesture = UITapGestureRecognizer(target: self, action: #selector(handleDoubleTap(_:)))
+        doubleTapGesture.numberOfTapsRequired = 2
+        
+        let singleTapGesture = UITapGestureRecognizer(target: self, action: #selector(handleTap(_:)))
+        singleTapGesture.require(toFail: doubleTapGesture)
+        
+        view.addGestureRecognizer(singleTapGesture)
+        view.addGestureRecognizer(doubleTapGesture)
     }
     
     private func setupExitButton() {
@@ -280,6 +288,21 @@ final class DetailViewController: UIViewController {
             self.titleLabel.alpha = self.isLabelButtonHidden ? 0 : 1
             self.heartButton.alpha = self.isLabelButtonHidden ? 0 : 1
             self.downloadButton.alpha = self.isLabelButtonHidden ? 0 : 1
+        }
+    }
+    
+    @objc private func handleDoubleTap(_ gesture: UITapGestureRecognizer) {
+        let scale = min(scrollView.zoomScale * 2, scrollView.maximumZoomScale)
+        
+        if scale != scrollView.zoomScale {
+            let tapPoint = gesture.location(in: photoImageView)
+            let size = CGSize(width: scrollView.frame.size.width / scale,
+                              height: scrollView.frame.size.height / scale)
+            let origin = CGPoint(x: tapPoint.x - size.width / 2,
+                                 y: tapPoint.y - size.height / 2)
+            scrollView.zoom(to: CGRect(origin: origin, size: size), animated: true)
+        } else {
+            scrollView.zoom(to: scrollView.frame, animated: true)
         }
     }
 }
