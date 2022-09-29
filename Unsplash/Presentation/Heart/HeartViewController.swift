@@ -24,6 +24,15 @@ final class HeartViewController: UIViewController {
         return collectionView
     }()
     
+    private let textLabel: UILabel = {
+        let label = UILabel()
+        label.text = "No photos"
+        label.textColor = .label
+        label.font = UIFont.systemFont(ofSize: 17.0, weight: .semibold)
+        label.isHidden = true
+        return label
+    }()
+    
     // MARK: - Properties
     
     private let viewModel = HeartViewModel()
@@ -53,6 +62,7 @@ final class HeartViewController: UIViewController {
         view.backgroundColor = .systemBackground
         setupNavigationBar()
         setupPhotoCollectionView()
+        setupTextLabel()
         setupPhotoDataSource()
     }
     
@@ -68,6 +78,15 @@ final class HeartViewController: UIViewController {
             photoCollectionView.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor),
             photoCollectionView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor),
             photoCollectionView.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor),
+        ])
+    }
+    
+    private func setupTextLabel() {
+        view.addSubview(textLabel)
+        textLabel.translatesAutoresizingMaskIntoConstraints = false
+        NSLayoutConstraint.activate([
+            textLabel.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+            textLabel.centerYAnchor.constraint(equalTo: view.centerYAnchor),
         ])
     }
     
@@ -87,6 +106,8 @@ final class HeartViewController: UIViewController {
         viewModel.$photos
             .receive(on: DispatchQueue.main)
             .sink { [weak self] photos in
+                self?.textLabel.isHidden = photos.isEmpty ? false : true
+                
                 var snapShot = NSDiffableDataSourceSnapshot<Section, Photo>()
                 snapShot.appendSections([Section.photos])
                 snapShot.appendItems(photos)
