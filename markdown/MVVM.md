@@ -9,105 +9,86 @@
 # 내가 구현한 MVVM
 <img src="https://github.com/hhhan0315/Unsplash/blob/main/screenshot/mvvm.png">
 
-- View -> ViewModel -> Service -> Repository
+- 첫 번째 화면 HomeViewController 기준
 - View(ViewController)
-    - ViewModel과 데이터 바인딩으로 연결
-    - ViewModel의 값이 변하면 View는 자연스럽게 변한다.
+    - 현재 HomeViewController에서 UI 구성 요소
+    - collectionView
+    - cells(title, image, width, height)
+    - cellViewModel을 활용해 원래 네트워크를 통해 받아온 모델을 한번 다시 가공
+    - 바인딩은 클로져를 통해 구현했으며 뷰모델의 변수가 변경되면 클로져가 불린다.
   
     ```swift
     final class HomeViewController: UIViewController {
-        private func setupBind() {
-            viewModel.$range
-                .receive(on: DispatchQueue.main)
-                .sink { range in
-                    guard let range = range else {
-                        return
-                    }
-                    let indexPaths = range.map { IndexPath(row: $0, section: TableSection.photos.rawValue) }
-                    self.photoTableView.insertRows(at: indexPaths, with: .none)
+        private func setupViewModel() {
+            viewModel.reloadCollectionViewClosure = { [weak self] in
+                DispatchQueue.main.async {
+                    var snapShot = NSDiffableDataSourceSnapshot<Section, PhotoCellViewModel>()
+                    snapShot.appendSections([Section.photos])
+                    snapShot.appendItems(self?.viewModel.cellViewModels ?? [])
+                    self?.photoDataSource?.apply(snapShot)
                 }
-                .store(in: &cancellable)
+            }
             
-            viewModel.$error
-                .receive(on: DispatchQueue.main)
-                .sink { apiError in
-                    guard let apiError = apiError else {
+            viewModel.showAlertClosure = { [weak self] in
+                DispatchQueue.main.async {
+                    guard let alertMessage = self?.viewModel.alertMessage else {
                         return
                     }
-                    self.showAlert(message: apiError.errorDescription)
+                    self?.showAlert(message: alertMessage)
                 }
-                .store(in: &cancellable)
+            }
+            
+            viewModel.fetch()
         }
     }
     ```
-  
-    - Combine을 통해서 Data Binding을 구현했다.
-    - ViewModel의 range, error를 관찰하고 있다가 상태 변화 시 View도 변경된다.
+
 - ViewModel
-    - Service를 통해 View에서 보여질 데이터 담당
   
     ```swift
     final class HomeViewModel {    
-        @Published var range: Range<Int>? = nil
-        @Published var error: APIError? = nil
-    }
-    ```
-    
-    - 테이블 뷰 업데이트 시 reloadData()가 아닌 insertRows(at:with:)를 사용하기 위해 Service를 통해 성공 시 Range<Int> 값을 업데이트
-    - 실패 시 error 값 업데이트
-    - 옵셔널로 구현한 이유는 값이 비어있을 경우 초기 실행한 경우를 의미하며 아무런 동작을 하지 않기 위해 사용했다.
-  
-- Service
-    - Repository를 통해 가져온 Entity를 서비스 로직에서 사용하는 Model로 변환
-    
-    ```swift
-    final class PhotoService {        
-        private var page: Int = 1
+        private var photos: [Photo] = []
+        private var page = 1
         
-        func fetch(completion: @escaping (Result<[Photo], APIError>) -> Void) {
-            photoRepository.fetch(page: page) { result in
-                switch result {
-                case .success(let photoEntities):
-                    let photos = photoEntities.map {
-                        Photo(id: $0.id,
-                              width: $0.width,
-                              height: $0.height,
-                              url: $0.urls.small,
-                              user: $0.user.name)
-                    }
-                    self.page += 1
-                    completion(.success(photos))
-                case .failure(let apiError):
-                    completion(.failure(apiError))
-                }
+        var cellViewModels: [PhotoCellViewModel] = [] {
+            didSet {
+                reloadCollectionViewClosure?()
             }
+        }
+        
+        var alertMessage: String? {
+            didSet {
+                showAlertClosure?()
+            }
+        }
+        
+        var numberOfCells: Int {
+            return cellViewModels.count
+        }
+        
+        var reloadCollectionViewClosure: (() -> Void)?
+        var showAlertClosure: (() -> Void)?
+        
+        func getCellViewModel(indexPath: IndexPath) -> PhotoCellViewModel {
+            return cellViewModels[indexPath.item]
         }
     }
     ```
-    
-    - page 변수는 화면에 나타날 데이터가 아니기 때문에 Service에서 처리하도록 구현
-    - 서버 데이터인 Entity를 내가 필요한 모델인 Photo로 mapping하는 구현도 포함되어 있다.
-    
-- Repository
-    - Entity(Server Model)를 가져오는 역할
+
+- PhotoCellViewModel
     
     ```swift
-    final class PhotoRepository {
-        private let apiCaller = APICaller()
-        
-        func fetch(page: Int, completion: @escaping (Result<[PhotoEntity], APIError>) -> Void) {
-            apiCaller.request(api: .getPhotos(page: page)) { result in
-                switch result {
-                case .success(let data):
-                    guard let decodedData = try? JSONDecoder().decode([PhotoEntity].self, from: data) else {
-                        completion(.failure(.decodeError))
-                        return
-                    }
-                    completion(.success(decodedData))
-                case .failure(let apiError):
-                    completion(.failure(apiError))
-                }
-            }
+    struct PhotoCellViewModel {
+        let id: String
+        let titleText: String
+        let imageURL: String
+        let imageWidth: Int
+        let imageHeight: Int
+    }
+
+    extension PhotoCellViewModel: Hashable {
+        func hash(into hasher: inout Hasher) {
+            hasher.combine(id)
         }
     }
     ```
