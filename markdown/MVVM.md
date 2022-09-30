@@ -94,4 +94,4 @@
     ```
     
 - 참고
-    - https://www.youtube.com/watch?v=M58LqynqQHc
+    - https://medium.com/flawless-app-stories/how-to-use-a-model-view-viewmodel-architecture-for-ios-46963c67be1b
