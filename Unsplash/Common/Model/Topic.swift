@@ -7,15 +7,28 @@
 
 import Foundation
 
-struct Topic {
+struct Topic: Decodable {
     let id: String
     let title: String
     let slug: String
-    let coverPhotoURL: String
+    let coverPhoto: CoverPhoto
+    
+    enum CodingKeys: String, CodingKey {
+        case coverPhoto = "cover_photo"
+        case id, title, slug
+    }
 }
 
-extension Topic: Hashable {
-    func hash(into hasher: inout Hasher) {
-        hasher.combine(id)
+extension Topic {
+    struct CoverPhoto: Decodable {
+        let urls: URLs
+        
+        struct URLs: Decodable {
+            let raw: String
+            let full: String
+            let regular: String
+            let small: String
+            let thumb: String
+        }
     }
 }

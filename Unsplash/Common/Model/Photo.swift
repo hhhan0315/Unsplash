@@ -7,16 +7,24 @@
 
 import Foundation
 
-struct Photo {
+struct Photo: Decodable {
     let id: String
     let width: Int
     let height: Int
-    let url: String
-    let user: String
+    let urls: URLs
+    let user: User
 }
 
-extension Photo: Hashable {
-    func hash(into hasher: inout Hasher) {
-        hasher.combine(id)
+extension Photo {
+    struct URLs: Decodable {
+        let raw: String
+        let full: String
+        let regular: String
+        let small: String
+        let thumb: String
+    }
+
+    struct User: Decodable {
+        let name: String
     }
 }

@@ -6,7 +6,6 @@
 //
 
 import UIKit
-import Combine
 
 final class TopicViewController: UIViewController {
     
@@ -33,14 +32,13 @@ final class TopicViewController: UIViewController {
     
     // MARK: - Properties
     
-    private let viewModel = TopicViewModel()
-    private var cancellable = Set<AnyCancellable>()
-    
-    private var topicDataSource: UICollectionViewDiffableDataSource<Section, Topic>?
-    
     enum Section {
         case topic
     }
+    
+    private let viewModel = TopicViewModel()
+    
+    private var topicDataSource: UICollectionViewDiffableDataSource<Section, TopicPhotoCellViewModel>?
     
     // MARK: - View LifeCycle
     
@@ -48,9 +46,7 @@ final class TopicViewController: UIViewController {
         super.viewDidLoad()
         
         setupLayout()
-        setupBind()
-        
-        viewModel.fetch()
+        setupViewModel()
     }
     
     // MARK: - Layout
@@ -91,38 +87,37 @@ final class TopicViewController: UIViewController {
     }
     
     private func setupTopicDataSource() {
-        topicDataSource = UICollectionViewDiffableDataSource(collectionView: topicCollectionView, cellProvider: { collectionView, indexPath, topic in
+        topicDataSource = UICollectionViewDiffableDataSource(collectionView: topicCollectionView, cellProvider: { collectionView, indexPath, topicPhotoCellViewModel in
             guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: TopicPhotoCollectionViewCell.identifier, for: indexPath) as? TopicPhotoCollectionViewCell else {
                 return .init()
             }
-            
-            cell.configureCell(with: topic)
+            cell.topicPhotoCellViewModel = topicPhotoCellViewModel
             return cell
         })
     }
             
     // MARK: - Bind
     
-    private func setupBind() {
-        viewModel.$topics
-            .receive(on: DispatchQueue.main)
-            .sink { [weak self] topics in
-                var snapShot = NSDiffableDataSourceSnapshot<Section, Topic>()
+    private func setupViewModel() {
+        viewModel.reloadCollectionViewClosure = { [weak self] in
+            DispatchQueue.main.async {
+                var snapShot = NSDiffableDataSourceSnapshot<Section, TopicPhotoCellViewModel>()
                 snapShot.appendSections([Section.topic])
-                snapShot.appendItems(topics)
+                snapShot.appendItems(self?.viewModel.cellViewModels ?? [])
                 self?.topicDataSource?.apply(snapShot)
             }
-            .store(in: &cancellable)
+        }
         
-        viewModel.$error
-            .receive(on: DispatchQueue.main)
-            .sink { [weak self] apiError in
-                guard let apiError = apiError else {
+        viewModel.showAlertClosure = { [weak self] in
+            DispatchQueue.main.async {
+                guard let alertMessage = self?.viewModel.alertMessage else {
                     return
                 }
-                self?.showAlert(message: apiError.errorDescription)
+                self?.showAlert(title: alertMessage)
             }
-            .store(in: &cancellable)
+        }
+        
+        viewModel.fetch()
     }
 }
 
@@ -130,8 +125,8 @@ final class TopicViewController: UIViewController {
 
 extension TopicViewController: UICollectionViewDelegate {
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        let topic = viewModel.topic(at: indexPath.item)
-        let topicDetailViewController = TopicDetailViewController(slug: topic.slug, title: topic.title)
+        let topicPhotoCellViewModel = viewModel.getCellViewModel(indexPath: indexPath)
+        let topicDetailViewController = TopicDetailViewController(slug: topicPhotoCellViewModel.slug, title: topicPhotoCellViewModel.title)
         navigationController?.pushViewController(topicDetailViewController, animated: true)
     }
 }

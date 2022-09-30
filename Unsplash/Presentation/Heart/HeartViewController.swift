@@ -6,7 +6,6 @@
 //
 
 import UIKit
-import Combine
 
 final class HeartViewController: UIViewController {
     
@@ -35,14 +34,13 @@ final class HeartViewController: UIViewController {
     
     // MARK: - Properties
     
-    private let viewModel = HeartViewModel()
-    private var cancellable = Set<AnyCancellable>()
-    
-    private var photoDataSource: UICollectionViewDiffableDataSource<Section, Photo>?
-    
     enum Section {
         case photos
     }
+    
+    private let viewModel = HeartViewModel()
+    
+    private var photoDataSource: UICollectionViewDiffableDataSource<Section, PhotoCellViewModel>?
     
     // MARK: - View LifeCycle
     
@@ -50,10 +48,8 @@ final class HeartViewController: UIViewController {
         super.viewDidLoad()
         
         setupLayout()
-        setupBind()
+        setupViewModel()
         setupNotificationCenter()
-        
-        viewModel.fetch()
     }
     
     // MARK: - Layout
@@ -91,39 +87,38 @@ final class HeartViewController: UIViewController {
     }
     
     private func setupPhotoDataSource() {
-        photoDataSource = UICollectionViewDiffableDataSource(collectionView: photoCollectionView, cellProvider: { collectionView, indexPath, photo in
+        photoDataSource = UICollectionViewDiffableDataSource(collectionView: photoCollectionView, cellProvider: { collectionView, indexPath, photoCellViewModel in
             guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: PhotoCollectionViewCell.identifier, for: indexPath) as? PhotoCollectionViewCell else {
                 return .init()
             }
-            cell.configureCellWithFileManager(with: photo)
+            cell.photoCellViewModel = photoCellViewModel
             return cell
         })
     }
         
     // MARK: - Bind
     
-    private func setupBind() {
-        viewModel.$photos
-            .receive(on: DispatchQueue.main)
-            .sink { [weak self] photos in
-                self?.textLabel.isHidden = photos.isEmpty ? false : true
-                
-                var snapShot = NSDiffableDataSourceSnapshot<Section, Photo>()
+    private func setupViewModel() {
+        viewModel.reloadCollectionViewClosure = { [weak self] in
+            DispatchQueue.main.async {
+                self?.textLabel.isHidden = self?.viewModel.cellViewModels.isEmpty == true ? false : true
+                var snapShot = NSDiffableDataSourceSnapshot<Section, PhotoCellViewModel>()
                 snapShot.appendSections([Section.photos])
-                snapShot.appendItems(photos)
+                snapShot.appendItems(self?.viewModel.cellViewModels ?? [])
                 self?.photoDataSource?.apply(snapShot)
             }
-            .store(in: &cancellable)
+        }
         
-        viewModel.$error
-            .receive(on: DispatchQueue.main)
-            .sink { [weak self] error in
-                guard let error = error else {
+        viewModel.showAlertClosure = { [weak self] in
+            DispatchQueue.main.async {
+                guard let alertMessage = self?.viewModel.alertMessage else {
                     return
                 }
-                self?.showAlert(message: error.localizedDescription)
+                self?.showAlert(title: alertMessage)
             }
-            .store(in: &cancellable)
+        }
+        
+        viewModel.fetch()
     }
     
     // MARK: - NotificationCenter
@@ -143,7 +138,8 @@ final class HeartViewController: UIViewController {
 
 extension HeartViewController: UICollectionViewDelegate {
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        let detailViewController = DetailViewController(photo: viewModel.photo(at: indexPath.item))
+        let photoCellViewModel = viewModel.getCellViewModel(indexPath: indexPath)
+        let detailViewController = DetailViewController(photoCellViewModel: photoCellViewModel)
         detailViewController.modalPresentationStyle = .overFullScreen
         present(detailViewController, animated: true)
     }
@@ -154,8 +150,8 @@ extension HeartViewController: UICollectionViewDelegate {
 extension HeartViewController: UICollectionViewDelegateFlowLayout {
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
         let cellWidth = view.bounds.width
-        let imageHeight = CGFloat(viewModel.photo(at: indexPath.row).height)
-        let imageWidth = CGFloat(viewModel.photo(at: indexPath.row).width)
+        let imageHeight = CGFloat(viewModel.getCellViewModel(indexPath: indexPath).imageHeight)
+        let imageWidth = CGFloat(viewModel.getCellViewModel(indexPath: indexPath).imageWidth)
         let imageRatio = imageHeight / imageWidth
 
         return CGSize(width: cellWidth, height: imageRatio * cellWidth)

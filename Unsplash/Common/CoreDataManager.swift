@@ -41,16 +41,16 @@ final class CoreDataManager {
         }
     }
     
-    func savePhotoCoreData(photo: Photo, completion: (Result<Bool, Error>) -> Void) {
+    func savePhotoCoreData(photoCellViewModel: PhotoCellViewModel, completion: (Result<Bool, Error>) -> Void) {
         let entity = NSEntityDescription.entity(forEntityName: CoreDataConstants.entityName, in: context)
         
         if let entity = entity {
             let managedObject = NSManagedObject(entity: entity, insertInto: context)
-            managedObject.setValue(photo.id, forKey: "id")
-            managedObject.setValue(photo.url, forKey: "url")
-            managedObject.setValue(photo.user, forKey: "user")
-            managedObject.setValue(photo.width, forKey: "width")
-            managedObject.setValue(photo.height, forKey: "height")
+            managedObject.setValue(photoCellViewModel.id, forKey: "id")
+            managedObject.setValue(photoCellViewModel.imageURL, forKey: "url")
+            managedObject.setValue(photoCellViewModel.titleText, forKey: "user")
+            managedObject.setValue(photoCellViewModel.imageWidth, forKey: "width")
+            managedObject.setValue(photoCellViewModel.imageHeight, forKey: "height")
             managedObject.setValue(Date(), forKey: "date")
             
             do {
@@ -62,8 +62,8 @@ final class CoreDataManager {
         }
     }
     
-    func deletePhotoCoreData(photo: Photo, completion: (Result<Bool, Error>) -> Void) {
-        let id = photo.id
+    func deletePhotoCoreData(photoCellViewModel: PhotoCellViewModel, completion: (Result<Bool, Error>) -> Void) {
+        let id = photoCellViewModel.id
         
         let request = PhotoCoreData.fetchRequest()
         request.predicate = NSPredicate(format: "id = %@", id as CVarArg)

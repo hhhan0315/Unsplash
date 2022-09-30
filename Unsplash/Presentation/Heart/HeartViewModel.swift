@@ -8,30 +8,50 @@
 import Foundation
 
 final class HeartViewModel {
-    @Published var photos: [Photo] = []
-    @Published var error: Error? = nil
-    
     private let coreDataManager = CoreDataManager()
     
-    func photo(at index: Int) -> Photo {
-        return photos[index]
+    private var photos: [Photo] = []
+    
+    var cellViewModels: [PhotoCellViewModel] = [] {
+        didSet {
+            reloadCollectionViewClosure?()
+        }
     }
     
+    var alertMessage: String? {
+        didSet {
+            showAlertClosure?()
+        }
+    }
+    
+    var numberOfCells: Int {
+        return cellViewModels.count
+    }
+    
+    var reloadCollectionViewClosure: (() -> Void)?
+    var showAlertClosure: (() -> Void)?
+    
     func fetch() {
-        coreDataManager.fetchPhotoCoreData { result in
+        coreDataManager.fetchPhotoCoreData { [weak self] result in
             switch result {
             case .success(let photoCoreData):
-                let photos = photoCoreData.map {
-                    Photo(id: $0.id ?? "",
-                          width: Int($0.width),
-                          height: Int($0.height),
-                          url: $0.url ?? "",
-                          user: $0.user ?? "")
-                }
-                self.photos = photos
+                let cellViewModels = photoCoreData.compactMap { self?.createCellViewModel(photoCoreData: $0) }
+                self?.cellViewModels = cellViewModels
             case .failure(let error):
-                self.error = error
+                self?.alertMessage = error.localizedDescription
             }
         }
+    }
+    
+    func getCellViewModel(indexPath: IndexPath) -> PhotoCellViewModel {
+        return cellViewModels[indexPath.item]
+    }
+    
+    func createCellViewModel(photoCoreData: PhotoCoreData) -> PhotoCellViewModel {
+        return PhotoCellViewModel(id: photoCoreData.id ?? "",
+                                  titleText: photoCoreData.user ?? "",
+                                  imageURL: photoCoreData.url ?? "",
+                                  imageWidth: Int(photoCoreData.width),
+                                  imageHeight: Int(photoCoreData.height))
     }
 }
