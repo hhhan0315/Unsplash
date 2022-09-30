@@ -6,7 +6,6 @@
 //
 
 import UIKit
-import Combine
 
 final class DetailViewController: UIViewController {
     
@@ -72,10 +71,9 @@ final class DetailViewController: UIViewController {
     
     // MARK: - Properties
     
-    var photoCellViewModel: PhotoCellViewModel
+    private var photoCellViewModel: PhotoCellViewModel
     
     private let viewModel: DetailViewModel
-    private var cancellable = Set<AnyCancellable>()
     
     private let imageSaver = ImageSaver()
     private let imageLoader = ImageLoader()
@@ -98,7 +96,7 @@ final class DetailViewController: UIViewController {
         super.viewDidLoad()
         
         setupLayout()
-        setupBind()
+        setupViewModel()
         imageSaver.delegate = self
         
         titleLabel.text = photoCellViewModel.titleText
@@ -221,23 +219,26 @@ final class DetailViewController: UIViewController {
     
     // MARK: - Bind
     
-    private func setupBind() {
-        viewModel.$isHeartSelected
-            .receive(on: DispatchQueue.main)
-            .sink { [weak self] isHeartSelected in
-                self?.heartButton.tintColor = isHeartSelected ? .red : .systemBackground
-            }
-            .store(in: &cancellable)
-        
-        viewModel.$error
-            .receive(on: DispatchQueue.main)
-            .sink { [weak self] error in
-                guard let error = error else {
+    private func setupViewModel() {
+        viewModel.showHeartButtonStateClosure = { [weak self] in
+            DispatchQueue.main.async {
+                guard let isHeartSelected = self?.viewModel.isHeartSelected else {
                     return
                 }
-                self?.showAlert(message: error.localizedDescription)
+                self?.heartButton.tintColor = isHeartSelected ? .red : .systemBackground
             }
-            .store(in: &cancellable)
+        }
+        
+        viewModel.showAlertClosure = { [weak self] in
+            DispatchQueue.main.async {
+                guard let alertMessage = self?.viewModel.alertMessage else {
+                    return
+                }
+                self?.showAlert(message: alertMessage)
+            }
+        }
+        
+        viewModel.fetchHeartSelected()
     }
     
     // MARK: - Objc
@@ -249,11 +250,11 @@ final class DetailViewController: UIViewController {
     @objc private func touchDownloadButton(_ sender: UIButton) {
         activityIndicatorView.startAnimating()
         
-//        imageLoader.load(with: photo.url) { data in
-//            if let image = UIImage(data: data) {
-//                self.imageSaver.writeToPhotoAlbum(image: image)
-//            }
-//        }
+        imageLoader.load(with: photoCellViewModel.imageURL) { data in
+            if let image = UIImage(data: data) {
+                self.imageSaver.writeToPhotoAlbum(image: image)
+            }
+        }
     }
     
     @objc private func touchHeartButton(_ sender: UIButton) {

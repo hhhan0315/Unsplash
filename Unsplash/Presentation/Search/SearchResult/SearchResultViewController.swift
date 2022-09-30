@@ -86,7 +86,7 @@ final class SearchResultViewController: UIViewController {
                 guard let alertMessage = self?.viewModel.alertMessage else {
                     return
                 }
-                self?.showAlert(title: alertMessage)
+                self?.showAlert(message: alertMessage)
             }
         }
     }

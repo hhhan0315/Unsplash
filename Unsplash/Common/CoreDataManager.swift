@@ -95,6 +95,8 @@ final class CoreDataManager {
             
             if !fetchResult.isEmpty {
                 completion(.success(true))
+            } else {
+                completion(.success(false))
             }
         } catch {
             completion(.failure(error))
