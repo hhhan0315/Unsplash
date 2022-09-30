@@ -1,5 +1,5 @@
 //
-//  APICallerTests.swift
+//  APIServiceTests.swift
 //  UnsplashTests
 //
 //  Created by rae on 2022/09/22.
@@ -8,12 +8,12 @@
 import XCTest
 @testable import Unsplash
 
-final class APICallerTests: XCTestCase {
-    var sut: APICaller!
+final class APIServiceTests: XCTestCase {
+    var sut: APIService!
     
     override func setUpWithError() throws {
         try super.setUpWithError()
-        sut = APICaller()
+        sut = APIService()
     }
     
     override func tearDownWithError() throws {
@@ -47,11 +47,11 @@ final class APICallerTests: XCTestCase {
         sut.urlSession = mockURLSession
         
         // when
-        var result: [PhotoEntity]?
+        var result: [Photo]?
         sut.request(api: .getPhotos(page: 1),
-                    dataType: [PhotoEntity].self) { response in
-            if case let .success(photoEntities) = response {
-                result = photoEntities
+                    dataType: [Photo].self) { response in
+            if case .success(let photos) = response {
+                result = photos
             }
         }
         
@@ -69,8 +69,8 @@ final class APICallerTests: XCTestCase {
         // when
         var result: APIError?
         sut.request(api: .getPhotos(page: 1),
-                    dataType: [PhotoEntity].self) { response in
-            if case let .failure(apiError) = response {
+                    dataType: [Photo].self) { response in
+            if case .failure(let apiError) = response {
                 result = apiError
             }
         }
@@ -97,8 +97,8 @@ final class APICallerTests: XCTestCase {
         // when
         var result: APIError?
         sut.request(api: .getPhotos(page: 1),
-                    dataType: [PhotoEntity].self) { response in
-            if case let .failure(apiError) = response {
+                    dataType: [Photo].self) { response in
+            if case .failure(let apiError) = response {
                 result = apiError
             }
         }

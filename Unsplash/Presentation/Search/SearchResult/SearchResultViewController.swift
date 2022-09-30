@@ -6,7 +6,6 @@
 //
 
 import UIKit
-import Combine
 
 final class SearchResultViewController: UIViewController {
     
@@ -24,15 +23,13 @@ final class SearchResultViewController: UIViewController {
     
     // MARK: - Properties
     
-    private let viewModel = SearchResultViewModel()
-    
-    private var cancellable = Set<AnyCancellable>()
-    
-    private var photoDataSource: UICollectionViewDiffableDataSource<Section, Photo>?
-    
     enum Section {
         case photos
     }
+    
+    private let viewModel = SearchResultViewModel()
+    
+    private var photoDataSource: UICollectionViewDiffableDataSource<Section, PhotoCellViewModel>?
     
     // MARK: - View LifeCycle
     
@@ -40,7 +37,7 @@ final class SearchResultViewController: UIViewController {
         super.viewDidLoad()
         
         setupLayout()
-        setupBind()
+        setupViewModel()
     }
     
     // MARK: - Layout
@@ -63,37 +60,35 @@ final class SearchResultViewController: UIViewController {
     }
     
     private func setupPhotoDataSource() {
-        photoDataSource = UICollectionViewDiffableDataSource(collectionView: photoCollectionView, cellProvider: { collectionView, indexPath, photo in
+        photoDataSource = UICollectionViewDiffableDataSource(collectionView: photoCollectionView, cellProvider: { collectionView, indexPath, photoCellViewModel in
             guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: PhotoCollectionViewCell.identifier, for: indexPath) as? PhotoCollectionViewCell else {
                 return .init()
             }
-            cell.configureCell(with: photo)
+            cell.photoCellViewModel = photoCellViewModel
             return cell
         })
     }
     
     // MARK: - Bind
     
-    private func setupBind() {
-        viewModel.$photos
-            .receive(on: DispatchQueue.main)
-            .sink { [weak self] photos in
-                var snapShot = NSDiffableDataSourceSnapshot<Section, Photo>()
+    private func setupViewModel() {
+        viewModel.reloadCollectionViewClosure = { [weak self] in
+            DispatchQueue.main.async {
+                var snapShot = NSDiffableDataSourceSnapshot<Section, PhotoCellViewModel>()
                 snapShot.appendSections([Section.photos])
-                snapShot.appendItems(photos)
+                snapShot.appendItems(self?.viewModel.cellViewModels ?? [])
                 self?.photoDataSource?.apply(snapShot)
             }
-            .store(in: &cancellable)
+        }
         
-        viewModel.$error
-            .receive(on: DispatchQueue.main)
-            .sink { [weak self] apiError in
-                guard let apiError = apiError else {
+        viewModel.showAlertClosure = { [weak self] in
+            DispatchQueue.main.async {
+                guard let alertMessage = self?.viewModel.alertMessage else {
                     return
                 }
-                self?.showAlert(message: apiError.errorDescription)
+                self?.showAlert(title: alertMessage)
             }
-            .store(in: &cancellable)
+        }
     }
 }
 
@@ -101,13 +96,14 @@ final class SearchResultViewController: UIViewController {
 
 extension SearchResultViewController: UICollectionViewDelegate {
     func collectionView(_ collectionView: UICollectionView, willDisplay cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {
-        if indexPath.item == viewModel.photosCount() - 1 {
+        if indexPath.item == viewModel.numberOfCells - 1 {
             viewModel.fetch()
         }
     }
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        let detailViewController = DetailViewController(photo: viewModel.photo(at: indexPath.item))
+        let photoCellViewModel = viewModel.getCellViewModel(indexPath: indexPath)
+        let detailViewController = DetailViewController(photoCellViewModel: photoCellViewModel)
         detailViewController.modalPresentationStyle = .overFullScreen
         present(detailViewController, animated: true)
     }
@@ -118,8 +114,8 @@ extension SearchResultViewController: UICollectionViewDelegate {
 extension SearchResultViewController: PinterestLayoutDelegate {
     func collectionView(_ collectionView: UICollectionView, heightForPhotoAtIndexPath indexPath: IndexPath) -> CGFloat {
         let cellWidth: CGFloat = view.bounds.width / 2
-        let imageHeight: CGFloat = CGFloat(viewModel.photo(at: indexPath.item).height)
-        let imageWidth: CGFloat = CGFloat(viewModel.photo(at: indexPath.item).width)
+        let imageHeight = CGFloat(viewModel.getCellViewModel(indexPath: indexPath).imageHeight)
+        let imageWidth = CGFloat(viewModel.getCellViewModel(indexPath: indexPath).imageWidth)
         let imageRatio = imageHeight / imageWidth
 
         return CGFloat(imageRatio) * cellWidth

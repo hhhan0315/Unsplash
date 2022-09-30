@@ -6,7 +6,6 @@
 //
 
 import UIKit
-import Combine
 
 final class TopicDetailViewController: UIViewController {
     
@@ -26,22 +25,20 @@ final class TopicDetailViewController: UIViewController {
     
     // MARK: - Properties
     
-    private let viewModel: TopicDetailViewModel
-    private let titleString: String
-    
-    private var cancellable = Set<AnyCancellable>()
-    
-    private var photoDataSource: UICollectionViewDiffableDataSource<Section, Photo>?
-    
     enum Section {
         case photos
     }
     
+    private let viewModel: TopicDetailViewModel
+    private let titleText: String
+    
+    private var photoDataSource: UICollectionViewDiffableDataSource<Section, PhotoCellViewModel>?
+    
     // MARK: - View LifeCycle
     
     init(slug: String, title: String) {
+        self.titleText = title
         self.viewModel = TopicDetailViewModel(slug: slug)
-        self.titleString = title
         super.init(nibName: nil, bundle: nil)
     }
     
@@ -53,9 +50,7 @@ final class TopicDetailViewController: UIViewController {
         super.viewDidLoad()
         
         setupLayout()
-        setupBind()
-        
-        viewModel.fetch()
+        setupViewModel()
     }
     
     // MARK: - Layout
@@ -69,7 +64,7 @@ final class TopicDetailViewController: UIViewController {
     
     private func setupNavigationBar() {
         navigationController?.navigationBar.tintColor = .label
-        navigationItem.title = titleString
+        navigationItem.title = titleText
     }
     
     private func setupPhotoCollectionView() {
@@ -84,37 +79,37 @@ final class TopicDetailViewController: UIViewController {
     }
     
     private func setupPhotoDataSource() {
-        photoDataSource = UICollectionViewDiffableDataSource(collectionView: photoCollectionView, cellProvider: { collectionView, indexPath, photo in
+        photoDataSource = UICollectionViewDiffableDataSource(collectionView: photoCollectionView, cellProvider: { collectionView, indexPath, photoCellViewModel in
             guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: PhotoCollectionViewCell.identifier, for: indexPath) as? PhotoCollectionViewCell else {
                 return .init()
             }
-            cell.configureCell(with: photo)
+            cell.photoCellViewModel = photoCellViewModel
             return cell
         })
     }
     
     // MARK: - Bind
     
-    private func setupBind() {
-        viewModel.$photos
-            .receive(on: DispatchQueue.main)
-            .sink { [weak self] photos in
-                var snapShot = NSDiffableDataSourceSnapshot<Section, Photo>()
+    private func setupViewModel() {
+        viewModel.reloadCollectionViewClosure = { [weak self] in
+            DispatchQueue.main.async {
+                var snapShot = NSDiffableDataSourceSnapshot<Section, PhotoCellViewModel>()
                 snapShot.appendSections([Section.photos])
-                snapShot.appendItems(photos)
+                snapShot.appendItems(self?.viewModel.cellViewModels ?? [])
                 self?.photoDataSource?.apply(snapShot)
             }
-            .store(in: &cancellable)
+        }
         
-        viewModel.$error
-            .receive(on: DispatchQueue.main)
-            .sink { [weak self] apiError in
-                guard let apiError = apiError else {
+        viewModel.showAlertClosure = { [weak self] in
+            DispatchQueue.main.async {
+                guard let alertMessage = self?.viewModel.alertMessage else {
                     return
                 }
-                self?.showAlert(message: apiError.errorDescription)
+                self?.showAlert(title: alertMessage)
             }
-            .store(in: &cancellable)
+        }
+        
+        viewModel.fetch()
     }
 }
 
@@ -122,13 +117,14 @@ final class TopicDetailViewController: UIViewController {
 
 extension TopicDetailViewController: UICollectionViewDelegate {
     func collectionView(_ collectionView: UICollectionView, willDisplay cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {
-        if indexPath.item == viewModel.photosCount() - 1 {
+        if indexPath.item == viewModel.numberOfCells - 1 {
             viewModel.fetch()
         }
     }
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        let detailViewController = DetailViewController(photo: viewModel.photo(at: indexPath.item))
+        let photoCellViewModel = viewModel.getCellViewModel(indexPath: indexPath)
+        let detailViewController = DetailViewController(photoCellViewModel: photoCellViewModel)
         detailViewController.modalPresentationStyle = .overFullScreen
         present(detailViewController, animated: true)
     }
@@ -139,8 +135,8 @@ extension TopicDetailViewController: UICollectionViewDelegate {
 extension TopicDetailViewController: PinterestLayoutDelegate {
     func collectionView(_ collectionView: UICollectionView, heightForPhotoAtIndexPath indexPath: IndexPath) -> CGFloat {
         let cellWidth: CGFloat = view.bounds.width / 2
-        let imageHeight: CGFloat = CGFloat(viewModel.photo(at: indexPath.item).height)
-        let imageWidth: CGFloat = CGFloat(viewModel.photo(at: indexPath.item).width)
+        let imageHeight = CGFloat(viewModel.getCellViewModel(indexPath: indexPath).imageHeight)
+        let imageWidth = CGFloat(viewModel.getCellViewModel(indexPath: indexPath).imageWidth)
         let imageRatio = imageHeight / imageWidth
 
         return CGFloat(imageRatio) * cellWidth

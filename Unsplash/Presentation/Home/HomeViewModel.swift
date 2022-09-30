@@ -8,27 +8,57 @@
 import Foundation
 
 final class HomeViewModel {
-    @Published var photos: [Photo] = []
-    @Published var error: APIError? = nil
+    private let apiService: APIServiceProtocol
     
-    private let photoService = PhotoService()
+    private var photos: [Photo] = []
+    private var page = 1
     
-    func photosCount() -> Int {
-        return photos.count
+    var cellViewModels: [PhotoCellViewModel] = [] {
+        didSet {
+            reloadCollectionViewClosure?()
+        }
     }
     
-    func photo(at index: Int) -> Photo {
-        return photos[index]
+    var alertMessage: String? {
+        didSet {
+            showAlertClosure?()
+        }
+    }
+    
+    var numberOfCells: Int {
+        return cellViewModels.count
+    }
+    
+    var reloadCollectionViewClosure: (() -> Void)?
+    var showAlertClosure: (() -> Void)?
+    
+    init(apiService: APIServiceProtocol = APIService()) {
+        self.apiService = apiService
     }
     
     func fetch() {
-        photoService.fetch { result in
+        apiService.request(api: .getPhotos(page: page), dataType: [Photo].self) { [weak self] result in
             switch result {
             case .success(let photos):
-                self.photos.append(contentsOf: photos)
+                self?.photos.append(contentsOf: photos)
+                let cellViewModels = photos.compactMap { self?.createCellViewModel(photo: $0) }
+                self?.cellViewModels.append(contentsOf: cellViewModels)
+                self?.page += 1
             case .failure(let apiError):
-                self.error = apiError
+                self?.alertMessage = apiError.errorDescription
             }
         }
+    }
+    
+    func getCellViewModel(indexPath: IndexPath) -> PhotoCellViewModel {
+        return cellViewModels[indexPath.item]
+    }
+    
+    func createCellViewModel(photo: Photo) -> PhotoCellViewModel {
+        return PhotoCellViewModel(id: photo.id,
+                                  titleText: photo.user.name,
+                                  imageURL: photo.urls.regular,
+                                  imageWidth: photo.width,
+                                  imageHeight: photo.height)
     }
 }

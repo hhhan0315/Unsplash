@@ -1,5 +1,5 @@
 //
-//  APICaller.swift
+//  APIService.swift
 //  Unsplash
 //
 //  Created by rae on 2022/09/08.
@@ -7,7 +7,11 @@
 
 import Foundation
 
-final class APICaller {
+protocol APIServiceProtocol {
+    func request<T: Decodable>(api: API, dataType: T.Type, completion: @escaping (Result<T, APIError>) -> Void)
+}
+
+final class APIService: APIServiceProtocol {
     var urlSession: URLSessionProtocol
     
     init(urlSession: URLSessionProtocol = URLSession.shared) {

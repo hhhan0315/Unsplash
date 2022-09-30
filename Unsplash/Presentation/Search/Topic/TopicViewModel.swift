@@ -8,27 +8,56 @@
 import UIKit
 
 final class TopicViewModel {
-    @Published var topics: [Topic] = []
-    @Published var error: APIError? = nil
+    private let apiService: APIServiceProtocol
     
-    private let topicService = TopicService()
+    private var topics: [Topic] = []
+    private var page = 1
     
-    func topicsCount() -> Int {
-        return topics.count
+    var cellViewModels: [TopicPhotoCellViewModel] = [] {
+        didSet {
+            reloadCollectionViewClosure?()
+        }
     }
     
-    func topic(at index: Int) -> Topic {
-        return topics[index]
+    var alertMessage: String? {
+        didSet {
+            showAlertClosure?()
+        }
+    }
+    
+    var numberOfCells: Int {
+        return cellViewModels.count
+    }
+    
+    var reloadCollectionViewClosure: (() -> Void)?
+    var showAlertClosure: (() -> Void)?
+    
+    init(apiService: APIServiceProtocol = APIService()) {
+        self.apiService = apiService
     }
     
     func fetch() {
-        topicService.fetch { result in
+        apiService.request(api: .getTopics(page: self.page),
+                           dataType: [Topic].self) { [weak self] result in
             switch result {
             case .success(let topics):
-                self.topics.append(contentsOf: topics)
+                self?.topics.append(contentsOf: topics)
+                let cellViewModels = topics.compactMap { self?.createCellViewModel(topic: $0) }
+                self?.cellViewModels.append(contentsOf: cellViewModels)
             case .failure(let apiError):
-                self.error = apiError
+                self?.alertMessage = apiError.errorDescription
             }
         }
+    }
+    
+    func getCellViewModel(indexPath: IndexPath) -> TopicPhotoCellViewModel {
+        return cellViewModels[indexPath.item]
+    }
+    
+    func createCellViewModel(topic: Topic) -> TopicPhotoCellViewModel {
+        return TopicPhotoCellViewModel(id: topic.id,
+                                       title: topic.title,
+                                       slug: topic.slug,
+                                       coverPhotoURL: topic.coverPhoto.urls.small)
     }
 }

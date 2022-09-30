@@ -21,11 +21,10 @@ final class DetailViewController: UIViewController {
         return button
     }()
     
-    private lazy var titleLabel: UILabel = {
+    private let titleLabel: UILabel = {
         let label = UILabel()
         label.textColor = .label
         label.font = UIFont.systemFont(ofSize: 17.0, weight: .semibold)
-        label.text = photo.user
         return label
     }()
     
@@ -39,10 +38,9 @@ final class DetailViewController: UIViewController {
         return scrollView
     }()
     
-    private lazy var photoImageView: UIImageView = {
+    private let photoImageView: UIImageView = {
         let imageView = UIImageView()
         imageView.contentMode = .scaleAspectFit
-        imageView.downloadImage(with: photo.url)
         return imageView
     }()
     
@@ -74,7 +72,7 @@ final class DetailViewController: UIViewController {
     
     // MARK: - Properties
     
-    private var photo: Photo
+    var photoCellViewModel: PhotoCellViewModel
     
     private let viewModel: DetailViewModel
     private var cancellable = Set<AnyCancellable>()
@@ -86,9 +84,9 @@ final class DetailViewController: UIViewController {
     
     // MARK: - View LifeCycle
     
-    init(photo: Photo) {
-        self.photo = photo
-        self.viewModel = DetailViewModel(photo: photo)
+    init(photoCellViewModel: PhotoCellViewModel) {
+        self.photoCellViewModel = photoCellViewModel
+        self.viewModel = DetailViewModel(photoCellViewModel: photoCellViewModel)
         super.init(nibName: nil, bundle: nil)
     }
     
@@ -102,6 +100,9 @@ final class DetailViewController: UIViewController {
         setupLayout()
         setupBind()
         imageSaver.delegate = self
+        
+        titleLabel.text = photoCellViewModel.titleText
+        photoImageView.downloadImage(with: photoCellViewModel.imageURL)
     }
     
     override func viewDidLayoutSubviews() {
@@ -248,11 +249,11 @@ final class DetailViewController: UIViewController {
     @objc private func touchDownloadButton(_ sender: UIButton) {
         activityIndicatorView.startAnimating()
         
-        imageLoader.load(with: photo.url) { data in
-            if let image = UIImage(data: data) {
-                self.imageSaver.writeToPhotoAlbum(image: image)
-            }
-        }
+//        imageLoader.load(with: photo.url) { data in
+//            if let image = UIImage(data: data) {
+//                self.imageSaver.writeToPhotoAlbum(image: image)
+//            }
+//        }
     }
     
     @objc private func touchHeartButton(_ sender: UIButton) {

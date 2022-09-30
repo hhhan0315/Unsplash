@@ -13,6 +13,13 @@ final class TopicPhotoCollectionViewCell: UICollectionViewCell {
     
     static let identifier = String(describing: TopicPhotoCollectionViewCell.self)
     
+    var topicPhotoCellViewModel: TopicPhotoCellViewModel? {
+        didSet {
+            titleLabel.text = topicPhotoCellViewModel?.title
+            photoImageView.downloadImage(with: topicPhotoCellViewModel?.coverPhotoURL ?? "")
+        }
+    }
+    
     // MARK: - UI Define
     
     private let photoImageView: UIImageView = {
@@ -64,13 +71,6 @@ final class TopicPhotoCollectionViewCell: UICollectionViewCell {
         super.layoutSubviews()
 
         photoImageView.layer.cornerRadius = 10
-    }
-    
-    // MARK: - Configure
-    
-    func configureCell(with topic: Topic) {
-        titleLabel.text = topic.title
-        photoImageView.downloadImage(with: topic.coverPhotoURL)
     }
     
     // MARK: - Layout

@@ -11,30 +11,30 @@ final class DetailViewModel {
     @Published var isHeartSelected: Bool = false
     @Published var error: Error? = nil
     
-    private var photo: Photo
+    private var photoCellViewModel: PhotoCellViewModel
     
     private let imageFileManager = ImageFileManager()
     private let imageLoader = ImageLoader()
     private let coreDataManager = CoreDataManager()
     
-    init(photo: Photo) {
-        self.photo = photo
+    init(photoCellViewModel: PhotoCellViewModel) {
+        self.photoCellViewModel = photoCellViewModel
         fetchHeartSelected()
     }
     
     func fetchHeartSelected() {
-        imageFileManager.existImageInFile(id: photo.id) { isExist in
+        imageFileManager.existImageInFile(id: photoCellViewModel.id) { isExist in
             self.isHeartSelected = isExist ? true : false
         }
     }
     
     func fetchPhotoLike() {
-        imageFileManager.existImageInFile(id: photo.id) { isExist in
+        imageFileManager.existImageInFile(id: photoCellViewModel.id) { isExist in
             if isExist {
                 self.deleteFileManagerImage()
                 self.postNotificationHeart()
             } else {
-                self.imageLoader.load(with: self.photo.url) { data in
+                self.imageLoader.load(with: self.photoCellViewModel.imageURL) { data in
                     self.saveFileManagerImage(data)
                     self.postNotificationHeart()
                 }
@@ -43,7 +43,7 @@ final class DetailViewModel {
     }
     
     private func deleteFileManagerImage() {
-        self.imageFileManager.deleteImage(id: self.photo.id) { result in
+        self.imageFileManager.deleteImage(id: self.photoCellViewModel.id) { result in
             switch result {
             case .success(let success):
                 if success {
@@ -56,7 +56,7 @@ final class DetailViewModel {
     }
     
     private func deletePhotoCoreData() {
-        self.coreDataManager.deletePhotoCoreData(photo: self.photo) { result in
+        self.coreDataManager.deletePhotoCoreData(photoCellViewModel: self.photoCellViewModel) { result in
             switch result {
             case .success(let success):
                 if success {
@@ -69,7 +69,7 @@ final class DetailViewModel {
     }
     
     private func saveFileManagerImage(_ data: Data) {
-        self.imageFileManager.saveImage(id: self.photo.id, data: data) { result in
+        self.imageFileManager.saveImage(id: self.photoCellViewModel.id, data: data) { result in
             switch result {
             case .success(let success):
                 if success {
@@ -82,7 +82,7 @@ final class DetailViewModel {
     }
     
     private func savePhotoCoreData() {
-        self.coreDataManager.savePhotoCoreData(photo: self.photo) { result in
+        self.coreDataManager.savePhotoCoreData(photoCellViewModel: self.photoCellViewModel) { result in
             switch result {
             case .success(let success):
                 if success {

@@ -12,6 +12,13 @@ final class PhotoCollectionViewCell: UICollectionViewCell {
     // MARK: - Properties
     
     static let identifier = String(describing: PhotoCollectionViewCell.self)
+    
+    var photoCellViewModel: PhotoCellViewModel? {
+        didSet {
+            nameLabel.text = photoCellViewModel?.titleText
+            photoImageView.downloadImage(with: photoCellViewModel?.imageURL ?? "")
+        }
+    }
         
     // MARK: - UI Define
     
@@ -46,21 +53,9 @@ final class PhotoCollectionViewCell: UICollectionViewCell {
     
     override func prepareForReuse() {
         super.prepareForReuse()
-        
+
         photoImageView.image = nil
         nameLabel.text = nil
-    }
-    
-    // MARK: - Configure
-    
-    func configureCell(with photo: Photo) {
-        nameLabel.text = photo.user
-        photoImageView.downloadImage(with: photo.url)
-    }
-    
-    func configureCellWithFileManager(with photo: Photo) {
-        nameLabel.text = photo.user
-        photoImageView.image = ImageFileManager().fetchImage(id: photo.id)
     }
     
     // MARK: - Layout
@@ -90,5 +85,4 @@ final class PhotoCollectionViewCell: UICollectionViewCell {
             nameLabel.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -8.0),
         ])
     }
-
 }
