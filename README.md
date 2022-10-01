@@ -27,42 +27,26 @@ Unsplash unofficial app for iOS
 ## 기능
 
 ### 사진 리스트 화면(홈)
-- Unsplash API 중 List photos 활용
-- Pagination 구현
-
-<p>
-  <img src="https://github.com/hhhan0315/Unsplash/blob/main/screenshot/feature_home.gif" width="25%"/>
-</p>
+||
+|--|
+|<img src="https://github.com/hhhan0315/Unsplash/blob/main/screenshot/feature_home.gif"/>|
+|- Unsplash API 중 List photos 활용 <br> - Pagination 구현|
 
 ### 검색 화면
-- Unsplash API 중 List topics 활용해 초기화면 구현
-- Topic 클릭 시 해당 Topic 사진들을 보여준다.
-
-<p>
-  <img src="https://github.com/hhhan0315/Unsplash/blob/main/screenshot/feature_topic.gif" width="25%"/>
-</p>
-
-- SearchBar를 활용해 검색할 수 있고 검색 결과를 보여준다.
-
-<p>
-  <img src="https://github.com/hhhan0315/Unsplash/blob/main/screenshot/feature_search.gif" width="25%"/>
-</p>
+|||
+|--|--|
+|<img src="https://github.com/hhhan0315/Unsplash/blob/main/screenshot/feature_topic.gif"/>|<img src="https://github.com/hhhan0315/Unsplash/blob/main/screenshot/feature_search.gif"/>|
+|- Unsplash API 중 List topics 활용해 초기화면 구현 <br> - Topic 클릭 시 해당 Topic 사진들을 보여준다.|- SearchBar를 활용해 검색할 수 있고 검색 결과를 보여준다.|
 
 ### 사진 상세 화면
-- 좋아요 기능
-- 앨범에 사진 저장 기능
-- UITapGesutre, UIPanGesture, UIScrollView를 활용해 다양한 제스처 기능
-- [DetailViewController 다양한 기능들](https://github.com/hhhan0315/Unsplash/tree/main/markdown/DetailViewController.md)
-
-<p>
-  <img src="https://github.com/hhhan0315/Unsplash/blob/main/screenshot/feature_detail.gif" width="25%"/>
-</p>
+||
+|--|
+|<img src="https://github.com/hhhan0315/Unsplash/blob/main/screenshot/feature_detail.gif"/>|
+|- 좋아요 기능 <br> - 앨범에 사진 저장 기능 <br> - [DetailViewController 다양한 기능들](https://github.com/hhhan0315/Unsplash/tree/main/markdown/DetailViewController.md)|
 
 ### 좋아요 화면
-- 좋아요 표시한 사진들을 보여준다.
-- CoreData를 활용한 사진 정보 저장
-- FileManager를 활용한 사진 저장 및 불러오기
+||
+|--|
+|<img src="https://github.com/hhhan0315/Unsplash/blob/main/screenshot/feature_heart.gif"/>|
+|- 좋아요 표시한 사진들을 표시 <br> - CoreData를 활용한 사진 정보 저장|
 
-<p>
-  <img src="https://github.com/hhhan0315/Unsplash/blob/main/screenshot/feature_heart.gif" width="25%"/>
-</p>
