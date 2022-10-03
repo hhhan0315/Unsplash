@@ -10,39 +10,25 @@ import XCTest
 
 final class APIServiceTests: XCTestCase {
     var sut: APIService!
+    var data: Data!
     
     override func setUpWithError() throws {
         try super.setUpWithError()
         sut = APIService()
+        
+        let path = Bundle.main.path(forResource: "content", ofType: "json")!
+        let jsonString = try! String(contentsOfFile: path)
+        data = jsonString.data(using: .utf8)!
     }
     
     override func tearDownWithError() throws {
         try super.tearDownWithError()
         sut = nil
+        data = nil
     }
     
     func test_request호출시_성공하는지() {
         // given
-        let data = """
-        [
-            {
-                "id": "id_example",
-                "width": 100,
-                "height": 200,
-                "urls": {
-                    "raw": "raw_example",
-                    "full": "full_example",
-                    "regular": "regular_example",
-                    "small": "small_example",
-                    "thumb": "thumb_example"
-                },
-                "user": {
-                    "name": "name_example"
-                }
-            }
-        ]
-        """.data(using: .utf8)!
-        
         let mockURLSession = MockURLSession.make(url: URL(string: "test.com")!, data: data, statusCode: 200)
         sut.urlSession = mockURLSession
         
@@ -56,9 +42,9 @@ final class APIServiceTests: XCTestCase {
         }
         
         // then
-        let expectation = "name_example"
-        XCTAssertNotNil(result)
-        XCTAssertEqual(result?.first?.user.name, expectation)
+        let expectation = try? JSONDecoder().decode([Photo].self, from: data)
+        XCTAssertEqual(result?.count, expectation?.count)
+        XCTAssertEqual(result?.first?.id, expectation?.first?.id)
     }
     
     func test_request호출시_실패하며_serverError_400_발생하는지() {
@@ -82,22 +68,13 @@ final class APIServiceTests: XCTestCase {
     
     func test_request호출시_실패하며_decodeError_발생하는지() {
         // given
-        let data = """
-        [
-            {
-                "user": {
-                    "name": "name_example"
-                }
-            }
-        ]
-        """.data(using: .utf8)!
         let mockURLSession = MockURLSession.make(url: URL(string: "test.com")!, data: data, statusCode: 200)
         sut.urlSession = mockURLSession
         
         // when
         var result: APIError?
         sut.request(api: .getPhotos(page: 1),
-                    dataType: [Photo].self) { response in
+                    dataType: Search.self) { response in
             if case .failure(let apiError) = response {
                 result = apiError
             }
