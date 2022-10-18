@@ -223,15 +223,15 @@
 		0194CD332822A5240006470D /* Presentation */ = {
 			isa = PBXGroup;
 			children = (
-				015A625128FDAC5600C143A9 /* MainCoordinator.swift */,
-				015A624528FD6CF200C143A9 /* Coordinator.swift */,
 				015A624B28FD8D7C00C143A9 /* AppCoordinator.swift */,
-				01C0C9B228DAF48100D655BD /* PhotoCollectionViewCell.swift */,
+				015A624528FD6CF200C143A9 /* Coordinator.swift */,
+				015A625128FDAC5600C143A9 /* MainCoordinator.swift */,
 				010CDAD528E6CD6900F796C1 /* PhotoCellViewModel.swift */,
+				01C0C9B228DAF48100D655BD /* PhotoCollectionViewCell.swift */,
 				0128D1A22897BF6C00D17627 /* DetailScene */,
+				01C0C99C28D8A18700D655BD /* HeartScene */,
 				01C0C9A528DA98FD00D655BD /* HomeScene */,
 				01C0C9F528E3DC3B00D655BD /* SearchScene */,
-				01C0C99C28D8A18700D655BD /* HeartScene */,
 			);
 			path = Presentation;
 			sourceTree = "<group>";

@@ -93,19 +93,6 @@ final class HomeViewController: UIViewController {
     }
 }
 
-// MARK: - UICollectionViewDelegate
-
-//extension HomeViewController: UICollectionViewDelegate {
-    
-//    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-//        coordinator?.presentDetail(with: viewModel.photo(at: indexPath.item))
-//        let photoCellViewModel = viewModel.getCellViewModel(indexPath: indexPath)
-//        let detailViewController = DetailViewController(photoCellViewModel: photoCellViewModel)
-//        detailViewController.modalPresentationStyle = .overFullScreen
-//        present(detailViewController, animated: true)
-//    }
-//}
-
 // MARK: - UICollectionViewDelegateFlowLayout
 
 extension HomeViewController: UICollectionViewDelegateFlowLayout {

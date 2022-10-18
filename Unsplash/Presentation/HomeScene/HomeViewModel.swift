@@ -11,6 +11,7 @@ import RxCocoa
 
 final class HomeViewModel: ViewModelType {
     weak var coordinater: HomeCoordinatorDelegate?
+    
     private let photos = BehaviorRelay<[Photo]>(value: [])
     private let alertMessage = PublishRelay<String>()
     
