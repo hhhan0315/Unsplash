@@ -6,63 +6,85 @@
 //
 
 import Foundation
+import RxSwift
+import RxCocoa
 
-final class TopicDetailViewModel {
+final class TopicDetailViewModel: ViewModelType {
+    weak var coordinator: TopicDetailCoordinatorDelegate?
+    
+    private let photos = BehaviorRelay<[Photo]>(value: [])
+    private let alertMessage = PublishRelay<String>()
+    
+    private var page = 0
+    
+    struct Input {
+        let viewDidLoadEvent: Observable<Void>
+        let didSelectItemEvent: Observable<Photo>
+        let prefetchItemEvent: Observable<[IndexPath]>
+    }
+    
+    struct Output {
+        let photos: Observable<[Photo]>
+        let alertMessage: Observable<String>
+    }
+    
+    func transform(input: Input, disposeBag: DisposeBag) -> Output {
+        input.viewDidLoadEvent
+            .subscribe(onNext: { [weak self] _ in
+                self?.fetch()
+            })
+            .disposed(by: disposeBag)
+        
+        input.didSelectItemEvent
+            .subscribe(onNext: { [weak self] photo in
+                self?.coordinator?.presentDetail(with: photo)
+            })
+            .disposed(by: disposeBag)
+        
+        input.prefetchItemEvent
+            .compactMap(\.last?.item)
+            .subscribe(onNext: { [weak self] item in
+                guard let photosCount = self?.photos.value.count else {
+                    return
+                }
+                guard item == photosCount - 1 else {
+                    return
+                }
+                self?.fetch()
+            })
+            .disposed(by: disposeBag)
+        
+        return Output(
+            photos: photos.asObservable(),
+            alertMessage: alertMessage.asObservable()
+        )
+    }
+    
     private let apiService: APIServiceProtocol
-    private let slug: String
-    
-    private var photos: [Photo] = []
-    private var page = 1
-    
-    var cellViewModels: [PhotoCellViewModel] = [] {
-        didSet {
-            reloadCollectionViewClosure?()
-        }
-    }
-    
-    var alertMessage: String? {
-        didSet {
-            showAlertClosure?()
-        }
-    }
-    
-    var numberOfCells: Int {
-        return cellViewModels.count
-    }
-    
-    var reloadCollectionViewClosure: (() -> Void)?
-    var showAlertClosure: (() -> Void)?
+    private let topic: Topic
     
     init(apiService: APIServiceProtocol = APIService(),
-         slug: String) {
+         topic: Topic) {
         self.apiService = apiService
-        self.slug = slug
+        self.topic = topic
     }
     
-    func fetch() {
-        apiService.request(api: .getTopicPhotos(slug: self.slug, page: self.page),
+    private func fetch() {
+        self.page += 1
+        
+        apiService.request(api: .getTopicPhotos(slug: self.topic.slug, page: self.page),
                            dataType: [Photo].self) { [weak self] result in
             switch result {
             case .success(let photos):
-                self?.photos.append(contentsOf: photos)
-                let cellViewModels = photos.compactMap { self?.createCellViewModel(photo: $0) }
-                self?.cellViewModels.append(contentsOf: cellViewModels)
-                self?.page += 1
+                let oldPhotos = self?.photos.value ?? []
+                self?.photos.accept(oldPhotos + photos)
             case .failure(let apiError):
-                self?.alertMessage = apiError.errorDescription
+                self?.alertMessage.accept(apiError.errorDescription)
             }
         }
     }
     
-    func getCellViewModel(indexPath: IndexPath) -> PhotoCellViewModel {
-        return cellViewModels[indexPath.item]
-    }
-    
-    func createCellViewModel(photo: Photo) -> PhotoCellViewModel {
-        return PhotoCellViewModel(id: photo.id,
-                                  titleText: photo.user.name,
-                                  imageURL: photo.urls.regular,
-                                  imageWidth: Int(photo.width),
-                                  imageHeight: Int(photo.height))
+    func photo(at index: Int) -> Photo {
+        return photos.value[index]
     }
 }

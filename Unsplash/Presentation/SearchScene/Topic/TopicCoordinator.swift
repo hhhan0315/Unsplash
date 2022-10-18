@@ -29,7 +29,9 @@ final class TopicCoordinator: Coordinator {
 }
 
 extension TopicCoordinator: TopicCoordinatorDelegate {
-    func pushTopicDetail(with: Topic) {
-        print(#function)
+    func pushTopicDetail(with topic: Topic) {
+        let topicDetailCoordinator = TopicDetailCoordinator(navigationController: navigationController, topic: topic)
+        topicDetailCoordinator.start()
+        children.append(topicDetailCoordinator)
     }
 }

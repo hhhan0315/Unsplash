@@ -19,7 +19,7 @@ final class TopicViewModel: ViewModelType {
     
     struct Input {
         let viewDidLoadEvent: Observable<Void>
-        let didSelectItemEvent: Observable<IndexPath>
+        let didSelectItemEvent: Observable<Topic>
     }
     
     struct Output {
@@ -35,10 +35,7 @@ final class TopicViewModel: ViewModelType {
             .disposed(by: disposeBag)
         
         input.didSelectItemEvent
-            .subscribe(onNext: { [weak self] indexPath in
-                guard let topic = self?.topics.value[indexPath.item] else {
-                    return
-                }
+            .subscribe(onNext: { [weak self] topic in
                 self?.coordinator?.pushTopicDetail(with: topic)
             })
             .disposed(by: disposeBag)
@@ -55,7 +52,7 @@ final class TopicViewModel: ViewModelType {
         self.apiService = apiService
     }
     
-    func fetch() {
+    private func fetch() {
         self.page += 1
         
         apiService.request(api: .getTopics(page: self.page),

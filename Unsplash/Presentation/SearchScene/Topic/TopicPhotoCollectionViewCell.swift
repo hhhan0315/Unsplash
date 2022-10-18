@@ -15,7 +15,7 @@ final class TopicPhotoCollectionViewCell: UICollectionViewCell {
     
     static let identifier = String(describing: TopicPhotoCollectionViewCell.self)
     
-    // MARK: - UI Define
+    // MARK: - View Define
     
     private let photoImageView: UIImageView = {
         let imageView = UIImageView()

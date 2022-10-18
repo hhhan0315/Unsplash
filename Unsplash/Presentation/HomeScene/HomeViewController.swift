@@ -72,8 +72,8 @@ final class HomeViewController: UIViewController {
     private func bindViewModel() {
         let input = HomeViewModel.Input(
             viewDidLoadEvent: Observable.just(()),
-            willDisplayCellEvent: photoCollectionView.rx.willDisplayCell.asObservable(),
-            didSelectItemEvent: photoCollectionView.rx.itemSelected.asObservable()
+            didSelectItemEvent: photoCollectionView.rx.modelSelected(Photo.self).asObservable(),
+            prefetchItemEvent: photoCollectionView.rx.prefetchItems.asObservable()
         )
         let output = viewModel.transform(input: input, disposeBag: self.disposeBag)
         

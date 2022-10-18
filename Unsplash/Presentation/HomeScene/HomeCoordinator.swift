@@ -22,7 +22,7 @@ final class HomeCoordinator: Coordinator {
     
     func start() {
         let homeViewModel = HomeViewModel()
-        homeViewModel.coordinater = self
+        homeViewModel.coordinator = self
         let homeViewController = HomeViewController(viewModel: homeViewModel)
         navigationController.setViewControllers([homeViewController], animated: false)
     }

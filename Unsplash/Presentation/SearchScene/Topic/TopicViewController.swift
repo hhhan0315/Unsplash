@@ -12,7 +12,7 @@ import RxCocoa
 
 final class TopicViewController: UIViewController {
     
-    // MARK: - UI Define
+    // MARK: - View Define
     
     private let topicCollectionView: UICollectionView = {
         let itemSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(0.5), heightDimension: .fractionalHeight(1.0))
@@ -91,7 +91,7 @@ final class TopicViewController: UIViewController {
     private func bindViewModel() {
         let input = TopicViewModel.Input(
             viewDidLoadEvent: Observable.just(()),
-            didSelectItemEvent: topicCollectionView.rx.itemSelected.asObservable()
+            didSelectItemEvent: topicCollectionView.rx.modelSelected(Topic.self).asObservable()
         )
         let output = viewModel.transform(input: input, disposeBag: disposeBag)
         

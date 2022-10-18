@@ -5,12 +5,12 @@
 //  Created by rae on 2022/09/21.
 //
 
-import UIKit
+import Foundation
 import RxSwift
 import RxCocoa
 
 final class HomeViewModel: ViewModelType {
-    weak var coordinater: HomeCoordinatorDelegate?
+    weak var coordinator: HomeCoordinatorDelegate?
     
     private let photos = BehaviorRelay<[Photo]>(value: [])
     private let alertMessage = PublishRelay<String>()
@@ -25,8 +25,8 @@ final class HomeViewModel: ViewModelType {
     
     struct Input {
         let viewDidLoadEvent: Observable<Void>
-        let willDisplayCellEvent: Observable<(cell: UICollectionViewCell, at: IndexPath)>
-        let didSelectItemEvent: Observable<IndexPath>
+        let didSelectItemEvent: Observable<Photo>
+        let prefetchItemEvent: Observable<[IndexPath]>
     }
     
     struct Output {
@@ -41,23 +41,22 @@ final class HomeViewModel: ViewModelType {
             })
             .disposed(by: disposeBag)
         
-        input.willDisplayCellEvent
-            .subscribe(onNext: { [weak self] (_, indexPath) in
-                guard let photosCount = self?.photos.value.count else {
-                    return
-                }
-                if indexPath.item == photosCount - 1 {
-                    self?.fetch()
-                }
+        input.didSelectItemEvent
+            .subscribe(onNext: { [weak self] photo in
+                self?.coordinator?.presentDetail(with: photo)
             })
             .disposed(by: disposeBag)
         
-        input.didSelectItemEvent
-            .subscribe(onNext: { [weak self] indexPath in
-                guard let photo = self?.photos.value[indexPath.item] else {
+        input.prefetchItemEvent
+            .compactMap(\.last?.item)
+            .subscribe(onNext: { [weak self] item in
+                guard let photosCount = self?.photos.value.count else {
                     return
                 }
-                self?.coordinater?.presentDetail(with: photo)
+                guard item == photosCount - 1 else {
+                    return
+                }
+                self?.fetch()
             })
             .disposed(by: disposeBag)
         
