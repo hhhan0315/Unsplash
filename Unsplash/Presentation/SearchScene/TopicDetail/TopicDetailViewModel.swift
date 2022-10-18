@@ -17,6 +17,15 @@ final class TopicDetailViewModel: ViewModelType {
     
     private var page = 0
     
+    private let apiService: APIServiceProtocol
+    private let topic: Topic
+    
+    init(apiService: APIServiceProtocol = APIService(),
+         topic: Topic) {
+        self.apiService = apiService
+        self.topic = topic
+    }
+    
     struct Input {
         let viewDidLoadEvent: Observable<Void>
         let didSelectItemEvent: Observable<Photo>
@@ -58,15 +67,6 @@ final class TopicDetailViewModel: ViewModelType {
             photos: photos.asObservable(),
             alertMessage: alertMessage.asObservable()
         )
-    }
-    
-    private let apiService: APIServiceProtocol
-    private let topic: Topic
-    
-    init(apiService: APIServiceProtocol = APIService(),
-         topic: Topic) {
-        self.apiService = apiService
-        self.topic = topic
     }
     
     private func fetch() {
