@@ -21,6 +21,7 @@ final class SearchResultViewController: UIViewController {
         let collectionView = UICollectionView(frame: .zero, collectionViewLayout: layout)
         collectionView.register(PhotoCollectionViewCell.self, forCellWithReuseIdentifier: PhotoCollectionViewCell.identifier)
         collectionView.backgroundColor = .systemBackground
+        collectionView.delegate = self
         return collectionView
     }()
     
@@ -56,8 +57,7 @@ final class SearchResultViewController: UIViewController {
     
     private func bindViewModel() {
         let input = SearchResultViewModel.Input(
-            willDisplayCellEvent: photoCollectionView.rx.willDisplayCell.asObservable(),
-            didSelectItemEvent: photoCollectionView.rx.modelSelected(Photo.self).asObservable()
+            prefetchItemEvent: photoCollectionView.rx.prefetchItems.asObservable()
         )
         let output = viewModel.transform(input: input, disposeBag: disposeBag)
         
@@ -74,6 +74,17 @@ final class SearchResultViewController: UIViewController {
                 self?.showAlert(message: alertMessage)
             })
             .disposed(by: disposeBag)
+    }
+}
+
+// MARK: - UICollectionViewDelegate
+
+extension SearchResultViewController: UICollectionViewDelegate {
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        let photo = viewModel.photo(at: indexPath.item)
+        let detailViewController = DetailViewController(photo: photo)
+        detailViewController.modalPresentationStyle = .overFullScreen
+        present(detailViewController, animated: true)
     }
 }
 

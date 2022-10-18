@@ -5,7 +5,7 @@
 //  Created by rae on 2022/09/27.
 //
 
-import UIKit
+import Foundation
 import RxSwift
 import RxCocoa
 
@@ -17,9 +17,14 @@ final class SearchResultViewModel: ViewModelType {
     private var query = ""
     private var page = 0
     
+    private let apiService: APIServiceProtocol
+    
+    init(apiService: APIServiceProtocol = APIService()) {
+        self.apiService = apiService
+    }
+    
     struct Input {
-        let willDisplayCellEvent: Observable<(cell: UICollectionViewCell, at: IndexPath)>
-        let didSelectItemEvent: Observable<Photo>
+        let prefetchItemEvent: Observable<[IndexPath]>
     }
     
     struct Output {
@@ -28,24 +33,16 @@ final class SearchResultViewModel: ViewModelType {
     }
     
     func transform(input: Input, disposeBag: DisposeBag) -> Output {
-        input.willDisplayCellEvent
-            .subscribe(onNext: { [weak self] (_, indexPath) in
+        input.prefetchItemEvent
+            .compactMap(\.last?.item)
+            .subscribe(onNext: { [weak self] item in
                 guard let photosCount = self?.photos.value.count else {
                     return
                 }
-                if indexPath.item == photosCount - 1 {
-                    self?.fetch()
+                guard item == photosCount - 1 else {
+                    return
                 }
-            })
-            .disposed(by: disposeBag)
-        
-        input.didSelectItemEvent
-            .subscribe(onNext: { [weak self] photo in
-//                print(photo)
-//                guard let photo = self?.photos.value[indexPath.item] else {
-//                    return
-//                }
-//                self?.coordinator?.presentDetail(with: photo)
+                self?.fetch()
             })
             .disposed(by: disposeBag)
         
@@ -55,13 +52,7 @@ final class SearchResultViewModel: ViewModelType {
         )
     }
     
-    private let apiService: APIServiceProtocol
-    
-    init(apiService: APIServiceProtocol = APIService()) {
-        self.apiService = apiService
-    }
-    
-    func fetch() {
+    private func fetch() {
         self.page += 1
         
         apiService.request(api: .getSearch(query: self.query, page: self.page),
@@ -85,14 +76,14 @@ final class SearchResultViewModel: ViewModelType {
             return
         }
         self.query = query
-        self.page = 1
+        self.page = 0
         photos.accept([])
         fetch()
     }
     
     func reset() {
         self.query = ""
-        self.page = 1
+        self.page = 0
         photos.accept([])
     }
 }
