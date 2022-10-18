@@ -6,21 +6,16 @@
 //
 
 import UIKit
+import Kingfisher
+import SnapKit
 
 final class PhotoCollectionViewCell: UICollectionViewCell {
 
     // MARK: - Properties
     
     static let identifier = String(describing: PhotoCollectionViewCell.self)
-    
-    var photoCellViewModel: PhotoCellViewModel? {
-        didSet {
-            nameLabel.text = photoCellViewModel?.titleText
-            photoImageView.downloadImage(with: photoCellViewModel?.imageURL ?? "")
-        }
-    }
         
-    // MARK: - UI Define
+    // MARK: - View Define
     
     private let photoImageView: UIImageView = {
         let imageView = UIImageView()
@@ -53,7 +48,7 @@ final class PhotoCollectionViewCell: UICollectionViewCell {
     
     override func prepareForReuse() {
         super.prepareForReuse()
-
+        
         photoImageView.image = nil
         nameLabel.text = nil
     }
@@ -67,22 +62,27 @@ final class PhotoCollectionViewCell: UICollectionViewCell {
     
     private func setupPhotoImageView() {
         contentView.addSubview(photoImageView)
-        photoImageView.translatesAutoresizingMaskIntoConstraints = false
-        NSLayoutConstraint.activate([
-            photoImageView.topAnchor.constraint(equalTo: contentView.topAnchor),
-            photoImageView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor),
-            photoImageView.bottomAnchor.constraint(equalTo: contentView.bottomAnchor),
-            photoImageView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor),
-        ])
+        photoImageView.snp.makeConstraints { make in
+            make.top.leading.bottom.trailing.equalTo(contentView)
+        }
     }
     
     private func setupNameLabel() {
         contentView.addSubview(nameLabel)
-        nameLabel.translatesAutoresizingMaskIntoConstraints = false
-        NSLayoutConstraint.activate([
-            nameLabel.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 8.0),
-            nameLabel.trailingAnchor.constraint(equalTo: contentView.trailingAnchor),
-            nameLabel.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -8.0),
-        ])
+        nameLabel.snp.makeConstraints { make in
+            make.leading.equalTo(contentView).offset(8)
+            make.bottom.equalTo(contentView).offset(-8)
+            make.trailing.equalTo(contentView)
+        }
+    }
+    
+    // MARK: - Configure
+    
+    func configureCell(with photo: Photo) {
+        nameLabel.text = photo.user.name
+        guard let url = URL(string: photo.urls.regular) else {
+            return
+        }
+        photoImageView.kf.setImage(with: url)
     }
 }

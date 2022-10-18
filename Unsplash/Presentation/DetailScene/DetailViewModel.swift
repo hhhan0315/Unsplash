@@ -23,17 +23,22 @@ final class DetailViewModel {
     var showHeartButtonStateClosure: (() -> Void)?
     var showAlertClosure: (() -> Void)?
     
-    private var photoCellViewModel: PhotoCellViewModel
+//    private var photoCellViewModel: PhotoCellViewModel
+    private var photo: Photo
     
-    private let imageLoader = ImageLoader()
+//    private let imageLoader = ImageLoader()
     private let coreDataManager = CoreDataManager()
     
-    init(photoCellViewModel: PhotoCellViewModel) {
-        self.photoCellViewModel = photoCellViewModel
+//    init(photoCellViewModel: PhotoCellViewModel) {
+//        self.photoCellViewModel = photoCellViewModel
+//    }
+    
+    init(photo: Photo) {
+        self.photo = photo
     }
     
     func fetchHeartSelected() {
-        coreDataManager.isExistPhotoCoreData(id: photoCellViewModel.id) { [weak self] result in
+        coreDataManager.isExistPhotoCoreData(id: photo.id) { [weak self] result in
             switch result {
             case .success(let isExist):
                 self?.isHeartSelected = isExist ? true : false
@@ -44,7 +49,7 @@ final class DetailViewModel {
     }
     
     func fetchPhotoLike() {
-        coreDataManager.isExistPhotoCoreData(id: photoCellViewModel.id) { [weak self] result in
+        coreDataManager.isExistPhotoCoreData(id: photo.id) { [weak self] result in
             switch result {
             case .success(let isExist):
                 if isExist {
@@ -60,7 +65,7 @@ final class DetailViewModel {
     }
     
     private func deletePhotoCoreData() {
-        self.coreDataManager.deletePhotoCoreData(photoCellViewModel: self.photoCellViewModel) { result in
+        self.coreDataManager.deletePhotoCoreData(photo: self.photo) { result in
             switch result {
             case .success(let success):
                 if success {
@@ -73,7 +78,7 @@ final class DetailViewModel {
     }
     
     private func savePhotoCoreData() {
-        self.coreDataManager.savePhotoCoreData(photoCellViewModel: self.photoCellViewModel) { result in
+        self.coreDataManager.savePhotoCoreData(photo: self.photo) { result in
             switch result {
             case .success(let success):
                 if success {

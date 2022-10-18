@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import Kingfisher
 
 final class DetailViewController: UIViewController {
     
@@ -71,20 +72,22 @@ final class DetailViewController: UIViewController {
     
     // MARK: - Properties
     
-    private var photoCellViewModel: PhotoCellViewModel
+//    private var photoCellViewModel: PhotoCellViewModel
+    private var photo: Photo
     
     private let viewModel: DetailViewModel
     
     private let imageSaver = ImageSaver()
-    private let imageLoader = ImageLoader()
+//    private let imageLoader = ImageLoader()
     
     private var isLabelButtonHidden = false
     
     // MARK: - View LifeCycle
     
-    init(photoCellViewModel: PhotoCellViewModel) {
-        self.photoCellViewModel = photoCellViewModel
-        self.viewModel = DetailViewModel(photoCellViewModel: photoCellViewModel)
+    init(photo: Photo) {
+//        self.photoCellViewModel = photoCellViewModel
+        self.photo = photo
+        self.viewModel = DetailViewModel(photo: self.photo)
         super.init(nibName: nil, bundle: nil)
     }
     
@@ -99,8 +102,13 @@ final class DetailViewController: UIViewController {
         setupViewModel()
         imageSaver.delegate = self
         
-        titleLabel.text = photoCellViewModel.titleText
-        photoImageView.downloadImage(with: photoCellViewModel.imageURL)
+        titleLabel.text = photo.user.name
+        guard let url = URL(string: photo.urls.regular) else {
+            return
+        }
+        photoImageView.kf.setImage(with: url)
+//        titleLabel.text = photoCellViewModel.titleText
+//        photoImageView.downloadImage(with: photoCellViewModel.imageURL)
     }
     
     override func viewDidLayoutSubviews() {
@@ -250,11 +258,11 @@ final class DetailViewController: UIViewController {
     @objc private func touchDownloadButton(_ sender: UIButton) {
         activityIndicatorView.startAnimating()
         
-        imageLoader.load(with: photoCellViewModel.imageURL) { data in
-            if let image = UIImage(data: data) {
-                self.imageSaver.writeToPhotoAlbum(image: image)
-            }
-        }
+//        imageLoader.load(with: photoCellViewModel.imageURL) { data in
+//            if let image = UIImage(data: data) {
+//                self.imageSaver.writeToPhotoAlbum(image: image)
+//            }
+//        }
     }
     
     @objc private func touchHeartButton(_ sender: UIButton) {

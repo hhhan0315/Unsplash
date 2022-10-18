@@ -16,7 +16,7 @@ final class TopicPhotoCollectionViewCell: UICollectionViewCell {
     var topicPhotoCellViewModel: TopicPhotoCellViewModel? {
         didSet {
             titleLabel.text = topicPhotoCellViewModel?.title
-            photoImageView.downloadImage(with: topicPhotoCellViewModel?.coverPhotoURL ?? "")
+//            photoImageView.downloadImage(with: topicPhotoCellViewModel?.coverPhotoURL ?? "")
         }
     }
     

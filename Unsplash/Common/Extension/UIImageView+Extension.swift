@@ -7,12 +7,12 @@
 
 import UIKit
 
-extension UIImageView {
-    func downloadImage(with string: String) {
-        ImageLoader().load(with: string) { [weak self] data in
-            DispatchQueue.main.async {
-                self?.image = UIImage(data: data)
-            }
-        }
-    }
-}
+//extension UIImageView {
+//    func downloadImage(with string: String) {
+//        ImageLoader().load(with: string) { [weak self] data in
+//            DispatchQueue.main.async {
+//                self?.image = UIImage(data: data)
+//            }
+//        }
+//    }
+//}

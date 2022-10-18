@@ -8,5 +8,5 @@
 import Foundation
 
 enum Secrets {
-    static let clientID = ""
+    static let clientID = "ZwdzXjUXEW3Yfja3LfGMmPCPbrIvDDtgqXPtoxh7eKg"
 }

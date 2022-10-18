@@ -83,7 +83,7 @@ final class TopicDetailViewController: UIViewController {
             guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: PhotoCollectionViewCell.identifier, for: indexPath) as? PhotoCollectionViewCell else {
                 return .init()
             }
-            cell.photoCellViewModel = photoCellViewModel
+//            cell.photoCellViewModel = photoCellViewModel
             return cell
         })
     }
@@ -123,10 +123,10 @@ extension TopicDetailViewController: UICollectionViewDelegate {
     }
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        let photoCellViewModel = viewModel.getCellViewModel(indexPath: indexPath)
-        let detailViewController = DetailViewController(photoCellViewModel: photoCellViewModel)
-        detailViewController.modalPresentationStyle = .overFullScreen
-        present(detailViewController, animated: true)
+//        let photoCellViewModel = viewModel.getCellViewModel(indexPath: indexPath)
+//        let detailViewController = DetailViewController(photoCellViewModel: photoCellViewModel)
+//        detailViewController.modalPresentationStyle = .overFullScreen
+//        present(detailViewController, animated: true)
     }
 }
 
