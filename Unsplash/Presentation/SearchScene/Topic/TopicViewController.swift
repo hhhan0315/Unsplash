@@ -6,12 +6,15 @@
 //
 
 import UIKit
+import SnapKit
+import RxSwift
+import RxCocoa
 
 final class TopicViewController: UIViewController {
     
     // MARK: - UI Define
     
-    private lazy var topicCollectionView: UICollectionView = {
+    private let topicCollectionView: UICollectionView = {
         let itemSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(0.5), heightDimension: .fractionalHeight(1.0))
         let item = NSCollectionLayoutItem(layoutSize: itemSize)
         item.contentInsets = NSDirectionalEdgeInsets(top: 2.0, leading: 2.0, bottom: 2.0, trailing: 2.0)
@@ -24,39 +27,40 @@ final class TopicViewController: UIViewController {
         
         let collectionView = UICollectionView(frame: .zero, collectionViewLayout: layout)
         collectionView.register(TopicPhotoCollectionViewCell.self, forCellWithReuseIdentifier: TopicPhotoCollectionViewCell.identifier)
-        collectionView.dataSource = topicDataSource
-        collectionView.delegate = self
         collectionView.backgroundColor = .systemBackground
         return collectionView
     }()
     
     // MARK: - Properties
     
-    enum Section {
-        case topic
+    private let viewModel: TopicViewModel
+    private var disposeBag = DisposeBag()
+        
+    // MARK: - View LifeCycle
+    
+    init(viewModel: TopicViewModel) {
+        self.viewModel = viewModel
+        super.init(nibName: nil, bundle: nil)
     }
     
-    private let viewModel = TopicViewModel()
-    
-    private var topicDataSource: UICollectionViewDiffableDataSource<Section, TopicPhotoCellViewModel>?
-    
-    // MARK: - View LifeCycle
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        setupLayout()
-        setupViewModel()
+        setupViews()
+        bindViewModel()
     }
     
     // MARK: - Layout
     
-    private func setupLayout() {
+    private func setupViews() {
         view.backgroundColor = .systemBackground
         setupNavigationBar()
         setupSearchController()
         setupTopicCollectionView()
-        setupTopicDataSource()
     }
     
     private func setupNavigationBar() {
@@ -77,56 +81,32 @@ final class TopicViewController: UIViewController {
     
     private func setupTopicCollectionView() {
         view.addSubview(topicCollectionView)
-        topicCollectionView.translatesAutoresizingMaskIntoConstraints = false
-        NSLayoutConstraint.activate([
-            topicCollectionView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
-            topicCollectionView.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor),
-            topicCollectionView.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor),
-            topicCollectionView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor),
-        ])
-    }
-    
-    private func setupTopicDataSource() {
-        topicDataSource = UICollectionViewDiffableDataSource(collectionView: topicCollectionView, cellProvider: { collectionView, indexPath, topicPhotoCellViewModel in
-            guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: TopicPhotoCollectionViewCell.identifier, for: indexPath) as? TopicPhotoCollectionViewCell else {
-                return .init()
-            }
-            cell.topicPhotoCellViewModel = topicPhotoCellViewModel
-            return cell
-        })
+        topicCollectionView.snp.makeConstraints { make in
+            make.top.leading.bottom.trailing.equalTo(view.safeAreaLayoutGuide)
+        }
     }
             
     // MARK: - Bind
     
-    private func setupViewModel() {
-        viewModel.reloadCollectionViewClosure = { [weak self] in
-            DispatchQueue.main.async {
-                var snapShot = NSDiffableDataSourceSnapshot<Section, TopicPhotoCellViewModel>()
-                snapShot.appendSections([Section.topic])
-                snapShot.appendItems(self?.viewModel.cellViewModels ?? [])
-                self?.topicDataSource?.apply(snapShot)
-            }
-        }
+    private func bindViewModel() {
+        let input = TopicViewModel.Input(
+            viewDidLoadEvent: Observable.just(()),
+            didSelectItemEvent: topicCollectionView.rx.itemSelected.asObservable()
+        )
+        let output = viewModel.transform(input: input, disposeBag: disposeBag)
         
-        viewModel.showAlertClosure = { [weak self] in
-            DispatchQueue.main.async {
-                guard let alertMessage = self?.viewModel.alertMessage else {
-                    return
-                }
+        output.topics
+            .observe(on: MainScheduler.instance)
+            .bind(to: topicCollectionView.rx.items(cellIdentifier: TopicPhotoCollectionViewCell.identifier, cellType: TopicPhotoCollectionViewCell.self)) { index, topic, cell in
+                cell.configureCell(with: topic)
+            }
+            .disposed(by: disposeBag)
+        
+        output.alertMessage
+            .observe(on: MainScheduler.instance)
+            .subscribe(onNext: { [weak self] alertMessage in
                 self?.showAlert(message: alertMessage)
-            }
-        }
-        
-        viewModel.fetch()
-    }
-}
-
-// MARK: - UICollectionViewDelegate
-
-extension TopicViewController: UICollectionViewDelegate {
-    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        let topicPhotoCellViewModel = viewModel.getCellViewModel(indexPath: indexPath)
-        let topicDetailViewController = TopicDetailViewController(slug: topicPhotoCellViewModel.slug, title: topicPhotoCellViewModel.title)
-        navigationController?.pushViewController(topicDetailViewController, animated: true)
+            })
+            .disposed(by: disposeBag)
     }
 }

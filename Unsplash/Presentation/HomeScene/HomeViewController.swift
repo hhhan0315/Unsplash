@@ -73,9 +73,9 @@ final class HomeViewController: UIViewController {
         let input = HomeViewModel.Input(
             viewDidLoadEvent: Observable.just(()),
             willDisplayCellEvent: photoCollectionView.rx.willDisplayCell.asObservable(),
-            didSelectCellEvent: photoCollectionView.rx.itemSelected.asObservable()
+            didSelectItemEvent: photoCollectionView.rx.itemSelected.asObservable()
         )
-        let output = viewModel.transform(input: input, disposeBag: disposeBag)
+        let output = viewModel.transform(input: input, disposeBag: self.disposeBag)
         
         output.photos
             .observe(on: MainScheduler.instance)
@@ -86,9 +86,9 @@ final class HomeViewController: UIViewController {
         
         output.alertMessage
             .observe(on: MainScheduler.instance)
-            .subscribe { [weak self] alertTitle in
-                self?.showAlert(title: alertTitle)
-            }
+            .subscribe(onNext: { [weak self] alertMessage in
+                self?.showAlert(message: alertMessage)
+            })
             .disposed(by: disposeBag)
     }
 }

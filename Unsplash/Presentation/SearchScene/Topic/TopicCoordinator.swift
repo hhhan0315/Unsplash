@@ -7,6 +7,10 @@
 
 import UIKit
 
+protocol TopicCoordinatorDelegate: AnyObject {
+    func pushTopicDetail(with: Topic)
+}
+
 final class TopicCoordinator: Coordinator {
     var children: [Coordinator] = []
     
@@ -17,7 +21,15 @@ final class TopicCoordinator: Coordinator {
     }
     
     func start() {
-        let topicViewController = TopicViewController()
-        navigationController.pushViewController(topicViewController, animated: true)
+        let topicViewModel = TopicViewModel()
+        topicViewModel.coordinator = self
+        let topicViewController = TopicViewController(viewModel: topicViewModel)
+        navigationController.setViewControllers([topicViewController], animated: false)
+    }
+}
+
+extension TopicCoordinator: TopicCoordinatorDelegate {
+    func pushTopicDetail(with: Topic) {
+        print(#function)
     }
 }

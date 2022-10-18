@@ -26,7 +26,7 @@ final class HomeViewModel: ViewModelType {
     struct Input {
         let viewDidLoadEvent: Observable<Void>
         let willDisplayCellEvent: Observable<(cell: UICollectionViewCell, at: IndexPath)>
-        let didSelectCellEvent: Observable<IndexPath>
+        let didSelectItemEvent: Observable<IndexPath>
     }
     
     struct Output {
@@ -52,7 +52,7 @@ final class HomeViewModel: ViewModelType {
             })
             .disposed(by: disposeBag)
         
-        input.didSelectCellEvent
+        input.didSelectItemEvent
             .subscribe(onNext: { [weak self] indexPath in
                 guard let photo = self?.photos.value[indexPath.item] else {
                     return

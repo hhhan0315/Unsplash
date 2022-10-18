@@ -6,19 +6,14 @@
 //
 
 import UIKit
+import SnapKit
+import Kingfisher
 
 final class TopicPhotoCollectionViewCell: UICollectionViewCell {
     
     // MARK: - Properties
     
     static let identifier = String(describing: TopicPhotoCollectionViewCell.self)
-    
-    var topicPhotoCellViewModel: TopicPhotoCellViewModel? {
-        didSet {
-            titleLabel.text = topicPhotoCellViewModel?.title
-//            photoImageView.downloadImage(with: topicPhotoCellViewModel?.coverPhotoURL ?? "")
-        }
-    }
     
     // MARK: - UI Define
     
@@ -83,32 +78,32 @@ final class TopicPhotoCollectionViewCell: UICollectionViewCell {
     
     private func setupPhotoImageView() {
         contentView.addSubview(photoImageView)
-        photoImageView.translatesAutoresizingMaskIntoConstraints = false
-        NSLayoutConstraint.activate([
-            photoImageView.topAnchor.constraint(equalTo: contentView.topAnchor),
-            photoImageView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor),
-            photoImageView.bottomAnchor.constraint(equalTo: contentView.bottomAnchor),
-            photoImageView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor),
-        ])
+        photoImageView.snp.makeConstraints { make in
+            make.top.leading.bottom.trailing.equalTo(contentView)
+        }
     }
     
     private func setupBlackImageView() {
         contentView.addSubview(blackImageView)
-        blackImageView.translatesAutoresizingMaskIntoConstraints = false
-        NSLayoutConstraint.activate([
-            blackImageView.topAnchor.constraint(equalTo: contentView.topAnchor),
-            blackImageView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor),
-            blackImageView.bottomAnchor.constraint(equalTo: contentView.bottomAnchor),
-            blackImageView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor),
-        ])
+        blackImageView.snp.makeConstraints { make in
+            make.top.leading.bottom.trailing.equalTo(contentView)
+        }
     }
     
     private func setupTitleLabel() {
         contentView.addSubview(titleLabel)
-        titleLabel.translatesAutoresizingMaskIntoConstraints = false
-        NSLayoutConstraint.activate([
-            titleLabel.centerXAnchor.constraint(equalTo: contentView.centerXAnchor),
-            titleLabel.centerYAnchor.constraint(equalTo: contentView.centerYAnchor),
-        ])
+        titleLabel.snp.makeConstraints { make in
+            make.centerX.centerY.equalTo(contentView)
+        }
+    }
+    
+    // MARK: - Configure
+    
+    func configureCell(with topic: Topic) {
+        titleLabel.text = topic.title
+        guard let url = URL(string: topic.coverPhoto.urls.regular) else {
+            return
+        }
+        photoImageView.kf.setImage(with: url)
     }
 }
