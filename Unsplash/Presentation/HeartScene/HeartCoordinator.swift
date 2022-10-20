@@ -1,17 +1,17 @@
 //
-//  HomeCoordinator.swift
+//  HeartCoordinator.swift
 //  Unsplash
 //
-//  Created by rae on 2022/10/17.
+//  Created by rae on 2022/10/18.
 //
 
 import UIKit
 
-protocol HomeCoordinatorDelegate: AnyObject {
+protocol HeartCoordinatorDelegate: AnyObject {
     func presentDetail(with photo: Photo)
 }
 
-final class HomeCoordinator: Coordinator {
+final class HeartCoordinator: Coordinator {
     var children: [Coordinator] = []
     
     var navigationController: UINavigationController
@@ -21,14 +21,14 @@ final class HomeCoordinator: Coordinator {
     }
     
     func start() {
-        let homeViewModel = HomeViewModel()
-        homeViewModel.coordinator = self
-        let homeViewController = HomeViewController(viewModel: homeViewModel)
-        navigationController.setViewControllers([homeViewController], animated: false)
+        let heartViewModel = HeartViewModel()
+        heartViewModel.coordinator = self
+        let heartViewController = HeartViewController(viewModel: heartViewModel)
+        navigationController.setViewControllers([heartViewController], animated: false)
     }
 }
 
-extension HomeCoordinator: HomeCoordinatorDelegate {
+extension HeartCoordinator: HeartCoordinatorDelegate {
     func presentDetail(with photo: Photo) {
         let detailViewController = DetailViewController(photo: photo)
         detailViewController.modalPresentationStyle = .overFullScreen

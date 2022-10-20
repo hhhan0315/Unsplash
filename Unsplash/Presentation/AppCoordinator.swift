@@ -10,18 +10,17 @@ import UIKit
 final class AppCoordinator: Coordinator {
     var children: [Coordinator] = []
     
-    private var window: UIWindow
+    let window: UIWindow
     
     init(window: UIWindow) {
         self.window = window
     }
     
     func start() {
-        let mainCoordinator = MainCoordinator(tabBarController: UITabBarController())
+        let mainCoordinator = MainCoordinator()
         mainCoordinator.start()
         children.append(mainCoordinator)
         
         window.rootViewController = mainCoordinator.tabBarController
-        window.makeKeyAndVisible()
     }
 }

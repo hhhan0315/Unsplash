@@ -9,11 +9,11 @@ import UIKit
 
 final class MainCoordinator: Coordinator {
     var children: [Coordinator] = []
-    
+        
     var tabBarController: UITabBarController
     
-    init(tabBarController: UITabBarController) {
-        self.tabBarController = tabBarController
+    init() {
+        self.tabBarController = .init()
     }
     
     func start() {
@@ -21,19 +21,27 @@ final class MainCoordinator: Coordinator {
         let searchTabBarItem = UITabBarItem(title: nil, image: UIImage(systemName: "magnifyingglass"), selectedImage: nil)
         let heartTabBarItem = UITabBarItem(title: nil, image: UIImage(systemName: "heart.fill"), selectedImage: nil)
         
-        let homeCoordinator = HomeCoordinator(navigationController: UINavigationController())
+        let homeCoordinator = HomeCoordinator()
         homeCoordinator.navigationController.tabBarItem = homeTabBarItem
         homeCoordinator.start()
         children.append(homeCoordinator)
         
-        let topicCoordinator = TopicCoordinator(navigationController: UINavigationController())
+        let topicCoordinator = TopicCoordinator()
         topicCoordinator.navigationController.tabBarItem = searchTabBarItem
         topicCoordinator.start()
         children.append(topicCoordinator)
         
+        let heartCoordinator = HeartCoordinator()
+        heartCoordinator.navigationController.tabBarItem = heartTabBarItem
+        heartCoordinator.start()
+        children.append(heartCoordinator)
+        
+        tabBarController.tabBar.tintColor = .label
+        
         tabBarController.setViewControllers([
             homeCoordinator.navigationController,
-            topicCoordinator.navigationController
+            topicCoordinator.navigationController,
+            heartCoordinator.navigationController
         ], animated: false)
     }
 }

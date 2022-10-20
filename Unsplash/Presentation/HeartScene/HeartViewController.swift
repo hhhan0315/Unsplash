@@ -6,6 +6,9 @@
 //
 
 import UIKit
+import SnapKit
+import RxSwift
+import RxCocoa
 
 final class HeartViewController: UIViewController {
     
@@ -17,7 +20,6 @@ final class HeartViewController: UIViewController {
         
         let collectionView = UICollectionView(frame: .zero, collectionViewLayout: layout)
         collectionView.register(PhotoCollectionViewCell.self, forCellWithReuseIdentifier: PhotoCollectionViewCell.identifier)
-        collectionView.dataSource = photoDataSource
         collectionView.delegate = self
         collectionView.backgroundColor = .systemBackground
         return collectionView
@@ -34,32 +36,35 @@ final class HeartViewController: UIViewController {
     
     // MARK: - Properties
     
-    enum Section {
-        case photos
+    private let viewModel: HeartViewModel
+    private var disposeBag = DisposeBag()
+        
+    // MARK: - View LifeCycle
+    
+    init(viewModel: HeartViewModel) {
+        self.viewModel = viewModel
+        super.init(nibName: nil, bundle: nil)
     }
     
-    private let viewModel = HeartViewModel()
-    
-    private var photoDataSource: UICollectionViewDiffableDataSource<Section, PhotoCellViewModel>?
-    
-    // MARK: - View LifeCycle
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        setupLayout()
-        setupViewModel()
+        setupViews()
+        bindViewModel()
         setupNotificationCenter()
     }
     
     // MARK: - Layout
     
-    private func setupLayout() {
+    private func setupViews() {
         view.backgroundColor = .systemBackground
         setupNavigationBar()
         setupPhotoCollectionView()
         setupTextLabel()
-        setupPhotoDataSource()
     }
     
     private func setupNavigationBar() {
@@ -68,57 +73,33 @@ final class HeartViewController: UIViewController {
     
     private func setupPhotoCollectionView() {
         view.addSubview(photoCollectionView)
-        photoCollectionView.translatesAutoresizingMaskIntoConstraints = false
-        NSLayoutConstraint.activate([
-            photoCollectionView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
-            photoCollectionView.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor),
-            photoCollectionView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor),
-            photoCollectionView.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor),
-        ])
+        photoCollectionView.snp.makeConstraints { make in
+            make.top.leading.bottom.trailing.equalTo(view.safeAreaLayoutGuide)
+        }
     }
     
     private func setupTextLabel() {
         view.addSubview(textLabel)
-        textLabel.translatesAutoresizingMaskIntoConstraints = false
-        NSLayoutConstraint.activate([
-            textLabel.centerXAnchor.constraint(equalTo: view.centerXAnchor),
-            textLabel.centerYAnchor.constraint(equalTo: view.centerYAnchor),
-        ])
-    }
-    
-    private func setupPhotoDataSource() {
-        photoDataSource = UICollectionViewDiffableDataSource(collectionView: photoCollectionView, cellProvider: { collectionView, indexPath, photoCellViewModel in
-            guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: PhotoCollectionViewCell.identifier, for: indexPath) as? PhotoCollectionViewCell else {
-                return .init()
-            }
-//            cell.photoCellViewModel = photoCellViewModel
-            return cell
-        })
+        textLabel.snp.makeConstraints { make in
+            make.center.equalTo(view)
+        }
     }
         
     // MARK: - Bind
     
-    private func setupViewModel() {
-        viewModel.reloadCollectionViewClosure = { [weak self] in
-            DispatchQueue.main.async {
-                self?.textLabel.isHidden = self?.viewModel.cellViewModels.isEmpty == true ? false : true
-                var snapShot = NSDiffableDataSourceSnapshot<Section, PhotoCellViewModel>()
-                snapShot.appendSections([Section.photos])
-                snapShot.appendItems(self?.viewModel.cellViewModels ?? [])
-                self?.photoDataSource?.apply(snapShot)
-            }
-        }
+    private func bindViewModel() {
+        let input = HeartViewModel.Input(
+            viewDidLoadEvent: Observable.just(()),
+            didSelectItemEvent: photoCollectionView.rx.modelSelected(Photo.self).asObservable()
+        )
+        let output = viewModel.transform(input: input, disposeBag: disposeBag)
         
-        viewModel.showAlertClosure = { [weak self] in
-            DispatchQueue.main.async {
-                guard let alertMessage = self?.viewModel.alertMessage else {
-                    return
-                }
-                self?.showAlert(message: alertMessage)
+        output.photos
+            .observe(on: MainScheduler.instance)
+            .bind(to: photoCollectionView.rx.items(cellIdentifier: PhotoCollectionViewCell.identifier, cellType: PhotoCollectionViewCell.self)) { index, photo, cell in
+                cell.configureCell(with: photo)
             }
-        }
-        
-        viewModel.fetch()
+            .disposed(by: disposeBag)
     }
     
     // MARK: - NotificationCenter
@@ -134,26 +115,15 @@ final class HeartViewController: UIViewController {
     }
 }
 
-// MARK: - UICollectionViewDelegate
-
-extension HeartViewController: UICollectionViewDelegate {
-    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-//        let photoCellViewModel = viewModel.getCellViewModel(indexPath: indexPath)
-//        let detailViewController = DetailViewController(photoCellViewModel: photoCellViewModel)
-//        detailViewController.modalPresentationStyle = .overFullScreen
-//        present(detailViewController, animated: true)
-    }
-}
-
 // MARK: - UICollectionViewDelegateFlowLayout
 
 extension HeartViewController: UICollectionViewDelegateFlowLayout {
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
         let cellWidth = view.bounds.width
-        let imageHeight = CGFloat(viewModel.getCellViewModel(indexPath: indexPath).imageHeight)
-        let imageWidth = CGFloat(viewModel.getCellViewModel(indexPath: indexPath).imageWidth)
+        let imageHeight = viewModel.photo(at: indexPath.item).height
+        let imageWidth = viewModel.photo(at: indexPath.item).width
         let imageRatio = imageHeight / imageWidth
-
+        
         return CGSize(width: cellWidth, height: imageRatio * cellWidth)
     }
 }

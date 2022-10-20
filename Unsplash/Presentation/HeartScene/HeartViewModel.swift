@@ -6,52 +6,61 @@
 //
 
 import Foundation
+import RxSwift
+import RxCocoa
 
-final class HeartViewModel {
+final class HeartViewModel: ViewModelType {
+    weak var coordinator: HeartCoordinatorDelegate?
+    
     private let coreDataManager = CoreDataManager()
     
-    private var photos: [Photo] = []
+    private let photos = BehaviorRelay<[Photo]>(value: [])
+    private let alertMessage = PublishRelay<String>()
     
-    var cellViewModels: [PhotoCellViewModel] = [] {
-        didSet {
-            reloadCollectionViewClosure?()
-        }
+    struct Input {
+        let viewDidLoadEvent: Observable<Void>
+        let didSelectItemEvent: Observable<Photo>
     }
     
-    var alertMessage: String? {
-        didSet {
-            showAlertClosure?()
-        }
+    struct Output {
+        let photos: Observable<[Photo]>
     }
     
-    var numberOfCells: Int {
-        return cellViewModels.count
+    func transform(input: Input, disposeBag: DisposeBag) -> Output {
+        input.viewDidLoadEvent
+            .subscribe(onNext: { [weak self] in
+                self?.fetch()
+            })
+            .disposed(by: disposeBag)
+        
+        input.didSelectItemEvent
+            .subscribe(onNext: { [weak self] photo in
+                self?.coordinator?.presentDetail(with: photo)
+            })
+            .disposed(by: disposeBag)
+        
+        return Output(photos: photos.asObservable())
     }
-    
-    var reloadCollectionViewClosure: (() -> Void)?
-    var showAlertClosure: (() -> Void)?
     
     func fetch() {
         coreDataManager.fetchPhotoCoreData { [weak self] result in
             switch result {
             case .success(let photoCoreData):
-                let cellViewModels = photoCoreData.compactMap { self?.createCellViewModel(photoCoreData: $0) }
-                self?.cellViewModels = cellViewModels
+                let photos = photoCoreData.map {
+                    Photo(id: $0.id ?? "",
+                          width: CGFloat($0.width),
+                          height: CGFloat($0.height),
+                          urls: Photo.URLs(raw: "", full: "", regular: $0.url ?? "", small: "", thumb: ""),
+                          user: Photo.User(name: $0.user ?? ""))
+                }
+                self?.photos.accept(photos)
             case .failure(let error):
-                self?.alertMessage = error.localizedDescription
+                self?.alertMessage.accept(error.localizedDescription)
             }
         }
     }
     
-    func getCellViewModel(indexPath: IndexPath) -> PhotoCellViewModel {
-        return cellViewModels[indexPath.item]
-    }
-    
-    func createCellViewModel(photoCoreData: PhotoCoreData) -> PhotoCellViewModel {
-        return PhotoCellViewModel(id: photoCoreData.id ?? "",
-                                  titleText: photoCoreData.user ?? "",
-                                  imageURL: photoCoreData.url ?? "",
-                                  imageWidth: Int(photoCoreData.width),
-                                  imageHeight: Int(photoCoreData.height))
+    func photo(at index: Int) -> Photo {
+        return photos.value[index]
     }
 }

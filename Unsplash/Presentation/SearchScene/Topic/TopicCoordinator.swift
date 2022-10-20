@@ -16,8 +16,8 @@ final class TopicCoordinator: Coordinator {
     
     var navigationController: UINavigationController
     
-    init(navigationController: UINavigationController) {
-        self.navigationController = navigationController
+    init() {
+        self.navigationController = .init()
     }
     
     func start() {
