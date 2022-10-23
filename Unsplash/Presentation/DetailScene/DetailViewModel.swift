@@ -6,8 +6,38 @@
 //
 
 import Foundation
+import RxSwift
+import RxCocoa
 
-final class DetailViewModel {
+final class DetailViewModel: ViewModelType {
+    weak var coordinator: DetailCoordinator?
+    
+    struct Input {
+        // exit button
+        let exitButtonEvent: Observable<Void>
+        let downloadButtonEvent: Observable<Void>
+        let heartButtonEvent: Observable<Void>
+        // heart button
+        // download button
+    }
+    // gesture로 사라지는 것도 dismiss 처리 필요
+    
+    struct Output {
+        // heart state ?
+        // alert message
+    }
+    
+    func transform(input: Input, disposeBag: DisposeBag) -> Output {
+        input.exitButtonEvent
+            .subscribe(onNext: { [weak self] _ in
+//                self?.coordinator?.dismiss()
+                self?.coordinator?.finish()
+            })
+            .disposed(by: disposeBag)
+        
+        return Output()
+    }
+    
     var isHeartSelected: Bool? {
         didSet {
             showHeartButtonStateClosure?()

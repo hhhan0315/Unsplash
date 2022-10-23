@@ -8,8 +8,14 @@
 import UIKit
 
 final class MainCoordinator: Coordinator {
-    var children: [Coordinator] = []
-        
+    var finishDelegate: CoordinatorFinishDelegate? = nil
+    
+    var childCoordinators: [Coordinator] = []
+    
+    var type: CoordinatorType = .main
+    
+    var navigationController: UINavigationController = .init()
+    
     var tabBarController: UITabBarController
     
     init() {
@@ -24,17 +30,17 @@ final class MainCoordinator: Coordinator {
         let homeCoordinator = HomeCoordinator()
         homeCoordinator.navigationController.tabBarItem = homeTabBarItem
         homeCoordinator.start()
-        children.append(homeCoordinator)
+        childCoordinators.append(homeCoordinator)
         
         let topicCoordinator = TopicCoordinator()
         topicCoordinator.navigationController.tabBarItem = searchTabBarItem
         topicCoordinator.start()
-        children.append(topicCoordinator)
+        childCoordinators.append(topicCoordinator)
         
         let heartCoordinator = HeartCoordinator()
         heartCoordinator.navigationController.tabBarItem = heartTabBarItem
         heartCoordinator.start()
-        children.append(heartCoordinator)
+        childCoordinators.append(heartCoordinator)
         
         tabBarController.tabBar.tintColor = .label
         

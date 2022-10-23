@@ -7,12 +7,12 @@
 
 import UIKit
 
-protocol TopicDetailCoordinatorDelegate: AnyObject {
-    func presentDetail(with photo: Photo)
-}
-
 final class TopicDetailCoordinator: Coordinator {
-    var children: [Coordinator] = []
+    var finishDelegate: CoordinatorFinishDelegate?
+    
+    var childCoordinators: [Coordinator] = []
+    
+    var type: CoordinatorType = .topicDetail
     
     var navigationController: UINavigationController
     
@@ -29,12 +29,22 @@ final class TopicDetailCoordinator: Coordinator {
         let topicDetailViewController = TopicDetailViewController(topic: topic, viewModel: topicDetailViewModel)
         navigationController.pushViewController(topicDetailViewController, animated: true)
     }
+    
+    func finish() {
+        finishDelegate?.coordinatorDidFinish(childCoordinator: self)
+    }
+    
+    func presentDetail(with photo: Photo) {
+        let detailCoordinator = DetailCoordinator(navigationController: navigationController, photo: photo)
+        detailCoordinator.finishDelegate = self
+        detailCoordinator.start()
+        childCoordinators.append(detailCoordinator)
+    }
 }
 
-extension TopicDetailCoordinator: TopicDetailCoordinatorDelegate {
-    func presentDetail(with photo: Photo) {
-        let detailViewController = DetailViewController(photo: photo)
-        detailViewController.modalPresentationStyle = .overFullScreen
-        navigationController.present(detailViewController, animated: true)
+extension TopicDetailCoordinator: CoordinatorFinishDelegate {
+    func coordinatorDidFinish(childCoordinator: Coordinator) {
+        self.childCoordinators = self.childCoordinators.filter { $0.type != childCoordinator.type }
+        childCoordinator.navigationController.dismiss(animated: true)
     }
 }

@@ -8,7 +8,13 @@
 import UIKit
 
 final class AppCoordinator: Coordinator {
-    var children: [Coordinator] = []
+    var finishDelegate: CoordinatorFinishDelegate? = nil
+    
+    var type: CoordinatorType = .app
+    
+    var childCoordinators: [Coordinator] = []
+    
+    var navigationController: UINavigationController = .init()
     
     let window: UIWindow
     
@@ -19,7 +25,7 @@ final class AppCoordinator: Coordinator {
     func start() {
         let mainCoordinator = MainCoordinator()
         mainCoordinator.start()
-        children.append(mainCoordinator)
+        childCoordinators.append(mainCoordinator)
         
         window.rootViewController = mainCoordinator.tabBarController
     }

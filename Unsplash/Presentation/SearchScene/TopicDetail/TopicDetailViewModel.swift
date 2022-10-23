@@ -10,7 +10,7 @@ import RxSwift
 import RxCocoa
 
 final class TopicDetailViewModel: ViewModelType {
-    weak var coordinator: TopicDetailCoordinatorDelegate?
+    weak var coordinator: TopicDetailCoordinator?
     
     private let photos = BehaviorRelay<[Photo]>(value: [])
     private let alertMessage = PublishRelay<String>()
@@ -24,6 +24,10 @@ final class TopicDetailViewModel: ViewModelType {
          topic: Topic) {
         self.apiService = apiService
         self.topic = topic
+    }
+    
+    deinit {
+        coordinator?.finish()
     }
     
     struct Input {

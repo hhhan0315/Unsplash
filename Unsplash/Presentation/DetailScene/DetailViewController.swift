@@ -7,17 +7,19 @@
 
 import UIKit
 import Kingfisher
+import SnapKit
+import RxSwift
+import RxCocoa
 
 final class DetailViewController: UIViewController {
     
     // MARK: - View Define
     
-    private lazy var exitButton: UIButton = {
+    private let exitButton: UIButton = {
         let button = UIButton(type: .system)
         button.setImage(UIImage(systemName: "multiply"), for: .normal)
         button.tintColor = .label
         button.setPreferredSymbolConfiguration(.init(scale: .large), forImageIn: .normal)
-        button.addTarget(self, action: #selector(touchExitButton(_:)), for: .touchUpInside)
         return button
     }()
     
@@ -72,22 +74,20 @@ final class DetailViewController: UIViewController {
     
     // MARK: - Properties
     
-//    private var photoCellViewModel: PhotoCellViewModel
     private var photo: Photo
     
     private let viewModel: DetailViewModel
+    private var disposeBag = DisposeBag()
     
     private let imageSaver = ImageSaver()
-//    private let imageLoader = ImageLoader()
     
     private var isLabelButtonHidden = false
     
     // MARK: - View LifeCycle
     
-    init(photo: Photo) {
-//        self.photoCellViewModel = photoCellViewModel
+    init(photo: Photo, viewModel: DetailViewModel) {
         self.photo = photo
-        self.viewModel = DetailViewModel(photo: self.photo)
+        self.viewModel = viewModel
         super.init(nibName: nil, bundle: nil)
     }
     
@@ -98,8 +98,9 @@ final class DetailViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        setupLayout()
-        setupViewModel()
+        setupViews()
+        bindViewModel()
+        
         imageSaver.delegate = self
         
         titleLabel.text = photo.user.name
@@ -107,8 +108,6 @@ final class DetailViewController: UIViewController {
             return
         }
         photoImageView.kf.setImage(with: url)
-//        titleLabel.text = photoCellViewModel.titleText
-//        photoImageView.downloadImage(with: photoCellViewModel.imageURL)
     }
     
     override func viewDidLayoutSubviews() {
@@ -123,7 +122,7 @@ final class DetailViewController: UIViewController {
     
     // MARK: - Layout
     
-    private func setupLayout() {
+    private func setupViews() {
         setupView()
         setupExitButton()
         setupTitleLabel()
@@ -150,84 +149,76 @@ final class DetailViewController: UIViewController {
     
     private func setupExitButton() {
         view.addSubview(exitButton)
-        exitButton.translatesAutoresizingMaskIntoConstraints = false
-        NSLayoutConstraint.activate([
-            exitButton.topAnchor.constraint(equalTo: view.topAnchor, constant: 50.0),
-            exitButton.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: 16.0),
-            exitButton.heightAnchor.constraint(equalToConstant: 44.0),
-        ])
+        exitButton.snp.makeConstraints { make in
+            make.top.equalTo(view).offset(50.0)
+            make.leading.equalTo(view.safeAreaLayoutGuide).offset(16.0)
+            make.height.equalTo(44.0)
+        }
     }
     
     private func setupTitleLabel() {
         view.addSubview(titleLabel)
-        titleLabel.translatesAutoresizingMaskIntoConstraints = false
-        NSLayoutConstraint.activate([
-            titleLabel.topAnchor.constraint(equalTo: exitButton.topAnchor),
-            titleLabel.centerXAnchor.constraint(equalTo: view.centerXAnchor),
-            titleLabel.heightAnchor.constraint(equalToConstant: 44.0),
-        ])
+        titleLabel.snp.makeConstraints { make in
+            make.top.equalTo(exitButton)
+            make.centerX.equalTo(view)
+            make.height.equalTo(exitButton)
+        }
     }
     
     private func setupScrollView() {
         view.addSubview(scrollView)
-        scrollView.translatesAutoresizingMaskIntoConstraints = false
-        NSLayoutConstraint.activate([
-            scrollView.topAnchor.constraint(equalTo: titleLabel.bottomAnchor),
-            scrollView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor),
-            scrollView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
-            scrollView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
-        ])
+        scrollView.snp.makeConstraints { make in
+            make.top.equalTo(titleLabel.snp.bottom)
+            make.leading.trailing.equalTo(view)
+            make.bottom.equalTo(view.safeAreaLayoutGuide)
+        }
     }
     
     private func setupPhotoImageView() {
         scrollView.addSubview(photoImageView)
-        photoImageView.translatesAutoresizingMaskIntoConstraints = false
-        NSLayoutConstraint.activate([
-            photoImageView.topAnchor.constraint(equalTo: scrollView.topAnchor),
-            photoImageView.bottomAnchor.constraint(equalTo: scrollView.bottomAnchor),
-            photoImageView.leadingAnchor.constraint(equalTo: scrollView.leadingAnchor),
-            photoImageView.trailingAnchor.constraint(equalTo: scrollView.trailingAnchor),
-            photoImageView.widthAnchor.constraint(equalTo: scrollView.widthAnchor),
-            photoImageView.heightAnchor.constraint(equalTo: scrollView.heightAnchor),
-        ])
+        photoImageView.snp.makeConstraints { make in
+            make.top.leading.bottom.trailing.width.height.equalTo(scrollView)
+        }
     }
     
     private func setupDownloadButton() {
         view.addSubview(downloadButton)
-        downloadButton.translatesAutoresizingMaskIntoConstraints = false
-        NSLayoutConstraint.activate([
-            downloadButton.widthAnchor.constraint(equalToConstant: 60.0),
-            downloadButton.heightAnchor.constraint(equalToConstant: 60.0),
-            downloadButton.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: -8.0),
-            downloadButton.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: -50.0),
-        ])
+        downloadButton.snp.makeConstraints { make in
+            make.width.height.equalTo(60.0)
+            make.bottom.equalTo(view).offset(-50.0)
+            make.trailing.equalTo(view.safeAreaLayoutGuide).offset(-8.0)
+        }
     }
     
     private func setupHeartButton() {
         view.addSubview(heartButton)
-        heartButton.translatesAutoresizingMaskIntoConstraints = false
-        NSLayoutConstraint.activate([
-            heartButton.widthAnchor.constraint(equalToConstant: 60.0),
-            heartButton.heightAnchor.constraint(equalToConstant: 60.0),
-            heartButton.bottomAnchor.constraint(equalTo: downloadButton.topAnchor, constant: -16.0),
-            heartButton.trailingAnchor.constraint(equalTo: downloadButton.trailingAnchor),
-        ])
+        heartButton.snp.makeConstraints { make in
+            make.width.height.equalTo(downloadButton)
+            make.bottom.equalTo(downloadButton.snp.top).offset(-16.0)
+            make.trailing.equalTo(downloadButton)
+        }
     }
     
     private func setupActivityIndicatorView() {
         view.addSubview(activityIndicatorView)
-        activityIndicatorView.translatesAutoresizingMaskIntoConstraints = false
-        NSLayoutConstraint.activate([
-            activityIndicatorView.widthAnchor.constraint(equalToConstant: 50.0),
-            activityIndicatorView.heightAnchor.constraint(equalToConstant: 50.0),
-            activityIndicatorView.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: 8.0),
-            activityIndicatorView.bottomAnchor.constraint(equalTo: downloadButton.bottomAnchor),
-        ])
+        activityIndicatorView.snp.makeConstraints { make in
+            make.width.height.equalTo(50.0)
+            make.leading.equalTo(view.safeAreaLayoutGuide).offset(8.0)
+            make.bottom.equalTo(downloadButton)
+        }
     }
     
     // MARK: - Bind
     
-    private func setupViewModel() {
+    private func bindViewModel() {
+        let input = DetailViewModel.Input(
+            exitButtonEvent: exitButton.rx.tap.asObservable(),
+            downloadButtonEvent: downloadButton.rx.tap.asObservable(),
+            heartButtonEvent: heartButton.rx.tap.asObservable()
+        )
+        let output = viewModel.transform(input: input, disposeBag: disposeBag)
+        
+        
         viewModel.showHeartButtonStateClosure = { [weak self] in
             DispatchQueue.main.async {
                 guard let isHeartSelected = self?.viewModel.isHeartSelected else {
@@ -250,10 +241,6 @@ final class DetailViewController: UIViewController {
     }
     
     // MARK: - Objc
-    
-    @objc private func touchExitButton(_ sender: UIButton) {
-        dismiss(animated: true)
-    }
     
     @objc private func touchDownloadButton(_ sender: UIButton) {
         activityIndicatorView.startAnimating()

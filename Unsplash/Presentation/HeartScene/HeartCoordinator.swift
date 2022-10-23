@@ -7,12 +7,12 @@
 
 import UIKit
 
-protocol HeartCoordinatorDelegate: AnyObject {
-    func presentDetail(with photo: Photo)
-}
-
 final class HeartCoordinator: Coordinator {
-    var children: [Coordinator] = []
+    var finishDelegate: CoordinatorFinishDelegate? = nil
+    
+    var childCoordinators: [Coordinator] = []
+    
+    var type: CoordinatorType = .heart
     
     var navigationController: UINavigationController
     
@@ -26,12 +26,18 @@ final class HeartCoordinator: Coordinator {
         let heartViewController = HeartViewController(viewModel: heartViewModel)
         navigationController.setViewControllers([heartViewController], animated: false)
     }
+    
+    func presentDetail(with photo: Photo) {
+        let detailCoordinator = DetailCoordinator(navigationController: navigationController, photo: photo)
+        detailCoordinator.finishDelegate = self
+        detailCoordinator.start()
+        childCoordinators.append(detailCoordinator)
+    }
 }
 
-extension HeartCoordinator: HeartCoordinatorDelegate {
-    func presentDetail(with photo: Photo) {
-        let detailViewController = DetailViewController(photo: photo)
-        detailViewController.modalPresentationStyle = .overFullScreen
-        navigationController.present(detailViewController, animated: true)
+extension HeartCoordinator: CoordinatorFinishDelegate {
+    func coordinatorDidFinish(childCoordinator: Coordinator) {
+        self.childCoordinators = self.childCoordinators.filter { $0.type != childCoordinator.type }
+        childCoordinator.navigationController.dismiss(animated: true)
     }
 }

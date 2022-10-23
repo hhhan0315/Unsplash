@@ -12,7 +12,11 @@ protocol HomeCoordinatorDelegate: AnyObject {
 }
 
 final class HomeCoordinator: Coordinator {
-    var children: [Coordinator] = []
+    var finishDelegate: CoordinatorFinishDelegate? = nil
+    
+    var childCoordinators: [Coordinator] = []
+    
+    var type: CoordinatorType = .home
     
     var navigationController: UINavigationController
     
@@ -30,8 +34,16 @@ final class HomeCoordinator: Coordinator {
 
 extension HomeCoordinator: HomeCoordinatorDelegate {
     func presentDetail(with photo: Photo) {
-        let detailViewController = DetailViewController(photo: photo)
-        detailViewController.modalPresentationStyle = .overFullScreen
-        navigationController.present(detailViewController, animated: true)
+        let detailCoordinator = DetailCoordinator(navigationController: navigationController, photo: photo)
+        detailCoordinator.finishDelegate = self
+        detailCoordinator.start()
+        childCoordinators.append(detailCoordinator)
+    }
+}
+
+extension HomeCoordinator: CoordinatorFinishDelegate {
+    func coordinatorDidFinish(childCoordinator: Coordinator) {
+        self.childCoordinators = self.childCoordinators.filter { $0.type != childCoordinator.type }
+        childCoordinator.navigationController.dismiss(animated: true)
     }
 }

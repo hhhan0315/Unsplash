@@ -10,7 +10,7 @@ import RxSwift
 import RxCocoa
 
 final class TopicViewModel: ViewModelType {
-    weak var coordinator: TopicCoordinatorDelegate?
+    weak var coordinator: TopicCoordinator?
     
     private let topics = BehaviorRelay<[Topic]>(value: [])
     private let alertMessage = PublishRelay<String>()

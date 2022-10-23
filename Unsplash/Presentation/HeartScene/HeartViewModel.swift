@@ -10,7 +10,7 @@ import RxSwift
 import RxCocoa
 
 final class HeartViewModel: ViewModelType {
-    weak var coordinator: HeartCoordinatorDelegate?
+    weak var coordinator: HeartCoordinator?
     
     private let coreDataManager = CoreDataManager()
     

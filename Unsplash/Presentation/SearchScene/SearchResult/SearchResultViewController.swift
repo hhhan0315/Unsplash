@@ -81,10 +81,10 @@ final class SearchResultViewController: UIViewController {
 
 extension SearchResultViewController: UICollectionViewDelegate {
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        let photo = viewModel.photo(at: indexPath.item)
-        let detailViewController = DetailViewController(photo: photo)
-        detailViewController.modalPresentationStyle = .overFullScreen
-        present(detailViewController, animated: true)
+//        let photo = viewModel.photo(at: indexPath.item)
+//        let detailViewController = DetailViewController(photo: photo)
+//        detailViewController.modalPresentationStyle = .overFullScreen
+//        present(detailViewController, animated: true)
     }
 }
 
