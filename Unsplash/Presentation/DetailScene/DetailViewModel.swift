@@ -12,73 +12,69 @@ import RxCocoa
 final class DetailViewModel: ViewModelType {
     weak var coordinator: DetailCoordinator?
     
+    // publishRelay : 구독 이후의 동작들을 받아들임
+    // ViewController에서 transform을 실행하고 subscribe하기 때문에 기존의 값을 전달해주기 위해 BehaviorRelay를 사용해야 함
+    private let heartState = BehaviorRelay<Bool>(value: false)
+    private let alertMessage = PublishRelay<String>()
+    
     struct Input {
-        // exit button
+        let viewDidLoadEvent: Observable<Void>
         let exitButtonEvent: Observable<Void>
         let downloadButtonEvent: Observable<Void>
         let heartButtonEvent: Observable<Void>
-        // heart button
-        // download button
     }
     // gesture로 사라지는 것도 dismiss 처리 필요
     
     struct Output {
-        // heart state ?
-        // alert message
+        let heartState: Observable<Bool>
+        let alertMessage: Observable<String>
     }
     
     func transform(input: Input, disposeBag: DisposeBag) -> Output {
+        input.viewDidLoadEvent
+            .subscribe(onNext: { [weak self] _ in
+                self?.fetchHeartState()
+            })
+            .disposed(by: disposeBag)
+        
         input.exitButtonEvent
             .subscribe(onNext: { [weak self] _ in
-//                self?.coordinator?.dismiss()
                 self?.coordinator?.finish()
             })
             .disposed(by: disposeBag)
         
-        return Output()
+        input.heartButtonEvent
+            .subscribe(onNext: { [weak self] _ in
+                self?.fetchPhotoLike()
+            })
+            .disposed(by: disposeBag)
+        
+        return Output(
+            heartState: heartState.asObservable(),
+            alertMessage: alertMessage.asObservable()
+        )
     }
-    
-    var isHeartSelected: Bool? {
-        didSet {
-            showHeartButtonStateClosure?()
-        }
-    }
-    
-    var alertMessage: String? {
-        didSet {
-            showAlertClosure?()
-        }
-    }
-    
-    var showHeartButtonStateClosure: (() -> Void)?
-    var showAlertClosure: (() -> Void)?
-    
-//    private var photoCellViewModel: PhotoCellViewModel
     private var photo: Photo
     
 //    private let imageLoader = ImageLoader()
     private let coreDataManager = CoreDataManager()
     
-//    init(photoCellViewModel: PhotoCellViewModel) {
-//        self.photoCellViewModel = photoCellViewModel
-//    }
-    
     init(photo: Photo) {
         self.photo = photo
     }
     
-    func fetchHeartSelected() {
+    private func fetchHeartState() {
         coreDataManager.isExistPhotoCoreData(id: photo.id) { [weak self] result in
             switch result {
             case .success(let isExist):
-                self?.isHeartSelected = isExist ? true : false
+                self?.heartState.accept(isExist)
             case .failure(let error):
-                self?.alertMessage = error.localizedDescription
+                self?.alertMessage.accept(error.localizedDescription)
             }
         }
     }
     
-    func fetchPhotoLike() {
+    private func fetchPhotoLike() {
         coreDataManager.isExistPhotoCoreData(id: photo.id) { [weak self] result in
             switch result {
             case .success(let isExist):
@@ -89,7 +85,7 @@ final class DetailViewModel: ViewModelType {
                 }
                 self?.postNotificationHeart()
             case .failure(let error):
-                self?.alertMessage = error.localizedDescription
+                self?.alertMessage.accept(error.localizedDescription)
             }
         }
     }
@@ -99,10 +95,10 @@ final class DetailViewModel: ViewModelType {
             switch result {
             case .success(let success):
                 if success {
-                    self.isHeartSelected = false
+                    self.heartState.accept(false)
                 }
             case .failure(let error):
-                self.alertMessage = error.localizedDescription
+                self.alertMessage.accept(error.localizedDescription)
             }
         }
     }
@@ -112,10 +108,10 @@ final class DetailViewModel: ViewModelType {
             switch result {
             case .success(let success):
                 if success {
-                    self.isHeartSelected = true
+                    self.heartState.accept(true)
                 }
             case .failure(let error):
-                self.alertMessage = error.localizedDescription
+                self.alertMessage.accept(error.localizedDescription)
             }
         }
     }

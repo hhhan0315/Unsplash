@@ -56,12 +56,11 @@ final class DetailViewController: UIViewController {
         return button
     }()
     
-    private lazy var heartButton: UIButton = {
+    private let heartButton: UIButton = {
         let button = UIButton(type: .custom)
         button.setImage(UIImage(systemName: "heart.fill"), for: .normal)
         button.backgroundColor = .label
         button.tintColor = .systemBackground
-        button.addTarget(self, action: #selector(touchHeartButton(_:)), for: .touchUpInside)
         button.setPreferredSymbolConfiguration(.init(scale: .large), forImageIn: .normal)
         return button
     }()
@@ -212,32 +211,26 @@ final class DetailViewController: UIViewController {
     
     private func bindViewModel() {
         let input = DetailViewModel.Input(
+            viewDidLoadEvent: Observable.just(()),
             exitButtonEvent: exitButton.rx.tap.asObservable(),
             downloadButtonEvent: downloadButton.rx.tap.asObservable(),
             heartButtonEvent: heartButton.rx.tap.asObservable()
         )
         let output = viewModel.transform(input: input, disposeBag: disposeBag)
         
+        output.heartState
+            .observe(on: MainScheduler.instance)
+            .subscribe(onNext: { [weak self] state in
+                self?.heartButton.tintColor = state ? .red : .systemBackground
+            })
+            .disposed(by: disposeBag)
         
-        viewModel.showHeartButtonStateClosure = { [weak self] in
-            DispatchQueue.main.async {
-                guard let isHeartSelected = self?.viewModel.isHeartSelected else {
-                    return
-                }
-                self?.heartButton.tintColor = isHeartSelected ? .red : .systemBackground
-            }
-        }
-        
-        viewModel.showAlertClosure = { [weak self] in
-            DispatchQueue.main.async {
-                guard let alertMessage = self?.viewModel.alertMessage else {
-                    return
-                }
+        output.alertMessage
+            .observe(on: MainScheduler.instance)
+            .subscribe(onNext: { [weak self] alertMessage in
                 self?.showAlert(message: alertMessage)
-            }
-        }
-        
-        viewModel.fetchHeartSelected()
+            })
+            .disposed(by: disposeBag)
     }
     
     // MARK: - Objc
@@ -250,10 +243,6 @@ final class DetailViewController: UIViewController {
 //                self.imageSaver.writeToPhotoAlbum(image: image)
 //            }
 //        }
-    }
-    
-    @objc private func touchHeartButton(_ sender: UIButton) {
-        viewModel.fetchPhotoLike()
     }
     
     @objc private func handleDismiss(_ gesture: UIPanGestureRecognizer) {
