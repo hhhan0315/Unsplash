@@ -12,6 +12,15 @@ import RxCocoa
 final class DetailViewModel: ViewModelType {
     weak var coordinator: DetailCoordinator?
     
+    private var photo: Photo
+    
+    private let coreDataManager = CoreDataManager()
+    private let imageSaver = ImageSaver()
+    
+    init(photo: Photo) {
+        self.photo = photo
+    }
+    
     // publishRelay : 구독 이후의 동작들을 받아들임
     // ViewController에서 transform을 실행하고 subscribe하기 때문에 기존의 값을 전달해주기 위해 BehaviorRelay를 사용해야 함
     private let heartState = BehaviorRelay<Bool>(value: false)
@@ -20,7 +29,7 @@ final class DetailViewModel: ViewModelType {
     struct Input {
         let viewDidLoadEvent: Observable<Void>
         let exitButtonEvent: Observable<Void>
-        let downloadButtonEvent: Observable<Void>
+//        let downloadButtonEvent: Observable<Void>
         let heartButtonEvent: Observable<Void>
     }
     // gesture로 사라지는 것도 dismiss 처리 필요
@@ -43,6 +52,12 @@ final class DetailViewModel: ViewModelType {
             })
             .disposed(by: disposeBag)
         
+//        input.downloadButtonEvent
+//            .subscribe(onNext: { [weak self] _ in
+//                
+//            })
+//            .disposed(by: disposeBag)
+        
         input.heartButtonEvent
             .subscribe(onNext: { [weak self] _ in
                 self?.fetchPhotoLike()
@@ -53,14 +68,6 @@ final class DetailViewModel: ViewModelType {
             heartState: heartState.asObservable(),
             alertMessage: alertMessage.asObservable()
         )
-    }
-    private var photo: Photo
-    
-//    private let imageLoader = ImageLoader()
-    private let coreDataManager = CoreDataManager()
-    
-    init(photo: Photo) {
-        self.photo = photo
     }
     
     private func fetchHeartState() {
@@ -114,6 +121,19 @@ final class DetailViewModel: ViewModelType {
                 self.alertMessage.accept(error.localizedDescription)
             }
         }
+    }
+    
+    private func saveImageInAlbum() {
+        guard let url = URL(string: photo.urls.regular) else {
+            return
+        }
+        URLSession.shared.dataTask(with: url) { data, response, error in
+            guard let data = data else {
+                return
+            }
+            
+            self.imageSaver.writeToPhotoAlbum(data: data)
+        }.resume()
     }
     
     private func postNotificationHeart() {

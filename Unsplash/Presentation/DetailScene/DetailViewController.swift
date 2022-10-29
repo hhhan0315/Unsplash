@@ -46,15 +46,15 @@ final class DetailViewController: UIViewController {
         return imageView
     }()
     
-    private lazy var downloadButton: UIButton = {
-        let button = UIButton(type: .system)
-        button.setImage(UIImage(systemName: "arrow.down"), for: .normal)
-        button.backgroundColor = .label
-        button.tintColor = .systemBackground
-        button.addTarget(self, action: #selector(touchDownloadButton(_:)), for: .touchUpInside)
-        button.setPreferredSymbolConfiguration(.init(scale: .large), forImageIn: .normal)
-        return button
-    }()
+//    private lazy var downloadButton: UIButton = {
+//        let button = UIButton(type: .system)
+//        button.setImage(UIImage(systemName: "arrow.down"), for: .normal)
+//        button.backgroundColor = .label
+//        button.tintColor = .systemBackground
+//        button.addTarget(self, action: #selector(touchDownloadButton(_:)), for: .touchUpInside)
+//        button.setPreferredSymbolConfiguration(.init(scale: .large), forImageIn: .normal)
+//        return button
+//    }()
     
     private let heartButton: UIButton = {
         let button = UIButton(type: .custom)
@@ -65,11 +65,11 @@ final class DetailViewController: UIViewController {
         return button
     }()
     
-    private let activityIndicatorView: UIActivityIndicatorView = {
-        let activityView = UIActivityIndicatorView()
-        activityView.style = .large
-        return activityView
-    }()
+//    private let activityIndicatorView: UIActivityIndicatorView = {
+//        let activityView = UIActivityIndicatorView()
+//        activityView.style = .large
+//        return activityView
+//    }()
     
     // MARK: - Properties
     
@@ -78,7 +78,7 @@ final class DetailViewController: UIViewController {
     private let viewModel: DetailViewModel
     private var disposeBag = DisposeBag()
     
-    private let imageSaver = ImageSaver()
+//    private let imageSaver = ImageSaver()
     
     private var isLabelButtonHidden = false
     
@@ -99,8 +99,7 @@ final class DetailViewController: UIViewController {
         
         setupViews()
         bindViewModel()
-        
-        imageSaver.delegate = self
+//        imageSaver.delegate = self
         
         titleLabel.text = photo.user.name
         guard let url = URL(string: photo.urls.regular) else {
@@ -112,8 +111,8 @@ final class DetailViewController: UIViewController {
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
         
-        downloadButton.layer.cornerRadius = downloadButton.frame.width / 2
-        downloadButton.clipsToBounds = true
+//        downloadButton.layer.cornerRadius = downloadButton.frame.width / 2
+//        downloadButton.clipsToBounds = true
         
         heartButton.layer.cornerRadius = heartButton.frame.width / 2
         heartButton.clipsToBounds = true
@@ -127,9 +126,9 @@ final class DetailViewController: UIViewController {
         setupTitleLabel()
         setupScrollView()
         setupPhotoImageView()
-        setupDownloadButton()
+//        setupDownloadButton()
         setupHeartButton()
-        setupActivityIndicatorView()
+//        setupActivityIndicatorView()
     }
     
     private func setupView() {
@@ -180,32 +179,35 @@ final class DetailViewController: UIViewController {
         }
     }
     
-    private func setupDownloadButton() {
-        view.addSubview(downloadButton)
-        downloadButton.snp.makeConstraints { make in
-            make.width.height.equalTo(60.0)
-            make.bottom.equalTo(view).offset(-50.0)
-            make.trailing.equalTo(view.safeAreaLayoutGuide).offset(-8.0)
-        }
-    }
+//    private func setupDownloadButton() {
+//        view.addSubview(downloadButton)
+//        downloadButton.snp.makeConstraints { make in
+//            make.width.height.equalTo(60.0)
+//            make.bottom.equalTo(view).offset(-50.0)
+//            make.trailing.equalTo(view.safeAreaLayoutGuide).offset(-8.0)
+//        }
+//    }
     
     private func setupHeartButton() {
         view.addSubview(heartButton)
         heartButton.snp.makeConstraints { make in
-            make.width.height.equalTo(downloadButton)
-            make.bottom.equalTo(downloadButton.snp.top).offset(-16.0)
-            make.trailing.equalTo(downloadButton)
+            make.width.height.equalTo(60.0)
+            make.bottom.equalTo(view).offset(-50.0)
+            make.trailing.equalTo(view.safeAreaLayoutGuide).offset(-8.0)
+//            make.width.height.equalTo(downloadButton)
+//            make.bottom.equalTo(downloadButton.snp.top).offset(-16.0)
+//            make.trailing.equalTo(downloadButton)
         }
     }
     
-    private func setupActivityIndicatorView() {
-        view.addSubview(activityIndicatorView)
-        activityIndicatorView.snp.makeConstraints { make in
-            make.width.height.equalTo(50.0)
-            make.leading.equalTo(view.safeAreaLayoutGuide).offset(8.0)
-            make.bottom.equalTo(downloadButton)
-        }
-    }
+//    private func setupActivityIndicatorView() {
+//        view.addSubview(activityIndicatorView)
+//        activityIndicatorView.snp.makeConstraints { make in
+//            make.width.height.equalTo(50.0)
+//            make.leading.equalTo(view.safeAreaLayoutGuide).offset(8.0)
+//            make.bottom.equalTo(downloadButton)
+//        }
+//    }
     
     // MARK: - Bind
     
@@ -213,7 +215,7 @@ final class DetailViewController: UIViewController {
         let input = DetailViewModel.Input(
             viewDidLoadEvent: Observable.just(()),
             exitButtonEvent: exitButton.rx.tap.asObservable(),
-            downloadButtonEvent: downloadButton.rx.tap.asObservable(),
+//            downloadButtonEvent: downloadButton.rx.tap.asObservable(),
             heartButtonEvent: heartButton.rx.tap.asObservable()
         )
         let output = viewModel.transform(input: input, disposeBag: disposeBag)
@@ -235,15 +237,15 @@ final class DetailViewController: UIViewController {
     
     // MARK: - Objc
     
-    @objc private func touchDownloadButton(_ sender: UIButton) {
-        activityIndicatorView.startAnimating()
+//    @objc private func touchDownloadButton(_ sender: UIButton) {
+//        activityIndicatorView.startAnimating()
         
 //        imageLoader.load(with: photoCellViewModel.imageURL) { data in
 //            if let image = UIImage(data: data) {
 //                self.imageSaver.writeToPhotoAlbum(image: image)
 //            }
 //        }
-    }
+//    }
     
     @objc private func handleDismiss(_ gesture: UIPanGestureRecognizer) {
         let width: CGFloat = 100
@@ -273,7 +275,7 @@ final class DetailViewController: UIViewController {
             self.exitButton.alpha = self.isLabelButtonHidden ? 0 : 1
             self.titleLabel.alpha = self.isLabelButtonHidden ? 0 : 1
             self.heartButton.alpha = self.isLabelButtonHidden ? 0 : 1
-            self.downloadButton.alpha = self.isLabelButtonHidden ? 0 : 1
+//            self.downloadButton.alpha = self.isLabelButtonHidden ? 0 : 1
         }
     }
     
@@ -295,17 +297,17 @@ final class DetailViewController: UIViewController {
 
 // MARK: - ImageSaverDelegate
 
-extension DetailViewController: ImageSaverDelegate {
-    func saveFailure() {
-        showPhotoSettingAlert()
-        activityIndicatorView.stopAnimating()
-    }
-    
-    func saveSuccess() {
-        showAlert(title: "저장 성공")
-        activityIndicatorView.stopAnimating()
-    }
-}
+//extension DetailViewController: ImageSaverDelegate {
+//    func saveFailure() {
+//        showPhotoSettingAlert()
+//        activityIndicatorView.stopAnimating()
+//    }
+//
+//    func saveSuccess() {
+//        showAlert(title: "저장 성공")
+//        activityIndicatorView.stopAnimating()
+//    }
+//}
 
 // MARK: - UIScrollViewDelegate
 
