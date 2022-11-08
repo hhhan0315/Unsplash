@@ -1,5 +1,5 @@
 //
-//  MainTabController.swift
+//  MainTabBarController.swift
 //  Unsplash
 //
 //  Created by rae on 2022/05/02.
@@ -7,7 +7,7 @@
 
 import UIKit
 
-final class MainTabController: UITabBarController {
+final class MainTabBarController: UITabBarController {
     
     enum MainTabBarItem {
         case home
@@ -37,7 +37,7 @@ final class MainTabController: UITabBarController {
         let searchTabBarItem = UITabBarItem(title: nil, image: MainTabBarItem.search.image, selectedImage: nil)
         let heartTabBarItem = UITabBarItem(title: nil, image: MainTabBarItem.heart.image, selectedImage: nil)
         
-        let homeViewController = UINavigationController(rootViewController: HomeViewController())
+        let homeViewController = UINavigationController(rootViewController: PhotoListViewController())
         homeViewController.tabBarItem = homeTabBarItem
         
         let topicViewController = UINavigationController(rootViewController: TopicViewController())

@@ -19,6 +19,13 @@ final class PhotoCollectionViewCell: UICollectionViewCell {
             photoImageView.downloadImage(with: photoCellViewModel?.imageURL ?? "")
         }
     }
+    
+    var photo: Photo? {
+        didSet {
+            nameLabel.text = photo?.user.name
+            photoImageView.downloadImage(with: photo?.urls.regular ?? "")
+        }
+    }
         
     // MARK: - UI Define
     

@@ -51,7 +51,7 @@ final class HeartViewModel {
         return PhotoCellViewModel(id: photoCoreData.id ?? "",
                                   titleText: photoCoreData.user ?? "",
                                   imageURL: photoCoreData.url ?? "",
-                                  imageWidth: Int(photoCoreData.width),
-                                  imageHeight: Int(photoCoreData.height))
+                                  imageWidth: CGFloat(photoCoreData.width),
+                                  imageHeight: CGFloat(photoCoreData.height))
     }
 }

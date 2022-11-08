@@ -11,8 +11,8 @@ struct PhotoCellViewModel {
     let id: String
     let titleText: String
     let imageURL: String
-    let imageWidth: Int
-    let imageHeight: Int
+    let imageWidth: CGFloat
+    let imageHeight: CGFloat
 }
 
 extension PhotoCellViewModel: Hashable {
