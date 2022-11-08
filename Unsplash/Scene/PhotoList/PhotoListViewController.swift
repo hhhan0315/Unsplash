@@ -9,7 +9,7 @@ import UIKit
 
 final class PhotoListViewController: UIViewController {
     
-    // MARK: - UI Define
+    // MARK: - View Define
     
     private let mainView = PhotoListView()
     
@@ -32,15 +32,15 @@ final class PhotoListViewController: UIViewController {
         
         navigationItem.title = "Unsplash"
         
-        getPhotos()
+        getListPhotos()
     }
     
     // MARK: - Networking
     
-    private func getPhotos() {
+    private func getListPhotos() {
         page += 1
         
-        apiService.request(api: .getPhotos(page: self.page), dataType: [Photo].self) { [weak self] result in
+        apiService.request(api: .getListPhotos(page: self.page), dataType: [Photo].self) { [weak self] result in
             switch result {
             case .success(let photos):
                 self?.mainView.photos += photos

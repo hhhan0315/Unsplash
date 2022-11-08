@@ -27,7 +27,7 @@ final class PhotoCollectionViewCell: UICollectionViewCell {
         }
     }
         
-    // MARK: - UI Define
+    // MARK: - View Define
     
     private let photoImageView: UIImageView = {
         let imageView = UIImageView()

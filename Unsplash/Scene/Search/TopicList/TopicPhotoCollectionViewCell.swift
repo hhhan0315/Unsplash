@@ -13,14 +13,14 @@ final class TopicPhotoCollectionViewCell: UICollectionViewCell {
     
     static let identifier = String(describing: TopicPhotoCollectionViewCell.self)
     
-    var topicPhotoCellViewModel: TopicPhotoCellViewModel? {
+    var topic: Topic? {
         didSet {
-            titleLabel.text = topicPhotoCellViewModel?.title
-            photoImageView.downloadImage(with: topicPhotoCellViewModel?.coverPhotoURL ?? "")
+            titleLabel.text = topic?.title
+            photoImageView.downloadImage(with: topic?.coverPhoto.urls.regular ?? "")
         }
     }
     
-    // MARK: - UI Define
+    // MARK: - View Define
     
     private let photoImageView: UIImageView = {
         let imageView = UIImageView()

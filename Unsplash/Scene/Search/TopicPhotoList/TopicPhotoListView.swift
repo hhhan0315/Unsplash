@@ -1,5 +1,5 @@
 //
-//  PhotoListView.swift
+//  TopicPhotoListView.swift
 //  Unsplash
 //
 //  Created by rae on 2022/11/08.
@@ -7,24 +7,23 @@
 
 import UIKit
 
-final class PhotoListView: UIView {
+final class TopicPhotoListView: UIView {
+    
+    // MARK: - View Define
+    
     private let photoCollectionView: UICollectionView = {
-        let layout = UICollectionViewFlowLayout()
-        layout.minimumLineSpacing = 0
-        
-        let collectionView = UICollectionView(frame: .zero, collectionViewLayout: layout)
+        let collectionView = UICollectionView(frame: .zero, collectionViewLayout: .init())
         collectionView.register(PhotoCollectionViewCell.self, forCellWithReuseIdentifier: PhotoCollectionViewCell.identifier)
         collectionView.backgroundColor = .systemBackground
         return collectionView
     }()
     
-    enum Section {
-        case photos
-    }
+    // MARK: - Private Properties
     
-//    private var dataSource: UICollectionViewDiffableDataSource<Section, Photo>?
     private let dataSource = PhotoListDataSource()
     private let delegate = PhotoListDeleagte()
+    
+    // MARK: - Internal Properties
     
     var photos: [Photo] = [] {
         didSet {
@@ -34,9 +33,10 @@ final class PhotoListView: UIView {
             DispatchQueue.main.async {
                 self.photoCollectionView.reloadData()
             }
-//            setupSnapShot()
         }
     }
+    
+    // MARK: - View LifeCycle
     
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -44,12 +44,21 @@ final class PhotoListView: UIView {
         photoCollectionView.dataSource = dataSource
         photoCollectionView.delegate = delegate
         
+        setupPinterestLayout()
         setupPhotoCollectionView()
-        //        setupPhotoDataSource()
     }
     
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
+    }
+    
+    // MARK: - Layout
+    
+    private func setupPinterestLayout() {
+        let layout = PinterestLayout()
+        layout.delegate = self
+        
+        photoCollectionView.collectionViewLayout = layout
     }
     
     private func setupPhotoCollectionView() {
@@ -58,25 +67,19 @@ final class PhotoListView: UIView {
         NSLayoutConstraint.activate([
             photoCollectionView.topAnchor.constraint(equalTo: topAnchor),
             photoCollectionView.leadingAnchor.constraint(equalTo: leadingAnchor),
-            photoCollectionView.bottomAnchor.constraint(equalTo: bottomAnchor),
             photoCollectionView.trailingAnchor.constraint(equalTo: trailingAnchor),
+            photoCollectionView.bottomAnchor.constraint(equalTo: bottomAnchor),
         ])
     }
-    
-//    private func setupPhotoDataSource() {
-//        dataSource = UICollectionViewDiffableDataSource(collectionView: photoCollectionView, cellProvider: { collectionView, indexPath, photo in
-//            guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: PhotoCollectionViewCell.identifier, for: indexPath) as? PhotoCollectionViewCell else {
-//                return .init()
-//            }
-//            cell.photo = photo
-//            return cell
-//        })
-//    }
-//
-//    private func setupSnapShot() {
-//        var snapShot = NSDiffableDataSourceSnapshot<Section, Photo>()
-//        snapShot.appendSections([Section.photos])
-//        snapShot.appendItems(self.photos)
-//        self.dataSource?.apply(snapShot)
-//    }
+}
+
+extension TopicPhotoListView: PinterestLayoutDelegate {
+    func collectionView(_ collectionView: UICollectionView, heightForPhotoAtIndexPath indexPath: IndexPath) -> CGFloat {
+        let cellWidth = UIScreen.main.bounds.width / 2
+        let imageHeight = photos[indexPath.item].height
+        let imageWidth = photos[indexPath.item].width
+        let imageRatio = imageHeight / imageWidth
+        
+        return CGFloat(imageRatio) * cellWidth
+    }
 }

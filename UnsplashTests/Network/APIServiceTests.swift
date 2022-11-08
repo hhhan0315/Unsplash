@@ -34,7 +34,7 @@ final class APIServiceTests: XCTestCase {
         
         // when
         var result: [Photo]?
-        sut.request(api: .getPhotos(page: 1),
+        sut.request(api: .getListPhotos(page: 1),
                     dataType: [Photo].self) { response in
             if case .success(let photos) = response {
                 result = photos
@@ -54,7 +54,7 @@ final class APIServiceTests: XCTestCase {
         
         // when
         var result: APIError?
-        sut.request(api: .getPhotos(page: 1),
+        sut.request(api: .getListPhotos(page: 1),
                     dataType: [Photo].self) { response in
             if case .failure(let apiError) = response {
                 result = apiError
@@ -73,7 +73,7 @@ final class APIServiceTests: XCTestCase {
         
         // when
         var result: APIError?
-        sut.request(api: .getPhotos(page: 1),
+        sut.request(api: .getListPhotos(page: 1),
                     dataType: Search.self) { response in
             if case .failure(let apiError) = response {
                 result = apiError

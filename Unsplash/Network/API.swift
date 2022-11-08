@@ -13,10 +13,10 @@ enum API {
         case post = "POST"
     }
     
-    case getPhotos(page: Int)
-    case getTopics(page: Int)
+    case getListPhotos(page: Int)
+    case getListTopics(page: Int)
     case getTopicPhotos(slug: String, page: Int)
-    case getSearch(query: String, page: Int)
+    case getSearchPhotos(query: String, page: Int)
     
     var method: HTTPMethod {
         return .get
@@ -28,26 +28,26 @@ enum API {
     
     var path: String {
         switch self {
-        case .getPhotos:
+        case .getListPhotos:
             return "/photos"
-        case .getTopics:
+        case .getListTopics:
             return "/topics"
         case .getTopicPhotos(let slug, _):
             return "/topics/\(slug)/photos"
-        case .getSearch:
+        case .getSearchPhotos:
             return "/search/photos"
         }
     }
     
     var query: [String: String] {
         switch self {
-        case .getPhotos(let page):
+        case .getListPhotos(let page):
             return ["page": "\(page)"]
-        case .getTopics(let page):
+        case .getListTopics(let page):
             return ["page": "\(page)", "per_page": "30"]
         case .getTopicPhotos(_, let page):
             return ["page": "\(page)", "per_page": "20"]
-        case let .getSearch(query, page):
+        case let .getSearchPhotos(query, page):
             return ["query": query, "page": "\(page)"]
         }
     }

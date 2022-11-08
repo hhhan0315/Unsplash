@@ -38,7 +38,7 @@ final class SearchResultViewModel {
     }
     
     func fetch() {
-        apiService.request(api: .getSearch(query: self.query, page: self.page),
+        apiService.request(api: .getSearchPhotos(query: self.query, page: self.page),
                            dataType: Search.self) { [weak self] result in
             switch result {
             case .success(let search):
