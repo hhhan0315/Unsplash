@@ -7,6 +7,11 @@
 
 import UIKit
 
+protocol PhotoDetailViewActionListener: AnyObject {
+    func photoDetailViewExitButtonDidTap()
+    func photoDetailViewHeartButtonDidTap()
+}
+
 final class PhotoDetailView: UIView {
     
     // MARK: - View Define
@@ -53,7 +58,13 @@ final class PhotoDetailView: UIView {
         return button
     }()
     
+    // MARK: - Private Properties
+    
+    private var isLabelButtonHidden = false
+    
     // MARK: - Internal Properties
+    
+    weak var listener: PhotoDetailViewActionListener?
     
     var photo: Photo? {
         didSet {
@@ -75,9 +86,6 @@ final class PhotoDetailView: UIView {
     }
     
     override func layoutSubviews() {
-        // 이건 super 써야하나?
-//        super.layoutSubviews()
-        
         heartButton.layer.cornerRadius = heartButton.frame.width / 2
         heartButton.clipsToBounds = true
     }
@@ -92,6 +100,8 @@ final class PhotoDetailView: UIView {
         setupScrollView()
         setupPhotoImageView()
         setupHeartButton()
+        
+        setupGesture()
     }
     
     private func setupExitButton() {
@@ -149,13 +159,50 @@ final class PhotoDetailView: UIView {
         ])
     }
     
+    private func setupGesture() {
+        let doubleTapGesture = UITapGestureRecognizer(target: self, action: #selector(handleDoubleTap(_:)))
+        doubleTapGesture.numberOfTapsRequired = 2
+
+        let singleTapGesture = UITapGestureRecognizer(target: self, action: #selector(handleTap(_:)))
+        singleTapGesture.require(toFail: doubleTapGesture)
+
+        addGestureRecognizer(singleTapGesture)
+        addGestureRecognizer(doubleTapGesture)
+    }
+    
+    // MARK: - User Action
+    
     @objc private func touchExitButton(_ sender: UIButton) {
-//        dismiss(animated: true)
-        print(#function)
+        listener?.photoDetailViewExitButtonDidTap()
     }
     
     @objc private func touchHeartButton(_ sender: UIButton) {
         print(#function)
+        listener?.photoDetailViewHeartButtonDidTap()
+    }
+    
+    @objc private func handleTap(_ gesture: UITapGestureRecognizer) {
+        isLabelButtonHidden.toggle()
+        UIView.animate(withDuration: 0.5) {
+            self.exitButton.alpha = self.isLabelButtonHidden ? 0 : 1
+            self.titleLabel.alpha = self.isLabelButtonHidden ? 0 : 1
+            self.heartButton.alpha = self.isLabelButtonHidden ? 0 : 1
+        }
+    }
+
+    @objc private func handleDoubleTap(_ gesture: UITapGestureRecognizer) {
+        let scale = min(scrollView.zoomScale * 2, scrollView.maximumZoomScale)
+
+        if scale != scrollView.zoomScale {
+            let tapPoint = gesture.location(in: photoImageView)
+            let size = CGSize(width: scrollView.frame.size.width / scale,
+                              height: scrollView.frame.size.height / scale)
+            let origin = CGPoint(x: tapPoint.x - size.width / 2,
+                                 y: tapPoint.y - size.height / 2)
+            scrollView.zoom(to: CGRect(origin: origin, size: size), animated: true)
+        } else {
+            scrollView.zoom(to: scrollView.frame, animated: true)
+        }
     }
 }
 

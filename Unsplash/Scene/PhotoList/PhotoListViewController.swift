@@ -25,11 +25,12 @@ final class PhotoListViewController: UIViewController {
     
     override func loadView() {
         view = mainView
-        mainView.listener = self
     }
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        mainView.listener = self
         
         navigationItem.title = "Unsplash"
         
