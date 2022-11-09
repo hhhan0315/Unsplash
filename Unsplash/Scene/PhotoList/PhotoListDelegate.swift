@@ -9,6 +9,7 @@ import UIKit
 
 final class PhotoListDeleagte: NSObject, UICollectionViewDelegateFlowLayout {
     var photos: [Photo] = []
+    var selectPhotoClosure: ((Photo) -> Void)?
     
     func collectionView(_ collectionView: UICollectionView, willDisplay cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {
         if indexPath.item == photos.count - 1 {
@@ -17,7 +18,8 @@ final class PhotoListDeleagte: NSObject, UICollectionViewDelegateFlowLayout {
     }
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        // 사진 클릭 시 PhotoDetail 이동
+        let photo = photos[indexPath.item]
+        selectPhotoClosure?(photo)
     }
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {

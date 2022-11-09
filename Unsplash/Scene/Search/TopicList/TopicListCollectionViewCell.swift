@@ -1,5 +1,5 @@
 //
-//  TopicPhotoCollectionViewCell.swift
+//  TopicListCollectionViewCell.swift
 //  Unsplash
 //
 //  Created by rae on 2022/09/23.
@@ -7,11 +7,11 @@
 
 import UIKit
 
-final class TopicPhotoCollectionViewCell: UICollectionViewCell {
+final class TopicListCollectionViewCell: UICollectionViewCell {
     
     // MARK: - Properties
     
-    static let identifier = String(describing: TopicPhotoCollectionViewCell.self)
+    static let identifier = String(describing: TopicListCollectionViewCell.self)
     
     var topic: Topic? {
         didSet {

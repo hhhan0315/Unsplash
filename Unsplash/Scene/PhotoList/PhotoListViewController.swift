@@ -24,7 +24,8 @@ final class PhotoListViewController: UIViewController {
     // MARK: - View LifeCycle
     
     override func loadView() {
-        self.view = mainView
+        view = mainView
+        mainView.listener = self
     }
     
     override func viewDidLoad() {
@@ -40,7 +41,7 @@ final class PhotoListViewController: UIViewController {
     private func getListPhotos() {
         page += 1
         
-        apiService.request(api: .getListPhotos(page: self.page), dataType: [Photo].self) { [weak self] result in
+        apiService.request(api: .getListPhotos(page: page), dataType: [Photo].self) { [weak self] result in
             switch result {
             case .success(let photos):
                 self?.mainView.photos += photos
@@ -50,6 +51,14 @@ final class PhotoListViewController: UIViewController {
                 }
             }
         }
+    }
+}
+
+extension PhotoListViewController: PhotoListViewActionListener {
+    func photoListDidTap(with photo: Photo) {
+        let photoDetailViewController = PhotoDetailViewController(photo: photo)
+        photoDetailViewController.modalPresentationStyle = .overFullScreen
+        present(photoDetailViewController, animated: true)
     }
 }
 

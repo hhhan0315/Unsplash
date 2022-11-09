@@ -7,7 +7,14 @@
 
 import UIKit
 
+protocol PhotoListViewActionListener: AnyObject {
+    func photoListDidTap(with photo: Photo)
+}
+
 final class PhotoListView: UIView {
+    
+    // MARK: - View Define
+    
     private let photoCollectionView: UICollectionView = {
         let layout = UICollectionViewFlowLayout()
         layout.minimumLineSpacing = 0
@@ -18,13 +25,20 @@ final class PhotoListView: UIView {
         return collectionView
     }()
     
-    enum Section {
-        case photos
-    }
+//    enum Section {
+//        case photos
+//    }
     
 //    private var dataSource: UICollectionViewDiffableDataSource<Section, Photo>?
+    
+    // MARK: - Private Properties
+    
     private let dataSource = PhotoListDataSource()
     private let delegate = PhotoListDeleagte()
+    
+    // MARK: - Internal Properties
+    
+    weak var listener: PhotoListViewActionListener?
     
     var photos: [Photo] = [] {
         didSet {
@@ -38,6 +52,8 @@ final class PhotoListView: UIView {
         }
     }
     
+    // MARK: - View LifeCycle
+    
     override init(frame: CGRect) {
         super.init(frame: frame)
         
@@ -45,12 +61,15 @@ final class PhotoListView: UIView {
         photoCollectionView.delegate = delegate
         
         setupPhotoCollectionView()
+        bindAction()
         //        setupPhotoDataSource()
     }
     
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
+    
+    // MARK: - Layout
     
     private func setupPhotoCollectionView() {
         addSubview(photoCollectionView)
@@ -79,4 +98,12 @@ final class PhotoListView: UIView {
 //        snapShot.appendItems(self.photos)
 //        self.dataSource?.apply(snapShot)
 //    }
+    
+    // MARK: - User Action
+    
+    private func bindAction() {
+        delegate.selectPhotoClosure = { [weak self] selectedPhoto in
+            self?.listener?.photoListDidTap(with: selectedPhoto)
+        }
+    }
 }

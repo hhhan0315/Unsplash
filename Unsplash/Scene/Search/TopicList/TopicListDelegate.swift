@@ -13,6 +13,6 @@ final class TopicListDelegate: NSObject, UICollectionViewDelegate {
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         let topic = topics[indexPath.item]
-        self.selectTopicClosure?(topic)
+        selectTopicClosure?(topic)
     }
 }

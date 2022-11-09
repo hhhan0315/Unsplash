@@ -27,7 +27,7 @@ final class TopicListView: UIView {
         let layout = UICollectionViewCompositionalLayout(section: section)
         
         let collectionView = UICollectionView(frame: .zero, collectionViewLayout: layout)
-        collectionView.register(TopicPhotoCollectionViewCell.self, forCellWithReuseIdentifier: TopicPhotoCollectionViewCell.identifier)
+        collectionView.register(TopicListCollectionViewCell.self, forCellWithReuseIdentifier: TopicListCollectionViewCell.identifier)
         collectionView.backgroundColor = .systemBackground
         return collectionView
     }()

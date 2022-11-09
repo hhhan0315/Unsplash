@@ -15,7 +15,7 @@ final class TopicListDataSource: NSObject, UICollectionViewDataSource {
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: TopicPhotoCollectionViewCell.identifier, for: indexPath) as? TopicPhotoCollectionViewCell else {
+        guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: TopicListCollectionViewCell.identifier, for: indexPath) as? TopicListCollectionViewCell else {
             return .init()
         }
         

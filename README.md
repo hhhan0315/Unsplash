@@ -5,7 +5,7 @@ Unsplash unofficial app for iOS
 
 > Network - Secrets - clientID에 Unsplash API Key 입력 후 실행
 
-> iOS 13.0
+> iOS 14.0
 
 <p>
   <img src="https://github.com/hhhan0315/Unsplash/blob/main/screenshot/intro_home.png" width="30%"/>
@@ -17,6 +17,12 @@ Unsplash unofficial app for iOS
 </p>
 
 ## 구현 내용
+- MVC 해체
+    - [1. View, Layout Constraint 분리](https://github.com/hhhan0315/Unsplash/tree/main/markdown/MVC_step1.md)
+    - [2. DataSource, Delegate 분리]
+    - [3. 네트워크, 코어데이터 로직 분리]
+    - [4. Coordinator 패턴 활용]
+
 - [MVVM 패턴](https://github.com/hhhan0315/Unsplash/tree/main/markdown/MVVM.md)
 - [네트워크 객체](https://github.com/hhhan0315/Unsplash/tree/main/markdown/Network.md)
 - [Combine 메모리 해제](https://github.com/hhhan0315/Unsplash/tree/main/markdown/Combine_Memory_Leak.md)

@@ -11,7 +11,7 @@ final class TopicPhotoListViewController: UIViewController {
     
     // MARK: - View Define
     
-    private let mainView = TopicPhotoListView()
+    private let mainView = PinterestPhotoListView()
     
     // MARK: - Private Properties
     

@@ -1,5 +1,5 @@
 //
-//  TopicPhotoListView.swift
+//  PinterestPhotoListView.swift
 //  Unsplash
 //
 //  Created by rae on 2022/11/08.
@@ -7,7 +7,7 @@
 
 import UIKit
 
-final class TopicPhotoListView: UIView {
+final class PinterestPhotoListView: UIView {
     
     // MARK: - View Define
     
@@ -73,7 +73,7 @@ final class TopicPhotoListView: UIView {
     }
 }
 
-extension TopicPhotoListView: PinterestLayoutDelegate {
+extension PinterestPhotoListView: PinterestLayoutDelegate {
     func collectionView(_ collectionView: UICollectionView, heightForPhotoAtIndexPath indexPath: IndexPath) -> CGFloat {
         let cellWidth = UIScreen.main.bounds.width / 2
         let imageHeight = photos[indexPath.item].height
