@@ -54,27 +54,16 @@ final class PhotoListViewController: UIViewController {
     }
 }
 
+// MARK: - PhotoListViewActionListener
+
 extension PhotoListViewController: PhotoListViewActionListener {
-    func photoListDidTap(with photo: Photo) {
+    func willDisplayLastPhoto() {
+        getListPhotos()
+    }
+    
+    func photoCollectionViewCellDidTap(with photo: Photo) {
         let photoDetailViewController = PhotoDetailViewController(photo: photo)
         photoDetailViewController.modalPresentationStyle = .overFullScreen
         present(photoDetailViewController, animated: true)
     }
 }
-
-// MARK: - UICollectionViewDelegate
-
-//extension PhotoListViewController: UICollectionViewDelegate {
-//    func collectionView(_ collectionView: UICollectionView, willDisplay cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {
-//        if indexPath.item == viewModel.numberOfCells - 1 {
-//            viewModel.fetch()
-//        }
-//    }
-//
-//    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-//        let photoCellViewModel = viewModel.getCellViewModel(indexPath: indexPath)
-//        let detailViewController = DetailViewController(photoCellViewModel: photoCellViewModel)
-//        detailViewController.modalPresentationStyle = .overFullScreen
-//        present(detailViewController, animated: true)
-//    }
-//}

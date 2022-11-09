@@ -8,7 +8,8 @@
 import UIKit
 
 protocol PhotoListViewActionListener: AnyObject {
-    func photoListDidTap(with photo: Photo)
+    func willDisplayLastPhoto()
+    func photoCollectionViewCellDidTap(with photo: Photo)
 }
 
 final class PhotoListView: UIView {
@@ -28,7 +29,7 @@ final class PhotoListView: UIView {
 //    enum Section {
 //        case photos
 //    }
-    
+//
 //    private var dataSource: UICollectionViewDiffableDataSource<Section, Photo>?
     
     // MARK: - Private Properties
@@ -62,7 +63,7 @@ final class PhotoListView: UIView {
         
         setupPhotoCollectionView()
         bindAction()
-        //        setupPhotoDataSource()
+//        setupPhotoDataSource()
     }
     
     required init?(coder: NSCoder) {
@@ -102,8 +103,12 @@ final class PhotoListView: UIView {
     // MARK: - User Action
     
     private func bindAction() {
+        delegate.willDisplayClosure = { [weak self] in
+            self?.listener?.willDisplayLastPhoto()
+        }
+        
         delegate.selectPhotoClosure = { [weak self] selectedPhoto in
-            self?.listener?.photoListDidTap(with: selectedPhoto)
+            self?.listener?.photoCollectionViewCellDidTap(with: selectedPhoto)
         }
     }
 }

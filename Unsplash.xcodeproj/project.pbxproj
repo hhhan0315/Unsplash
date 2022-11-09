@@ -206,17 +206,26 @@
 			path = Application;
 			sourceTree = "<group>";
 		};
+		0177D414291BD70D0037F2D9 /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				01A1931D291A33D7002079BA /* PhotoListView.swift */,
+				01A1932B291A7BED002079BA /* PinterestPhotoListView.swift */,
+				01A19325291A6EF2002079BA /* TopicListView.swift */,
+			);
+			path = Views;
+			sourceTree = "<group>";
+		};
 		0194CD332822A5240006470D /* Scene */ = {
 			isa = PBXGroup;
 			children = (
 				01D9D2D6281F7A4F00E308D4 /* MainTabBarController.swift */,
-				01A1932B291A7BED002079BA /* PinterestPhotoListView.swift */,
-				01A1931D291A33D7002079BA /* PhotoListView.swift */,
 				01C0C9B228DAF48100D655BD /* PhotoCollectionViewCell.swift */,
+				01C0C99C28D8A18700D655BD /* LikesPhotoList */,
 				0128D1A22897BF6C00D17627 /* PhotoDetail */,
 				01C0C9A528DA98FD00D655BD /* PhotoList */,
 				01C0C9F528E3DC3B00D655BD /* Search */,
-				01C0C99C28D8A18700D655BD /* LikesPhotoList */,
+				0177D414291BD70D0037F2D9 /* Views */,
 			);
 			path = Scene;
 			sourceTree = "<group>";
@@ -302,7 +311,6 @@
 			children = (
 				01A19327291A70B3002079BA /* TopicListDataSource.swift */,
 				01A19329291A7430002079BA /* TopicListDelegate.swift */,
-				01A19325291A6EF2002079BA /* TopicListView.swift */,
 				01D9D2DA281F7B1B00E308D4 /* TopicListViewController.swift */,
 				01C0C9DF28DDD85800D655BD /* TopicListCollectionViewCell.swift */,
 			);

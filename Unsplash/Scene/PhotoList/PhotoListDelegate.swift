@@ -9,11 +9,12 @@ import UIKit
 
 final class PhotoListDeleagte: NSObject, UICollectionViewDelegateFlowLayout {
     var photos: [Photo] = []
+    var willDisplayClosure: (() -> Void)?
     var selectPhotoClosure: ((Photo) -> Void)?
     
     func collectionView(_ collectionView: UICollectionView, willDisplay cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {
         if indexPath.item == photos.count - 1 {
-            // 네트워크 요청 또 해주세요.
+            willDisplayClosure?()
         }
     }
     
