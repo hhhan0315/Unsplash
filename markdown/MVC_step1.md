@@ -83,6 +83,10 @@ final class PhotoListView: UIView {
         setupPhotoCollectionView()
     }
     
+    // 필수 생성자 : 부모 클래스에서 required 키워드를 사용하면 자식 클래스에서 해당 생성자를 반드시 구현해야 한다.
+    // Swift에서는 자식 클래스에서 지정 생성자를 따로 작성하지 않는 경우 부모 클래스의 생성자를 자동으로 상속한다.
+    // 하지만 새롭게 지정 생성자를 작성해주는 경우 자동 상속 조건에 벗어나기 때문에 필수 생성자도 구현해줘야 한다.
+    // 그래서 Xcode에서 오류로 알려주고 있다.
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
@@ -116,6 +120,7 @@ extension PhotoListView: UICollectionViewDataSource {
     }
 }
 
+// UICollectionViewDelegateFlowLayout는 UICollectionViewDelegate 프로토콜을 채택하고 있다.
 extension PhotoListView: UICollectionViewDelegateFlowLayout {
     func collectionView(_ collectionView: UICollectionView, willDisplay cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {
         if indexPath.item == photos.count - 1 {

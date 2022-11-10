@@ -7,18 +7,10 @@ Unsplash unofficial app for iOS
 
 > iOS 14.0
 
-<p>
-  <img src="https://github.com/hhhan0315/Unsplash/blob/main/screenshot/intro_home.png" width="30%"/>
-  <img src="https://github.com/hhhan0315/Unsplash/blob/main/screenshot/intro_topic.png" width="30%"/>
-  <img src="https://github.com/hhhan0315/Unsplash/blob/main/screenshot/intro_topic_photo.png" width="30%"/>
-  <img src="https://github.com/hhhan0315/Unsplash/blob/main/screenshot/intro_search.png" width="30%"/>
-  <img src="https://github.com/hhhan0315/Unsplash/blob/main/screenshot/intro_like.png" width="30%"/>
-  <img src="https://github.com/hhhan0315/Unsplash/blob/main/screenshot/intro_like_detail.png" width="30%"/>
-</p>
-
 ## 구현 내용
 - MVC 해체
     - [1. View, Layout Constraint 분리 및 User Action 처리](https://github.com/hhhan0315/Unsplash/tree/main/markdown/MVC_step1.md)
+        - 키워드 : `loadView`, `Delegate 패턴`, `필수 생성자`
     - [2. DataSource, Delegate 분리]
     - [3. 네트워크, 코어데이터 로직 분리]
     - [4. Coordinator 패턴 활용]
@@ -31,6 +23,17 @@ Unsplash unofficial app for iOS
 - [ImageCacheManager 싱글톤 선택 이유](https://github.com/hhhan0315/Unsplash/tree/main/markdown/Singleton.md)
 - [UITableView, UICollectionView reloadData 시 깜빡거림 해결](https://github.com/hhhan0315/Unsplash/tree/main/markdown/Flicker_Reload.md)
 - [DetailViewController 다양한 기능들](https://github.com/hhhan0315/Unsplash/tree/main/markdown/DetailViewController.md)
+
+## 스크린샷
+
+<p>
+  <img src="https://github.com/hhhan0315/Unsplash/blob/main/screenshot/intro_home.png" width="30%"/>
+  <img src="https://github.com/hhhan0315/Unsplash/blob/main/screenshot/intro_topic.png" width="30%"/>
+  <img src="https://github.com/hhhan0315/Unsplash/blob/main/screenshot/intro_topic_photo.png" width="30%"/>
+  <img src="https://github.com/hhhan0315/Unsplash/blob/main/screenshot/intro_search.png" width="30%"/>
+  <img src="https://github.com/hhhan0315/Unsplash/blob/main/screenshot/intro_like.png" width="30%"/>
+  <img src="https://github.com/hhhan0315/Unsplash/blob/main/screenshot/intro_like_detail.png" width="30%"/>
+</p>
 
 ## 기능
 
