@@ -34,8 +34,8 @@ final class PhotoListView: UIView {
     
     // MARK: - Private Properties
     
-    private let dataSource = PhotoListDataSource()
-    private let delegate = PhotoListDeleagte()
+//    private let dataSource = PhotoListDataSource()
+//    private let delegate = PhotoListDeleagte()
     
     // MARK: - Internal Properties
     
@@ -43,8 +43,8 @@ final class PhotoListView: UIView {
     
     var photos: [Photo] = [] {
         didSet {
-            dataSource.photos = photos
-            delegate.photos = photos
+//            dataSource.photos = self
+//            delegate.photos = self
             
             DispatchQueue.main.async {
                 self.photoCollectionView.reloadData()
@@ -58,11 +58,11 @@ final class PhotoListView: UIView {
     override init(frame: CGRect) {
         super.init(frame: frame)
         
-        photoCollectionView.dataSource = dataSource
-        photoCollectionView.delegate = delegate
+        photoCollectionView.dataSource = self
+        photoCollectionView.delegate = self
         
         setupPhotoCollectionView()
-        bindAction()
+//        bindAction()
 //        setupPhotoDataSource()
     }
     
@@ -102,13 +102,52 @@ final class PhotoListView: UIView {
     
     // MARK: - User Action
     
-    private func bindAction() {
-        delegate.willDisplayClosure = { [weak self] in
-            self?.listener?.willDisplayLastPhoto()
+//    private func bindAction() {
+//        delegate.willDisplayClosure = { [weak self] in
+//            self?.listener?.willDisplayLastPhoto()
+//        }
+//
+//        delegate.selectPhotoClosure = { [weak self] selectedPhoto in
+//            self?.listener?.photoCollectionViewCellDidTap(with: selectedPhoto)
+//        }
+//    }
+}
+
+extension PhotoListView: UICollectionViewDataSource {
+    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+        return photos.count
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+        guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: PhotoCollectionViewCell.identifier, for: indexPath) as? PhotoCollectionViewCell else {
+            return .init()
         }
+        let photo = self.photos[indexPath.item]
+        cell.photo = photo
+        return cell
+    }
+}
+
+extension PhotoListView: UICollectionViewDelegateFlowLayout {
+    func collectionView(_ collectionView: UICollectionView, willDisplay cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {
+        if indexPath.item == photos.count - 1 {
+//            willDisplayClosure?()
+            listener?.willDisplayLastPhoto()
+        }
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        let photo = photos[indexPath.item]
+//        selectPhotoClosure?(photo)
+        listener?.photoCollectionViewCellDidTap(with: photo)
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
+        let cellWidth = UIScreen.main.bounds.width
+        let imageHeight = photos[indexPath.item].height
+        let imageWidth = photos[indexPath.item].width
+        let imageRatio = imageHeight / imageWidth
         
-        delegate.selectPhotoClosure = { [weak self] selectedPhoto in
-            self?.listener?.photoCollectionViewCellDidTap(with: selectedPhoto)
-        }
+        return CGSize(width: cellWidth, height: imageRatio * cellWidth)
     }
 }

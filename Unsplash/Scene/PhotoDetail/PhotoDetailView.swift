@@ -86,6 +86,8 @@ final class PhotoDetailView: UIView {
     }
     
     override func layoutSubviews() {
+        super.layoutSubviews()
+        
         heartButton.layer.cornerRadius = heartButton.frame.width / 2
         heartButton.clipsToBounds = true
     }
