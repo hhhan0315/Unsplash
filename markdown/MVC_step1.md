@@ -41,8 +41,8 @@
 // AnyObject를 통해 클래스에만 사용할 것이라는 것을 나타낸다.
 // AnyObject : class type의 instance
 protocol PhotoListViewActionListener: AnyObject {
-    func willDisplayLastPhoto()
-    func photoCollectionViewCellDidTap(with photo: Photo)
+    func photoListViewWillDisplayLast()
+    func photoListViewCellDidTap(with photo: Photo)
 }
 
 final class PhotoListView: UIView {
@@ -125,14 +125,14 @@ extension PhotoListView: UICollectionViewDelegateFlowLayout {
     func collectionView(_ collectionView: UICollectionView, willDisplay cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {
         if indexPath.item == photos.count - 1 {
             // 이벤트 발생 -> 대리자의 메서드 실행
-            listener?.willDisplayLastPhoto()
+            listener?.photoListViewWillDisplayLast()
         }
     }
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         let photo = photos[indexPath.item]
         // 이벤트 발생 -> 대리자의 메서드 실행
-        listener?.photoCollectionViewCellDidTap(with: photo)
+        listener?.photoListViewCellDidTap(with: photo)
     }
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
@@ -199,11 +199,11 @@ final class PhotoListViewController: UIViewController {
 // MARK: - PhotoListViewActionListener
 // 대리자의 메서드를 실행하면 해당 메서드들이 실행
 extension PhotoListViewController: PhotoListViewActionListener {
-    func willDisplayLastPhoto() {
+    func photoListViewWillDisplayLast() {
         getListPhotos()
     }
     
-    func photoCollectionViewCellDidTap(with photo: Photo) {
+    func photoListViewCellDidTap(with photo: Photo) {
         let photoDetailViewController = PhotoDetailViewController(photo: photo)
         photoDetailViewController.modalPresentationStyle = .overFullScreen
         present(photoDetailViewController, animated: true)
