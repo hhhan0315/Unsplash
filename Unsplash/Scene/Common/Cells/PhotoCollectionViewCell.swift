@@ -13,13 +13,6 @@ final class PhotoCollectionViewCell: UICollectionViewCell {
     
     static let identifier = String(describing: PhotoCollectionViewCell.self)
     
-//    var photoCellViewModel: PhotoCellViewModel? {
-//        didSet {
-//            nameLabel.text = photoCellViewModel?.titleText
-//            photoImageView.downloadImage(with: photoCellViewModel?.imageURL ?? "")
-//        }
-//    }
-    
     var photo: Photo? {
         didSet {
             nameLabel.text = photo?.user.name

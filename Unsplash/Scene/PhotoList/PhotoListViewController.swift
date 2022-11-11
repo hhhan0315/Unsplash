@@ -30,9 +30,10 @@ final class PhotoListViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        mainView.listener = self
-        
+        view.backgroundColor = .systemBackground
         navigationItem.title = "Unsplash"
+        
+        mainView.listener = self
         
         getListPhotos()
     }
@@ -58,11 +59,11 @@ final class PhotoListViewController: UIViewController {
 // MARK: - PhotoListViewActionListener
 
 extension PhotoListViewController: PhotoListViewActionListener {
-    func willDisplayLastPhoto() {
+    func photoListViewWillDisplayLast() {
         getListPhotos()
     }
     
-    func photoCollectionViewCellDidTap(with photo: Photo) {
+    func photoListViewCellDidTap(with photo: Photo) {
         let photoDetailViewController = PhotoDetailViewController(photo: photo)
         photoDetailViewController.modalPresentationStyle = .overFullScreen
         present(photoDetailViewController, animated: true)

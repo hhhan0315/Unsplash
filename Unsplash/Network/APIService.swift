@@ -26,7 +26,7 @@ final class APIService: APIServiceProtocol {
             return
         }
         
-        urlComponents.queryItems = api.query.map { URLQueryItem(name: $0.key, value: $0.value) }
+        urlComponents.queryItems = api.query?.map { URLQueryItem(name: $0.key, value: $0.value) }
         
         guard let url = urlComponents.url else {
             completion(.failure(.invalidURLError))

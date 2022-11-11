@@ -7,6 +7,11 @@
 
 import UIKit
 
+protocol PinterestPhotoListViewActionListener: AnyObject {
+    func pinterestPhotoListViewWillDisplayLast()
+    func pinterestPhotoListViewCellDidTap(with photo: Photo)
+}
+
 final class PinterestPhotoListView: UIView {
     
     // MARK: - View Define
@@ -25,7 +30,18 @@ final class PinterestPhotoListView: UIView {
     
     // MARK: - Internal Properties
     
+    weak var listener: PinterestPhotoListViewActionListener?
+    
     var photos: [Photo] = [] {
+        willSet {
+            guard photos.isEmpty else {
+                return
+            }
+            
+            DispatchQueue.main.async {
+                self.photoCollectionView.setContentOffset(.zero, animated: false)
+            }
+        }
         didSet {
             dataSource.photos = photos
             delegate.photos = photos
@@ -43,6 +59,8 @@ final class PinterestPhotoListView: UIView {
         
         photoCollectionView.dataSource = dataSource
         photoCollectionView.delegate = delegate
+        
+        delegate.listener = self
         
         setupPinterestLayout()
         setupPhotoCollectionView()
@@ -65,13 +83,15 @@ final class PinterestPhotoListView: UIView {
         addSubview(photoCollectionView)
         photoCollectionView.translatesAutoresizingMaskIntoConstraints = false
         NSLayoutConstraint.activate([
-            photoCollectionView.topAnchor.constraint(equalTo: topAnchor),
-            photoCollectionView.leadingAnchor.constraint(equalTo: leadingAnchor),
-            photoCollectionView.trailingAnchor.constraint(equalTo: trailingAnchor),
-            photoCollectionView.bottomAnchor.constraint(equalTo: bottomAnchor),
+            photoCollectionView.topAnchor.constraint(equalTo: safeAreaLayoutGuide.topAnchor),
+            photoCollectionView.leadingAnchor.constraint(equalTo: safeAreaLayoutGuide.leadingAnchor),
+            photoCollectionView.trailingAnchor.constraint(equalTo: safeAreaLayoutGuide.trailingAnchor),
+            photoCollectionView.bottomAnchor.constraint(equalTo: safeAreaLayoutGuide.bottomAnchor),
         ])
     }
 }
+
+// MARK: - PinterestLayoutDelegate
 
 extension PinterestPhotoListView: PinterestLayoutDelegate {
     func collectionView(_ collectionView: UICollectionView, heightForPhotoAtIndexPath indexPath: IndexPath) -> CGFloat {
@@ -81,5 +101,15 @@ extension PinterestPhotoListView: PinterestLayoutDelegate {
         let imageRatio = imageHeight / imageWidth
         
         return CGFloat(imageRatio) * cellWidth
+    }
+}
+
+extension PinterestPhotoListView: PhotoListDelegateActionListener {
+    func willDisplayLast() {
+        listener?.pinterestPhotoListViewWillDisplayLast()
+    }
+    
+    func didSelect(with photo: Photo) {
+        listener?.pinterestPhotoListViewCellDidTap(with: photo)
     }
 }

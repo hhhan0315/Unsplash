@@ -7,20 +7,26 @@
 
 import UIKit
 
+protocol PhotoListDelegateActionListener: AnyObject {
+    func willDisplayLast()
+    func didSelect(with photo: Photo)
+}
+
 final class PhotoListDeleagte: NSObject, UICollectionViewDelegateFlowLayout {
     var photos: [Photo] = []
-    var willDisplayClosure: (() -> Void)?
-    var selectPhotoClosure: ((Photo) -> Void)?
+    
+    weak var listener: PhotoListDelegateActionListener?
     
     func collectionView(_ collectionView: UICollectionView, willDisplay cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {
-        if indexPath.item == photos.count - 1 {
-            willDisplayClosure?()
+        // 1개만 있을 경우 -> 무한 재로딩
+        if photos.count >= Constants.perPage && indexPath.item == photos.count - 1 {
+            listener?.willDisplayLast()
         }
     }
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         let photo = photos[indexPath.item]
-        selectPhotoClosure?(photo)
+        listener?.didSelect(with: photo)
     }
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {

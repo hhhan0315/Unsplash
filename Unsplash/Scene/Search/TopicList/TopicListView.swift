@@ -74,10 +74,10 @@ final class TopicListView: UIView {
         addSubview(topicCollectionView)
         topicCollectionView.translatesAutoresizingMaskIntoConstraints = false
         NSLayoutConstraint.activate([
-            topicCollectionView.topAnchor.constraint(equalTo: topAnchor),
-            topicCollectionView.leadingAnchor.constraint(equalTo: leadingAnchor),
-            topicCollectionView.trailingAnchor.constraint(equalTo: trailingAnchor),
-            topicCollectionView.bottomAnchor.constraint(equalTo: bottomAnchor),
+            topicCollectionView.topAnchor.constraint(equalTo: safeAreaLayoutGuide.topAnchor),
+            topicCollectionView.leadingAnchor.constraint(equalTo: safeAreaLayoutGuide.leadingAnchor),
+            topicCollectionView.trailingAnchor.constraint(equalTo: safeAreaLayoutGuide.trailingAnchor),
+            topicCollectionView.bottomAnchor.constraint(equalTo: safeAreaLayoutGuide.bottomAnchor),
         ])
     }
     

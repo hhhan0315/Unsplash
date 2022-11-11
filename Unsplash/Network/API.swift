@@ -14,7 +14,7 @@ enum API {
     }
     
     case getListPhotos(page: Int)
-    case getListTopics(page: Int)
+    case getListTopics
     case getTopicPhotos(slug: String, page: Int)
     case getSearchPhotos(query: String, page: Int)
     
@@ -39,16 +39,16 @@ enum API {
         }
     }
     
-    var query: [String: String] {
+    var query: [String: String]? {
         switch self {
         case .getListPhotos(let page):
-            return ["page": "\(page)"]
-        case .getListTopics(let page):
-            return ["page": "\(page)", "per_page": "30"]
+            return ["page": "\(page)", "per_page": "\(Constants.perPage)"]
+        case .getListTopics:
+            return nil
         case .getTopicPhotos(_, let page):
-            return ["page": "\(page)", "per_page": "20"]
+            return ["page": "\(page)", "per_page": "\(Constants.perPage)"]
         case let .getSearchPhotos(query, page):
-            return ["query": query, "page": "\(page)"]
+            return ["query": query, "page": "\(page)", "per_page": "\(Constants.perPage)"]
         }
     }
     

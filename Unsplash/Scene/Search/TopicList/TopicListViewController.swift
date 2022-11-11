@@ -26,10 +26,11 @@ final class TopicListViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        mainView.listener = self
-        
+        view.backgroundColor = .systemBackground
         navigationItem.title = "Search"
         setupSearchController()
+        
+        mainView.listener = self
         
         getListTopics()
     }
@@ -49,7 +50,7 @@ final class TopicListViewController: UIViewController {
     // MARK: - Networking
     
     private func getListTopics() {
-        apiService.request(api: .getListTopics(page: 1), dataType: [Topic].self) { [weak self] result in
+        apiService.request(api: .getListTopics, dataType: [Topic].self) { [weak self] result in
             switch result {
             case .success(let topics):
                 self?.mainView.topics += topics

@@ -16,6 +16,9 @@ final class SearchResultViewController: UIViewController {
     // MARK: - Private Properties
     
     private let apiService = APIService()
+    
+    private var page = 0
+    private var currentQuery = ""
         
     // MARK: - View LifeCycle
     
@@ -25,18 +28,18 @@ final class SearchResultViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-    }
-}
-
-// MARK: - UISearchBarDelegate
-
-extension SearchResultViewController: UISearchBarDelegate {
-    func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
-        guard let query = searchBar.text else {
-            return
-        }
         
-        apiService.request(api: .getSearchPhotos(query: query, page: 1),
+        view.backgroundColor = .systemBackground
+        
+        mainView.listener = self
+    }
+    
+    // MARK: - Networking
+    
+    private func getSearchPhotos() {
+        page += 1
+        
+        apiService.request(api: .getSearchPhotos(query: currentQuery, page: page),
                            dataType: Search.self) { [weak self] result in
             switch result {
             case .success(let search):
@@ -48,8 +51,46 @@ extension SearchResultViewController: UISearchBarDelegate {
             }
         }
     }
+    
+    private func reset() {
+        page = 0
+        currentQuery = ""
+        mainView.photos.removeAll()
+    }
+}
+
+// MARK: - UISearchBarDelegate
+
+extension SearchResultViewController: UISearchBarDelegate {
+    func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
+        guard let query = searchBar.text else {
+            return
+        }
+        
+        guard currentQuery != query else {
+            return
+        }
+        
+        reset()
+        currentQuery = query
+        getSearchPhotos()
+    }
 
     func searchBarCancelButtonClicked(_ searchBar: UISearchBar) {
-        mainView.photos.removeAll()
+        reset()
+    }
+}
+
+// MARK: - PinterestPhotoListViewActionListener
+
+extension SearchResultViewController: PinterestPhotoListViewActionListener {
+    func pinterestPhotoListViewWillDisplayLast() {
+        getSearchPhotos()
+    }
+    
+    func pinterestPhotoListViewCellDidTap(with photo: Photo) {
+        let photoDetailViewController = PhotoDetailViewController(photo: photo)
+        photoDetailViewController.modalPresentationStyle = .overFullScreen
+        present(photoDetailViewController, animated: true)
     }
 }

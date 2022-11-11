@@ -9,7 +9,6 @@ import UIKit
 
 protocol PinterestLayoutDelegate: AnyObject {
     func collectionView(_ collectionView: UICollectionView, heightForPhotoAtIndexPath indexPath: IndexPath) -> CGFloat
-//    func numberOfItems() -> Int
 }
 
 final class PinterestLayout: UICollectionViewLayout {

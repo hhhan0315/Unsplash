@@ -162,7 +162,7 @@ final class PhotoListDeleagte: NSObject, UICollectionViewDelegateFlowLayout {
 
 ```swift
 protocol PhotoListDelegateActionListener: AnyObject {
-    func willDisplay()
+    func willDisplayLast()
     func didSelect(with photo: Photo)
 }
 
@@ -173,7 +173,7 @@ final class PhotoListDeleagte: NSObject, UICollectionViewDelegateFlowLayout {
     
     func collectionView(_ collectionView: UICollectionView, willDisplay cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {
         if indexPath.item == photos.count - 1 {
-            listener?.willDisplay()
+            listener?.willDisplayLast()
         }
     }
     

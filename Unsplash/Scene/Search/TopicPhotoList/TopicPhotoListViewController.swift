@@ -39,7 +39,10 @@ final class TopicPhotoListViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        view.backgroundColor = .systemBackground
         navigationItem.title = topic.title
+        
+        mainView.listener = self
         
         getTopicListPhotos()
     }
@@ -47,6 +50,8 @@ final class TopicPhotoListViewController: UIViewController {
     // MARK: - Networking
     
     private func getTopicListPhotos() {
+        page += 1
+        
         apiService.request(api: .getTopicPhotos(slug: topic.slug, page: page), dataType: [Photo].self) { [weak self] result in
             switch result {
             case .success(let photos):
@@ -57,5 +62,19 @@ final class TopicPhotoListViewController: UIViewController {
                 }
             }
         }
+    }
+}
+
+// MARK: - PinterestPhotoListViewActionListener
+
+extension TopicPhotoListViewController: PinterestPhotoListViewActionListener {
+    func pinterestPhotoListViewWillDisplayLast() {
+        getTopicListPhotos()
+    }
+    
+    func pinterestPhotoListViewCellDidTap(with photo: Photo) {
+        let photoDetailViewController = PhotoDetailViewController(photo: photo)
+        photoDetailViewController.modalPresentationStyle = .overFullScreen
+        present(photoDetailViewController, animated: true)
     }
 }

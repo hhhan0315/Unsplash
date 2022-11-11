@@ -35,6 +35,8 @@ final class PhotoDetailViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        view.backgroundColor = .systemBackground
+        
         mainView.listener = self
         mainView.photo = photo
     }
