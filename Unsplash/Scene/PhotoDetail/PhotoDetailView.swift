@@ -115,7 +115,7 @@ final class PhotoDetailView: UIView {
         addSubview(exitButton)
         exitButton.translatesAutoresizingMaskIntoConstraints = false
         NSLayoutConstraint.activate([
-            exitButton.topAnchor.constraint(equalTo: topAnchor, constant: 50.0),
+            exitButton.topAnchor.constraint(equalTo: safeAreaLayoutGuide.topAnchor, constant: 16.0),
             exitButton.leadingAnchor.constraint(equalTo: safeAreaLayoutGuide.leadingAnchor, constant: 16.0),
             exitButton.heightAnchor.constraint(equalToConstant: 44.0),
         ])

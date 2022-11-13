@@ -90,7 +90,7 @@ extension SearchResultViewController: PinterestPhotoListViewActionListener {
     
     func pinterestPhotoListViewCellDidTap(with photo: Photo) {
         let photoDetailViewController = PhotoDetailViewController(photo: photo)
-        photoDetailViewController.modalPresentationStyle = .overFullScreen
+//        photoDetailViewController.modalPresentationStyle = .overFullScreen
         present(photoDetailViewController, animated: true)
     }
 }

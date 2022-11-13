@@ -13,7 +13,6 @@ final class CoreDataManager {
     static let shared = CoreDataManager()
     private init() {}
     
-    // NSPersistentContainer : Core Data Stack을 나타내는 필요한 모든 객체
     private lazy var persistentContainer: NSPersistentContainer = {
         let container = NSPersistentContainer(name: Constants.coreDataFileName)
         container.loadPersistentStores { storeDescription, error in
@@ -23,15 +22,11 @@ final class CoreDataManager {
         }
         return container
     }()
-        
-    // NSManagedObjectContext : 생성, 저장, 가져오는 작업 제공
+    
     private var context: NSManagedObjectContext {
         return self.persistentContainer.viewContext
     }
-    // 지연 저장 속성을 사용하는 것이기 때문에 똑같이 지연 저장 속성을 사용하거나
-    // 위처럼 계산 속성은 실제로 메서드 형태로 동작하기 때문에 위의 형태도 가능하다.
-//    private lazy var context = self.persistentContainer.viewContext
-        
+    
     func fetchPhotoFromCoreData() -> [PhotoData] {
         let request = PhotoData.fetchRequest()
         let dateOrder = NSSortDescriptor(key: "date", ascending: false)
