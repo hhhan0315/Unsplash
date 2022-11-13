@@ -79,7 +79,7 @@ enum API {
     - 한정된 사례 안에서 정의할 수 있는 타입
     - 가독성 및 안정성이 높아진다.
 
-## APISerivce
+### APISerivce
 
 ```swift
 final class APIService: APIServiceProtocol {
@@ -155,3 +155,66 @@ final class APIService: APIServiceProtocol {
     - 객체 그래프를 관리하는 Framework
     - 여러가지 기능 중의 하나인 Persistence를 통해 영구적으로 저장할 수 있다.
     - 중요한 것은 Core Data의 기능 중 하나를 사용하는 것이며 `Core Data == DB`는 아니다.
+
+```swift
+final class CoreDataManager {
+    
+    static let shared = CoreDataManager()
+    private init() {}
+    
+    // NSPersistentContainer : Core Data Stack을 나타내는 필요한 모든 객체
+    // AppDelegate에 보통 생성되는데 따로 Manager 클래스에서 사용하기로 이동
+    private lazy var persistentContainer: NSPersistentContainer = {
+        let container = NSPersistentContainer(name: Constants.coreDataFileName)
+        container.loadPersistentStores { storeDescription, error in
+            if let error = error as NSError? {
+                fatalError("Unresolved error \(error), \(error.userInfo)")
+            }
+        }
+        return container
+    }()
+        
+    // NSManagedObjectContext : 생성, 저장, 가져오는 작업 제공
+    // 계산속성이며 get 필수 구현
+    private var context: NSManagedObjectContext {
+        return self.persistentContainer.viewContext
+    }
+    // 지연 저장 속성을 사용하는 것이기 때문에 똑같이 지연 저장 속성을 사용하거나
+    // 위처럼 계산 속성은 실제로 메서드 형태로 동작하기 때문에 위의 형태도 가능하다.
+//    private lazy var context = self.persistentContainer.viewContext
+        
+    func fetchPhotoFromCoreData() -> [PhotoData] {
+        let request = PhotoData.fetchRequest()
+        let dateOrder = NSSortDescriptor(key: "date", ascending: false)
+        request.sortDescriptors = [dateOrder]
+        
+        do {
+            let fetchResult = try context.fetch(request)
+            return fetchResult
+        } catch {
+            print(error.localizedDescription)
+            return []
+        }
+    }
+}
+```
+
+- lazy
+    - 해당 속성에 접근하는 순간 초기화 진행
+    - 다른 속성들을 이용할 때 사용
+- 계산 속성
+    - 겉모습은 속성이지만 내부는 메서드 형태로 동작
+    - 해당 속성에 접근했을 경우 다른 속성에 접근해서 계산 후 리턴
+
+- 싱글톤 패턴
+    - 생성자가 여러 차례 호출되어도 객체는 하나다.
+    - 다양한 객체들이 모두 같은 인스턴스와 소통할 수 있다.
+    - 단점으로는 인스턴스들 간에 결합도가 높아져서 OCP(Open Closed Principle)을 위배할 수 있다.
+    - OCP : 확장에는 열려 있고 변경에는 닫혀 있어야 한다.
+
+- 싱글톤 선택 이유
+    - https://developer.apple.com/documentation/coredata/setting_up_a_core_data_stack
+    - 해당 글을 보면 AppDelegate에 NSPersistentContainer를 생성하고 사용하는 ViewController에 앱 실행이 완료되면 속성으로 설정해준다.
+    - 화면 전환시에도 속성을 전달해준다.
+    - 결국 하나의 container로 전달해주는 것이 중요하다고 생각했다.
+    - CoreDataManager에 NSPersistentContainer를 가지고 있기 때문에 싱글톤 패턴을 활용해 하나의 객체로 만들어 사용하는 것이 올바른 방법이라고 생각해 선택했다.
