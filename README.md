@@ -10,13 +10,16 @@ Unsplash unofficial app for iOS
 ## 구현 내용
 - MVC 해체
     - [1. View, Layout Constraint 분리 및 User Action 처리](https://github.com/hhhan0315/Unsplash/tree/main/markdown/MVC_step1.md)
-        - 키워드 : `loadView` `Delegate 패턴` `필수 생성자`
+        - `loadView` `Delegate 패턴` `필수 생성자`
     - [2. DataSource, Delegate 분리](https://github.com/hhhan0315/Unsplash/tree/main/markdown/MVC_step2.md)
-        - 키워드 : `NSObject` `Delegate or Closure` 
-    - [3. 네트워크, 코어데이터 로직 분리]
+        - `NSObject` `Delegate or Closure` 
+    - [3. 네트워크, 코어데이터 로직 분리](https://github.com/hhhan0315/Unsplash/tree/main/markdown/MVC_step3.md)
+        - `enum` `Generic` `Result Type` 
     - [4. Coordinator 패턴 활용]
     - [[참고] let us: Go! 2022 여름 - Ever님 / 주니어 입장에서 바라보는 디자인패턴 & 아키텍처](https://www.youtube.com/watch?v=-GzZ0Yj8h1g&t=705s)
 - [사진 Pagination 구현 방법]
+- [Mock을 이용한 Network Unit Test]
+- [사진 캐시 구현]
 
 - [MVVM 패턴](https://github.com/hhhan0315/Unsplash/tree/main/markdown/MVVM.md)
 - [네트워크 객체](https://github.com/hhhan0315/Unsplash/tree/main/markdown/Network.md)

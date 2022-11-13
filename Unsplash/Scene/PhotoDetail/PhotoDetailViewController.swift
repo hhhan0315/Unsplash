@@ -15,6 +15,8 @@ final class PhotoDetailViewController: UIViewController {
     
     // MARK: - Private Properties
     
+    private let coreDataManager = CoreDataManager.shared
+    
     private var photo: Photo
     
     // MARK: - View LifeCycle
@@ -39,6 +41,13 @@ final class PhotoDetailViewController: UIViewController {
         
         mainView.listener = self
         mainView.photo = photo
+        mainView.heartButtonSelected = coreDataManager.isExistPhotoData(photo: photo) ? true : false
+    }
+    
+    // MARK: - NotificationCenter
+    
+    private func postNotificationHeart() {
+        NotificationCenter.default.post(name: Notification.Name.heartButtonClicked, object: nil)
     }
 }
 
@@ -49,7 +58,19 @@ extension PhotoDetailViewController: PhotoDetailViewActionListener {
         dismiss(animated: true)
     }
     
-    func photoDetailViewHeartButtonDidTap() {
+    func photoDetailViewHeartButtonDidTap(with photo: Photo) {
+        defer {
+            postNotificationHeart()
+        }
         
+        if coreDataManager.isExistPhotoData(photo: photo) {
+            coreDataManager.deletePhotoData(photo: photo) {
+                self.mainView.heartButtonToggle(state: false)
+            }
+        } else {
+            coreDataManager.insertPhotoData(photo: photo) {
+                self.mainView.heartButtonToggle(state: true)
+            }
+        }
     }
 }

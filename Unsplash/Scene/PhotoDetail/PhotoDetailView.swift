@@ -9,7 +9,7 @@ import UIKit
 
 protocol PhotoDetailViewActionListener: AnyObject {
     func photoDetailViewExitButtonDidTap()
-    func photoDetailViewHeartButtonDidTap()
+    func photoDetailViewHeartButtonDidTap(with photo: Photo)
 }
 
 final class PhotoDetailView: UIView {
@@ -52,7 +52,6 @@ final class PhotoDetailView: UIView {
         let button = UIButton(type: .custom)
         button.setImage(UIImage(systemName: "heart.fill"), for: .normal)
         button.backgroundColor = .label
-        button.tintColor = .systemBackground
         button.addTarget(self, action: #selector(touchHeartButton(_:)), for: .touchUpInside)
         button.setPreferredSymbolConfiguration(.init(scale: .large), forImageIn: .normal)
         return button
@@ -65,6 +64,12 @@ final class PhotoDetailView: UIView {
     // MARK: - Internal Properties
     
     weak var listener: PhotoDetailViewActionListener?
+    
+    var heartButtonSelected: Bool = false {
+        didSet {
+            heartButton.tintColor = heartButtonSelected ? .red : .systemBackground
+        }
+    }
     
     var photo: Photo? {
         didSet {
@@ -179,8 +184,11 @@ final class PhotoDetailView: UIView {
     }
     
     @objc private func touchHeartButton(_ sender: UIButton) {
-        print(#function)
-        listener?.photoDetailViewHeartButtonDidTap()
+        guard let photo = photo else {
+            return
+        }
+        
+        listener?.photoDetailViewHeartButtonDidTap(with: photo)
     }
     
     @objc private func handleTap(_ gesture: UITapGestureRecognizer) {
@@ -205,6 +213,10 @@ final class PhotoDetailView: UIView {
         } else {
             scrollView.zoom(to: scrollView.frame, animated: true)
         }
+    }
+    
+    func heartButtonToggle(state: Bool) {
+        heartButton.tintColor = state ? .red : .systemBackground
     }
 }
 

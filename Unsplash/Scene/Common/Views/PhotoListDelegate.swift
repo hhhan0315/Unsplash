@@ -18,7 +18,6 @@ final class PhotoListDeleagte: NSObject, UICollectionViewDelegateFlowLayout {
     weak var listener: PhotoListDelegateActionListener?
     
     func collectionView(_ collectionView: UICollectionView, willDisplay cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {
-        // 1개만 있을 경우 -> 무한 재로딩
         if photos.count >= Constants.perPage && indexPath.item == photos.count - 1 {
             listener?.willDisplayLast()
         }
