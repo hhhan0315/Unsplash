@@ -17,15 +17,9 @@ Unsplash unofficial app for iOS
         - `weak self` `enum` `Generic` `Result Type` `CoreData` `Singleton`
     - [[참고] let us: Go! 2022 여름 - Ever님 / 주니어 입장에서 바라보는 디자인패턴 & 아키텍처](https://www.youtube.com/watch?v=-GzZ0Yj8h1g&t=705s)
 - [사진 Pagination 구현 방법](https://github.com/hhhan0315/Unsplash/tree/main/markdown/Pagination.md)
+    - `reloadData` `reloadSections` `Range & insertItems` `UICollectionViewDiffableDataSource`
 - [Mock을 이용한 Network Unit Test]
 - [사진 캐시 구현]
-
-- [MVVM 패턴](https://github.com/hhhan0315/Unsplash/tree/main/markdown/MVVM.md)
-- [네트워크 객체](https://github.com/hhhan0315/Unsplash/tree/main/markdown/Network.md)
-- [Combine 메모리 해제](https://github.com/hhhan0315/Unsplash/tree/main/markdown/Combine_Memory_Leak.md)
-- [ImageCacheManager 싱글톤 선택 이유](https://github.com/hhhan0315/Unsplash/tree/main/markdown/Singleton.md)
-- [UITableView, UICollectionView reloadData 시 깜빡거림 해결](https://github.com/hhhan0315/Unsplash/tree/main/markdown/Flicker_Reload.md)
-- [DetailViewController 다양한 기능들](https://github.com/hhhan0315/Unsplash/tree/main/markdown/DetailViewController.md)
 
 ## 스크린샷
 

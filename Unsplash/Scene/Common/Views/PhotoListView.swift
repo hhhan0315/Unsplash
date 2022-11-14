@@ -32,31 +32,27 @@ final class PhotoListView: UIView {
         return label
     }()
     
-//    enum Section {
-//        case photos
-//    }
-//
-//    private var dataSource: UICollectionViewDiffableDataSource<Section, Photo>?
-    
     // MARK: - Private Properties
     
-    private let dataSource = PhotoListDataSource()
+    private var dataSource: UICollectionViewDiffableDataSource<Section, Photo>?
     private let delegate = PhotoListDeleagte()
     
     // MARK: - Internal Properties
+    
+    enum Section {
+        case photos
+    }
     
     weak var listener: PhotoListViewActionListener?
     
     var photos: [Photo] = [] {
         didSet {
-            dataSource.photos = photos
             delegate.photos = photos
             
             DispatchQueue.main.async {
-                self.photoCollectionView.reloadData()
+                self.applySnapShot()
                 self.infoLabel.isHidden = self.photos.isEmpty ? false : true
             }
-//            setupSnapShot()
         }
     }
     
@@ -71,7 +67,7 @@ final class PhotoListView: UIView {
         delegate.listener = self
         
         setupViews()
-//        setupPhotoDataSource()
+        setupPhotoDataSource()
     }
     
     required init?(coder: NSCoder) {
@@ -105,22 +101,24 @@ final class PhotoListView: UIView {
         ])
     }
     
-//    private func setupPhotoDataSource() {
-//        dataSource = UICollectionViewDiffableDataSource(collectionView: photoCollectionView, cellProvider: { collectionView, indexPath, photo in
-//            guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: PhotoCollectionViewCell.identifier, for: indexPath) as? PhotoCollectionViewCell else {
-//                return .init()
-//            }
-//            cell.photo = photo
-//            return cell
-//        })
-//    }
-//
-//    private func setupSnapShot() {
-//        var snapShot = NSDiffableDataSourceSnapshot<Section, Photo>()
-//        snapShot.appendSections([Section.photos])
-//        snapShot.appendItems(self.photos)
-//        self.dataSource?.apply(snapShot)
-//    }
+    // MARK: - DiffableDataSource
+    
+    private func setupPhotoDataSource() {
+        dataSource = UICollectionViewDiffableDataSource(collectionView: photoCollectionView, cellProvider: { collectionView, indexPath, photo in
+            guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: PhotoCollectionViewCell.identifier, for: indexPath) as? PhotoCollectionViewCell else {
+                return .init()
+            }
+            cell.photo = photo
+            return cell
+        })
+    }
+
+    private func applySnapShot() {
+        var snapShot = NSDiffableDataSourceSnapshot<Section, Photo>()
+        snapShot.appendSections([Section.photos])
+        snapShot.appendItems(photos)
+        dataSource?.apply(snapShot)
+    }
 }
 
 // MARK: - PhotoListDelegateActionListener

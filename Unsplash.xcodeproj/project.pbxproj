@@ -23,7 +23,6 @@
 		019D78CF28C9C01F00EB3FEB /* APIService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 019D78CE28C9C01F00EB3FEB /* APIService.swift */; };
 		01A1931E291A33D7002079BA /* PhotoListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01A1931D291A33D7002079BA /* PhotoListView.swift */; };
 		01A19322291A3CEB002079BA /* PhotoListDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01A19321291A3CEB002079BA /* PhotoListDelegate.swift */; };
-		01A19324291A4F57002079BA /* PhotoListDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01A19323291A4F57002079BA /* PhotoListDataSource.swift */; };
 		01A19326291A6EF2002079BA /* TopicListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01A19325291A6EF2002079BA /* TopicListView.swift */; };
 		01A19328291A70B3002079BA /* TopicListDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01A19327291A70B3002079BA /* TopicListDataSource.swift */; };
 		01A1932A291A7430002079BA /* TopicListDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01A19329291A7430002079BA /* TopicListDelegate.swift */; };
@@ -82,7 +81,6 @@
 		019D78CE28C9C01F00EB3FEB /* APIService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = APIService.swift; sourceTree = "<group>"; };
 		01A1931D291A33D7002079BA /* PhotoListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhotoListView.swift; sourceTree = "<group>"; };
 		01A19321291A3CEB002079BA /* PhotoListDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhotoListDelegate.swift; sourceTree = "<group>"; };
-		01A19323291A4F57002079BA /* PhotoListDataSource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhotoListDataSource.swift; sourceTree = "<group>"; };
 		01A19325291A6EF2002079BA /* TopicListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TopicListView.swift; sourceTree = "<group>"; };
 		01A19327291A70B3002079BA /* TopicListDataSource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TopicListDataSource.swift; sourceTree = "<group>"; };
 		01A19329291A7430002079BA /* TopicListDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TopicListDelegate.swift; sourceTree = "<group>"; };
@@ -203,7 +201,6 @@
 		0177D414291BD70D0037F2D9 /* Views */ = {
 			isa = PBXGroup;
 			children = (
-				01A19323291A4F57002079BA /* PhotoListDataSource.swift */,
 				01A19321291A3CEB002079BA /* PhotoListDelegate.swift */,
 				01A1931D291A33D7002079BA /* PhotoListView.swift */,
 				013ED83D2846146F00B242FE /* PinterestLayout.swift */,
@@ -508,7 +505,6 @@
 				01A19328291A70B3002079BA /* TopicListDataSource.swift in Sources */,
 				01C0C9E228DE973900D655BD /* TopicPhotoListViewController.swift in Sources */,
 				019D78CF28C9C01F00EB3FEB /* APIService.swift in Sources */,
-				01A19324291A4F57002079BA /* PhotoListDataSource.swift in Sources */,
 				01C0CA0A28E47C8F00D655BD /* NotificationName+Extension.swift in Sources */,
 				01A1932A291A7430002079BA /* TopicListDelegate.swift in Sources */,
 				01C0C9D128DC8FD300D655BD /* URLSessionDataTaskProtocol.swift in Sources */,

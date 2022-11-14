@@ -25,10 +25,14 @@ final class PinterestPhotoListView: UIView {
     
     // MARK: - Private Properties
     
-    private let dataSource = PhotoListDataSource()
+    private var dataSource: UICollectionViewDiffableDataSource<Section, Photo>?
     private let delegate = PhotoListDeleagte()
     
     // MARK: - Internal Properties
+    
+    enum Section {
+        case photos
+    }
     
     weak var listener: PinterestPhotoListViewActionListener?
     
@@ -43,11 +47,10 @@ final class PinterestPhotoListView: UIView {
             }
         }
         didSet {
-            dataSource.photos = photos
             delegate.photos = photos
             
             DispatchQueue.main.async {
-                self.photoCollectionView.reloadData()
+                self.applySnapShot()
             }
         }
     }
@@ -62,8 +65,8 @@ final class PinterestPhotoListView: UIView {
         
         delegate.listener = self
         
-        setupPinterestLayout()
-        setupPhotoCollectionView()
+        setupViews()
+        setupPhotoDataSource()
     }
     
     required init?(coder: NSCoder) {
@@ -71,6 +74,11 @@ final class PinterestPhotoListView: UIView {
     }
     
     // MARK: - Layout
+    
+    private func setupViews() {
+        setupPinterestLayout()
+        setupPhotoCollectionView()
+    }
     
     private func setupPinterestLayout() {
         let layout = PinterestLayout()
@@ -89,6 +97,25 @@ final class PinterestPhotoListView: UIView {
             photoCollectionView.bottomAnchor.constraint(equalTo: safeAreaLayoutGuide.bottomAnchor),
         ])
     }
+    
+    // MARK: - DiffableDataSource
+    
+    private func setupPhotoDataSource() {
+        dataSource = UICollectionViewDiffableDataSource(collectionView: photoCollectionView, cellProvider: { collectionView, indexPath, photo in
+            guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: PhotoCollectionViewCell.identifier, for: indexPath) as? PhotoCollectionViewCell else {
+                return .init()
+            }
+            cell.photo = photo
+            return cell
+        })
+    }
+    
+    private func applySnapShot() {
+        var snapShot = NSDiffableDataSourceSnapshot<Section, Photo>()
+        snapShot.appendSections([Section.photos])
+        snapShot.appendItems(photos)
+        dataSource?.apply(snapShot)
+    }
 }
 
 // MARK: - PinterestLayoutDelegate
@@ -102,7 +129,13 @@ extension PinterestPhotoListView: PinterestLayoutDelegate {
         
         return CGFloat(imageRatio) * cellWidth
     }
+    
+    func numberOfItems() -> Int {
+        return dataSource?.snapshot().numberOfItems ?? 0
+    }
 }
+
+// MARK: - PhotoListDelegateActionListener
 
 extension PinterestPhotoListView: PhotoListDelegateActionListener {
     func willDisplayLast() {

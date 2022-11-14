@@ -9,6 +9,7 @@ import UIKit
 
 protocol PinterestLayoutDelegate: AnyObject {
     func collectionView(_ collectionView: UICollectionView, heightForPhotoAtIndexPath indexPath: IndexPath) -> CGFloat
+    func numberOfItems() -> Int
 }
 
 final class PinterestLayout: UICollectionViewLayout {
@@ -43,8 +44,10 @@ final class PinterestLayout: UICollectionViewLayout {
         }
         var yOffset: [CGFloat] = .init(repeating: 0, count: numberOfColumns)
         var column = 0 // 현재 위치
+        
+        let numberOfItems: Int = delegate?.numberOfItems() ?? 0
                 
-        for item in 0..<collectionView.numberOfItems(inSection: 0) {
+        for item in 0..<numberOfItems {
             let indexPath = IndexPath(item: item, section: 0)
             
             let photoHeight = delegate?.collectionView(collectionView, heightForPhotoAtIndexPath: indexPath) ?? 180
