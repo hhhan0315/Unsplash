@@ -58,6 +58,13 @@ final class PhotoDetailView: UIView {
         return button
     }()
     
+    private let heartImageView: UIImageView = {
+        let imageView = UIImageView(image: UIImage(systemName: "heart.fill"))
+        imageView.tintColor = .white
+        imageView.isHidden = true
+        return imageView
+    }()
+    
     // MARK: - Private Properties
     
     private var isLabelButtonHidden = false
@@ -108,6 +115,7 @@ final class PhotoDetailView: UIView {
         setupScrollView()
         setupPhotoImageView()
         setupHeartButton()
+        setupHeartImageView()
         
         setupGesture()
     }
@@ -167,6 +175,15 @@ final class PhotoDetailView: UIView {
         ])
     }
     
+    private func setupHeartImageView() {
+        addSubview(heartImageView)
+        heartImageView.translatesAutoresizingMaskIntoConstraints = false
+        NSLayoutConstraint.activate([
+            heartImageView.centerXAnchor.constraint(equalTo: centerXAnchor),
+            heartImageView.centerYAnchor.constraint(equalTo: centerYAnchor),
+        ])
+    }
+    
     private func setupGesture() {
         let doubleTapGesture = UITapGestureRecognizer(target: self, action: #selector(imageViewDidDoubleTap(_:)))
         doubleTapGesture.numberOfTapsRequired = 2
@@ -178,7 +195,7 @@ final class PhotoDetailView: UIView {
         addGestureRecognizer(doubleTapGesture)
     }
     
-    // MARK: - User Action
+    // MARK: - Private User Action
     
     @objc private func exitButtonDidTap(_ sender: UIButton) {
         listener?.photoDetailViewExitButtonDidTap()
@@ -209,8 +226,25 @@ final class PhotoDetailView: UIView {
         }
     }
     
+    // MARK: - Internal User Action
+    
     func heartButtonToggle(state: Bool) {
         heartButton.tintColor = state ? .red : .systemBackground
+        
+        guard state == true else {
+            return
+        }
+        
+        UIView.animate(withDuration: 0.4) {
+            self.heartImageView.transform = CGAffineTransform(scaleX: 4.0, y: 4.0)
+            self.heartImageView.isHidden = false
+        } completion: { _ in
+            UIView.animate(withDuration: 0.4) {
+                self.heartImageView.transform = .identity
+            } completion: { _ in
+                self.heartImageView.isHidden = true
+            }
+        }
     }
 }
 
