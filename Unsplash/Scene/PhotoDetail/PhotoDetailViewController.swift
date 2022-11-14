@@ -49,16 +49,8 @@ final class PhotoDetailViewController: UIViewController {
     private func postNotificationHeart() {
         NotificationCenter.default.post(name: Notification.Name.heartButtonClicked, object: nil)
     }
-}
-
-// MARK: - PhotoDetailViewActionListener
-
-extension PhotoDetailViewController: PhotoDetailViewActionListener {
-    func photoDetailViewExitButtonDidTap() {
-        dismiss(animated: true)
-    }
     
-    func photoDetailViewHeartButtonDidTap(with photo: Photo) {
+    private func heartButtonDidTap() {
         defer {
             postNotificationHeart()
         }
@@ -72,5 +64,21 @@ extension PhotoDetailViewController: PhotoDetailViewActionListener {
                 self.mainView.heartButtonToggle(state: true)
             }
         }
+    }
+}
+
+// MARK: - PhotoDetailViewActionListener
+
+extension PhotoDetailViewController: PhotoDetailViewActionListener {
+    func photoDetailViewExitButtonDidTap() {
+        dismiss(animated: true)
+    }
+    
+    func photoDetailViewHeartButtonDidTap(with photo: Photo) {
+        heartButtonDidTap()
+    }
+    
+    func photoDetailViewImageViewDidDoubleTap() {
+        heartButtonDidTap()
     }
 }

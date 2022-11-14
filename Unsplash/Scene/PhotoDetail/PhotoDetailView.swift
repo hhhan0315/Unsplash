@@ -10,6 +10,7 @@ import UIKit
 protocol PhotoDetailViewActionListener: AnyObject {
     func photoDetailViewExitButtonDidTap()
     func photoDetailViewHeartButtonDidTap(with photo: Photo)
+    func photoDetailViewImageViewDidDoubleTap()
 }
 
 final class PhotoDetailView: UIView {
@@ -21,7 +22,7 @@ final class PhotoDetailView: UIView {
         button.setImage(UIImage(systemName: "multiply"), for: .normal)
         button.tintColor = .label
         button.setPreferredSymbolConfiguration(.init(scale: .large), forImageIn: .normal)
-        button.addTarget(self, action: #selector(touchExitButton(_:)), for: .touchUpInside)
+        button.addTarget(self, action: #selector(exitButtonDidTap(_:)), for: .touchUpInside)
         return button
     }()
     
@@ -52,7 +53,7 @@ final class PhotoDetailView: UIView {
         let button = UIButton(type: .custom)
         button.setImage(UIImage(systemName: "heart.fill"), for: .normal)
         button.backgroundColor = .label
-        button.addTarget(self, action: #selector(touchHeartButton(_:)), for: .touchUpInside)
+        button.addTarget(self, action: #selector(heartButtonDidTap(_:)), for: .touchUpInside)
         button.setPreferredSymbolConfiguration(.init(scale: .large), forImageIn: .normal)
         return button
     }()
@@ -167,23 +168,23 @@ final class PhotoDetailView: UIView {
     }
     
     private func setupGesture() {
-        let doubleTapGesture = UITapGestureRecognizer(target: self, action: #selector(handleDoubleTap(_:)))
+        let doubleTapGesture = UITapGestureRecognizer(target: self, action: #selector(imageViewDidDoubleTap(_:)))
         doubleTapGesture.numberOfTapsRequired = 2
-
-        let singleTapGesture = UITapGestureRecognizer(target: self, action: #selector(handleTap(_:)))
+        
+        let singleTapGesture = UITapGestureRecognizer(target: self, action: #selector(imageViewDidTap(_:)))
         singleTapGesture.require(toFail: doubleTapGesture)
-
+        
         addGestureRecognizer(singleTapGesture)
         addGestureRecognizer(doubleTapGesture)
     }
     
     // MARK: - User Action
     
-    @objc private func touchExitButton(_ sender: UIButton) {
+    @objc private func exitButtonDidTap(_ sender: UIButton) {
         listener?.photoDetailViewExitButtonDidTap()
     }
     
-    @objc private func touchHeartButton(_ sender: UIButton) {
+    @objc private func heartButtonDidTap(_ sender: UIButton) {
         guard let photo = photo else {
             return
         }
@@ -191,7 +192,7 @@ final class PhotoDetailView: UIView {
         listener?.photoDetailViewHeartButtonDidTap(with: photo)
     }
     
-    @objc private func handleTap(_ gesture: UITapGestureRecognizer) {
+    @objc private func imageViewDidTap(_ gesture: UITapGestureRecognizer) {
         isLabelButtonHidden.toggle()
         UIView.animate(withDuration: 0.5) {
             self.exitButton.alpha = self.isLabelButtonHidden ? 0 : 1
@@ -199,19 +200,12 @@ final class PhotoDetailView: UIView {
             self.heartButton.alpha = self.isLabelButtonHidden ? 0 : 1
         }
     }
-
-    @objc private func handleDoubleTap(_ gesture: UITapGestureRecognizer) {
-        let scale = min(scrollView.zoomScale * 2, scrollView.maximumZoomScale)
-
-        if scale != scrollView.zoomScale {
-            let tapPoint = gesture.location(in: photoImageView)
-            let size = CGSize(width: scrollView.frame.size.width / scale,
-                              height: scrollView.frame.size.height / scale)
-            let origin = CGPoint(x: tapPoint.x - size.width / 2,
-                                 y: tapPoint.y - size.height / 2)
-            scrollView.zoom(to: CGRect(origin: origin, size: size), animated: true)
-        } else {
-            scrollView.zoom(to: scrollView.frame, animated: true)
+    
+    @objc private func imageViewDidDoubleTap(_ gesture: UITapGestureRecognizer) {
+        let tapPoint = gesture.location(in: photoImageView)
+        
+        if tapPoint.x > 0 && tapPoint.y > 0 {
+            listener?.photoDetailViewImageViewDidDoubleTap()
         }
     }
     
