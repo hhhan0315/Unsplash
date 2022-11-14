@@ -24,10 +24,12 @@ private func getListPhotos() {
     - 현재 네트워크 요청을 처리할 경우 weak self를 지워도 강한 참조는 발생하지 않았다.
     - 하지만 혹시 요청이 빨라서 그런 것은 아닐까 sleep 메서드를 활용해 시간이 좀 더 오래 걸리는 경우로 생각해봤다.
     - 현재 프로젝트 중 TopicListViewController -> TopicPhotoListViewController 화면 전환 중에 PinterestPhotoListView의 deinit이 잘 호출되는지 확인해봤다.
+    
     |weak self|strong self|
     |--|--|
     |![1](https://github.com/hhhan0315/Unsplash/blob/main/screenshot/MVC_step3_1.gif)|![2](https://github.com/hhhan0315/Unsplash/blob/main/screenshot/MVC_step3_2.gif)|
     |해당 화면이 사라질 때 바로 deinit|해당 화면이 사라져도 글로벌 큐에서 작동하던 것이 강한 참조하고 있어서 종료되고 deinit|
+    
     - 사용하지 않아도 큰 문제가 발생하지는 않지만 해당 객체가 소멸되는지의 타이밍이 달라질 수 있어서 `weak self`를 사용하는 것이 좋아보인다.
     
 ### API
