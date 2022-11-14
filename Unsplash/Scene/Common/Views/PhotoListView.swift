@@ -26,6 +26,12 @@ final class PhotoListView: UIView {
         return collectionView
     }()
     
+    private let infoLabel: UILabel = {
+        let label = UILabel()
+        label.text = "No photos"
+        return label
+    }()
+    
 //    enum Section {
 //        case photos
 //    }
@@ -48,6 +54,7 @@ final class PhotoListView: UIView {
             
             DispatchQueue.main.async {
                 self.photoCollectionView.reloadData()
+                self.infoLabel.isHidden = self.photos.isEmpty ? false : true
             }
 //            setupSnapShot()
         }
@@ -63,7 +70,7 @@ final class PhotoListView: UIView {
         
         delegate.listener = self
         
-        setupPhotoCollectionView()
+        setupViews()
 //        setupPhotoDataSource()
     }
     
@@ -73,6 +80,11 @@ final class PhotoListView: UIView {
     
     // MARK: - Layout
     
+    private func setupViews() {
+        setupPhotoCollectionView()
+        setupInfoLabel()
+    }
+    
     private func setupPhotoCollectionView() {
         addSubview(photoCollectionView)
         photoCollectionView.translatesAutoresizingMaskIntoConstraints = false
@@ -81,6 +93,15 @@ final class PhotoListView: UIView {
             photoCollectionView.leadingAnchor.constraint(equalTo: safeAreaLayoutGuide.leadingAnchor),
             photoCollectionView.bottomAnchor.constraint(equalTo: safeAreaLayoutGuide.bottomAnchor),
             photoCollectionView.trailingAnchor.constraint(equalTo: safeAreaLayoutGuide.trailingAnchor),
+        ])
+    }
+    
+    private func setupInfoLabel() {
+        addSubview(infoLabel)
+        infoLabel.translatesAutoresizingMaskIntoConstraints = false
+        NSLayoutConstraint.activate([
+            infoLabel.centerXAnchor.constraint(equalTo: centerXAnchor),
+            infoLabel.centerYAnchor.constraint(equalTo: centerYAnchor),
         ])
     }
     
