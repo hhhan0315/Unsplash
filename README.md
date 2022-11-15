@@ -18,44 +18,27 @@ Unsplash unofficial app for iOS
     - [[참고] let us: Go! 2022 여름 - Ever님 / 주니어 입장에서 바라보는 디자인패턴 & 아키텍처](https://www.youtube.com/watch?v=-GzZ0Yj8h1g&t=705s)
 - [이미지 Pagination 구현 방법](https://github.com/hhhan0315/Unsplash/tree/main/markdown/Pagination.md)
     - `reloadData` `reloadSections` `Range & insertItems` `UICollectionViewDiffableDataSource`
-- [Mock을 이용한 Network Unit Test]
+- [Mock을 이용한 Network Unit Test](https://github.com/hhhan0315/Unsplash/tree/main/markdown/NetworkTest.md)
 - [이미지 캐시 구현](https://github.com/hhhan0315/Unsplash/tree/main/markdown/Cache.md)
     - `URLCache`
 
 ## 스크린샷
 
-<p>
-  <img src="https://github.com/hhhan0315/Unsplash/blob/main/screenshot/intro_home.png" width="30%"/>
-  <img src="https://github.com/hhhan0315/Unsplash/blob/main/screenshot/intro_topic.png" width="30%"/>
-  <img src="https://github.com/hhhan0315/Unsplash/blob/main/screenshot/intro_topic_photo.png" width="30%"/>
-  <img src="https://github.com/hhhan0315/Unsplash/blob/main/screenshot/intro_search.png" width="30%"/>
-  <img src="https://github.com/hhhan0315/Unsplash/blob/main/screenshot/intro_like.png" width="30%"/>
-  <img src="https://github.com/hhhan0315/Unsplash/blob/main/screenshot/intro_like_detail.png" width="30%"/>
-</p>
+<img src="https://github.com/hhhan0315/Unsplash/blob/main/screenshot/intro.png">
 
 ## 기능
 
-### 사진 리스트 화면(홈)
-||
-|--|
-|<img src="https://github.com/hhhan0315/Unsplash/blob/main/screenshot/feature_home.gif"/>|
-|- Unsplash API 중 List photos 활용 <br> - Pagination 구현|
+### 사진 리스트
 
-### 검색 화면
-|||
-|--|--|
-|<img src="https://github.com/hhhan0315/Unsplash/blob/main/screenshot/feature_topic.gif"/>|<img src="https://github.com/hhhan0315/Unsplash/blob/main/screenshot/feature_search.gif"/>|
-|- Unsplash API 중 List topics 활용해 초기화면 구현 <br> - Topic 클릭 시 해당 Topic 사진들을 보여준다.|- SearchBar를 활용해 검색할 수 있고 검색 결과를 보여준다.|
+<p>
+    <img src="https://github.com/hhhan0315/Unsplash/blob/main/screenshot/feature_home.gif"/>
+    <img src="https://github.com/hhhan0315/Unsplash/blob/main/screenshot/feature_topic.gif"/>
+</p>
 
-### 사진 상세 화면
-||
-|--|
-|<img src="https://github.com/hhhan0315/Unsplash/blob/main/screenshot/feature_detail.gif"/>|
-|- 좋아요 기능 <br> - 앨범에 사진 저장 기능 <br> - [DetailViewController 다양한 기능들](https://github.com/hhhan0315/Unsplash/tree/main/markdown/DetailViewController.md)|
+### 검색
+    
+<img src="https://github.com/hhhan0315/Unsplash/blob/main/screenshot/feature_search.gif"/>
 
-### 좋아요 화면
-||
-|--|
-|<img src="https://github.com/hhhan0315/Unsplash/blob/main/screenshot/feature_heart.gif"/>|
-|- 좋아요 표시한 사진들을 표시 <br> - CoreData를 활용한 사진 정보 저장|
+### 사진 좋아요
 
+<img src="https://github.com/hhhan0315/Unsplash/blob/main/screenshot/feature_heart.gif"/>
