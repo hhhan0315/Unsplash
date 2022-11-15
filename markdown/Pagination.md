@@ -1,4 +1,4 @@
-# 사진 Pagination 구현
+# 이미지 Pagination 구현
 - infinte scroll 이라고 불린다.
 
 # 1. reloadData 활용

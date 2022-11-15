@@ -16,7 +16,7 @@ final class TopicListCollectionViewCell: UICollectionViewCell {
     var topic: Topic? {
         didSet {
             titleLabel.text = topic?.title
-            photoImageView.downloadImage(with: topic?.coverPhoto.urls.regular ?? "")
+            photoImageView.downloadImage(with: topic)
         }
     }
     
@@ -58,13 +58,6 @@ final class TopicListCollectionViewCell: UICollectionViewCell {
     
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
-    }
-    
-    override func prepareForReuse() {
-        super.prepareForReuse()
-        
-        photoImageView.image = nil
-        titleLabel.text = nil
     }
     
     override func layoutSubviews() {

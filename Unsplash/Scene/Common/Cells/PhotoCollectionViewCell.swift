@@ -16,7 +16,7 @@ final class PhotoCollectionViewCell: UICollectionViewCell {
     var photo: Photo? {
         didSet {
             nameLabel.text = photo?.user.name
-            photoImageView.downloadImage(with: photo?.urls.regular ?? "")
+            photoImageView.downloadImage(with: photo)
         }
     }
         

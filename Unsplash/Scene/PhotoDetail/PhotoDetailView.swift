@@ -82,7 +82,7 @@ final class PhotoDetailView: UIView {
     var photo: Photo? {
         didSet {
             titleLabel.text = photo?.user.name
-            photoImageView.downloadImage(with: photo?.urls.regular ?? "")
+            photoImageView.downloadImage(with: photo)
         }
     }
     
