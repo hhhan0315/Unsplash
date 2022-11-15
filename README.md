@@ -43,4 +43,69 @@ Unsplash unofficial app for iOS
 
 <img src="https://github.com/hhhan0315/Unsplash/blob/main/screenshot/intro_heart.gif"/>
 
-- 하트 버튼 클릭하거나 사진 더블 클릭 시 CoreData에 저장 후 애니메이션 동작
+## 구조
+
+<img src="https://github.com/hhhan0315/Unsplash/blob/main/screenshot/architecture.png"/>
+
+```bash
+├── Unsplash
+│   ├── Application
+│   │   ├── AppDelegate.swift
+│   │   └── SceneDelegate.swift
+│   ├── Common
+│   │   ├── Alert.swift
+│   │   ├── Constants.swift
+│   │   ├── CoreDataManager.swift
+│   │   ├── Extension
+│   │   │   ├── NotificationName+Extension.swift
+│   │   │   ├── UIImageView+Extension.swift
+│   │   │   └── UIViewController+Extension.swift
+│   │   ├── ImageCacheManager.swift
+│   │   └── Model
+│   │       ├── Photo.swift
+│   │       ├── PhotoData+CoreDataClass.swift
+│   │       ├── Search.swift
+│   │       └── Topic.swift
+│   ├── Network
+│   │   ├── API.swift
+│   │   ├── APIError.swift
+│   │   ├── APIService.swift
+│   │   ├── Secrets.swift
+│   │   ├── URLSessionDataTaskProtocol.swift
+│   │   └── URLSessionProtocol.swift
+│   └── Scene
+│       ├── Common
+│       │   ├── Cells
+│       │   │   └── PhotoCollectionViewCell.swift
+│       │   └── Views
+│       │       ├── PhotoListDelegate.swift
+│       │       ├── PhotoListView.swift
+│       │       ├── PinterestLayout.swift
+│       │       └── PinterestPhotoListView.swift
+│       ├── LikesPhotoList
+│       │   └── LikesPhotoListViewController.swift
+│       ├── MainTabBarController.swift
+│       ├── PhotoDetail
+│       │   ├── PhotoDetailView.swift
+│       │   └── PhotoDetailViewController.swift
+│       ├── PhotoList
+│       │   └── PhotoListViewController.swift
+│       └── Search
+│           ├── SearchResult
+│           │   └── SearchResultViewController.swift
+│           ├── TopicList
+│           │   ├── TopicListCollectionViewCell.swift
+│           │   ├── TopicListDataSource.swift
+│           │   ├── TopicListDelegate.swift
+│           │   ├── TopicListView.swift
+│           │   └── TopicListViewController.swift
+│           └── TopicPhotoList
+│               └── TopicPhotoListViewController.swift
+├── UnsplashTests
+│   └── Network
+│       ├── APIServiceTests.swift
+│       ├── MockURLSession.swift
+│       ├── MockURLSessionDataTask.swift
+│       └── content.json
+```
+
