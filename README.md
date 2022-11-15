@@ -31,14 +31,16 @@ Unsplash unofficial app for iOS
 ### 사진 리스트
 
 <p>
-    <img src="https://github.com/hhhan0315/Unsplash/blob/main/screenshot/feature_home.gif"/>
-    <img src="https://github.com/hhhan0315/Unsplash/blob/main/screenshot/feature_topic.gif"/>
+    <img src="https://github.com/hhhan0315/Unsplash/blob/main/screenshot/intro_home.gif"/>
+    <img src="https://github.com/hhhan0315/Unsplash/blob/main/screenshot/intro_topic.gif"/>
 </p>
 
 ### 검색
     
-<img src="https://github.com/hhhan0315/Unsplash/blob/main/screenshot/feature_search.gif"/>
+<img src="https://github.com/hhhan0315/Unsplash/blob/main/screenshot/intro_search.gif"/>
 
 ### 사진 좋아요
 
-<img src="https://github.com/hhhan0315/Unsplash/blob/main/screenshot/feature_heart.gif"/>
+<img src="https://github.com/hhhan0315/Unsplash/blob/main/screenshot/intro_heart.gif"/>
+
+- 하트 버튼 클릭하거나 사진 더블 클릭 시 CoreData에 저장 후 애니메이션 동작
