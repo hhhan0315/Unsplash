@@ -67,7 +67,7 @@ final class PhotoListView: UIView {
         delegate.listener = self
         
         setupViews()
-        setupPhotoDataSource()
+        setupDataSource()
     }
     
     required init?(coder: NSCoder) {
@@ -103,7 +103,7 @@ final class PhotoListView: UIView {
     
     // MARK: - DiffableDataSource
     
-    private func setupPhotoDataSource() {
+    private func setupDataSource() {
         dataSource = UICollectionViewDiffableDataSource(collectionView: photoCollectionView, cellProvider: { collectionView, indexPath, photo in
             guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: PhotoCollectionViewCell.identifier, for: indexPath) as? PhotoCollectionViewCell else {
                 return .init()

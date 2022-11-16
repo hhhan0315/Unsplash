@@ -32,3 +32,13 @@ extension Topic {
         }
     }
 }
+
+extension Topic: Hashable, Equatable {
+    static func == (lhs: Topic, rhs: Topic) -> Bool {
+        return lhs.id == rhs.id
+    }
+    
+    func hash(into hasher: inout Hasher) {
+        hasher.combine(id)
+    }
+}

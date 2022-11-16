@@ -34,20 +34,23 @@ final class TopicListView: UIView {
     
     // MARK: - Private Properties
     
-    private let dataSource = TopicListDataSource()
+    private var dataSource: UICollectionViewDiffableDataSource<Section, Topic>?
     private let delegate = TopicListDelegate()
     
     // MARK: - Internal Properties
+    
+    enum Section {
+        case topics
+    }
     
     weak var listener: TopicListViewActionListener?
     
     var topics: [Topic] = [] {
         didSet {
-            dataSource.topics = topics
             delegate.topics = topics
             
             DispatchQueue.main.async {
-                self.topicCollectionView.reloadData()
+                self.applySnapShot()
             }
         }
     }
@@ -61,6 +64,7 @@ final class TopicListView: UIView {
         topicCollectionView.delegate = delegate
         
         setupTopicCollectionView()
+        setupDataSource()
         bindAction()
     }
     
@@ -79,6 +83,25 @@ final class TopicListView: UIView {
             topicCollectionView.trailingAnchor.constraint(equalTo: safeAreaLayoutGuide.trailingAnchor),
             topicCollectionView.bottomAnchor.constraint(equalTo: safeAreaLayoutGuide.bottomAnchor),
         ])
+    }
+    
+    // MARK: - DiffableDataSource
+    
+    private func setupDataSource() {
+        dataSource = UICollectionViewDiffableDataSource(collectionView: topicCollectionView, cellProvider: { collectionView, indexPath, topic in
+            guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: TopicListCollectionViewCell.identifier, for: indexPath) as? TopicListCollectionViewCell else {
+                return .init()
+            }
+            cell.topic = topic
+            return cell
+        })
+    }
+
+    private func applySnapShot() {
+        var snapShot = NSDiffableDataSourceSnapshot<Section, Topic>()
+        snapShot.appendSections([Section.topics])
+        snapShot.appendItems(topics)
+        dataSource?.apply(snapShot)
     }
     
     // MARK: - User Action
