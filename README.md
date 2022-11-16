@@ -19,6 +19,7 @@ Unsplash unofficial app for iOS
 - [이미지 Pagination 구현 방법](https://github.com/hhhan0315/Unsplash/tree/main/markdown/Pagination.md)
     - `reloadData` `reloadSections` `Range & insertItems` `UICollectionViewDiffableDataSource`
 - [Mock을 이용한 Network Unit Test](https://github.com/hhhan0315/Unsplash/tree/main/markdown/NetworkTest.md)
+    - `의존성 역전`
 - [이미지 캐시 구현](https://github.com/hhhan0315/Unsplash/tree/main/markdown/Cache.md)
     - `URLCache`
 
