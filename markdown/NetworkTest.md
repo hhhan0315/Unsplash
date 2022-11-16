@@ -127,6 +127,6 @@ final class MockURLSessionDataTask: URLSessionDataTaskProtocol {
 
 ## 테스트 코드
 
-![링크](https://github.com/hhhan0315/Unsplash/blob/main/UnsplashTests/Network/APIServiceTests.swift)
+[APIServiceTests.swift](https://github.com/hhhan0315/Unsplash/blob/main/UnsplashTests/Network/APIServiceTests.swift)
 
 <img src="https://github.com/hhhan0315/Unsplash/blob/main/screenshot/networkTest.png">
