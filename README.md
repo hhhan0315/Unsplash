@@ -15,7 +15,6 @@ Unsplash unofficial app for iOS
         - `NSObject` `Delegate or Closure` 
     - [3. 네트워크, 코어데이터 로직 분리](https://github.com/hhhan0315/Unsplash/tree/main/markdown/MVC_step3.md)
         - `weak self` `enum` `Generic` `Result Type` `CoreData` `Singleton`
-    - [[참고] let us: Go! 2022 여름 - Ever님 / 주니어 입장에서 바라보는 디자인패턴 & 아키텍처](https://www.youtube.com/watch?v=-GzZ0Yj8h1g&t=705s)
 - [이미지 Pagination 구현 방법](https://github.com/hhhan0315/Unsplash/tree/main/markdown/Pagination.md)
     - `reloadData` `reloadSections` `Range & insertItems` `UICollectionViewDiffableDataSource`
 - [이미지 캐시 구현](https://github.com/hhhan0315/Unsplash/tree/main/markdown/Cache.md)
