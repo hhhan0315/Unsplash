@@ -9,79 +9,94 @@ import XCTest
 @testable import Unsplash
 
 final class APIServiceTests: XCTestCase {
-    var sut: APIService!
-    var data: Data!
+    var apiService: APIService?
+    let urlSession = MockURLSession()
     
-    override func setUpWithError() throws {
-        try super.setUpWithError()
-        sut = APIService()
+    func test_statusCode가_200일경우_Error가_나오지않는지() {
+        let expectation = XCTestExpectation()
+        var error: APIError?
         
-        let path = Bundle.main.path(forResource: "content", ofType: "json")!
-        let jsonString = try! String(contentsOfFile: path)
-        data = jsonString.data(using: .utf8)!
-    }
-    
-    override func tearDownWithError() throws {
-        try super.tearDownWithError()
-        sut = nil
-        data = nil
-    }
-    
-    func test_request호출시_성공하는지() {
-        // given
-        let mockURLSession = MockURLSession.make(url: URL(string: "test.com")!, data: data, statusCode: 200)
-        sut.urlSession = mockURLSession
+        urlSession.condition = .status_200
         
-        // when
-        var result: [Photo]?
-        sut.request(api: .getListPhotos(page: 1),
-                    dataType: [Photo].self) { response in
-            if case .success(let photos) = response {
-                result = photos
+        apiService = APIService(urlSession: urlSession)
+        apiService?.request(api: .getListPhotos(page: 1),
+                           dataType: [Photo].self) { result in
+            switch result {
+            case .success:
+                error = nil
+            case .failure:
+                XCTFail()
             }
+            expectation.fulfill()
         }
         
-        // then
-        let expectation = try? JSONDecoder().decode([Photo].self, from: data)
-        XCTAssertEqual(result?.count, expectation?.count)
-        XCTAssertEqual(result?.first?.id, expectation?.first?.id)
+        wait(for: [expectation], timeout: 1.0)
+        XCTAssertNil(error)
     }
     
-    func test_request호출시_실패하며_serverError_400_발생하는지() {
-        // given
-        let mockURLSession = MockURLSession.make(url: URL(string: "test.com")!, data: nil, statusCode: 400)
-        sut.urlSession = mockURLSession
+    func test_statusCode가_200일경우_DecodeError가_발생하는지() {
+        let expectation = XCTestExpectation()
+        var error: APIError?
         
-        // when
-        var result: APIError?
-        sut.request(api: .getListPhotos(page: 1),
-                    dataType: [Photo].self) { response in
-            if case .failure(let apiError) = response {
-                result = apiError
+        urlSession.condition = .status_200
+        
+        apiService = APIService(urlSession: urlSession)
+        apiService?.request(api: .getListPhotos(page: 1),
+                           dataType: [Topic].self) { result in
+            switch result {
+            case .success:
+                XCTFail()
+            case .failure(let apiError):
+                error = apiError
             }
+            expectation.fulfill()
         }
         
-        // then
-        let expectation = APIError.serverError(statusCode: 400)
-        XCTAssertEqual(result?.errorDescription, expectation.errorDescription)
+        wait(for: [expectation], timeout: 1.0)
+        XCTAssertEqual(error, .decodeError)
     }
     
-    func test_request호출시_실패하며_decodeError_발생하는지() {
-        // given
-        let mockURLSession = MockURLSession.make(url: URL(string: "test.com")!, data: data, statusCode: 200)
-        sut.urlSession = mockURLSession
+    func test_statusCode가_400일경우_status400Error가_발생하는지() {
+        let expectation = XCTestExpectation()
+        var error: APIError?
         
-        // when
-        var result: APIError?
-        sut.request(api: .getListPhotos(page: 1),
-                    dataType: Search.self) { response in
-            if case .failure(let apiError) = response {
-                result = apiError
+        urlSession.condition = .status_400
+        
+        apiService = APIService(urlSession: urlSession)
+        apiService?.request(api: .getListPhotos(page: 1),
+                           dataType: [Photo].self) { result in
+            switch result {
+            case .success:
+                XCTFail()
+            case .failure(let apiError):
+                error = apiError
             }
+            expectation.fulfill()
         }
         
-        // then
-        let expectation = APIError.decodeError
-        XCTAssertEqual(result?.errorDescription, expectation.errorDescription)
+        wait(for: [expectation], timeout: 1.0)
+        XCTAssertEqual(error, .status_400)
+    }
+    
+    func test_unexpectedData일경우_unexpectedData오류가_발생하는지() {
+        let expectation = XCTestExpectation()
+        var error: APIError?
+        
+        urlSession.condition = .unexpectedData
+        
+        apiService = APIService(urlSession: urlSession)
+        apiService?.request(api: .getListPhotos(page: 1),
+                           dataType: [Photo].self) { result in
+            switch result {
+            case .success:
+                XCTFail()
+            case .failure(let apiError):
+                error = apiError
+            }
+            expectation.fulfill()
+        }
+        
+        wait(for: [expectation], timeout: 1.0)
+        XCTAssertEqual(error, .unexpectedData)
     }
 }

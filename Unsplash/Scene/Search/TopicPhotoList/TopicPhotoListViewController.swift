@@ -58,7 +58,7 @@ final class TopicPhotoListViewController: UIViewController {
                 self?.mainView.photos += photos
             case .failure(let apiError):
                 DispatchQueue.main.async {
-                    self?.showAlert(message: apiError.errorDescription)
+                    self?.showAlert(message: apiError.rawValue)
                 }
             }
         }

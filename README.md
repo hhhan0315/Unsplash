@@ -18,10 +18,10 @@ Unsplash unofficial app for iOS
     - [[참고] let us: Go! 2022 여름 - Ever님 / 주니어 입장에서 바라보는 디자인패턴 & 아키텍처](https://www.youtube.com/watch?v=-GzZ0Yj8h1g&t=705s)
 - [이미지 Pagination 구현 방법](https://github.com/hhhan0315/Unsplash/tree/main/markdown/Pagination.md)
     - `reloadData` `reloadSections` `Range & insertItems` `UICollectionViewDiffableDataSource`
-- [Mock을 이용한 Network Unit Test](https://github.com/hhhan0315/Unsplash/tree/main/markdown/NetworkTest.md)
-    - `의존성 역전`
 - [이미지 캐시 구현](https://github.com/hhhan0315/Unsplash/tree/main/markdown/Cache.md)
     - `URLCache`
+- [Mock을 이용한 Network Unit Test](https://github.com/hhhan0315/Unsplash/tree/main/markdown/NetworkTest.md)
+    - `의존성 역전` `MockURLSession` `MockURLSessionDataTask` `추상화`
 
 ## 스크린샷
 

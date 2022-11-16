@@ -7,25 +7,14 @@
 
 import Foundation
 
-enum APIError: Error {
-    case invalidURLError
-    case invalidDataError
-    case serverError(statusCode: Int)
-    case unknownError
-    case decodeError
-    
-    var errorDescription: String {
-        switch self {
-        case .invalidURLError:
-            return "URL이 유효하지 않습니다."
-        case .invalidDataError:
-            return "Data가 유효하지 않습니다."
-        case .serverError(let statusCode):
-            return "\(statusCode) 서버 에러가 발생했습니다."
-        case .unknownError:
-            return "Unknown Error"
-        case .decodeError:
-            return "Decode Error"
-        }
-    }
+enum APIError: String, Error {
+    case invalidURLRequest = "URLRequest가 유효하지 않습니다."
+    case sessionError = "네트워크 통신에 문제가 있습니다."
+    case responseIsNil = "서버 응답이 오지 않았습니다."
+    case unexpectedData = "예상치 못한 데이터를 수신했습니다."
+    case unexpectedResponse = "예상치 못한 서버응답이 왔습니다."
+    case decodeError = "디코딩에 문제가 있습니다."
+    case status_200 = "예상한 응답이 왔습니다."
+    case status_400 = "잘못된 요청입니다."
+    case status_500 = "서버 오류입니다."
 }

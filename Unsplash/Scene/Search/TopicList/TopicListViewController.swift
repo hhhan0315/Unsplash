@@ -56,7 +56,7 @@ final class TopicListViewController: UIViewController {
                 self?.mainView.topics += topics
             case .failure(let apiError):
                 DispatchQueue.main.async {
-                    self?.showAlert(message: apiError.errorDescription)
+                    self?.showAlert(message: apiError.rawValue)
                 }
             }
         }

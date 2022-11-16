@@ -7,14 +7,12 @@
 
 import Foundation
 
-typealias DataTaskCompletionHandler = (Data?, URLResponse?, Error?) -> Void
-
 protocol URLSessionProtocol {
-    func dataTask(with urlReqeust: URLRequest, completionHandler: @escaping DataTaskCompletionHandler) -> URLSessionDataTaskProtocol
+    func dataTask(with urlReqeust: URLRequest, completionHandler: @escaping (Data?, URLResponse?, Error?) -> Void) -> URLSessionDataTaskProtocol
 }
 
 extension URLSession: URLSessionProtocol {
-    func dataTask(with urlReqeust: URLRequest, completionHandler: @escaping DataTaskCompletionHandler) -> URLSessionDataTaskProtocol {
+    func dataTask(with urlReqeust: URLRequest, completionHandler: @escaping (Data?, URLResponse?, Error?) -> Void) -> URLSessionDataTaskProtocol {
         return dataTask(with: urlReqeust, completionHandler: completionHandler) as URLSessionDataTask
     }
 }

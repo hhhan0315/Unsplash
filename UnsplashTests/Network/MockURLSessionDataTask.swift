@@ -9,14 +9,9 @@ import Foundation
 @testable import Unsplash
 
 final class MockURLSessionDataTask: URLSessionDataTaskProtocol {
-    
-    private let resumeHandler: () -> Void
-    
-    init(resumeHandler: @escaping () -> Void) {
-        self.resumeHandler = resumeHandler
-    }
+    var resumDidCall: () -> Void = {}
     
     func resume() {
-        resumeHandler()
+        resumDidCall()
     }
 }

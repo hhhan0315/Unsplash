@@ -9,29 +9,47 @@ import Foundation
 @testable import Unsplash
 
 final class MockURLSession: URLSessionProtocol {
+    let dummyData: Data
+    let url = URL(string: "https://test.com")!
     
-    typealias Response = (data: Data?, urlResponse: URLResponse?, error: Error?)
+    var condition: APIError?
     
-    private let response: Response
-    
-    init(response: Response) {
-        self.response = response
+    init() {
+        let path = Bundle.main.path(forResource: "content", ofType: "json")!
+        let jsonString = try! String(contentsOfFile: path)
+        dummyData = jsonString.data(using: .utf8)!
     }
     
-    func dataTask(with urlRequest: URLRequest,
-                  completionHandler: @escaping (Data?, URLResponse?, Error?) -> Void) -> URLSessionDataTaskProtocol {
-        return MockURLSessionDataTask {
-            completionHandler(self.response.data, self.response.urlResponse, self.response.error)
+    private func makeResultValues(of condition: APIError?) -> (Data?, HTTPURLResponse?, APIError?) {
+        switch condition {
+        case .sessionError:
+            return (nil, nil, .sessionError)
+        case .responseIsNil:
+            return (nil, nil, nil)
+        case .unexpectedResponse:
+            return (nil, HTTPURLResponse(url: url, statusCode: 300, httpVersion: "2", headerFields: nil), nil)
+        case .unexpectedData:
+            return (nil, HTTPURLResponse(url: url, statusCode: 200, httpVersion: "2", headerFields: nil), nil)
+        case .status_200:
+            return (dummyData, HTTPURLResponse(url: url, statusCode: 200, httpVersion: "2", headerFields: nil), nil)
+        case .status_400:
+            return (nil, HTTPURLResponse(url: url, statusCode: 404, httpVersion: "2", headerFields: nil), nil)
+        case .status_500:
+            return (nil, HTTPURLResponse(url: url, statusCode: 501, httpVersion: "2", headerFields: nil), nil)
+        default:
+            return (nil, nil, nil)
         }
     }
     
-    static func make(url: URL, data: Data?, statusCode: Int) -> MockURLSession {
-        let mockURLSession: MockURLSession = {
-            let urlResponse = HTTPURLResponse(url: url, statusCode: statusCode, httpVersion: nil, headerFields: nil)
-            let mockResponse: MockURLSession.Response = (data: data, urlResponse: urlResponse, error: nil)
-            let mockUrlSession = MockURLSession(response: mockResponse)
-            return mockUrlSession
-        }()
-        return mockURLSession
+    func dataTask(
+        with urlReqeust: URLRequest,
+        completionHandler: @escaping (Data?, URLResponse?, Error?) -> Void)
+    -> URLSessionDataTaskProtocol {
+        let dataTask = MockURLSessionDataTask()
+        dataTask.resumDidCall = {
+            let resultValue = self.makeResultValues(of: self.condition)
+            completionHandler(resultValue.0, resultValue.1, resultValue.2)
+        }
+        return dataTask
     }
 }

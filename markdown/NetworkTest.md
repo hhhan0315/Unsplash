@@ -1,15 +1,45 @@
 # Mock을 이용한 Network Unit Test
-- [참고: [Swift] Mock 을 이용한 Network Unit Test 하기](https://sujinnaljin.medium.com/swift-mock-을-이용한-network-unit-test-하기-a69570defb41)
-- 네트워크 테스트를 네트워크가 동작하지 않는 상황에서도 테스트를 해보고 싶었다.
+- [참고: 내일 지구가 멸망하더라도 테스트는 같게 동작해야한다.(김찬우) - AsyncSwift Seminar002](https://www.youtube.com/watch?v=Bev67qIA6mY&t=1136s)
 
-## 의존성 주입
+## 네트워킹 과정
+- URLSession 객체가 만들어진다. -> dataTask 실행 -> URLSessionDataTask 객체 생성 -> resume 실행 -> 서버 다녀옴 -> completionHandler 호출
+- 해당 과정이 일관된 과정이 아니다.
+    - 서버 다운
+    - 와이파이 연결 불안정
+- 그래도 우리는 일관된 테스트를 진행해야 한다.
+- 우리는 `MockURLSession`, `MockURLSessionDataTask`를 만들어줄 것이다.
+
+## URLSessionProtocol, URLSessionDataTaskProtocol
 
 ```swift
-protocol APIServiceProtocol {
-    func request<T: Decodable>(api: API, dataType: T.Type, completion: @escaping (Result<T, APIError>) -> Void)
+typealias DataTaskCompletionHandler = (Data?, URLResponse?, Error?) -> Void
+
+// URLSession 추상 타입 생성
+protocol URLSessionProtocol {
+    func dataTask(with urlReqeust: URLRequest, completionHandler: @escaping DataTaskCompletionHandler) -> URLSessionDataTaskProtocol
 }
 
-final class APIService: APIServiceProtocol {
+// URLSession이 추상 타입에 포함될 수 있도록 프로토콜 채택
+extension URLSession: URLSessionProtocol {
+    func dataTask(with urlReqeust: URLRequest, completionHandler: @escaping DataTaskCompletionHandler) -> URLSessionDataTaskProtocol {
+        return dataTask(with: urlReqeust, completionHandler: completionHandler) as URLSessionDataTask
+    }
+}
+
+// URLSessionDataTask 추상 타입 생성
+protocol URLSessionDataTaskProtocol {
+    func resume()
+}
+
+// URLSessionDataTask가 추상 타입에 포함될 수 있도록 프로토콜 채택
+extension URLSessionDataTask: URLSessionDataTaskProtocol {}
+```
+
+## APIService
+
+```swift
+final class APIService {
+    // 추상화해서 진짜일 때는 네트워크 통신, 테스트도 하기 위해 Protocol을 가짐
     var urlSession: URLSessionProtocol
     
     init(urlSession: URLSessionProtocol = URLSession.shared) {
@@ -35,50 +65,68 @@ final class APIService: APIServiceProtocol {
     - 현재 `APIService`는 추상적인 객체 `URLSessionProtocol`에 의존하고 있다.
     - 이렇게 구현하면 `URLSessionProtocol`을 채택하는 객체를 만들어서 주입해주면 된다.
 
-## 테스트 코드
+## MockURLSession, MockURLSessionDataTask
 
 ```swift
-func test_request호출시_성공하는지() {
-    // given
-    let mockURLSession = MockURLSession.make(url: URL(string: "test.com")!, data: data, statusCode: 200)
-    sut.urlSession = mockURLSession
+final class MockURLSession: URLSessionProtocol {
+    let dummyData: Data
+    let url = URL(string: "https://test.com")!
     
-    // when
-    var result: [Photo]?
-    sut.request(api: .getListPhotos(page: 1),
-                dataType: [Photo].self) { response in
-        if case .success(let photos) = response {
-            result = photos
+    var condition: APIError?
+    
+    init() {
+        let path = Bundle.main.path(forResource: "content", ofType: "json")!
+        let jsonString = try! String(contentsOfFile: path)
+        dummyData = jsonString.data(using: .utf8)!
+    }
+    
+    // 우리가 원하는 상황에 대한 정보를 Completion으로 넘겨야하는지 미리 정의
+    private func makeResultValues(of condition: APIError?) -> (Data?, HTTPURLResponse?, APIError?) {
+        switch condition {
+        case .sessionError:
+            return (nil, nil, .sessionError)
+        case .responseIsNil:
+            return (nil, nil, nil)
+        case .unexpectedResponse:
+            return (nil, HTTPURLResponse(url: url, statusCode: 300, httpVersion: "2", headerFields: nil), nil)
+        case .unexpectedData:
+            return (nil, HTTPURLResponse(url: url, statusCode: 200, httpVersion: "2", headerFields: nil), nil)
+        case .status_200:
+            return (dummyData, HTTPURLResponse(url: url, statusCode: 200, httpVersion: "2", headerFields: nil), nil)
+        case .status_400:
+            return (nil, HTTPURLResponse(url: url, statusCode: 404, httpVersion: "2", headerFields: nil), nil)
+        case .status_500:
+            return (nil, HTTPURLResponse(url: url, statusCode: 501, httpVersion: "2", headerFields: nil), nil)
+        default:
+            return (nil, nil, nil)
         }
     }
     
-    // then
-    let expectation = try? JSONDecoder().decode([Photo].self, from: data)
-    XCTAssertEqual(result?.count, expectation?.count)
-    XCTAssertEqual(result?.first?.id, expectation?.first?.id)
+    // dataTask가 불리면 미리 정의된 정보를 resumeDidCall에서 호출
+    func dataTask(
+        with urlReqeust: URLRequest,
+        completionHandler: @escaping (Data?, URLResponse?, Error?) -> Void)
+    -> URLSessionDataTaskProtocol {
+        let dataTask = MockURLSessionDataTask()
+        dataTask.resumDidCall = {
+            let resultValue = self.makeResultValues(of: self.condition)
+            completionHandler(resultValue.0, resultValue.1, resultValue.2)
+        }
+        return dataTask
+    }
 }
 
-func test_request호출시_실패하며_decodeError_발생하는지() {
-    // given
-    let mockURLSession = MockURLSession.make(url: URL(string: "test.com")!, data: data, statusCode: 200)
-    sut.urlSession = mockURLSession
+final class MockURLSessionDataTask: URLSessionDataTaskProtocol {
+    var resumDidCall: () -> Void = {}
     
-    // when
-    var result: APIError?
-    sut.request(api: .getListPhotos(page: 1),
-                dataType: Search.self) { response in
-        if case .failure(let apiError) = response {
-            result = apiError
-        }
+    func resume() {
+        resumDidCall()
     }
-    
-    // then
-    let expectation = APIError.decodeError
-    XCTAssertEqual(result?.errorDescription, expectation.errorDescription)
 }
 ```
 
-- `MockURLSession`의 `response`에 원하는 형태를 저장하고 `APIService`에 주입
-- 샘플 json 데이터는 [Photo]의 형태로 구성
-- 성공적일 때는 해당 결과의 전체 개수와 첫 번째 값을 비교
-- 실패일 때는 해당 에러의 메시지를 비교
+## 테스트 코드
+
+![링크](https://github.com/hhhan0315/Unsplash/blob/main/UnsplashTests/Network/APIServiceTests.swift)
+
+<img src="https://github.com/hhhan0315/Unsplash/blob/main/screenshot/networkTest.png">
