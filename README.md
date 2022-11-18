@@ -49,6 +49,10 @@ Unsplash unofficial app for iOS
 
 <img src="https://github.com/hhhan0315/Unsplash/blob/main/screenshot/architecture.png"/>
 
+|폴더|설명|
+|--|--|
+|<p> <img src="https://github.com/hhhan0315/Unsplash/blob/main/screenshot/intro_file1.png"> <img src="https://github.com/hhhan0315/Unsplash/blob/main/screenshot/intro_file2.png"> </p>||
+
 ```bash
 ├── Unsplash
 │   ├── Application
