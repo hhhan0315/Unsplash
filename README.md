@@ -21,6 +21,8 @@ Unsplash unofficial app for iOS
     - `URLCache`
 - [Mock을 이용한 Network Unit Test](https://github.com/hhhan0315/Unsplash/tree/main/markdown/NetworkTest.md)
     - `의존성 역전` `MockURLSession` `MockURLSessionDataTask` `추상화`
+- [동시성 프로그래밍](https://github.com/hhhan0315/Unsplash/tree/main/markdown/Concurrency.md)
+    - `sync & async` `blocking & non-blocking` `serial & concurrent`
 
 ## 스크린샷
 
