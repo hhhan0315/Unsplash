@@ -51,4 +51,4 @@ Unsplash unofficial app for iOS
 
 |폴더|설명|
 |--|--|
-|<p> <img src="https://github.com/hhhan0315/Unsplash/blob/main/screenshot/intro_file1.png" width="30%"> <br> <img src="https://github.com/hhhan0315/Unsplash/blob/main/screenshot/intro_file2.png" width="30%"> </p>|<p> <img src="https://github.com/hhhan0315/Unsplash/blob/main/screenshot/intro_file_info1.png" width="30%"> <br> <img src="https://github.com/hhhan0315/Unsplash/blob/main/screenshot/intro_file_info2.png" width="30%"> </p>|
+|<p> <img src="https://github.com/hhhan0315/Unsplash/blob/main/screenshot/intro_file1.png"> <br> <img src="https://github.com/hhhan0315/Unsplash/blob/main/screenshot/intro_file2.png"> </p>|<p> <img src="https://github.com/hhhan0315/Unsplash/blob/main/screenshot/intro_file_info1.png"> <br> <img src="https://github.com/hhhan0315/Unsplash/blob/main/screenshot/intro_file_info2.png"> </p>|
