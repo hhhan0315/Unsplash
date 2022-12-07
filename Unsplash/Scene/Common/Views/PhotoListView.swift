@@ -50,7 +50,7 @@ final class PhotoListView: UIView {
             delegate.photos = photos
             
             DispatchQueue.main.async {
-                self.applySnapShot()
+                self.applySnapshot()
                 self.infoLabel.isHidden = self.photos.isEmpty ? false : true
             }
         }
@@ -113,7 +113,7 @@ final class PhotoListView: UIView {
         })
     }
 
-    private func applySnapShot() {
+    private func applySnapshot() {
         var snapShot = NSDiffableDataSourceSnapshot<Section, Photo>()
         snapShot.appendSections([Section.photos])
         snapShot.appendItems(photos)

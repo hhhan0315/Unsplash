@@ -50,7 +50,7 @@ final class PinterestPhotoListView: UIView {
             delegate.photos = photos
             
             DispatchQueue.main.async {
-                self.applySnapShot()
+                self.applySnapshot()
             }
         }
     }
@@ -110,7 +110,7 @@ final class PinterestPhotoListView: UIView {
         })
     }
     
-    private func applySnapShot() {
+    private func applySnapshot() {
         var snapShot = NSDiffableDataSourceSnapshot<Section, Photo>()
         snapShot.appendSections([Section.photos])
         snapShot.appendItems(photos)

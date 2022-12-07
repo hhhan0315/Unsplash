@@ -17,7 +17,7 @@ public class PhotoData: NSManagedObject {
 extension PhotoData {
 
     @nonobjc public class func fetchRequest() -> NSFetchRequest<PhotoData> {
-        return NSFetchRequest<PhotoData>(entityName: "PhotoData")
+        return NSFetchRequest<PhotoData>(entityName: Constants.coreDataEntityName)
     }
 
     @NSManaged public var date: Date?
