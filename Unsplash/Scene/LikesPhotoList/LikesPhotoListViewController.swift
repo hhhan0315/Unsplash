@@ -11,7 +11,7 @@ final class LikesPhotoListViewController: UIViewController {
     
     // MARK: - UI Define
     
-    private let mainView = PhotoListView()
+    private let mainView = LikesPhotoListView()
     
     // MARK: - Private Properties
     
@@ -66,12 +66,8 @@ final class LikesPhotoListViewController: UIViewController {
 
 // MARK: - PhotoListDelegateActionListener
 
-extension LikesPhotoListViewController: PhotoListViewActionListener {
-    func photoListViewWillDisplayLast() {
-        
-    }
-    
-    func photoListViewCellDidTap(with photo: Photo) {
+extension LikesPhotoListViewController: LikesPhotoListViewActionListener {
+    func likesPhotoListViewCellDidTap(with photo: Photo) {
         let photoDetailViewController = PhotoDetailViewController(photo: photo)
         present(photoDetailViewController, animated: true)
     }
