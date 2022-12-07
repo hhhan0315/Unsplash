@@ -52,7 +52,7 @@ final class PhotoDetailView: UIView {
     private lazy var heartButton: UIButton = {
         let button = UIButton(type: .custom)
         button.setImage(UIImage(systemName: "heart.fill"), for: .normal)
-        button.backgroundColor = .label
+        button.backgroundColor = .black
         button.addTarget(self, action: #selector(heartButtonDidTap(_:)), for: .touchUpInside)
         button.setPreferredSymbolConfiguration(.init(scale: .large), forImageIn: .normal)
         return button
@@ -75,7 +75,7 @@ final class PhotoDetailView: UIView {
     
     var heartButtonSelected: Bool = false {
         didSet {
-            heartButton.tintColor = heartButtonSelected ? .red : .systemBackground
+            heartButton.tintColor = heartButtonSelected ? .red : .white
         }
     }
     
