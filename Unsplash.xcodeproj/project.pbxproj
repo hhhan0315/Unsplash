@@ -191,6 +191,7 @@
 		0177D414291BD70D0037F2D9 /* Views */ = {
 			isa = PBXGroup;
 			children = (
+				013735A229417046006BDF79 /* BlackGradientImageView.swift */,
 				01A19321291A3CEB002079BA /* PhotoListDelegate.swift */,
 				013ED83D2846146F00B242FE /* PinterestLayout.swift */,
 				01A1932B291A7BED002079BA /* PinterestPhotoListView.swift */,
@@ -304,7 +305,6 @@
 		01C0C9F228E286E700D655BD /* TopicList */ = {
 			isa = PBXGroup;
 			children = (
-				013735A229417046006BDF79 /* BlackGradientImageView.swift */,
 				01C0C9DF28DDD85800D655BD /* TopicListCollectionViewCell.swift */,
 				01A19329291A7430002079BA /* TopicListDelegate.swift */,
 				01A19325291A6EF2002079BA /* TopicListView.swift */,

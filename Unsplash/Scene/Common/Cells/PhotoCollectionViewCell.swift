@@ -23,7 +23,7 @@ final class PhotoCollectionViewCell: UICollectionViewCell {
     // MARK: - View Define
     
     private let photoImageView: UIImageView = {
-        let imageView = UIImageView()
+        let imageView = BlackGradientImageView(frame: .zero)
         return imageView
     }()
     
@@ -32,10 +32,6 @@ final class PhotoCollectionViewCell: UICollectionViewCell {
         label.font = UIFont.systemFont(ofSize: 13.0, weight: .semibold)
         label.textColor = .white
         label.numberOfLines = 0
-        label.layer.shadowColor = UIColor.black.cgColor
-        label.layer.shadowRadius = 3.0
-        label.layer.shadowOpacity = 1.0
-        label.layer.shadowOffset = CGSize(width: 4, height: 4)
         return label
     }()
     

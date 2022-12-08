@@ -38,26 +38,6 @@
                ReferencedContainer = "container:Unsplash.xcodeproj">
             </BuildableReference>
          </TestableReference>
-         <TestableReference
-            skipped = "NO">
-            <BuildableReference
-               BuildableIdentifier = "primary"
-               BlueprintIdentifier = "013ED866284DD31000B242FE"
-               BuildableName = "HomeViewModelTests.xctest"
-               BlueprintName = "HomeViewModelTests"
-               ReferencedContainer = "container:Unsplash.xcodeproj">
-            </BuildableReference>
-         </TestableReference>
-         <TestableReference
-            skipped = "NO">
-            <BuildableReference
-               BuildableIdentifier = "primary"
-               BlueprintIdentifier = "013ED875284DE0A400B242FE"
-               BuildableName = "TopicPhotoUseCaseTests.xctest"
-               BlueprintName = "TopicPhotoUseCaseTests"
-               ReferencedContainer = "container:Unsplash.xcodeproj">
-            </BuildableReference>
-         </TestableReference>
       </Testables>
    </TestAction>
    <LaunchAction

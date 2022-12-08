@@ -13,7 +13,7 @@ final class BlackGradientImageView: UIImageView {
         let gradientLayer = CAGradientLayer()
         gradientLayer.colors = [UIColor.black.cgColor, UIColor.black.cgColor]
         gradientLayer.locations = [0 , 1]
-        gradientLayer.opacity = 0.2
+        gradientLayer.opacity = 0.15
         return gradientLayer
     }()
     
