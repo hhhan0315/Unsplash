@@ -22,17 +22,10 @@ final class TopicListCollectionViewCell: UICollectionViewCell {
     
     // MARK: - View Define
     
-    private let photoImageView: UIImageView = {
-        let imageView = UIImageView()
+    private let photoImageView: BlackGradientImageView = {
+        let imageView = BlackGradientImageView(frame: .zero)
         imageView.contentMode = .scaleAspectFill
         imageView.clipsToBounds = true
-        return imageView
-    }()
-    
-    private let blackImageView: UIImageView = {
-        let imageView = UIImageView()
-        imageView.backgroundColor = .black
-        imageView.layer.opacity = 0.3
         return imageView
     }()
     
@@ -42,9 +35,9 @@ final class TopicListCollectionViewCell: UICollectionViewCell {
         label.textColor = .white
         label.numberOfLines = 0
         label.layer.shadowColor = UIColor.black.cgColor
-        label.layer.shadowRadius = 3.0
+        label.layer.shadowRadius = 2.0
         label.layer.shadowOpacity = 1.0
-        label.layer.shadowOffset = CGSize(width: 4, height: 4)
+        label.layer.shadowOffset = CGSize(width: 2, height: 2)
         return label
     }()
     
@@ -69,7 +62,7 @@ final class TopicListCollectionViewCell: UICollectionViewCell {
     
     override func layoutSubviews() {
         super.layoutSubviews()
-
+        
         photoImageView.layer.cornerRadius = 10
     }
     
@@ -77,7 +70,6 @@ final class TopicListCollectionViewCell: UICollectionViewCell {
     
     private func setupLayout() {
         setupPhotoImageView()
-        setupBlackImageView()
         setupTitleLabel()
     }
     
@@ -89,17 +81,6 @@ final class TopicListCollectionViewCell: UICollectionViewCell {
             photoImageView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor),
             photoImageView.bottomAnchor.constraint(equalTo: contentView.bottomAnchor),
             photoImageView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor),
-        ])
-    }
-    
-    private func setupBlackImageView() {
-        contentView.addSubview(blackImageView)
-        blackImageView.translatesAutoresizingMaskIntoConstraints = false
-        NSLayoutConstraint.activate([
-            blackImageView.topAnchor.constraint(equalTo: contentView.topAnchor),
-            blackImageView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor),
-            blackImageView.bottomAnchor.constraint(equalTo: contentView.bottomAnchor),
-            blackImageView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor),
         ])
     }
     

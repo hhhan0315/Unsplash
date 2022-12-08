@@ -5,7 +5,7 @@ Unsplash unofficial app for iOS
 
 > Network - Secrets - clientID에 Unsplash API Key 입력 후 실행
 
-> iOS 14.0
+> iOS 13.0
 
 ## 구현 내용
 - MVC 해체
