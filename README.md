@@ -26,28 +26,28 @@ Unsplash unofficial app for iOS
 
 ## 스크린샷
 
-<img src="https://github.com/hhhan0315/Unsplash/blob/main/screenshot/intro.png">
+<img src="https://github.com/hhhan0315/Unsplash/blob/main/screenshot/intro.png" width="70%">
 
 ## 기능
 
 ### 사진 리스트
 
 <p>
-    <img src="https://github.com/hhhan0315/Unsplash/blob/main/screenshot/intro_list1.gif"/>
-    <img src="https://github.com/hhhan0315/Unsplash/blob/main/screenshot/intro_list2.gif"/>
+    <img src="https://github.com/hhhan0315/Unsplash/blob/main/screenshot/intro_list1.gif" width="20%"/>
+    <img src="https://github.com/hhhan0315/Unsplash/blob/main/screenshot/intro_list2.gif" width="20%"/>
 </p>
 
 ### 검색
     
-<img src="https://github.com/hhhan0315/Unsplash/blob/main/screenshot/intro_search.gif"/>
+<img src="https://github.com/hhhan0315/Unsplash/blob/main/screenshot/intro_search.gif" width="20%"/>
 
 ### 사진 좋아요
 
-<img src="https://github.com/hhhan0315/Unsplash/blob/main/screenshot/intro_heart.gif"/>
+<img src="https://github.com/hhhan0315/Unsplash/blob/main/screenshot/intro_heart.gif" width="20%"/>
 
 ## 구조
 
-<img src="https://github.com/hhhan0315/Unsplash/blob/main/screenshot/architecture.png"/>
+<img src="https://github.com/hhhan0315/Unsplash/blob/main/screenshot/architecture.png" width="70%"/>
 
 ```
 ├── Unsplash
