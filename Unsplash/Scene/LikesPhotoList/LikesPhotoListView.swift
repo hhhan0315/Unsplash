@@ -49,8 +49,8 @@ final class LikesPhotoListView: UIView {
         didSet {
             delegate.photos = photos
             
-            DispatchQueue.main.async {
-                self.applySnapshot()
+            DispatchQueue.main.async { [weak self] in
+                self?.applySnapshot()
             }
         }
     }

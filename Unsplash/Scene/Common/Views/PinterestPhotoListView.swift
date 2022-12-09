@@ -42,15 +42,15 @@ final class PinterestPhotoListView: UIView {
                 return
             }
             
-            DispatchQueue.main.async {
-                self.photoCollectionView.setContentOffset(.zero, animated: false)
+            DispatchQueue.main.async { [weak self] in
+                self?.photoCollectionView.setContentOffset(.zero, animated: false)
             }
         }
         didSet {
             delegate.photos = photos
             
-            DispatchQueue.main.async {
-                self.applySnapshot()
+            DispatchQueue.main.async { [weak self] in
+                self?.applySnapshot()
             }
         }
     }
@@ -81,10 +81,10 @@ final class PinterestPhotoListView: UIView {
     }
     
     private func setupPinterestLayout() {
-        let layout = PinterestLayout()
-        layout.delegate = self
+        let pinterestLayout = PinterestLayout()
+        pinterestLayout.delegate = self
         
-        photoCollectionView.collectionViewLayout = layout
+        photoCollectionView.collectionViewLayout = pinterestLayout
     }
     
     private func setupPhotoCollectionView() {
@@ -130,7 +130,7 @@ extension PinterestPhotoListView: PinterestLayoutDelegate {
         return CGFloat(imageRatio) * cellWidth
     }
     
-    func numberOfItems() -> Int {
+    func numberOfItemsInCollectionView() -> Int {
         return dataSource?.snapshot().numberOfItems ?? 0
     }
 }

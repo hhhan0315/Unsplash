@@ -49,8 +49,8 @@ final class TopicListView: UIView {
         didSet {
             delegate.topics = topics
             
-            DispatchQueue.main.async {
-                self.applySnapShot()
+            DispatchQueue.main.async { [weak self] in
+                self?.applySnapShot()
             }
         }
     }

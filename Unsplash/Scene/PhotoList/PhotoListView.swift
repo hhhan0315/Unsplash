@@ -26,11 +26,11 @@ final class PhotoListView: UIView {
         return collectionView
     }()
     
-    private let infoLabel: UILabel = {
-        let label = UILabel()
-        label.text = "No photos"
-        return label
-    }()
+//    private let infoLabel: UILabel = {
+//        let label = UILabel()
+//        label.text = "No photos"
+//        return label
+//    }()
     
     // MARK: - Private Properties
     
@@ -49,9 +49,9 @@ final class PhotoListView: UIView {
         didSet {
             delegate.photos = photos
             
-            DispatchQueue.main.async {
-                self.applySnapshot()
-                self.infoLabel.isHidden = self.photos.isEmpty ? false : true
+            DispatchQueue.main.async { [weak self] in
+                self?.applySnapshot()
+//                self.infoLabel.isHidden = self.photos.isEmpty ? false : true
             }
         }
     }
@@ -78,7 +78,7 @@ final class PhotoListView: UIView {
     
     private func setupViews() {
         setupPhotoCollectionView()
-        setupInfoLabel()
+//        setupInfoLabel()
     }
     
     private func setupPhotoCollectionView() {
@@ -92,14 +92,14 @@ final class PhotoListView: UIView {
         ])
     }
     
-    private func setupInfoLabel() {
-        addSubview(infoLabel)
-        infoLabel.translatesAutoresizingMaskIntoConstraints = false
-        NSLayoutConstraint.activate([
-            infoLabel.centerXAnchor.constraint(equalTo: centerXAnchor),
-            infoLabel.centerYAnchor.constraint(equalTo: centerYAnchor),
-        ])
-    }
+//    private func setupInfoLabel() {
+//        addSubview(infoLabel)
+//        infoLabel.translatesAutoresizingMaskIntoConstraints = false
+//        NSLayoutConstraint.activate([
+//            infoLabel.centerXAnchor.constraint(equalTo: centerXAnchor),
+//            infoLabel.centerYAnchor.constraint(equalTo: centerYAnchor),
+//        ])
+//    }
     
     // MARK: - DiffableDataSource
     
