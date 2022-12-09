@@ -33,8 +33,8 @@ Unsplash unofficial app for iOS
 ### 사진 리스트
 
 <p>
-    <img src="https://github.com/hhhan0315/Unsplash/blob/main/screenshot/intro_home.gif"/>
-    <img src="https://github.com/hhhan0315/Unsplash/blob/main/screenshot/intro_topic.gif"/>
+    <img src="https://github.com/hhhan0315/Unsplash/blob/main/screenshot/intro_list1.gif"/>
+    <img src="https://github.com/hhhan0315/Unsplash/blob/main/screenshot/intro_list2.gif"/>
 </p>
 
 ### 검색
@@ -47,8 +47,80 @@ Unsplash unofficial app for iOS
 
 ## 구조
 
-<img src="https://github.com/hhhan0315/Unsplash/blob/main/screenshot/architecture.png"/>
+```
+├── Unsplash
+│   ├── Application
+│   │   ├── AppDelegate.swift
+│   │   └── SceneDelegate.swift
+│   ├── Common
+│   │   ├── Alert.swift
+│   │   ├── Constants.swift
+│   │   ├── CoreDataManager.swift
+│   │   ├── Extension
+│   │   │   ├── NotificationName+Extension.swift
+│   │   │   ├── UIImageView+Extension.swift
+│   │   │   └── UIViewController+Extension.swift
+│   │   ├── ImageCacheManager.swift
+│   │   └── Model
+│   │       ├── Photo.swift
+│   │       ├── PhotoData+CoreDataClass.swift
+│   │       ├── Search.swift
+│   │       └── Topic.swift
+│   ├── Network
+│   │   ├── API.swift
+│   │   ├── APIError.swift
+│   │   ├── APIService.swift
+│   │   ├── Secrets.swift
+│   │   ├── URLSessionDataTaskProtocol.swift
+│   │   └── URLSessionProtocol.swift
+│   ├── Resource
+│   │   ├── Assets.xcassets
+│   │   │   ├── AccentColor.colorset
+│   │   │   │   └── Contents.json
+│   │   │   ├── AppIcon.appiconset
+│   │   │   │   └── Contents.json
+│   │   │   └── Contents.json
+│   │   ├── Base.lproj
+│   │   │   └── LaunchScreen.storyboard
+│   │   ├── Info.plist
+│   │   └── Unsplash.xcdatamodeld
+│   │       └── Unsplash.xcdatamodel
+│   │           └── contents
+│   └── Scene
+│       ├── Common
+│       │   ├── Cells
+│       │   │   └── PhotoCollectionViewCell.swift
+│       │   └── Views
+│       │       ├── BlackGradientImageView.swift
+│       │       ├── PhotoListDelegate.swift
+│       │       ├── PinterestLayout.swift
+│       │       └── PinterestPhotoListView.swift
+│       ├── LikesPhotoList
+│       │   ├── LikesPhotoCollectionViewCell.swift
+│       │   ├── LikesPhotoListView.swift
+│       │   └── LikesPhotoListViewController.swift
+│       ├── MainTabBarController.swift
+│       ├── PhotoDetail
+│       │   ├── PhotoDetailView.swift
+│       │   └── PhotoDetailViewController.swift
+│       ├── PhotoList
+│       │   ├── PhotoListView.swift
+│       │   └── PhotoListViewController.swift
+│       └── Search
+│           ├── SearchResult
+│           │   └── SearchResultViewController.swift
+│           ├── TopicList
+│           │   ├── TopicListCollectionViewCell.swift
+│           │   ├── TopicListDelegate.swift
+│           │   ├── TopicListView.swift
+│           │   └── TopicListViewController.swift
+│           └── TopicPhotoList
+│               └── TopicPhotoListViewController.swift
+├── UnsplashTests
+│   └── Network
+│       ├── APIServiceTests.swift
+│       ├── MockURLSession.swift
+│       ├── MockURLSessionDataTask.swift
+│       └── content.json
 
-|폴더|설명|
-|--|--|
-|<p> <img src="https://github.com/hhhan0315/Unsplash/blob/main/screenshot/intro_file1.png"> <br> <img src="https://github.com/hhhan0315/Unsplash/blob/main/screenshot/intro_file2.png"> </p>|<p> <img src="https://github.com/hhhan0315/Unsplash/blob/main/screenshot/intro_file_info1.png"> <br> <img src="https://github.com/hhhan0315/Unsplash/blob/main/screenshot/intro_file_info2.png"> </p>|
+```
