@@ -47,6 +47,8 @@ Unsplash unofficial app for iOS
 
 ## 구조
 
+<img src="https://github.com/hhhan0315/Unsplash/blob/main/screenshot/architecture.png"/>
+
 ```
 ├── Unsplash
 │   ├── Application
