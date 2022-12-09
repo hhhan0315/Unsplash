@@ -26,7 +26,7 @@ Unsplash unofficial app for iOS
 
 ## 스크린샷
 
-<img src="https://github.com/hhhan0315/Unsplash/blob/main/screenshot/intro.png" width="70%">
+<img src="https://github.com/hhhan0315/Unsplash/blob/main/screenshot/intro.png">
 
 ## 기능
 
@@ -47,7 +47,7 @@ Unsplash unofficial app for iOS
 
 ## 구조
 
-<img src="https://github.com/hhhan0315/Unsplash/blob/main/screenshot/architecture.png" width="70%"/>
+<img src="https://github.com/hhhan0315/Unsplash/blob/main/screenshot/architecture.png" width="90%"/>
 
 ```
 ├── Unsplash
