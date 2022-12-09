@@ -43,10 +43,13 @@ final class PhotoListViewController: UIViewController {
     private func getListPhotos() {
         page += 1
         
+        self.mainView.isLoading = true
+        
         apiService.request(api: .getListPhotos(page: page), dataType: [Photo].self) { [weak self] result in
             switch result {
             case .success(let photos):
                 self?.mainView.photos += photos
+                self?.mainView.isLoading = false
             case .failure(let apiError):
                 DispatchQueue.main.async {
                     self?.showAlert(message: apiError.rawValue)

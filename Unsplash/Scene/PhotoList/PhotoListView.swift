@@ -26,11 +26,10 @@ final class PhotoListView: UIView {
         return collectionView
     }()
     
-//    private let infoLabel: UILabel = {
-//        let label = UILabel()
-//        label.text = "No photos"
-//        return label
-//    }()
+    private let activityIndicatorView: UIActivityIndicatorView = {
+        let activityIndicatorView = UIActivityIndicatorView(style: .large)
+        return activityIndicatorView
+    }()
     
     // MARK: - Private Properties
     
@@ -51,7 +50,14 @@ final class PhotoListView: UIView {
             
             DispatchQueue.main.async { [weak self] in
                 self?.applySnapshot()
-//                self.infoLabel.isHidden = self.photos.isEmpty ? false : true
+            }
+        }
+    }
+    
+    var isLoading: Bool = false {
+        didSet {
+            DispatchQueue.main.async {
+                self.isLoading ? self.activityIndicatorView.startAnimating() : self.activityIndicatorView.stopAnimating()
             }
         }
     }
@@ -78,7 +84,7 @@ final class PhotoListView: UIView {
     
     private func setupViews() {
         setupPhotoCollectionView()
-//        setupInfoLabel()
+        setupActivityIndicatorView()
     }
     
     private func setupPhotoCollectionView() {
@@ -92,14 +98,14 @@ final class PhotoListView: UIView {
         ])
     }
     
-//    private func setupInfoLabel() {
-//        addSubview(infoLabel)
-//        infoLabel.translatesAutoresizingMaskIntoConstraints = false
-//        NSLayoutConstraint.activate([
-//            infoLabel.centerXAnchor.constraint(equalTo: centerXAnchor),
-//            infoLabel.centerYAnchor.constraint(equalTo: centerYAnchor),
-//        ])
-//    }
+    private func setupActivityIndicatorView() {
+        addSubview(activityIndicatorView)
+        activityIndicatorView.translatesAutoresizingMaskIntoConstraints = false
+        NSLayoutConstraint.activate([
+            activityIndicatorView.centerXAnchor.constraint(equalTo: centerXAnchor),
+            activityIndicatorView.centerYAnchor.constraint(equalTo: centerYAnchor),
+        ])
+    }
     
     // MARK: - DiffableDataSource
     
