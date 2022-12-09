@@ -17,6 +17,7 @@
 		013ED83E2846146F00B242FE /* PinterestLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = 013ED83D2846146F00B242FE /* PinterestLayout.swift */; };
 		015744F82844586400B3A6F7 /* Secrets.swift in Sources */ = {isa = PBXBuildFile; fileRef = 015744F72844586400B3A6F7 /* Secrets.swift */; };
 		015C93B5283880BA009F2498 /* ImageCacheManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 015C93B4283880BA009F2498 /* ImageCacheManager.swift */; };
+		0164B78F29432E8C00F30756 /* LikesPhotoCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0164B78E29432E8C00F30756 /* LikesPhotoCollectionViewCell.swift */; };
 		019CE08028D45F4C009D4696 /* Photo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 019CE07F28D45F4C009D4696 /* Photo.swift */; };
 		019D78C828C872D200EB3FEB /* UIImageView+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 019D78C728C872D200EB3FEB /* UIImageView+Extension.swift */; };
 		019D78CD28C9BA2E00EB3FEB /* API.swift in Sources */ = {isa = PBXBuildFile; fileRef = 019D78CC28C9BA2E00EB3FEB /* API.swift */; };
@@ -74,6 +75,7 @@
 		013ED83D2846146F00B242FE /* PinterestLayout.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PinterestLayout.swift; sourceTree = "<group>"; };
 		015744F72844586400B3A6F7 /* Secrets.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Secrets.swift; sourceTree = "<group>"; };
 		015C93B4283880BA009F2498 /* ImageCacheManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageCacheManager.swift; sourceTree = "<group>"; };
+		0164B78E29432E8C00F30756 /* LikesPhotoCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LikesPhotoCollectionViewCell.swift; sourceTree = "<group>"; };
 		019CE07F28D45F4C009D4696 /* Photo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Photo.swift; sourceTree = "<group>"; };
 		019D78C728C872D200EB3FEB /* UIImageView+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIImageView+Extension.swift"; sourceTree = "<group>"; };
 		019D78CC28C9BA2E00EB3FEB /* API.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = API.swift; sourceTree = "<group>"; };
@@ -242,6 +244,7 @@
 		01C0C99C28D8A18700D655BD /* LikesPhotoList */ = {
 			isa = PBXGroup;
 			children = (
+				0164B78E29432E8C00F30756 /* LikesPhotoCollectionViewCell.swift */,
 				0137359E2940BAE4006BDF79 /* LikesPhotoListView.swift */,
 				01C0C99D28D8A19B00D655BD /* LikesPhotoListViewController.swift */,
 			);
@@ -471,6 +474,7 @@
 				01C0C9B128DAEB9F00D655BD /* APIError.swift in Sources */,
 				01C0C9A428DA98F900D655BD /* PhotoListViewController.swift in Sources */,
 				01D9D2C3281F71C400E308D4 /* AppDelegate.swift in Sources */,
+				0164B78F29432E8C00F30756 /* LikesPhotoCollectionViewCell.swift in Sources */,
 				015C93B5283880BA009F2498 /* ImageCacheManager.swift in Sources */,
 				01D9D2D7281F7A4F00E308D4 /* MainTabBarController.swift in Sources */,
 				013735A329417046006BDF79 /* BlackGradientImageView.swift in Sources */,

@@ -27,7 +27,7 @@ final class LikesPhotoListView: UIView {
         let layout = UICollectionViewCompositionalLayout(section: section)
         
         let collectionView = UICollectionView(frame: .zero, collectionViewLayout: layout)
-        collectionView.register(PhotoCollectionViewCell.self, forCellWithReuseIdentifier: PhotoCollectionViewCell.identifier)
+        collectionView.register(LikesPhotoCollectionViewCell.self, forCellWithReuseIdentifier: LikesPhotoCollectionViewCell.identifier)
         collectionView.backgroundColor = .systemBackground
         return collectionView
     }()
@@ -90,7 +90,7 @@ final class LikesPhotoListView: UIView {
     
     private func setupDataSource() {
         dataSource = UICollectionViewDiffableDataSource(collectionView: photoCollectionView, cellProvider: { collectionView, indexPath, photo in
-            guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: PhotoCollectionViewCell.identifier, for: indexPath) as? PhotoCollectionViewCell else {
+            guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: LikesPhotoCollectionViewCell.identifier, for: indexPath) as? LikesPhotoCollectionViewCell else {
                 return .init()
             }
             cell.photo = photo
