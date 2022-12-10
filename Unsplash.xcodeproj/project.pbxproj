@@ -36,13 +36,14 @@
 		01A19332291A8C50002079BA /* PhotoDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01A19331291A8C50002079BA /* PhotoDetailView.swift */; };
 		01B49FCA29441CF40027A01E /* PhotoRequestDTO.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01B49FC929441CF40027A01E /* PhotoRequestDTO.swift */; };
 		01B49FCC2944236A0027A01E /* PhotoListViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01B49FCB2944236A0027A01E /* PhotoListViewModel.swift */; };
+		01B49FE629446EDD0027A01E /* PhotoListViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01B49FE529446EDD0027A01E /* PhotoListViewModelTests.swift */; };
 		01BBCB34291E2392004A2275 /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01BBCB33291E2392004A2275 /* Constants.swift */; };
 		01C0C99E28D8A19B00D655BD /* LikesPhotoListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01C0C99D28D8A19B00D655BD /* LikesPhotoListViewController.swift */; };
 		01C0C9A428DA98F900D655BD /* PhotoListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01C0C9A328DA98F900D655BD /* PhotoListViewController.swift */; };
 		01C0C9AC28DADE4E00D655BD /* UIViewController+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01C0C9AB28DADE4E00D655BD /* UIViewController+Extension.swift */; };
 		01C0C9AE28DAE30D00D655BD /* Alert.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01C0C9AD28DAE30D00D655BD /* Alert.swift */; };
 		01C0C9B328DAF48100D655BD /* PhotoCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01C0C9B228DAF48100D655BD /* PhotoCollectionViewCell.swift */; };
-		01C0C9C828DC45BE00D655BD /* APIServiceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01C0C9C728DC45BE00D655BD /* APIServiceTests.swift */; };
+		01C0C9C828DC45BE00D655BD /* NetworkServiceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01C0C9C728DC45BE00D655BD /* NetworkServiceTests.swift */; };
 		01C0C9CF28DC8B7300D655BD /* URLSessionProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01C0C9CE28DC8B7300D655BD /* URLSessionProtocol.swift */; };
 		01C0C9D128DC8FD300D655BD /* URLSessionDataTaskProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01C0C9D028DC8FD300D655BD /* URLSessionDataTaskProtocol.swift */; };
 		01C0C9D528DC973C00D655BD /* MockURLSessionDataTask.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01C0C9D428DC973C00D655BD /* MockURLSessionDataTask.swift */; };
@@ -101,6 +102,7 @@
 		01A19331291A8C50002079BA /* PhotoDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhotoDetailView.swift; sourceTree = "<group>"; };
 		01B49FC929441CF40027A01E /* PhotoRequestDTO.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhotoRequestDTO.swift; sourceTree = "<group>"; };
 		01B49FCB2944236A0027A01E /* PhotoListViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhotoListViewModel.swift; sourceTree = "<group>"; };
+		01B49FE529446EDD0027A01E /* PhotoListViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhotoListViewModelTests.swift; sourceTree = "<group>"; };
 		01BBCB33291E2392004A2275 /* Constants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
 		01C0C99D28D8A19B00D655BD /* LikesPhotoListViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LikesPhotoListViewController.swift; sourceTree = "<group>"; };
 		01C0C9A328DA98F900D655BD /* PhotoListViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhotoListViewController.swift; sourceTree = "<group>"; };
@@ -108,7 +110,7 @@
 		01C0C9AD28DAE30D00D655BD /* Alert.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Alert.swift; sourceTree = "<group>"; };
 		01C0C9B228DAF48100D655BD /* PhotoCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhotoCollectionViewCell.swift; sourceTree = "<group>"; };
 		01C0C9BE28DC443600D655BD /* UnsplashTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = UnsplashTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
-		01C0C9C728DC45BE00D655BD /* APIServiceTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = APIServiceTests.swift; sourceTree = "<group>"; };
+		01C0C9C728DC45BE00D655BD /* NetworkServiceTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkServiceTests.swift; sourceTree = "<group>"; };
 		01C0C9CE28DC8B7300D655BD /* URLSessionProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = URLSessionProtocol.swift; sourceTree = "<group>"; };
 		01C0C9D028DC8FD300D655BD /* URLSessionDataTaskProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = URLSessionDataTaskProtocol.swift; sourceTree = "<group>"; };
 		01C0C9D428DC973C00D655BD /* MockURLSessionDataTask.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockURLSessionDataTask.swift; sourceTree = "<group>"; };
@@ -388,6 +390,7 @@
 		01C0C9BF28DC443600D655BD /* UnsplashTests */ = {
 			isa = PBXGroup;
 			children = (
+				01B49FE529446EDD0027A01E /* PhotoListViewModelTests.swift */,
 				01C0C9D828DCC27B00D655BD /* Network */,
 			);
 			path = UnsplashTests;
@@ -397,7 +400,7 @@
 			isa = PBXGroup;
 			children = (
 				010CDAFB28E9CD5900F796C1 /* content.json */,
-				01C0C9C728DC45BE00D655BD /* APIServiceTests.swift */,
+				01C0C9C728DC45BE00D655BD /* NetworkServiceTests.swift */,
 				01C0C9D628DC976400D655BD /* MockURLSession.swift */,
 				01C0C9D428DC973C00D655BD /* MockURLSessionDataTask.swift */,
 			);
@@ -564,8 +567,9 @@
 			buildActionMask = 2147483647;
 			files = (
 				01C0C9D728DC976400D655BD /* MockURLSession.swift in Sources */,
+				01B49FE629446EDD0027A01E /* PhotoListViewModelTests.swift in Sources */,
 				01C0C9D528DC973C00D655BD /* MockURLSessionDataTask.swift in Sources */,
-				01C0C9C828DC45BE00D655BD /* APIServiceTests.swift in Sources */,
+				01C0C9C828DC45BE00D655BD /* NetworkServiceTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

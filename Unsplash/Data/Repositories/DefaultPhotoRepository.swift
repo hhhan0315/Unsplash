@@ -18,6 +18,7 @@ final class DefaultPhotoRepository {
 extension DefaultPhotoRepository: PhotoRepository {
     func fetchPhotoList(page: Int, completion: @escaping (Result<[Photo], NetworkError>) -> Void) {
         let photoRequestDTO = PhotoRequestDTO(page: page)
+        
         networkService.request(api: API.getListPhotos(photoRequestDTO), dataType: [PhotoResponseDTO].self) { result in
             switch result {
             case .success(let photoResponseDTO):
