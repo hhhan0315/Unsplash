@@ -29,7 +29,6 @@
 		019D78C828C872D200EB3FEB /* UIImageView+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 019D78C728C872D200EB3FEB /* UIImageView+Extension.swift */; };
 		019D78CD28C9BA2E00EB3FEB /* API.swift in Sources */ = {isa = PBXBuildFile; fileRef = 019D78CC28C9BA2E00EB3FEB /* API.swift */; };
 		019D78CF28C9C01F00EB3FEB /* NetworkService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 019D78CE28C9C01F00EB3FEB /* NetworkService.swift */; };
-		01A1931E291A33D7002079BA /* PhotoListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01A1931D291A33D7002079BA /* PhotoListView.swift */; };
 		01A19322291A3CEB002079BA /* PhotoListDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01A19321291A3CEB002079BA /* PhotoListDelegate.swift */; };
 		01A19326291A6EF2002079BA /* TopicListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01A19325291A6EF2002079BA /* TopicListView.swift */; };
 		01A1932A291A7430002079BA /* TopicListDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01A19329291A7430002079BA /* TopicListDelegate.swift */; };
@@ -95,7 +94,6 @@
 		019D78C728C872D200EB3FEB /* UIImageView+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIImageView+Extension.swift"; sourceTree = "<group>"; };
 		019D78CC28C9BA2E00EB3FEB /* API.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = API.swift; sourceTree = "<group>"; };
 		019D78CE28C9C01F00EB3FEB /* NetworkService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkService.swift; sourceTree = "<group>"; };
-		01A1931D291A33D7002079BA /* PhotoListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhotoListView.swift; sourceTree = "<group>"; };
 		01A19321291A3CEB002079BA /* PhotoListDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhotoListDelegate.swift; sourceTree = "<group>"; };
 		01A19325291A6EF2002079BA /* TopicListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TopicListView.swift; sourceTree = "<group>"; };
 		01A19329291A7430002079BA /* TopicListDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TopicListDelegate.swift; sourceTree = "<group>"; };
@@ -197,8 +195,8 @@
 		0164B7902943902C00F30756 /* Domain */ = {
 			isa = PBXGroup;
 			children = (
-				0164B7A829441A9600F30756 /* Interfaces */,
 				0164B7932943903F00F30756 /* Entities */,
+				0164B7A829441A9600F30756 /* Interfaces */,
 			);
 			path = Domain;
 			sourceTree = "<group>";
@@ -355,7 +353,6 @@
 		01C0C9A528DA98FD00D655BD /* PhotoList */ = {
 			isa = PBXGroup;
 			children = (
-				01A1931D291A33D7002079BA /* PhotoListView.swift */,
 				01C0C9A328DA98F900D655BD /* PhotoListViewController.swift */,
 				01B49FCB2944236A0027A01E /* PhotoListViewModel.swift */,
 			);
@@ -449,10 +446,10 @@
 		01D9D2C1281F71C400E308D4 /* Unsplash */ = {
 			isa = PBXGroup;
 			children = (
-				0164B7912943903000F30756 /* Data */,
-				0164B7902943902C00F30756 /* Domain */,
 				016561CE282CE7B400437475 /* Application */,
 				01C0C9AA28DAD88800D655BD /* Common */,
+				0164B7912943903000F30756 /* Data */,
+				0164B7902943902C00F30756 /* Domain */,
 				0164B7AB29441AE200F30756 /* Infrastructure */,
 				0194CD332822A5240006470D /* Presentation */,
 				0128D1AA289942E900D17627 /* Resource */,
@@ -494,6 +491,8 @@
 			dependencies = (
 			);
 			name = Unsplash;
+			packageProductDependencies = (
+			);
 			productName = Unsplash;
 			productReference = 01D9D2BF281F71C400E308D4 /* Unsplash.app */;
 			productType = "com.apple.product-type.application";
@@ -526,6 +525,8 @@
 				Base,
 			);
 			mainGroup = 01D9D2B6281F71C400E308D4;
+			packageReferences = (
+			);
 			productRefGroup = 01D9D2C0281F71C400E308D4 /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
@@ -618,7 +619,6 @@
 				0132BAF52820C62E00E7A81A /* PhotoDetailViewController.swift in Sources */,
 				015744F82844586400B3A6F7 /* Secrets.swift in Sources */,
 				0164B7A729441A5C00F30756 /* PhotoSearchRepository.swift in Sources */,
-				01A1931E291A33D7002079BA /* PhotoListView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
