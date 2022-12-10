@@ -28,11 +28,6 @@ final class TopicListViewController: UIViewController {
         collectionView.backgroundColor = .systemBackground
         return collectionView
     }()
-    
-    private let activityIndicatorView: UIActivityIndicatorView = {
-        let activityIndicatorView = UIActivityIndicatorView(style: .large)
-        return activityIndicatorView
-    }()
         
     // MARK: - Private Properties
     
@@ -79,7 +74,6 @@ final class TopicListViewController: UIViewController {
     
     private func setupViews() {
         setupTopicCollectionView()
-        setupActivityIndicatorView()
     }
     
     private func setupTopicCollectionView() {
@@ -90,15 +84,6 @@ final class TopicListViewController: UIViewController {
             topicCollectionView.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor),
             topicCollectionView.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor),
             topicCollectionView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor),
-        ])
-    }
-    
-    private func setupActivityIndicatorView() {
-        view.addSubview(activityIndicatorView)
-        activityIndicatorView.translatesAutoresizingMaskIntoConstraints = false
-        NSLayoutConstraint.activate([
-            activityIndicatorView.centerXAnchor.constraint(equalTo: view.centerXAnchor),
-            activityIndicatorView.centerYAnchor.constraint(equalTo: view.centerYAnchor),
         ])
     }
     
@@ -138,13 +123,6 @@ final class TopicListViewController: UIViewController {
                     return
                 }
                 self?.showAlert(message: errorMessage)
-            }
-            .store(in: &cancellables)
-        
-        viewModel.$isLoading
-            .receive(on: DispatchQueue.main)
-            .sink { [weak self] isLoading in
-                isLoading ? self?.activityIndicatorView.startAnimating() : self?.activityIndicatorView.stopAnimating()
             }
             .store(in: &cancellables)
     }

@@ -21,11 +21,6 @@ final class PhotoListViewController: UIViewController {
         collectionView.backgroundColor = .systemBackground
         return collectionView
     }()
-
-    private let activityIndicatorView: UIActivityIndicatorView = {
-        let activityIndicatorView = UIActivityIndicatorView(style: .large)
-        return activityIndicatorView
-    }()
     
     // MARK: - Private Properties
     
@@ -59,7 +54,6 @@ final class PhotoListViewController: UIViewController {
     
     private func setupViews() {
         setupPhotoCollectionView()
-        setupActivityIndicatorView()
     }
     
     private func setupPhotoCollectionView() {
@@ -70,15 +64,6 @@ final class PhotoListViewController: UIViewController {
             photoCollectionView.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor),
             photoCollectionView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor),
             photoCollectionView.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor),
-        ])
-    }
-    
-    private func setupActivityIndicatorView() {
-        view.addSubview(activityIndicatorView)
-        activityIndicatorView.translatesAutoresizingMaskIntoConstraints = false
-        NSLayoutConstraint.activate([
-            activityIndicatorView.centerXAnchor.constraint(equalTo: view.centerXAnchor),
-            activityIndicatorView.centerYAnchor.constraint(equalTo: view.centerYAnchor),
         ])
     }
     
@@ -120,19 +105,18 @@ final class PhotoListViewController: UIViewController {
                 self?.showAlert(message: errorMessage)
             }
             .store(in: &cancellables)
-        
-        viewModel.$isLoading
-            .receive(on: DispatchQueue.main)
-            .sink { [weak self] isLoading in
-                isLoading ? self?.activityIndicatorView.startAnimating() : self?.activityIndicatorView.stopAnimating()
-            }
-            .store(in: &cancellables)
     }
 }
 
 // MARK: - UICollectionViewDelegate
 
 extension PhotoListViewController: UICollectionViewDelegateFlowLayout {
+    func collectionView(_ collectionView: UICollectionView, willDisplay cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {
+        if indexPath.item == viewModel.photos.count - 1 {
+            viewModel.willDisplayLast()
+        }
+    }
+    
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         viewModel.didSelectItem(indexPath)
     }

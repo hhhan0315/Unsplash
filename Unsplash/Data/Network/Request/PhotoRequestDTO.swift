@@ -9,5 +9,5 @@ import Foundation
 
 struct PhotoRequestDTO {
     let page: Int
-    let perPage: Int = 20
+    let perPage: Int = 10
 }

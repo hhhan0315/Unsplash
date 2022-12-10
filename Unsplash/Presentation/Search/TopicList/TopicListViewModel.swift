@@ -15,7 +15,6 @@ protocol TopicListViewModelInput {
 protocol TopicListViewModelOutput {
     var topics: [Topic] { get }
     var errorMessage: String? { get }
-    var isLoading: Bool { get }
 }
 
 final class TopicListViewModel: TopicListViewModelInput, TopicListViewModelOutput {
@@ -38,11 +37,8 @@ final class TopicListViewModel: TopicListViewModelInput, TopicListViewModelOutpu
     
     @Published var topics: [Topic] = []
     @Published var errorMessage: String?
-    @Published var isLoading: Bool = false
     
     private func fetchTopicList() {
-        self.isLoading = true
-        
         topicRepository.fetchTopicList { [weak self] result in
             switch result {
             case .success(let topics):
@@ -50,7 +46,6 @@ final class TopicListViewModel: TopicListViewModelInput, TopicListViewModelOutpu
             case .failure(let error):
                 self?.errorMessage = error.rawValue
             }
-            self?.isLoading = false
         }
     }
 }
