@@ -1,5 +1,5 @@
 //
-//  APIServiceTests.swift
+//  NetworkServiceTests.swift
 //  UnsplashTests
 //
 //  Created by rae on 2022/09/22.
@@ -8,19 +8,20 @@
 import XCTest
 @testable import Unsplash
 
-final class APIServiceTests: XCTestCase {
-    var apiService: APIService?
+final class NetworkServiceTests: XCTestCase {
+    var networkService: NetworkService?
     let urlSession = MockURLSession()
+    let photoRequestDTO = PhotoRequestDTO(page: 1)
     
     func test_statusCode가_200일경우_Error가_나오지않는지() {
         let expectation = XCTestExpectation()
-        var error: APIError?
+        var error: NetworkError?
         
         urlSession.condition = .status_200
         
-        apiService = APIService(urlSession: urlSession)
-        apiService?.request(api: .getListPhotos(page: 1),
-                           dataType: [Photo].self) { result in
+        networkService = NetworkService(urlSession: urlSession)
+        networkService?.request(api: API.getListPhotos(photoRequestDTO),
+                           dataType: [PhotoResponseDTO].self) { result in
             switch result {
             case .success:
                 error = nil
@@ -36,13 +37,13 @@ final class APIServiceTests: XCTestCase {
     
     func test_statusCode가_200일경우_DecodeError가_발생하는지() {
         let expectation = XCTestExpectation()
-        var error: APIError?
+        var error: NetworkError?
         
         urlSession.condition = .status_200
         
-        apiService = APIService(urlSession: urlSession)
-        apiService?.request(api: .getListPhotos(page: 1),
-                           dataType: [Topic].self) { result in
+        networkService = NetworkService(urlSession: urlSession)
+        networkService?.request(api: API.getListPhotos(photoRequestDTO),
+                           dataType: [TopicResponseDTO].self) { result in
             switch result {
             case .success:
                 XCTFail()
@@ -58,13 +59,13 @@ final class APIServiceTests: XCTestCase {
     
     func test_statusCode가_400일경우_status400Error가_발생하는지() {
         let expectation = XCTestExpectation()
-        var error: APIError?
+        var error: NetworkError?
         
         urlSession.condition = .status_400
         
-        apiService = APIService(urlSession: urlSession)
-        apiService?.request(api: .getListPhotos(page: 1),
-                           dataType: [Photo].self) { result in
+        networkService = NetworkService(urlSession: urlSession)
+        networkService?.request(api: API.getListPhotos(photoRequestDTO),
+                           dataType: [PhotoResponseDTO].self) { result in
             switch result {
             case .success:
                 XCTFail()
@@ -80,13 +81,13 @@ final class APIServiceTests: XCTestCase {
     
     func test_unexpectedData일경우_unexpectedData오류가_발생하는지() {
         let expectation = XCTestExpectation()
-        var error: APIError?
+        var error: NetworkError?
         
         urlSession.condition = .unexpectedData
         
-        apiService = APIService(urlSession: urlSession)
-        apiService?.request(api: .getListPhotos(page: 1),
-                           dataType: [Photo].self) { result in
+        networkService = NetworkService(urlSession: urlSession)
+        networkService?.request(api: API.getListPhotos(photoRequestDTO),
+                           dataType: [PhotoResponseDTO].self) { result in
             switch result {
             case .success:
                 XCTFail()

@@ -12,7 +12,7 @@ final class MockURLSession: URLSessionProtocol {
     let dummyData: Data
     let url = URL(string: "https://test.com")!
     
-    var condition: APIError?
+    var condition: NetworkError?
     
     init() {
         let path = Bundle.main.path(forResource: "content", ofType: "json")!
@@ -20,7 +20,7 @@ final class MockURLSession: URLSessionProtocol {
         dummyData = jsonString.data(using: .utf8)!
     }
     
-    private func makeResultValues(of condition: APIError?) -> (Data?, HTTPURLResponse?, APIError?) {
+    private func makeResultValues(of condition: NetworkError?) -> (Data?, HTTPURLResponse?, NetworkError?) {
         switch condition {
         case .sessionError:
             return (nil, nil, .sessionError)

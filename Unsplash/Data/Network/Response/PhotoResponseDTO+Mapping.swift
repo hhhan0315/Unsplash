@@ -29,12 +29,14 @@ struct PhotoResponseDTO: Decodable {
 
 extension PhotoResponseDTO {
     func toDomain() -> Photo {
-        return .init(identifier: UUID(),
-                     id: id,
-                     width: width,
-                     height: height,
-                     urls: urls.toDomain(),
-                     user: user.toDomain())
+        return .init(
+            identifier: UUID(),
+            id: id,
+            width: width,
+            height: height,
+            urls: urls.toDomain(),
+            user: user.toDomain()
+        )
     }
 }
 

@@ -33,11 +33,13 @@ struct TopicResponseDTO: Decodable {
 
 extension TopicResponseDTO {
     func toDomain() -> Topic {
-        return .init(identifier: UUID(),
-                     id: id,
-                     title: title,
-                     slug: slug,
-                     coverPhoto: coverPhoto.toDomain())
+        return .init(
+            identifier: UUID(),
+            id: id,
+            title: title,
+            slug: slug,
+            coverPhoto: coverPhoto.toDomain()
+        )
     }
 }
 
