@@ -22,8 +22,8 @@ extension DefaultTopicRepository: TopicRepository {
             case .success(let topicResponseDTOs):
                 let topics = topicResponseDTOs.map { $0.toDomain() }
                 completion(.success(topics))
-            case .failure(let error):
-                completion(.failure(error))
+            case .failure(let networkError):
+                completion(.failure(networkError))
             }
         }
     }

@@ -43,8 +43,8 @@ final class TopicListViewModel: TopicListViewModelInput, TopicListViewModelOutpu
             switch result {
             case .success(let topics):
                 self?.topics += topics
-            case .failure(let error):
-                self?.errorMessage = error.rawValue
+            case .failure(let networkError):
+                self?.errorMessage = networkError.rawValue
             }
         }
     }

@@ -11,7 +11,7 @@ enum API: TargetType {
     case getListPhotos(PhotoRequestDTO)
     case getListTopics
     case getTopicPhotos(slug: String, page: Int)
-    case getSearchPhotos(query: String, page: Int)
+    case getSearchPhotos(PhotoSearchRequestDTO)
     
     var method: HTTPMethod {
         return .get
@@ -43,8 +43,10 @@ enum API: TargetType {
             return nil
         case .getTopicPhotos(_, let page):
             return ["page": "\(page)", "per_page": "\(Constants.perPage)"]
-        case let .getSearchPhotos(query, page):
-            return ["query": query, "page": "\(page)", "per_page": "\(Constants.perPage)"]
+        case .getSearchPhotos(let photoSearchRequestDTO):
+            return ["query": photoSearchRequestDTO.query,
+                    "page": "\(photoSearchRequestDTO.page)",
+                    "per_page": "\(photoSearchRequestDTO.perPage)"]
         }
     }
     

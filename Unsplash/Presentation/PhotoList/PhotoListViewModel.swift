@@ -20,8 +20,8 @@ protocol PhotoListViewModelOutput {
 
 final class PhotoListViewModel: PhotoListViewModelInput, PhotoListViewModelOutput {
     private var page = 0
-    
     private let photoRepository: PhotoRepository
+    
     init(photoRepository: PhotoRepository) {
         self.photoRepository = photoRepository
     }
@@ -52,8 +52,8 @@ final class PhotoListViewModel: PhotoListViewModelInput, PhotoListViewModelOutpu
             switch result {
             case .success(let photos):
                 self?.photos += photos
-            case .failure(let error):
-                self?.errorMessage = error.rawValue
+            case .failure(let networkError):
+                self?.errorMessage = networkError.rawValue
             }
         }
     }
