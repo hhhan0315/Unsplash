@@ -10,12 +10,12 @@ import Foundation
 protocol PhotoListViewModelInput {
     func viewDidLoad()
     func didSelectItem(_ indexPath: IndexPath)
+    func willDisplayLast()
 }
 
 protocol PhotoListViewModelOutput {
     var photos: [Photo] { get }
     var errorMessage: String? { get }
-    var isLoading: Bool { get }
 }
 
 final class PhotoListViewModel: PhotoListViewModelInput, PhotoListViewModelOutput {
@@ -36,15 +36,17 @@ final class PhotoListViewModel: PhotoListViewModelInput, PhotoListViewModelOutpu
         // 코디네이터 전환
     }
     
+    func willDisplayLast() {
+        fetchPhotoList()
+    }
+    
     // MARK: - Output
     
     @Published var photos: [Photo] = []
     @Published var errorMessage: String?
-    @Published var isLoading: Bool = false
     
     private func fetchPhotoList() {
         self.page += 1
-        self.isLoading = true
         
         photoRepository.fetchPhotoList(page: self.page) { [weak self] result in
             switch result {
@@ -53,7 +55,6 @@ final class PhotoListViewModel: PhotoListViewModelInput, PhotoListViewModelOutpu
             case .failure(let error):
                 self?.errorMessage = error.rawValue
             }
-            self?.isLoading = false
         }
     }
 }
