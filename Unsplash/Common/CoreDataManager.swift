@@ -48,7 +48,7 @@ final class CoreDataManager {
             let managedObject = NSManagedObject(entity: entity, insertInto: context)
             
             managedObject.setValue(photo.id, forKey: "id")
-            managedObject.setValue(photo.urls.regular, forKey: "url")
+//            managedObject.setValue(photo.urls.regular, forKey: "url")
             managedObject.setValue(photo.user.name, forKey: "user")
             managedObject.setValue(photo.width, forKey: "width")
             managedObject.setValue(photo.height, forKey: "height")

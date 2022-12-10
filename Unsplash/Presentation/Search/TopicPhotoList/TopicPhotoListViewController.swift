@@ -15,7 +15,7 @@ final class TopicPhotoListViewController: UIViewController {
     
     // MARK: - Private Properties
     
-    private let apiService = APIService()
+//    private let apiService = APIService()
     
     private var page = 0
     
@@ -52,16 +52,16 @@ final class TopicPhotoListViewController: UIViewController {
     private func getTopicListPhotos() {
         page += 1
         
-        apiService.request(api: .getTopicPhotos(slug: topic.slug, page: page), dataType: [Photo].self) { [weak self] result in
-            switch result {
-            case .success(let photos):
-                self?.mainView.photos += photos
-            case .failure(let apiError):
-                DispatchQueue.main.async {
-                    self?.showAlert(message: apiError.rawValue)
-                }
-            }
-        }
+//        apiService.request(api: .getTopicPhotos(slug: topic.slug, page: page), dataType: [Photo].self) { [weak self] result in
+//            switch result {
+//            case .success(let photos):
+//                self?.mainView.photos += photos
+//            case .failure(let apiError):
+//                DispatchQueue.main.async {
+//                    self?.showAlert(message: apiError.rawValue)
+//                }
+//            }
+//        }
     }
 }
 

@@ -15,7 +15,7 @@ final class SearchResultViewController: UIViewController {
     
     // MARK: - Private Properties
     
-    private let apiService = APIService()
+//    private let apiService = APIService()
     
     private var page = 0
     private var currentQuery = ""
@@ -39,17 +39,17 @@ final class SearchResultViewController: UIViewController {
     private func getSearchPhotos() {
         page += 1
         
-        apiService.request(api: .getSearchPhotos(query: currentQuery, page: page),
-                           dataType: Search.self) { [weak self] result in
-            switch result {
-            case .success(let search):
-                self?.mainView.photos += search.results
-            case .failure(let apiError):
-                DispatchQueue.main.async {
-                    self?.showAlert(message: apiError.rawValue)
-                }
-            }
-        }
+//        apiService.request(api: .getSearchPhotos(query: currentQuery, page: page),
+//                           dataType: Search.self) { [weak self] result in
+//            switch result {
+//            case .success(let search):
+//                self?.mainView.photos += search.results
+//            case .failure(let apiError):
+//                DispatchQueue.main.async {
+//                    self?.showAlert(message: apiError.rawValue)
+//                }
+//            }
+//        }
     }
     
     private func reset() {
