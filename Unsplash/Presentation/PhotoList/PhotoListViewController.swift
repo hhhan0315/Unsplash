@@ -15,7 +15,8 @@ final class PhotoListViewController: UIViewController {
     
     // MARK: - Private Properties
     
-    private let apiService = APIService()
+    private let photoRepository = DefaultPhotoRepository(networkService: NetworkService())
+//    private let apiService = APIService()
     
     // MARK: - Internal Properties
     
@@ -43,19 +44,30 @@ final class PhotoListViewController: UIViewController {
     private func getListPhotos() {
         page += 1
         
-        self.mainView.isLoading = true
-        
-        apiService.request(api: .getListPhotos(page: page), dataType: [Photo].self) { [weak self] result in
+        photoRepository.fetchPhotoList(page: page) { [weak self] result in
             switch result {
             case .success(let photos):
                 self?.mainView.photos += photos
-                self?.mainView.isLoading = false
-            case .failure(let apiError):
+            case .failure(let error):
                 DispatchQueue.main.async {
-                    self?.showAlert(message: apiError.rawValue)
+                    self?.showAlert(message: error.rawValue)
                 }
             }
         }
+        
+//        self.mainView.isLoading = true
+//        
+//        apiService.request(api: .getListPhotos(page: page), dataType: [Photo].self) { [weak self] result in
+//            switch result {
+//            case .success(let photos):
+//                self?.mainView.photos += photos
+//                self?.mainView.isLoading = false
+//            case .failure(let apiError):
+//                DispatchQueue.main.async {
+//                    self?.showAlert(message: apiError.rawValue)
+//                }
+//            }
+//        }
     }
 }
 

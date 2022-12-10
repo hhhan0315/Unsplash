@@ -15,7 +15,7 @@ final class TopicListViewController: UIViewController {
     
     // MARK: - Private Properties
     
-    private let apiService = APIService()
+//    private let apiService = APIService()
     
     // MARK: - View LifeCycle
     
@@ -50,16 +50,16 @@ final class TopicListViewController: UIViewController {
     // MARK: - Networking
     
     private func getListTopics() {
-        apiService.request(api: .getListTopics, dataType: [Topic].self) { [weak self] result in
-            switch result {
-            case .success(let topics):
-                self?.mainView.topics += topics
-            case .failure(let apiError):
-                DispatchQueue.main.async {
-                    self?.showAlert(message: apiError.rawValue)
-                }
-            }
-        }
+//        apiService.request(api: .getListTopics, dataType: [Topic].self) { [weak self] result in
+//            switch result {
+//            case .success(let topics):
+//                self?.mainView.topics += topics
+//            case .failure(let apiError):
+//                DispatchQueue.main.async {
+//                    self?.showAlert(message: apiError.rawValue)
+//                }
+//            }
+//        }
     }
 }
 

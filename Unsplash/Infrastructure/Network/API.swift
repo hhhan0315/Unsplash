@@ -7,13 +7,8 @@
 
 import Foundation
 
-enum API {
-    enum HTTPMethod: String {
-        case get = "GET"
-        case post = "POST"
-    }
-    
-    case getListPhotos(page: Int)
+enum API: TargetType {    
+    case getListPhotos(PhotoRequestDTO)
     case getListTopics
     case getTopicPhotos(slug: String, page: Int)
     case getSearchPhotos(query: String, page: Int)
@@ -41,8 +36,9 @@ enum API {
     
     var query: [String: String]? {
         switch self {
-        case .getListPhotos(let page):
-            return ["page": "\(page)", "per_page": "\(Constants.perPage)"]
+        case .getListPhotos(let photoRequestDTO):
+            return ["page": "\(photoRequestDTO.page)",
+                    "per_page": "\(photoRequestDTO.perPage)"]
         case .getListTopics:
             return nil
         case .getTopicPhotos(_, let page):
@@ -52,7 +48,7 @@ enum API {
         }
     }
     
-    var header: [String: String] {
+    var headers: [String: String]? {
         return ["Authorization": "Client-ID \(Secrets.clientID)"]
     }
 }

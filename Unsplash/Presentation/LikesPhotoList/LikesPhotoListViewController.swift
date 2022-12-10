@@ -51,16 +51,16 @@ final class LikesPhotoListViewController: UIViewController {
     // MARK: - Networking
     
     private func getLikesPhotos() {
-        let photoData = coreDataManager.fetchPhotoFromCoreData()
-        let photos = photoData.map {
-            Photo(id: $0.id ?? "",
-                  width: CGFloat($0.width),
-                  height: CGFloat($0.height),
-                  urls: Photo.URLs(raw: "", full: "", regular: $0.url ?? "", small: "", thumb: ""),
-                  user: Photo.User(name: $0.user ?? ""))
-        }
-        
-        mainView.photos = photos
+//        let photoData = coreDataManager.fetchPhotoFromCoreData()
+//        let photos = photoData.map {
+//            Photo(id: $0.id ?? "",
+//                  width: CGFloat($0.width),
+//                  height: CGFloat($0.height),
+//                  urls: Photo.URLs(raw: "", full: "", regular: $0.url ?? "", small: "", thumb: ""),
+//                  user: Photo.User(name: $0.user ?? ""))
+//        }
+//        
+//        mainView.photos = photos
     }
 }
 
