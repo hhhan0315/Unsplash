@@ -21,8 +21,8 @@ extension DefaultPhotoRepository: PhotoRepository {
         
         networkService.request(api: API.getListPhotos(photoRequestDTO), dataType: [PhotoResponseDTO].self) { result in
             switch result {
-            case .success(let photoResponseDTO):
-                let photos = photoResponseDTO.map { $0.toDomain() }
+            case .success(let photoResponseDTOs):
+                let photos = photoResponseDTOs.map { $0.toDomain() }
                 completion(.success(photos))
             case .failure(let error):
                 completion(.failure(error))

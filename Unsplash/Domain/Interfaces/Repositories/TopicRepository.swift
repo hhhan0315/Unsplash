@@ -8,5 +8,5 @@
 import Foundation
 
 protocol TopicRepository {
-    func fetchTopicList() async throws -> [Topic]
+    func fetchTopicList(completion: @escaping (Result<[Topic], NetworkError>) -> Void)
 }

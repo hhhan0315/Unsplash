@@ -6,33 +6,61 @@
 //
 
 import UIKit
+import Combine
 
 final class TopicListViewController: UIViewController {
     
     // MARK: - View Define
     
-    private let mainView = TopicListView()
+    private let topicCollectionView: UICollectionView = {
+        let itemSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(0.5), heightDimension: .fractionalHeight(1.0))
+        let item = NSCollectionLayoutItem(layoutSize: itemSize)
+        item.contentInsets = NSDirectionalEdgeInsets(top: 2.0, leading: 2.0, bottom: 2.0, trailing: 2.0)
+        
+        let groupSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0), heightDimension: .fractionalWidth(0.5))
+        let group = NSCollectionLayoutGroup.horizontal(layoutSize: groupSize, subitems: [item])
+        
+        let section = NSCollectionLayoutSection(group: group)
+        let layout = UICollectionViewCompositionalLayout(section: section)
+        
+        let collectionView = UICollectionView(frame: .zero, collectionViewLayout: layout)
+        collectionView.register(TopicListCollectionViewCell.self, forCellWithReuseIdentifier: TopicListCollectionViewCell.identifier)
+        collectionView.backgroundColor = .systemBackground
+        return collectionView
+    }()
     
+    private let activityIndicatorView: UIActivityIndicatorView = {
+        let activityIndicatorView = UIActivityIndicatorView(style: .large)
+        return activityIndicatorView
+    }()
+        
     // MARK: - Private Properties
     
-//    private let apiService = APIService()
+    private let viewModel = TopicListViewModel(topicRepository: DefaultTopicRepository(networkService: NetworkService()))
+    private var cancellables = Set<AnyCancellable>()
+    private var dataSource: UICollectionViewDiffableDataSource<Section, Topic>?
+    
+    private enum Section {
+        case topics
+    }
     
     // MARK: - View LifeCycle
-    
-    override func loadView() {
-        view = mainView
-    }
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
         view.backgroundColor = .systemBackground
         navigationItem.title = "Search"
+        
+        topicCollectionView.dataSource = dataSource
+        topicCollectionView.delegate = self
+        
         setupSearchController()
-        
-        mainView.listener = self
-        
-        getListTopics()
+        setupViews()
+        setupDataSource()
+        bindViewModel()
+                
+        viewModel.viewDidLoad()
     }
     
     private func setupSearchController() {
@@ -47,27 +75,85 @@ final class TopicListViewController: UIViewController {
         navigationItem.searchController = searchController
     }
     
-    // MARK: - Networking
+    // MARK: - Layout
     
-    private func getListTopics() {
-//        apiService.request(api: .getListTopics, dataType: [Topic].self) { [weak self] result in
-//            switch result {
-//            case .success(let topics):
-//                self?.mainView.topics += topics
-//            case .failure(let apiError):
-//                DispatchQueue.main.async {
-//                    self?.showAlert(message: apiError.rawValue)
-//                }
-//            }
-//        }
+    private func setupViews() {
+        setupTopicCollectionView()
+        setupActivityIndicatorView()
+    }
+    
+    private func setupTopicCollectionView() {
+        view.addSubview(topicCollectionView)
+        topicCollectionView.translatesAutoresizingMaskIntoConstraints = false
+        NSLayoutConstraint.activate([
+            topicCollectionView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
+            topicCollectionView.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor),
+            topicCollectionView.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor),
+            topicCollectionView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor),
+        ])
+    }
+    
+    private func setupActivityIndicatorView() {
+        view.addSubview(activityIndicatorView)
+        activityIndicatorView.translatesAutoresizingMaskIntoConstraints = false
+        NSLayoutConstraint.activate([
+            activityIndicatorView.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+            activityIndicatorView.centerYAnchor.constraint(equalTo: view.centerYAnchor),
+        ])
+    }
+    
+    // MARK: - DiffableDataSource
+    
+    private func setupDataSource() {
+        dataSource = UICollectionViewDiffableDataSource(collectionView: topicCollectionView, cellProvider: { collectionView, indexPath, topic in
+            guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: TopicListCollectionViewCell.identifier, for: indexPath) as? TopicListCollectionViewCell else {
+                return .init()
+            }
+            cell.topic = topic
+            return cell
+        })
+    }
+
+    private func applySnapshot(with topics: [Topic]) {
+        var snapShot = NSDiffableDataSourceSnapshot<Section, Topic>()
+        snapShot.appendSections([Section.topics])
+        snapShot.appendItems(topics)
+        dataSource?.apply(snapShot)
+    }
+    
+    // MARK: - Bind
+    
+    private func bindViewModel() {
+        viewModel.$topics
+            .receive(on: DispatchQueue.main)
+            .sink { [weak self] topics in
+                self?.applySnapshot(with: topics)
+            }
+            .store(in: &cancellables)
+        
+        viewModel.$errorMessage
+            .receive(on: DispatchQueue.main)
+            .sink { [weak self] errorMessage in
+                guard errorMessage != nil else {
+                    return
+                }
+                self?.showAlert(message: errorMessage)
+            }
+            .store(in: &cancellables)
+        
+        viewModel.$isLoading
+            .receive(on: DispatchQueue.main)
+            .sink { [weak self] isLoading in
+                isLoading ? self?.activityIndicatorView.startAnimating() : self?.activityIndicatorView.stopAnimating()
+            }
+            .store(in: &cancellables)
     }
 }
 
-// MARK: - TopicListViewActionListener
+// MARK: - UICollectionViewDelegate
 
-extension TopicListViewController: TopicListViewActionListener {
-    func topicListDidTap(with topic: Topic) {
-        let topicPhotoListViewController = TopicPhotoListViewController(topic: topic)
-        navigationController?.pushViewController(topicPhotoListViewController, animated: true)
+extension TopicListViewController: UICollectionViewDelegate {
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        viewModel.didSelectItem(indexPath)
     }
 }
