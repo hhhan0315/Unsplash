@@ -24,8 +24,8 @@ extension DefaultPhotoRepository: PhotoRepository {
             case .success(let photoResponseDTOs):
                 let photos = photoResponseDTOs.map { $0.toDomain() }
                 completion(.success(photos))
-            case .failure(let error):
-                completion(.failure(error))
+            case .failure(let networkError):
+                completion(.failure(networkError))
             }
         }
     }

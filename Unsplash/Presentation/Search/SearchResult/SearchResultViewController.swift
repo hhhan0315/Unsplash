@@ -6,56 +6,111 @@
 //
 
 import UIKit
+import Combine
 
 final class SearchResultViewController: UIViewController {
     
     // MARK: - View Define
     
-    private let mainView = PinterestPhotoListView()
+    private let photoCollectionView: UICollectionView = {
+        let collectionView = UICollectionView(frame: .zero, collectionViewLayout: .init())
+        collectionView.register(PhotoCollectionViewCell.self, forCellWithReuseIdentifier: PhotoCollectionViewCell.identifier)
+        collectionView.backgroundColor = .systemBackground
+        return collectionView
+    }()
     
     // MARK: - Private Properties
     
-//    private let apiService = APIService()
-    
-    private var page = 0
-    private var currentQuery = ""
+    private let viewModel = SearchResultViewModel(photoSearchRepository: DefaultPhotoSearchRepository(networkSerivce: NetworkService()))
+    private var cancellables = Set<AnyCancellable>()
+    private var dataSource: UICollectionViewDiffableDataSource<Section, Photo>?
         
-    // MARK: - View LifeCycle
-    
-    override func loadView() {
-        view = mainView
+    private enum Section {
+        case photos
     }
+    
+    // MARK: - View LifeCycle
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
         view.backgroundColor = .systemBackground
         
-        mainView.listener = self
-    }
-    
-    // MARK: - Networking
-    
-    private func getSearchPhotos() {
-        page += 1
+        photoCollectionView.dataSource = dataSource
+        photoCollectionView.delegate = self
         
-//        apiService.request(api: .getSearchPhotos(query: currentQuery, page: page),
-//                           dataType: Search.self) { [weak self] result in
-//            switch result {
-//            case .success(let search):
-//                self?.mainView.photos += search.results
-//            case .failure(let apiError):
-//                DispatchQueue.main.async {
-//                    self?.showAlert(message: apiError.rawValue)
-//                }
-//            }
-//        }
+        setupViews()
+        setupPhotoDataSource()
+        bindViewModel()
     }
     
-    private func reset() {
-        page = 0
-        currentQuery = ""
-        mainView.photos.removeAll()
+    // MARK: - Layout
+    
+    private func setupViews() {
+        setupPinterestLayout()
+        setupPhotoCollectionView()
+    }
+    
+    private func setupPinterestLayout() {
+        let pinterestLayout = PinterestLayout()
+        pinterestLayout.delegate = self
+        
+        photoCollectionView.collectionViewLayout = pinterestLayout
+    }
+    
+    private func setupPhotoCollectionView() {
+        view.addSubview(photoCollectionView)
+        photoCollectionView.translatesAutoresizingMaskIntoConstraints = false
+        NSLayoutConstraint.activate([
+            photoCollectionView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
+            photoCollectionView.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor),
+            photoCollectionView.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor),
+            photoCollectionView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor),
+        ])
+    }
+    
+    // MARK: - DiffableDataSource
+    
+    private func setupPhotoDataSource() {
+        dataSource = UICollectionViewDiffableDataSource(collectionView: photoCollectionView, cellProvider: { collectionView, indexPath, photo in
+            guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: PhotoCollectionViewCell.identifier, for: indexPath) as? PhotoCollectionViewCell else {
+                return .init()
+            }
+            cell.photo = photo
+            return cell
+        })
+    }
+    
+    private func applySnapshot(with photos: [Photo]) {
+        var snapShot = NSDiffableDataSourceSnapshot<Section, Photo>()
+        snapShot.appendSections([Section.photos])
+        snapShot.appendItems(photos)
+        dataSource?.apply(snapShot)
+    }
+    
+    // MARK: - Bind
+    
+    private func bindViewModel() {
+        viewModel.$photos
+            .receive(on: DispatchQueue.main)
+            .sink { [weak self] photos in
+                if photos.isEmpty {
+                    self?.photoCollectionView.setContentOffset(.zero, animated: false)
+                }
+                
+                self?.applySnapshot(with: photos)
+            }
+            .store(in: &cancellables)
+        
+        viewModel.$errorMessage
+            .receive(on: DispatchQueue.main)
+            .sink { [weak self] errorMessage in
+                guard errorMessage != nil else {
+                    return
+                }
+                self?.showAlert(message: errorMessage)
+            }
+            .store(in: &cancellables)
     }
 }
 
@@ -67,29 +122,41 @@ extension SearchResultViewController: UISearchBarDelegate {
             return
         }
         
-        guard currentQuery != query else {
-            return
-        }
-        
-        reset()
-        currentQuery = query
-        getSearchPhotos()
+        viewModel.didSearch(query: query)
     }
-
+    
     func searchBarCancelButtonClicked(_ searchBar: UISearchBar) {
-        reset()
+        viewModel.didSearchBarCancelButtonClick()
     }
 }
 
-// MARK: - PinterestPhotoListViewActionListener
+// MARK: - UICollectionViewDelegate
 
-extension SearchResultViewController: PinterestPhotoListViewActionListener {
-    func pinterestPhotoListViewWillDisplayLast() {
-        getSearchPhotos()
+extension SearchResultViewController: UICollectionViewDelegate {
+    func collectionView(_ collectionView: UICollectionView, willDisplay cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {
+        if indexPath.item == viewModel.photos.count - 1 {
+            viewModel.willDisplayLast()
+        }
     }
     
-    func pinterestPhotoListViewCellDidTap(with photo: Photo) {
-        let photoDetailViewController = PhotoDetailViewController(photo: photo)
-        present(photoDetailViewController, animated: true)
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        viewModel.didSelectItem(indexPath)
+    }
+}
+
+// MARK: - PinterestLayoutDelegate
+
+extension SearchResultViewController: PinterestLayoutDelegate {
+    func collectionView(_ collectionView: UICollectionView, heightForPhotoAtIndexPath indexPath: IndexPath) -> CGFloat {
+        let cellWidth = UIScreen.main.bounds.width / 2
+        let imageHeight = viewModel.photos[indexPath.item].height
+        let imageWidth = viewModel.photos[indexPath.item].width
+        let imageRatio = imageHeight / imageWidth
+        
+        return CGFloat(imageRatio) * cellWidth
+    }
+    
+    func numberOfItemsInCollectionView() -> Int {
+        return dataSource?.snapshot().numberOfItems ?? 0
     }
 }
