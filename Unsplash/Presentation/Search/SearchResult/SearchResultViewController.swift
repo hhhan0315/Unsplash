@@ -21,7 +21,7 @@ final class SearchResultViewController: UIViewController {
     
     // MARK: - Private Properties
     
-    private let viewModel = SearchResultViewModel(photoSearchRepository: DefaultPhotoSearchRepository(networkSerivce: NetworkService()))
+    private let viewModel = SearchResultViewModel(photoSearchRepository: DefaultPhotoSearchRepository(networkService: NetworkService()))
     private var cancellables = Set<AnyCancellable>()
     private var dataSource: UICollectionViewDiffableDataSource<Section, Photo>?
         

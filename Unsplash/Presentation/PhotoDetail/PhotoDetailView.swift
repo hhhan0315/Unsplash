@@ -17,21 +17,21 @@ final class PhotoDetailView: UIView {
     
     // MARK: - View Define
     
-    private lazy var exitButton: UIButton = {
-        let button = UIButton(type: .system)
-        button.setImage(UIImage(systemName: "multiply"), for: .normal)
-        button.tintColor = .label
-        button.setPreferredSymbolConfiguration(.init(scale: .large), forImageIn: .normal)
-        button.addTarget(self, action: #selector(exitButtonDidTap(_:)), for: .touchUpInside)
-        return button
-    }()
-    
-    private let titleLabel: UILabel = {
-        let label = UILabel()
-        label.textColor = .label
-        label.font = UIFont.systemFont(ofSize: 17.0, weight: .semibold)
-        return label
-    }()
+//    private lazy var exitButton: UIButton = {
+//        let button = UIButton(type: .system)
+//        button.setImage(UIImage(systemName: "multiply"), for: .normal)
+//        button.tintColor = .label
+//        button.setPreferredSymbolConfiguration(.init(scale: .large), forImageIn: .normal)
+//        button.addTarget(self, action: #selector(exitButtonDidTap(_:)), for: .touchUpInside)
+//        return button
+//    }()
+//
+//    private let titleLabel: UILabel = {
+//        let label = UILabel()
+//        label.textColor = .label
+//        label.font = UIFont.systemFont(ofSize: 17.0, weight: .semibold)
+//        return label
+//    }()
     
     private lazy var scrollView: UIScrollView = {
         let scrollView = UIScrollView()
@@ -58,12 +58,12 @@ final class PhotoDetailView: UIView {
         return button
     }()
     
-    private let heartImageView: UIImageView = {
-        let imageView = UIImageView(image: UIImage(systemName: "heart.fill"))
-        imageView.tintColor = .white
-        imageView.isHidden = true
-        return imageView
-    }()
+//    private let heartImageView: UIImageView = {
+//        let imageView = UIImageView(image: UIImage(systemName: "heart.fill"))
+//        imageView.tintColor = .white
+//        imageView.isHidden = true
+//        return imageView
+//    }()
     
     // MARK: - Private Properties
     
@@ -81,7 +81,7 @@ final class PhotoDetailView: UIView {
     
     var photo: Photo? {
         didSet {
-            titleLabel.text = photo?.user.name
+//            titleLabel.text = photo?.user.name
             photoImageView.downloadImage(with: photo)
         }
     }
@@ -110,41 +110,41 @@ final class PhotoDetailView: UIView {
     private func setupViews() {
         backgroundColor = .systemBackground
         
-        setupExitButton()
-        setupTitleLabel()
+//        setupExitButton()
+//        setupTitleLabel()
         setupScrollView()
         setupPhotoImageView()
         setupHeartButton()
-        setupHeartImageView()
+//        setupHeartImageView()
         
         setupGesture()
     }
     
-    private func setupExitButton() {
-        addSubview(exitButton)
-        exitButton.translatesAutoresizingMaskIntoConstraints = false
-        NSLayoutConstraint.activate([
-            exitButton.topAnchor.constraint(equalTo: safeAreaLayoutGuide.topAnchor, constant: 16.0),
-            exitButton.leadingAnchor.constraint(equalTo: safeAreaLayoutGuide.leadingAnchor, constant: 16.0),
-            exitButton.heightAnchor.constraint(equalToConstant: 44.0),
-        ])
-    }
+//    private func setupExitButton() {
+//        addSubview(exitButton)
+//        exitButton.translatesAutoresizingMaskIntoConstraints = false
+//        NSLayoutConstraint.activate([
+//            exitButton.topAnchor.constraint(equalTo: safeAreaLayoutGuide.topAnchor, constant: 16.0),
+//            exitButton.leadingAnchor.constraint(equalTo: safeAreaLayoutGuide.leadingAnchor, constant: 16.0),
+//            exitButton.heightAnchor.constraint(equalToConstant: 44.0),
+//        ])
+//    }
     
-    private func setupTitleLabel() {
-        addSubview(titleLabel)
-        titleLabel.translatesAutoresizingMaskIntoConstraints = false
-        NSLayoutConstraint.activate([
-            titleLabel.topAnchor.constraint(equalTo: exitButton.topAnchor),
-            titleLabel.centerXAnchor.constraint(equalTo: centerXAnchor),
-            titleLabel.heightAnchor.constraint(equalToConstant: 44.0),
-        ])
-    }
+//    private func setupTitleLabel() {
+//        addSubview(titleLabel)
+//        titleLabel.translatesAutoresizingMaskIntoConstraints = false
+//        NSLayoutConstraint.activate([
+//            titleLabel.topAnchor.constraint(equalTo: exitButton.topAnchor),
+//            titleLabel.centerXAnchor.constraint(equalTo: centerXAnchor),
+//            titleLabel.heightAnchor.constraint(equalToConstant: 44.0),
+//        ])
+//    }
     
     private func setupScrollView() {
         addSubview(scrollView)
         scrollView.translatesAutoresizingMaskIntoConstraints = false
         NSLayoutConstraint.activate([
-            scrollView.topAnchor.constraint(equalTo: titleLabel.bottomAnchor),
+            scrollView.topAnchor.constraint(equalTo: safeAreaLayoutGuide.topAnchor),
             scrollView.bottomAnchor.constraint(equalTo: safeAreaLayoutGuide.bottomAnchor),
             scrollView.leadingAnchor.constraint(equalTo: leadingAnchor),
             scrollView.trailingAnchor.constraint(equalTo: trailingAnchor),
@@ -175,14 +175,14 @@ final class PhotoDetailView: UIView {
         ])
     }
     
-    private func setupHeartImageView() {
-        addSubview(heartImageView)
-        heartImageView.translatesAutoresizingMaskIntoConstraints = false
-        NSLayoutConstraint.activate([
-            heartImageView.centerXAnchor.constraint(equalTo: centerXAnchor),
-            heartImageView.centerYAnchor.constraint(equalTo: centerYAnchor),
-        ])
-    }
+//    private func setupHeartImageView() {
+//        addSubview(heartImageView)
+//        heartImageView.translatesAutoresizingMaskIntoConstraints = false
+//        NSLayoutConstraint.activate([
+//            heartImageView.centerXAnchor.constraint(equalTo: centerXAnchor),
+//            heartImageView.centerYAnchor.constraint(equalTo: centerYAnchor),
+//        ])
+//    }
     
     private func setupGesture() {
         let doubleTapGesture = UITapGestureRecognizer(target: self, action: #selector(imageViewDidDoubleTap(_:)))
@@ -197,9 +197,9 @@ final class PhotoDetailView: UIView {
     
     // MARK: - Private User Action
     
-    @objc private func exitButtonDidTap(_ sender: UIButton) {
-        listener?.photoDetailViewExitButtonDidTap()
-    }
+//    @objc private func exitButtonDidTap(_ sender: UIButton) {
+//        listener?.photoDetailViewExitButtonDidTap()
+//    }
     
     @objc private func heartButtonDidTap(_ sender: UIButton) {
         guard let photo = photo else {
@@ -212,8 +212,8 @@ final class PhotoDetailView: UIView {
     @objc private func imageViewDidTap(_ gesture: UITapGestureRecognizer) {
         isLabelButtonHidden.toggle()
         UIView.animate(withDuration: 0.5) {
-            self.exitButton.alpha = self.isLabelButtonHidden ? 0 : 1
-            self.titleLabel.alpha = self.isLabelButtonHidden ? 0 : 1
+//            self.exitButton.alpha = self.isLabelButtonHidden ? 0 : 1
+//            self.titleLabel.alpha = self.isLabelButtonHidden ? 0 : 1
             self.heartButton.alpha = self.isLabelButtonHidden ? 0 : 1
         }
     }
@@ -231,20 +231,20 @@ final class PhotoDetailView: UIView {
     func heartButtonToggle(state: Bool) {
         heartButton.tintColor = state ? .red : .systemBackground
         
-        guard state == true else {
-            return
-        }
-        
-        UIView.animate(withDuration: 0.4) {
-            self.heartImageView.transform = CGAffineTransform(scaleX: 4.0, y: 4.0)
-            self.heartImageView.isHidden = false
-        } completion: { _ in
-            UIView.animate(withDuration: 0.4) {
-                self.heartImageView.transform = .identity
-            } completion: { _ in
-                self.heartImageView.isHidden = true
-            }
-        }
+//        guard state == true else {
+//            return
+//        }
+//
+//        UIView.animate(withDuration: 0.4) {
+//            self.heartImageView.transform = CGAffineTransform(scaleX: 4.0, y: 4.0)
+//            self.heartImageView.isHidden = false
+//        } completion: { _ in
+//            UIView.animate(withDuration: 0.4) {
+//                self.heartImageView.transform = .identity
+//            } completion: { _ in
+//                self.heartImageView.isHidden = true
+//            }
+//        }
     }
 }
 

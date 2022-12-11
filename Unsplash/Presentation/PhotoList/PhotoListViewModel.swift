@@ -19,31 +19,20 @@ protocol PhotoListViewModelOutput {
 }
 
 final class PhotoListViewModel: PhotoListViewModelInput, PhotoListViewModelOutput {
-    private var page = 0
     private let photoRepository: PhotoRepository
     
-    init(photoRepository: PhotoRepository) {
-        self.photoRepository = photoRepository
-    }
+    private var page = 0
     
-    // MARK: - Input
-    
-    func viewDidLoad() {
-        fetchPhotoList()
-    }
-    
-    func didSelectItem(_ indexPath: IndexPath) {
-        // 코디네이터 전환
-    }
-    
-    func willDisplayLast() {
-        fetchPhotoList()
-    }
+    weak var coordinator: PhotoListCoordinatorDelegate?
     
     // MARK: - Output
     
     @Published var photos: [Photo] = []
     @Published var errorMessage: String?
+    
+    init(photoRepository: PhotoRepository) {
+        self.photoRepository = photoRepository
+    }
     
     private func fetchPhotoList() {
         self.page += 1
@@ -56,5 +45,22 @@ final class PhotoListViewModel: PhotoListViewModelInput, PhotoListViewModelOutpu
                 self?.errorMessage = networkError.rawValue
             }
         }
+    }
+}
+
+// MARK: - Input
+
+extension PhotoListViewModel {
+    func viewDidLoad() {
+        fetchPhotoList()
+    }
+    
+    func didSelectItem(_ indexPath: IndexPath) {
+        let photo = photos[indexPath.item]
+        coordinator?.goToDetail(with: photo)
+    }
+    
+    func willDisplayLast() {
+        fetchPhotoList()
     }
 }

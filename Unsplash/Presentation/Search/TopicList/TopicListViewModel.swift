@@ -19,24 +19,17 @@ protocol TopicListViewModelOutput {
 
 final class TopicListViewModel: TopicListViewModelInput, TopicListViewModelOutput {
     private let topicRepository: TopicRepository
-    init(topicRepository: TopicRepository) {
-        self.topicRepository = topicRepository
-    }
     
-    // MARK: - Input
-    
-    func viewDidLoad() {
-        fetchTopicList()
-    }
-    
-    func didSelectItem(_ indexPath: IndexPath) {
-        // 코디네이터 전환
-    }
+    weak var coordinator: TopicListCoordinatorDelegate?
     
     // MARK: - Output
     
     @Published var topics: [Topic] = []
     @Published var errorMessage: String?
+    
+    init(topicRepository: TopicRepository) {
+        self.topicRepository = topicRepository
+    }
     
     private func fetchTopicList() {
         topicRepository.fetchTopicList { [weak self] result in
@@ -47,5 +40,18 @@ final class TopicListViewModel: TopicListViewModelInput, TopicListViewModelOutpu
                 self?.errorMessage = networkError.rawValue
             }
         }
+    }
+}
+
+// MARK: - Input
+
+extension TopicListViewModel {
+    func viewDidLoad() {
+        fetchTopicList()
+    }
+    
+    func didSelectItem(_ indexPath: IndexPath) {
+        let topic = topics[indexPath.item]
+        coordinator?.goToTopicPhotoList(with: topic)
     }
 }
