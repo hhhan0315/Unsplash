@@ -10,7 +10,7 @@ import Foundation
 enum API: TargetType {    
     case getListPhotos(PhotoRequestDTO)
     case getListTopics
-    case getTopicPhotos(slug: String, page: Int)
+    case getTopicPhotos(TopicPhotoRequestDTO)
     case getSearchPhotos(PhotoSearchRequestDTO)
     
     var method: HTTPMethod {
@@ -27,8 +27,8 @@ enum API: TargetType {
             return "/photos"
         case .getListTopics:
             return "/topics"
-        case .getTopicPhotos(let slug, _):
-            return "/topics/\(slug)/photos"
+        case .getTopicPhotos(let topicPhotoRequestDTO):
+            return "/topics/\(topicPhotoRequestDTO.slug)/photos"
         case .getSearchPhotos:
             return "/search/photos"
         }
@@ -37,16 +37,23 @@ enum API: TargetType {
     var query: [String: String]? {
         switch self {
         case .getListPhotos(let photoRequestDTO):
-            return ["page": "\(photoRequestDTO.page)",
-                    "per_page": "\(photoRequestDTO.perPage)"]
+            return [
+                "page": "\(photoRequestDTO.page)",
+                "per_page": "\(photoRequestDTO.perPage)"
+            ]
         case .getListTopics:
             return nil
-        case .getTopicPhotos(_, let page):
-            return ["page": "\(page)", "per_page": "\(Constants.perPage)"]
+        case .getTopicPhotos(let topicPhotoRequestDTO):
+            return [
+                "page": "\(topicPhotoRequestDTO.page)",
+                "per_page": "\(topicPhotoRequestDTO.perPage)"
+            ]
         case .getSearchPhotos(let photoSearchRequestDTO):
-            return ["query": photoSearchRequestDTO.query,
-                    "page": "\(photoSearchRequestDTO.page)",
-                    "per_page": "\(photoSearchRequestDTO.perPage)"]
+            return [
+                "query": photoSearchRequestDTO.query,
+                "page": "\(photoSearchRequestDTO.page)",
+                "per_page": "\(photoSearchRequestDTO.perPage)"
+            ]
         }
     }
     

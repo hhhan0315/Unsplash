@@ -28,10 +28,10 @@ final class TopicListViewController: UIViewController {
         collectionView.backgroundColor = .systemBackground
         return collectionView
     }()
-        
+    
     // MARK: - Private Properties
     
-    private let viewModel = TopicListViewModel(topicRepository: DefaultTopicRepository(networkService: NetworkService()))
+    private let viewModel: TopicListViewModel
     private var cancellables = Set<AnyCancellable>()
     private var dataSource: UICollectionViewDiffableDataSource<Section, Topic>?
     
@@ -40,6 +40,15 @@ final class TopicListViewController: UIViewController {
     }
     
     // MARK: - View LifeCycle
+    
+    init(viewModel: TopicListViewModel) {
+        self.viewModel = viewModel
+        super.init(nibName: nil, bundle: nil)
+    }
+    
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -54,7 +63,7 @@ final class TopicListViewController: UIViewController {
         setupViews()
         setupDataSource()
         bindViewModel()
-                
+        
         viewModel.viewDidLoad()
     }
     
@@ -98,7 +107,7 @@ final class TopicListViewController: UIViewController {
             return cell
         })
     }
-
+    
     private func applySnapshot(with topics: [Topic]) {
         var snapShot = NSDiffableDataSourceSnapshot<Section, Topic>()
         snapShot.appendSections([Section.topics])
