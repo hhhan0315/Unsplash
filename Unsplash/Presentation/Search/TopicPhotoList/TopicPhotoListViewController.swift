@@ -21,7 +21,7 @@ final class TopicPhotoListViewController: UIViewController {
     
     // MARK: - Private Properties
     
-    private let viewModel = TopicPhotoListViewModel(topicPhotoRepository: DefaultTopicPhotoRepository(networkService: NetworkService()))
+    private let viewModel: TopicPhotoListViewModel
     private var cancellables = Set<AnyCancellable>()
     private var dataSource: UICollectionViewDiffableDataSource<Section, Photo>?
     
@@ -33,8 +33,9 @@ final class TopicPhotoListViewController: UIViewController {
     
     // MARK: - View LifeCycle
     
-    init(topic: Topic) {
+    init(topic: Topic, viewModel: TopicPhotoListViewModel) {
         self.topic = topic
+        self.viewModel = viewModel
         super.init(nibName: nil, bundle: nil)
     }
     
@@ -138,7 +139,10 @@ extension TopicPhotoListViewController: UICollectionViewDelegate {
     }
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        viewModel.didSelectItem(indexPath)
+        let photo = viewModel.photos[indexPath.item]
+        let photoDetailViewController = PhotoDetailViewController(photo: photo)
+        photoDetailViewController.hidesBottomBarWhenPushed = true
+        navigationController?.pushViewController(photoDetailViewController, animated: true)
     }
 }
 

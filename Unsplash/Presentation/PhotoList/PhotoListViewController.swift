@@ -127,7 +127,9 @@ extension PhotoListViewController: UICollectionViewDelegateFlowLayout {
     }
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        viewModel.didSelectItem(indexPath)
+        let photo = viewModel.photos[indexPath.item]
+        let photoDetailViewController = PhotoDetailViewController(photo: photo)
+        navigationController?.pushViewController(photoDetailViewController, animated: true)
     }
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {

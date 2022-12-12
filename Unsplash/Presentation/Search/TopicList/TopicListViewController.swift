@@ -141,6 +141,11 @@ final class TopicListViewController: UIViewController {
 
 extension TopicListViewController: UICollectionViewDelegate {
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        viewModel.didSelectItem(indexPath)
+        let topic = viewModel.topics[indexPath.item]
+        let networkService = NetworkService()
+        let topicPhotoRepository = DefaultTopicPhotoRepository(networkService: networkService)
+        let topicPhotoListViewModel = TopicPhotoListViewModel(topicPhotoRepository: topicPhotoRepository)
+        let topicPhotoListViewController = TopicPhotoListViewController(topic: topic, viewModel: topicPhotoListViewModel)
+        navigationController?.pushViewController(topicPhotoListViewController, animated: true)
     }
 }
