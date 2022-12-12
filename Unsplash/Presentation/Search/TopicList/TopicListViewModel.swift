@@ -9,7 +9,6 @@ import Foundation
 
 protocol TopicListViewModelInput {
     func viewDidLoad()
-    func didSelectItem(_ indexPath: IndexPath)
 }
 
 protocol TopicListViewModelOutput {
@@ -19,9 +18,7 @@ protocol TopicListViewModelOutput {
 
 final class TopicListViewModel: TopicListViewModelInput, TopicListViewModelOutput {
     private let topicRepository: TopicRepository
-    
-    weak var coordinator: TopicListCoordinatorDelegate?
-    
+        
     // MARK: - Output
     
     @Published var topics: [Topic] = []
@@ -48,10 +45,5 @@ final class TopicListViewModel: TopicListViewModelInput, TopicListViewModelOutpu
 extension TopicListViewModel {
     func viewDidLoad() {
         fetchTopicList()
-    }
-    
-    func didSelectItem(_ indexPath: IndexPath) {
-        let topic = topics[indexPath.item]
-        coordinator?.goToTopicPhotoList(with: topic)
     }
 }

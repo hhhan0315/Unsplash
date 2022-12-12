@@ -9,7 +9,6 @@ import Foundation
 
 protocol PhotoListViewModelInput {
     func viewDidLoad()
-    func didSelectItem(_ indexPath: IndexPath)
     func willDisplayLast()
 }
 
@@ -22,8 +21,6 @@ final class PhotoListViewModel: PhotoListViewModelInput, PhotoListViewModelOutpu
     private let photoRepository: PhotoRepository
     
     private var page = 0
-    
-    weak var coordinator: PhotoListCoordinatorDelegate?
     
     // MARK: - Output
     
@@ -53,11 +50,6 @@ final class PhotoListViewModel: PhotoListViewModelInput, PhotoListViewModelOutpu
 extension PhotoListViewModel {
     func viewDidLoad() {
         fetchPhotoList()
-    }
-    
-    func didSelectItem(_ indexPath: IndexPath) {
-        let photo = photos[indexPath.item]
-        coordinator?.goToDetail(with: photo)
     }
     
     func willDisplayLast() {

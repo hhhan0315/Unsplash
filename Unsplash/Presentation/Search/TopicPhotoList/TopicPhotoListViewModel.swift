@@ -9,7 +9,6 @@ import Foundation
 
 protocol TopicPhotoListViewModelInput {
     func viewDidLoad(with slug: String)
-    func didSelectItem(_ indexPath: IndexPath)
     func willDisplayLast()
 }
 
@@ -53,10 +52,6 @@ extension TopicPhotoListViewModel {
     func viewDidLoad(with slug: String) {
         currentSlug = slug
         fetchTopicPhotoList()
-    }
-    
-    func didSelectItem(_ indexPath: IndexPath) {
-        
     }
     
     func willDisplayLast() {
