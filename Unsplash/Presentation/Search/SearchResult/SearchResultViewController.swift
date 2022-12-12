@@ -21,7 +21,7 @@ final class SearchResultViewController: UIViewController {
     
     // MARK: - Private Properties
     
-    private let viewModel = SearchResultViewModel(photoSearchRepository: DefaultPhotoSearchRepository(networkService: NetworkService()))
+    private let viewModel: SearchResultViewModel
     private var cancellables = Set<AnyCancellable>()
     private var dataSource: UICollectionViewDiffableDataSource<Section, Photo>?
         
@@ -30,6 +30,15 @@ final class SearchResultViewController: UIViewController {
     }
     
     // MARK: - View LifeCycle
+    
+    init(viewModel: SearchResultViewModel) {
+        self.viewModel = viewModel
+        super.init(nibName: nil, bundle: nil)
+    }
+    
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -140,7 +149,12 @@ extension SearchResultViewController: UICollectionViewDelegate {
     }
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        viewModel.didSelectItem(indexPath)
+        let photo = viewModel.photos[indexPath.item]
+        let photoDetailViewController = PhotoDetailViewController(photo: photo)
+//        photoDetailViewController.hidesBottomBarWhenPushed = true
+        present(photoDetailViewController, animated: true)
+//        navigationController?.pushViewController(photoDetailViewController, animated: true)
+//        navigationController?.present(photoDetailViewController, animated: true)
     }
 }
 

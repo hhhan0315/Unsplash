@@ -129,6 +129,7 @@ extension PhotoListViewController: UICollectionViewDelegateFlowLayout {
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         let photo = viewModel.photos[indexPath.item]
         let photoDetailViewController = PhotoDetailViewController(photo: photo)
+        photoDetailViewController.hidesBottomBarWhenPushed = true
         navigationController?.pushViewController(photoDetailViewController, animated: true)
     }
     

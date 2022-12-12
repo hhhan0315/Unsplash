@@ -10,7 +10,6 @@ import Foundation
 protocol SearchResultViewModelInput {
     func didSearch(query: String)
     func didSearchBarCancelButtonClick()
-    func didSelectItem(_ indexPath: IndexPath)
     func willDisplayLast()
 }
 
@@ -67,10 +66,6 @@ extension SearchResultViewModel {
     
     func didSearchBarCancelButtonClick() {
         reset()
-    }
-    
-    func didSelectItem(_ indexPath: IndexPath) {
-        // 코디네이터 패턴
     }
     
     func willDisplayLast() {
