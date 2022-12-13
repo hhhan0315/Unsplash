@@ -149,12 +149,10 @@ extension SearchResultViewController: UICollectionViewDelegate {
     }
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        let photo = viewModel.photos[indexPath.item]
-        let photoDetailViewController = PhotoDetailViewController(photo: photo)
-//        photoDetailViewController.hidesBottomBarWhenPushed = true
-        present(photoDetailViewController, animated: true)
-//        navigationController?.pushViewController(photoDetailViewController, animated: true)
-//        navigationController?.present(photoDetailViewController, animated: true)
+        let photoDetailViewModel = PhotoDetailViewModel(photos: viewModel.photos, indexPath: indexPath)
+        let photoDetailViewController = PhotoDetailViewController(viewModel: photoDetailViewModel)
+        photoDetailViewController.hidesBottomBarWhenPushed = true
+        navigationController?.pushViewController(photoDetailViewController, animated: true)
     }
 }
 

@@ -17,6 +17,7 @@ enum NetworkError: String, Error {
     case status_200 = "예상한 응답이 왔습니다."
     case status_400 = "잘못된 요청입니다."
     case status_500 = "서버 오류입니다."
+    case invalidAPIKey = "API Key가 존재하지 않습니다.\n Secrets에서 clientID를 추가해주세요."
 }
 
 final class NetworkService {
@@ -29,35 +30,15 @@ final class NetworkService {
     func request<T: Decodable>(api: TargetType,
                                dataType: T.Type,
                                completion: @escaping (Result<T, NetworkError>) -> Void) {
-        guard let urlRequest = makeURLRequest(with: api) else {
-//            throw NetworkError.invalidURLRequest
-            completion(.failure(.invalidURLRequest))
+        guard Secrets.clientID.isEmpty == false else {
+            completion(.failure(.invalidAPIKey))
             return
         }
         
-//        let (data, response) = try await urlSession.data(for: urlRequest)
-//
-//        guard let httpResponse = response as? HTTPURLResponse else {
-//            throw NetworkError.responseIsNil
-////            completion(.failure(.responseIsNil))
-////            return
-//        }
-//
-//        switch httpResponse.statusCode {
-//        case (200...299):
-//            do {
-//                let decodeData = try JSONDecoder().decode(T.self, from: data)
-//                return decodeData
-//            } catch {
-//                throw NetworkError.decodeError
-//            }
-//        case (400...499):
-//            throw NetworkError.status_400
-//        case (500...599):
-//            throw NetworkError.status_500
-//        default:
-//            throw NetworkError.unexpectedResponse
-//        }
+        guard let urlRequest = makeURLRequest(with: api) else {
+            completion(.failure(.invalidURLRequest))
+            return
+        }
         
         urlSession.dataTask(with: urlRequest) { data, response, error in
             if error != nil {
