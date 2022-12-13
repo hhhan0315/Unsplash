@@ -17,7 +17,9 @@ final class DefaultTopicRepository {
 
 extension DefaultTopicRepository: TopicRepository {
     func fetchTopicList(completion: @escaping (Result<[Topic], NetworkError>) -> Void) {
-        networkService.request(api: API.getListTopics, dataType: [TopicResponseDTO].self) { result in
+        let topicRequestDTO = TopicRequestDTO()
+        
+        networkService.request(api: API.getListTopics(topicRequestDTO), dataType: [TopicResponseDTO].self) { result in
             switch result {
             case .success(let topicResponseDTOs):
                 let topics = topicResponseDTOs.map { $0.toDomain() }

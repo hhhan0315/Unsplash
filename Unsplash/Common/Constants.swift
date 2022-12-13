@@ -11,5 +11,5 @@ enum Constants {
     static let perPage = 10
     
     static let coreDataFileName = "Unsplash"
-    static let coreDataEntityName = "PhotoData"
+    static let coreDataEntityName = "PhotoCoreDataEntity"
 }

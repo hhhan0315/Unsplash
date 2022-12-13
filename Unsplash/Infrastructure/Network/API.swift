@@ -9,7 +9,7 @@ import Foundation
 
 enum API: TargetType {    
     case getListPhotos(PhotoRequestDTO)
-    case getListTopics
+    case getListTopics(TopicRequestDTO)
     case getTopicPhotos(TopicPhotoRequestDTO)
     case getSearchPhotos(PhotoSearchRequestDTO)
     
@@ -41,8 +41,10 @@ enum API: TargetType {
                 "page": "\(photoRequestDTO.page)",
                 "per_page": "\(photoRequestDTO.perPage)"
             ]
-        case .getListTopics:
-            return nil
+        case .getListTopics(let topicRequestDTO):
+            return [
+                "per_page": "\(topicRequestDTO.perPage)"
+            ]
         case .getTopicPhotos(let topicPhotoRequestDTO):
             return [
                 "page": "\(topicPhotoRequestDTO.page)",

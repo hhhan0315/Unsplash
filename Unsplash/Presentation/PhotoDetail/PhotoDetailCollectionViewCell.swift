@@ -21,16 +21,6 @@ final class PhotoDetailCollectionViewCell: UICollectionViewCell {
         
     // MARK: - View Define
     
-//    private lazy var scrollView: UIScrollView = {
-//        let scrollView = UIScrollView()
-//        scrollView.alwaysBounceVertical = false
-//        scrollView.alwaysBounceHorizontal = false
-//        scrollView.minimumZoomScale = 1.0
-//        scrollView.maximumZoomScale = 2.0
-//        scrollView.delegate = self
-//        return scrollView
-//    }()
-    
     private let photoImageView: UIImageView = {
         let imageView = UIImageView()
         imageView.contentMode = .scaleAspectFit
@@ -58,33 +48,8 @@ final class PhotoDetailCollectionViewCell: UICollectionViewCell {
     // MARK: - Layout
     
     private func setupViews() {
-//        setupScrollView()
         setupPhotoImageView()
     }
-    
-//    private func setupScrollView() {
-//        addSubview(scrollView)
-//        scrollView.translatesAutoresizingMaskIntoConstraints = false
-//        NSLayoutConstraint.activate([
-//            scrollView.topAnchor.constraint(equalTo: safeAreaLayoutGuide.topAnchor),
-//            scrollView.bottomAnchor.constraint(equalTo: safeAreaLayoutGuide.bottomAnchor),
-//            scrollView.leadingAnchor.constraint(equalTo: leadingAnchor),
-//            scrollView.trailingAnchor.constraint(equalTo: trailingAnchor),
-//        ])
-//    }
-    
-//    private func setupPhotoImageView() {
-//        scrollView.addSubview(photoImageView)
-//        photoImageView.translatesAutoresizingMaskIntoConstraints = false
-//        NSLayoutConstraint.activate([
-//            photoImageView.topAnchor.constraint(equalTo: scrollView.topAnchor),
-//            photoImageView.bottomAnchor.constraint(equalTo: scrollView.bottomAnchor),
-//            photoImageView.leadingAnchor.constraint(equalTo: scrollView.leadingAnchor),
-//            photoImageView.trailingAnchor.constraint(equalTo: scrollView.trailingAnchor),
-//            photoImageView.widthAnchor.constraint(equalTo: scrollView.widthAnchor),
-//            photoImageView.heightAnchor.constraint(equalTo: scrollView.heightAnchor),
-//        ])
-//    }
     
     private func setupPhotoImageView() {
         addSubview(photoImageView)
@@ -97,11 +62,3 @@ final class PhotoDetailCollectionViewCell: UICollectionViewCell {
         ])
     }
 }
-
-// MARK: - UIScrollViewDelegate
-
-//extension PhotoDetailCollectionViewCell: UIScrollViewDelegate {
-//    func viewForZooming(in scrollView: UIScrollView) -> UIView? {
-//        return photoImageView
-//    }
-//}
