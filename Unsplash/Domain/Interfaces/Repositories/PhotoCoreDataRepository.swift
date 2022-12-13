@@ -8,8 +8,8 @@
 import Foundation
 
 protocol PhotoCoreDataRepository {
-    func fetchAll() async throws -> [Photo]
-    func create(photo: Photo) async throws -> ()
-    func delete(id: String) async throws -> ()
-    func isExist(id: String) async throws -> Bool
+    func fetchAll() -> [Photo]
+    func create(photo: Photo)
+    func delete(id: String)
+    func isExist(id: String) -> Bool
 }

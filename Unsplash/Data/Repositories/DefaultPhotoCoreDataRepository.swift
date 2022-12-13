@@ -10,6 +10,7 @@ import CoreData
 
 final class DefaultPhotoCoreDataRepository {
     private let container: NSPersistentContainer
+    private let context: NSManagedObjectContext
     
     init() {
         container = NSPersistentContainer(name: "Unsplash")
@@ -18,47 +19,56 @@ final class DefaultPhotoCoreDataRepository {
                 fatalError("Unresolved error \(error), \(error.userInfo)")
             }
         }
+        
+        context = container.viewContext
     }
     
     private func saveContext() {
-        if container.viewContext.hasChanges {
+        if context.hasChanges {
             do {
-                try container.viewContext.save()
+                try context.save()
             } catch {
                 fatalError(error.localizedDescription)
             }
         }
     }
     
-    private func getEntity(id: String) async throws -> PhotoCoreDataEntity? {
+    private func getEntity(id: String) -> PhotoCoreDataEntity? {
         let request = PhotoCoreDataEntity.fetchRequest()
         request.fetchLimit = 1
         request.predicate = NSPredicate(format: "id = %@", id)
         
-        let photoCoreDataEntity = try container.viewContext.fetch(request).first
-        return photoCoreDataEntity
+        do {
+            return try context.fetch(request).first
+        } catch {
+            return nil
+        }
     }
 }
 
 extension DefaultPhotoCoreDataRepository: PhotoCoreDataRepository {
-    func fetchAll() async throws -> [Photo] {
+    func fetchAll() -> [Photo] {
         let request = PhotoCoreDataEntity.fetchRequest()
         let dateOrder = NSSortDescriptor(key: "date", ascending: false)
         request.sortDescriptors = [dateOrder]
         
-        return try container.viewContext.fetch(request).map { $0.toDomain() }
+        do {
+            return try context.fetch(request).map { $0.toDomain() }
+        } catch {
+            return []
+        }
     }
     
-    func create(photo: Photo) async throws {
-        guard try await isExist(id: photo.id) == false else {
+    func create(photo: Photo) {
+        guard isExist(id: photo.id) == false else {
             return
         }
         
-        guard let entity = NSEntityDescription.entity(forEntityName: "PhotoCoreDataEntity", in: container.viewContext) else {
+        guard let entity = NSEntityDescription.entity(forEntityName: "PhotoCoreDataEntity", in: context) else {
             return
         }
         
-        let object = NSManagedObject(entity: entity, insertInto: container.viewContext)
+        let object = NSManagedObject(entity: entity, insertInto: context)
         object.setValue(photo.id, forKey: "id")
         object.setValue(photo.urls.regular, forKey: "url")
         object.setValue(photo.user.name, forKey: "userName")
@@ -69,20 +79,20 @@ extension DefaultPhotoCoreDataRepository: PhotoCoreDataRepository {
         saveContext()
     }
     
-    func delete(id: String) async throws {
-        if let photoCoreDataEntity = try await getEntity(id: id) {
-            container.viewContext.delete(photoCoreDataEntity)
+    func delete(id: String) {
+        if let photoCoreDataEntity = getEntity(id: id) {
+            context.delete(photoCoreDataEntity)
             
             do {
-                try container.viewContext.save()
+                try context.save()
             } catch {
-                container.viewContext.rollback()
+                context.rollback()
                 fatalError(error.localizedDescription)
             }
         }
     }
     
-    func isExist(id: String) async throws -> Bool {
-        return try await getEntity(id: id) == nil ? false : true
+    func isExist(id: String) -> Bool {
+        return getEntity(id: id) == nil ? false : true
     }
 }

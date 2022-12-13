@@ -36,22 +36,17 @@ final class PhotoDetailViewModel: PhotoDetailViewModelInput, PhotoDetailViewMode
 extension PhotoDetailViewModel {
     func willScroll(item: Int) {
         let photo = photos[item]
-        Task {
-            let state = try await photoCoreDataRepository.isExist(id: photo.id)
-            heartButtonState = state
-        }
+        heartButtonState = photoCoreDataRepository.isExist(id: photo.id)
     }
     
     func heartButtonDidTap(with indexPath: IndexPath) {
         let photo = photos[indexPath.item]
-        Task {
-            if try await photoCoreDataRepository.isExist(id: photo.id) {
-                try await photoCoreDataRepository.delete(id: photo.id)
-                heartButtonState = false
-            } else {
-                try await photoCoreDataRepository.create(photo: photo)
-                heartButtonState = true
-            }
+        if photoCoreDataRepository.isExist(id: photo.id) {
+            photoCoreDataRepository.delete(id: photo.id)
+            heartButtonState = false
+        } else {
+            photoCoreDataRepository.create(photo: photo)
+            heartButtonState = true
         }
     }
 }
