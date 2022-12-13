@@ -8,6 +8,10 @@
 import UIKit
 import Combine
 
+protocol SearchResultViewControllerDelegate: AnyObject {
+    func goToDetail(photos: [Photo], indexPath: IndexPath)
+}
+
 final class SearchResultViewController: UIViewController {
     
     // MARK: - View Define
@@ -28,6 +32,10 @@ final class SearchResultViewController: UIViewController {
     private enum Section {
         case photos
     }
+    
+    // MARK: - Internal Properties
+    
+    weak var delegate: SearchResultViewControllerDelegate?
     
     // MARK: - View LifeCycle
     
@@ -149,10 +157,7 @@ extension SearchResultViewController: UICollectionViewDelegate {
     }
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        let photoDetailViewModel = PhotoDetailViewModel(photos: viewModel.photos, indexPath: indexPath)
-        let photoDetailViewController = PhotoDetailViewController(viewModel: photoDetailViewModel)
-        photoDetailViewController.hidesBottomBarWhenPushed = true
-        navigationController?.pushViewController(photoDetailViewController, animated: true)
+        delegate?.goToDetail(photos: viewModel.photos, indexPath: indexPath)
     }
 }
 

@@ -72,8 +72,9 @@ final class TopicListViewController: UIViewController {
         let photoSearchRepository = DefaultPhotoSearchRepository(networkService: networkService)
         let searchResultViewModel = SearchResultViewModel(photoSearchRepository: photoSearchRepository)
         let searchResultViewController = SearchResultViewController(viewModel: searchResultViewModel)
-        let searchController = UISearchController(searchResultsController: searchResultViewController)
+        searchResultViewController.delegate = self
         
+        let searchController = UISearchController(searchResultsController: searchResultViewController)
         searchController.searchBar.delegate = searchResultViewController
         searchController.searchBar.placeholder = "Search photos"
         searchController.hidesNavigationBarDuringPresentation = false
@@ -151,5 +152,16 @@ extension TopicListViewController: UICollectionViewDelegate {
         let topicPhotoListViewModel = TopicPhotoListViewModel(topicPhotoRepository: topicPhotoRepository)
         let topicPhotoListViewController = TopicPhotoListViewController(topic: topic, viewModel: topicPhotoListViewModel)
         navigationController?.pushViewController(topicPhotoListViewController, animated: true)
+    }
+}
+
+// MARK: - SearchResultViewControllerDelegate
+
+extension TopicListViewController: SearchResultViewControllerDelegate {
+    func goToDetail(photos: [Photo], indexPath: IndexPath) {
+        let photoDetailViewModel = PhotoDetailViewModel(photos: photos, indexPath: indexPath)
+        let photoDetailViewController = PhotoDetailViewController(viewModel: photoDetailViewModel)
+        photoDetailViewController.hidesBottomBarWhenPushed = true
+        navigationController?.pushViewController(photoDetailViewController, animated: true)
     }
 }
