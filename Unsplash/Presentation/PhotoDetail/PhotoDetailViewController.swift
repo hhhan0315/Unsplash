@@ -15,7 +15,6 @@ final class PhotoDetailViewController: UIViewController {
     private let photoCollectionView: UICollectionView = {
         let collectionView = UICollectionView(frame: .zero, collectionViewLayout: .init())
         collectionView.register(PhotoDetailCollectionViewCell.self, forCellWithReuseIdentifier: PhotoDetailCollectionViewCell.identifier)
-        collectionView.backgroundColor = .secondarySystemBackground
         collectionView.alwaysBounceVertical = false
         return collectionView
     }()
@@ -23,16 +22,14 @@ final class PhotoDetailViewController: UIViewController {
     private lazy var heartButton: UIButton = {
         let button = UIButton(type: .custom)
         button.setImage(UIImage(systemName: "heart.fill"), for: .normal)
-        button.backgroundColor = .black
-        button.tintColor = .white
+        button.backgroundColor = .label
+        button.tintColor = .systemBackground
         button.addTarget(self, action: #selector(heartButtonDidTap(_:)), for: .touchUpInside)
         button.setPreferredSymbolConfiguration(.init(scale: .large), forImageIn: .normal)
         return button
     }()
-        
-    // MARK: - Private Properties
     
-//    private let coreDataManager = CoreDataManager.shared
+    // MARK: - Private Properties
     
     private let viewModel: PhotoDetailViewModel
     private var cancellables = Set<AnyCancellable>()
@@ -166,8 +163,7 @@ final class PhotoDetailViewController: UIViewController {
         guard let indexPath = photoCollectionView.indexPathsForVisibleItems.first else {
             return
         }
-        
-//        viewModel.photoDetailHeartButtonDidTap(with: indexPath)
+        viewModel.heartButtonDidTap(with: indexPath)
     }
     
     // MARK: - NotificationCenter
@@ -206,15 +202,5 @@ final class PhotoDetailViewController: UIViewController {
 //
 //    func photoDetailViewImageViewDidDoubleTap() {
 //        heartButtonDidTap()
-//    }
-//}
-
-// MARK: - UICollectionViewDelegate
-
-//extension PhotoDetailViewController: UICollectionViewDelegate {
-//    func collectionView(_ collectionView: UICollectionView, willDisplay cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {
-//        if indexPath.item == viewModel.photos.count - 1 {
-//            viewModel.willDisplayLast()
-//        }
 //    }
 //}

@@ -27,8 +27,8 @@ final class CoreDataManager {
         return self.persistentContainer.viewContext
     }
     
-    func fetchPhotoFromCoreData() -> [PhotoData] {
-        let request = PhotoData.fetchRequest()
+    func fetchPhotoFromCoreData() -> [PhotoCoreDataEntity] {
+        let request = PhotoCoreDataEntity.fetchRequest()
         let dateOrder = NSSortDescriptor(key: "date", ascending: false)
         request.sortDescriptors = [dateOrder]
         
@@ -67,7 +67,7 @@ final class CoreDataManager {
     }
     
     func deletePhotoData(photo: Photo, completion: @escaping () -> Void) {
-        let request = PhotoData.fetchRequest()
+        let request = PhotoCoreDataEntity.fetchRequest()
         request.predicate = NSPredicate(format: "id = %@", photo.id as CVarArg)
         
         do {
@@ -93,7 +93,7 @@ final class CoreDataManager {
     }
     
     func isExistPhotoData(photo: Photo) -> Bool {
-        let request = PhotoData.fetchRequest()
+        let request = PhotoCoreDataEntity.fetchRequest()
         request.predicate = NSPredicate(format: "id = %@", photo.id as CVarArg)
         
         do {
