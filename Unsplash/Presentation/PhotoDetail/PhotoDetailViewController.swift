@@ -110,6 +110,7 @@ final class PhotoDetailViewController: UIViewController {
         section.visibleItemsInvalidationHandler = { [weak self] (visibleItems, offset, environment) in
             let width = environment.container.contentSize.width
             let position = round(offset.x / width)
+            self?.viewModel.willScroll(item: Int(position))
             self?.navigationItem.title = self?.viewModel.photos[Int(position)].user.name
         }
         
@@ -155,6 +156,13 @@ final class PhotoDetailViewController: UIViewController {
                 self?.photoCollectionView.scrollToItem(at: indexPath, at: .centeredVertically, animated: false)
             }
             .store(in: &cancellables)
+        
+        viewModel.$heartButtonState
+            .receive(on: DispatchQueue.main)
+            .sink { [weak self] heartButtonState in
+                self?.heartButton.tintColor = heartButtonState ? .red : .systemBackground
+            }
+            .store(in: &cancellables)
     }
     
     // MARK: - Button User Action
@@ -165,42 +173,4 @@ final class PhotoDetailViewController: UIViewController {
         }
         viewModel.heartButtonDidTap(with: indexPath)
     }
-    
-    // MARK: - NotificationCenter
-    
-//    private func postNotificationHeart() {
-//        NotificationCenter.default.post(name: Notification.Name.heartButtonClicked, object: nil)
-//    }
-    
-//    private func heartButtonDidTap() {
-//        defer {
-//            postNotificationHeart()
-//        }
-//
-//        if coreDataManager.isExistPhotoData(photo: photo) {
-//            coreDataManager.deletePhotoData(photo: photo) {
-//                self.mainView.heartButtonToggle(state: false)
-//            }
-//        } else {
-//            coreDataManager.insertPhotoData(photo: photo) {
-//                self.mainView.heartButtonToggle(state: true)
-//            }
-//        }
-//    }
 }
-
-// MARK: - PhotoDetailViewActionListener
-
-//extension PhotoDetailViewController: PhotoDetailViewActionListener {
-//    func photoDetailViewExitButtonDidTap() {
-//        dismiss(animated: true)
-//    }
-//
-//    func photoDetailViewHeartButtonDidTap(with photo: Photo) {
-//        heartButtonDidTap()
-//    }
-//
-//    func photoDetailViewImageViewDidDoubleTap() {
-//        heartButtonDidTap()
-//    }
-//}

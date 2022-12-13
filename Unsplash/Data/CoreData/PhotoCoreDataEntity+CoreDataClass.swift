@@ -17,7 +17,7 @@ public class PhotoCoreDataEntity: NSManagedObject {
 extension PhotoCoreDataEntity {
 
     @nonobjc public class func fetchRequest() -> NSFetchRequest<PhotoCoreDataEntity> {
-        return NSFetchRequest<PhotoCoreDataEntity>(entityName: Constants.coreDataEntityName)
+        return NSFetchRequest<PhotoCoreDataEntity>(entityName: "PhotoCoreDataEntity")
     }
 
     @NSManaged public var date: Date?
@@ -31,4 +31,17 @@ extension PhotoCoreDataEntity {
 
 extension PhotoCoreDataEntity : Identifiable {
 
+}
+
+extension PhotoCoreDataEntity {
+    func toDomain() -> Photo {
+        return Photo(
+            identifier: UUID(),
+            id: id ?? "",
+            width: CGFloat(width),
+            height: CGFloat(height),
+            urls: URLs(regular: url ?? ""),
+            user: User(name: userName ?? "")
+        )
+    }
 }
