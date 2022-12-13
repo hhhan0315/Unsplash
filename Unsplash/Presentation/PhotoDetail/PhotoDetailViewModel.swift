@@ -41,6 +41,7 @@ extension PhotoDetailViewModel {
     
     func heartButtonDidTap(with indexPath: IndexPath) {
         let photo = photos[indexPath.item]
+        
         if photoCoreDataRepository.isExist(id: photo.id) {
             photoCoreDataRepository.delete(id: photo.id)
             heartButtonState = false

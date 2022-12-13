@@ -23,16 +23,6 @@ final class DefaultPhotoCoreDataRepository {
         context = container.viewContext
     }
     
-    private func saveContext() {
-        if context.hasChanges {
-            do {
-                try context.save()
-            } catch {
-                fatalError(error.localizedDescription)
-            }
-        }
-    }
-    
     private func getEntity(id: String) -> PhotoCoreDataEntity? {
         let request = PhotoCoreDataEntity.fetchRequest()
         request.fetchLimit = 1
@@ -76,7 +66,13 @@ extension DefaultPhotoCoreDataRepository: PhotoCoreDataRepository {
         object.setValue(photo.height, forKey: "height")
         object.setValue(Date(), forKey: "date")
         
-        saveContext()
+        if context.hasChanges {
+            do {
+                try context.save()
+            } catch {
+                fatalError(error.localizedDescription)
+            }
+        }
     }
     
     func delete(id: String) {

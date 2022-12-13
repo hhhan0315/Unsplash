@@ -23,10 +23,7 @@ final class LikesPhotoListViewModel: LikesPhotoListViewModelInput, LikesPhotoLis
     @Published var photos: [Photo] = []
     
     private func fetchAll() {
-        Task {
-            let photos = try await photoCoreDataRepository.fetchAll()
-            self.photos = photos
-        }
+        self.photos = photoCoreDataRepository.fetchAll()
     }
 }
 
