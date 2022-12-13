@@ -22,7 +22,7 @@ final class LikesPhotoCollectionViewCell: UICollectionViewCell {
     // MARK: - View Define
     
     private let photoImageView: UIImageView = {
-        let imageView = BlackGradientImageView(frame: .zero)
+        let imageView = UIImageView()
         imageView.contentMode = .scaleAspectFill
         imageView.clipsToBounds = true
         return imageView

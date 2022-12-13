@@ -48,7 +48,8 @@ final class MainTabBarController: UITabBarController {
         let topicListViewController = UINavigationController(rootViewController: TopicListViewController(viewModel: topicListViewModel))
         topicListViewController.tabBarItem = topicListTabBarItem
         
-        let likesPhotoListViewController = UINavigationController(rootViewController: LikesPhotoListViewController())
+        let likesPhotoListViewModel = LikesPhotoListViewModel()
+        let likesPhotoListViewController = UINavigationController(rootViewController: LikesPhotoListViewController(viewModel: likesPhotoListViewModel))
         likesPhotoListViewController.tabBarItem = likesPhotoListTabBarItem
         
         self.tabBar.tintColor = .label
