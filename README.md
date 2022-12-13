@@ -8,6 +8,7 @@ Unsplash unofficial app for iOS
 > iOS 13.0
 
 ## 구현 내용
+### 1. MVC
 - MVC 해체
     - [1. View, Layout Constraint 분리 및 User Action 처리](https://github.com/hhhan0315/Unsplash/tree/main/markdown/MVC_step1.md)
         - `loadView` `Delegate 패턴` `필수 생성자`
@@ -23,6 +24,9 @@ Unsplash unofficial app for iOS
     - `의존성 역전` `MockURLSession` `MockURLSessionDataTask` `추상화`
 - [동시성 프로그래밍](https://github.com/hhhan0315/Unsplash/tree/main/markdown/Concurrency.md)
     - `sync & async` `blocking & non-blocking` `serial & concurrent`
+    
+### 2. MVVM
+- [Repository pattern](https://github.com/hhhan0315/Unsplash/tree/main/markdown/Repository.md)
 
 ## 스크린샷
 

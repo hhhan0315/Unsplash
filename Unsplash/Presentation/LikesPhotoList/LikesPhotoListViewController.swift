@@ -11,7 +11,7 @@ final class LikesPhotoListViewController: UIViewController {
     
     // MARK: - UI Define
     
-    private let mainView = LikesPhotoListView()
+//    private let mainView = LikesPhotoListView()
     
     // MARK: - Private Properties
     
@@ -19,9 +19,9 @@ final class LikesPhotoListViewController: UIViewController {
     
     // MARK: - View LifeCycle
     
-    override func loadView() {
-        self.view = mainView
-    }
+//    override func loadView() {
+//        self.view = mainView
+//    }
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -29,7 +29,7 @@ final class LikesPhotoListViewController: UIViewController {
         view.backgroundColor = .systemBackground
         navigationItem.title = "Likes"
         
-        mainView.listener = self
+//        mainView.listener = self
         
         setupNotificationCenter()
         
@@ -66,9 +66,10 @@ final class LikesPhotoListViewController: UIViewController {
 
 // MARK: - PhotoListDelegateActionListener
 
-extension LikesPhotoListViewController: LikesPhotoListViewActionListener {
-    func likesPhotoListViewCellDidTap(with photo: Photo) {
-        let photoDetailViewController = PhotoDetailViewController(photo: photo)
-        present(photoDetailViewController, animated: true)
-    }
-}
+//extension LikesPhotoListViewController: LikesPhotoListViewActionListener {
+//    func likesPhotoListViewCellDidTap(with photo: Photo) {
+//        let photoDetailViewController = PhotoDetailViewController(photo: photo)
+//        present(photoDetailViewController, animated: true)
+//    }
+//}
+//
