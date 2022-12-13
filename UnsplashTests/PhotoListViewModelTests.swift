@@ -6,6 +6,7 @@
 //
 
 import XCTest
+import Combine
 @testable import Unsplash
 
 final class PhotoRepositoryMock: PhotoRepository {
@@ -24,7 +25,8 @@ final class PhotoRepositoryMock: PhotoRepository {
 final class PhotoListViewModelTests: XCTestCase {
     private var sut: PhotoListViewModel?
     private let photosMock: [Photo] = [Photo(identifier: UUID(), id: "photo1", width: 200, height: 200, urls: URLs(regular: "test.com"), user: User(name: "test"))]
-
+    private var cancellables = Set<AnyCancellable>()
+    
     func test_viewDidLoad시_fetchPhotoList_성공하는지() {
         let photoRepositoryMock = PhotoRepositoryMock()
         photoRepositoryMock.photos = self.photosMock
@@ -43,5 +45,19 @@ final class PhotoListViewModelTests: XCTestCase {
         sut?.viewDidLoad()
         
         XCTAssertEqual(sut?.errorMessage, NetworkError.decodeError.rawValue)
+    }
+    
+    func test_photos_bind() {
+        let photoRepositoryMock = PhotoRepositoryMock()
+        
+        sut = PhotoListViewModel(photoRepository: photoRepositoryMock)
+        
+        sut?.photos = photosMock
+        
+        sut?.$photos
+            .sink(receiveValue: { [weak self] photos in
+                XCTAssertEqual(self?.photosMock, photos)
+            })
+            .store(in: &cancellables)
     }
 }
