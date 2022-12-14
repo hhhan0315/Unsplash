@@ -24,8 +24,18 @@ final class PhotoDetailViewController: UIViewController {
         button.setImage(UIImage(systemName: "heart.fill"), for: .normal)
         button.backgroundColor = .label
         button.tintColor = .systemBackground
+        button.setPreferredSymbolConfiguration(.init(pointSize: 24.0, weight: .semibold), forImageIn: .normal)
         button.addTarget(self, action: #selector(heartButtonDidTap(_:)), for: .touchUpInside)
-        button.setPreferredSymbolConfiguration(.init(scale: .large), forImageIn: .normal)
+        return button
+    }()
+    
+    private lazy var downloadButton: UIButton = {
+        let button = UIButton(type: .system)
+        button.setImage(UIImage(systemName: "arrow.down"), for: .normal)
+        button.backgroundColor = .label
+        button.tintColor = .systemBackground
+        button.setPreferredSymbolConfiguration(.init(pointSize: 24.0, weight: .semibold), forImageIn: .normal)
+        button.addTarget(self, action: #selector(downloadButtonDidTap(_:)), for: .touchUpInside)
         return button
     }()
     
@@ -54,6 +64,7 @@ final class PhotoDetailViewController: UIViewController {
         super.viewDidLayoutSubviews()
         
         heartButton.layer.cornerRadius = heartButton.frame.width / 2
+        downloadButton.layer.cornerRadius = downloadButton.frame.width / 2
     }
     
     override func viewDidLoad() {
@@ -75,6 +86,7 @@ final class PhotoDetailViewController: UIViewController {
     private func setupViews() {
         setupPhotoCollectionView()
         setupHeartButton()
+        setupDownloadButton()
     }
     
     private func setupPhotoCollectionView() {
@@ -96,6 +108,17 @@ final class PhotoDetailViewController: UIViewController {
             heartButton.heightAnchor.constraint(equalToConstant: 60.0),
             heartButton.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: -50.0),
             heartButton.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: -8.0),
+        ])
+    }
+    
+    private func setupDownloadButton() {
+        view.addSubview(downloadButton)
+        downloadButton.translatesAutoresizingMaskIntoConstraints = false
+        NSLayoutConstraint.activate([
+            downloadButton.widthAnchor.constraint(equalToConstant: 60.0),
+            downloadButton.heightAnchor.constraint(equalToConstant: 60.0),
+            downloadButton.bottomAnchor.constraint(equalTo: heartButton.topAnchor, constant: -16.0),
+            downloadButton.trailingAnchor.constraint(equalTo: heartButton.trailingAnchor),
         ])
     }
     
@@ -176,6 +199,21 @@ final class PhotoDetailViewController: UIViewController {
                 self?.present(activityViewController, animated: true)
             }
             .store(in: &cancellables)
+        
+        viewModel.$downloadDidSuccess
+            .receive(on: DispatchQueue.main)
+            .sink { [weak self] downloadDidSuccess in
+                guard let downloadDidSuccess = downloadDidSuccess else {
+                    return
+                }
+                
+                if downloadDidSuccess {
+                    self?.showAlert(title: "저장 성공")
+                } else {
+                    self?.showPhotoSettingAlert()
+                }
+            }
+            .store(in: &cancellables)
     }
     
     // MARK: - Button User Action
@@ -192,5 +230,14 @@ final class PhotoDetailViewController: UIViewController {
             return
         }
         viewModel.actionButtonDidTap(with: indexPath)
+    }
+    
+    @objc private func downloadButtonDidTap(_ sender: UIButton) {
+        showAlert(title: "사진 저장", message: "앨범에 사진을 저장하시겠습니까?") { [weak self] _ in
+            guard let indexPath = self?.photoCollectionView.indexPathsForVisibleItems.first else {
+                return
+            }
+            self?.viewModel.downloadButtonDidTap(with: indexPath)
+        }
     }
 }

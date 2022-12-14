@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		010CDAFC28E9CD5900F796C1 /* content.json in Resources */ = {isa = PBXBuildFile; fileRef = 010CDAFB28E9CD5900F796C1 /* content.json */; };
 		010CDB0028EA7BC900F796C1 /* content.json in Resources */ = {isa = PBXBuildFile; fileRef = 010CDAFB28E9CD5900F796C1 /* content.json */; };
+		01208304294981D60077A81E /* ImageSaveManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01208303294981D60077A81E /* ImageSaveManager.swift */; };
 		0132BAF52820C62E00E7A81A /* PhotoDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0132BAF42820C62E00E7A81A /* PhotoDetailViewController.swift */; };
 		013735A329417046006BDF79 /* BlackGradientImageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 013735A229417046006BDF79 /* BlackGradientImageView.swift */; };
 		013ED83E2846146F00B242FE /* PinterestLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = 013ED83D2846146F00B242FE /* PinterestLayout.swift */; };
@@ -82,6 +83,7 @@
 
 /* Begin PBXFileReference section */
 		010CDAFB28E9CD5900F796C1 /* content.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = content.json; sourceTree = "<group>"; };
+		01208303294981D60077A81E /* ImageSaveManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageSaveManager.swift; sourceTree = "<group>"; };
 		0132BAF42820C62E00E7A81A /* PhotoDetailViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhotoDetailViewController.swift; sourceTree = "<group>"; };
 		013735A229417046006BDF79 /* BlackGradientImageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BlackGradientImageView.swift; sourceTree = "<group>"; };
 		013ED83D2846146F00B242FE /* PinterestLayout.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PinterestLayout.swift; sourceTree = "<group>"; };
@@ -375,6 +377,7 @@
 			children = (
 				01C0C9AD28DAE30D00D655BD /* Alert.swift */,
 				015C93B4283880BA009F2498 /* ImageCacheManager.swift */,
+				01208303294981D60077A81E /* ImageSaveManager.swift */,
 				019D78CB28C8B1BB00EB3FEB /* Extension */,
 			);
 			path = Common;
@@ -624,6 +627,7 @@
 				01C0C9F128E286D400D655BD /* SearchResultViewController.swift in Sources */,
 				01B49FCC2944236A0027A01E /* PhotoListViewModel.swift in Sources */,
 				01C0C9E228DE973900D655BD /* TopicPhotoListViewController.swift in Sources */,
+				01208304294981D60077A81E /* ImageSaveManager.swift in Sources */,
 				01B49FFD2944F2F30027A01E /* TopicPhotoListViewModel.swift in Sources */,
 				01B49FED2944B2210027A01E /* SearchResultViewModel.swift in Sources */,
 				019D78CF28C9C01F00EB3FEB /* NetworkService.swift in Sources */,
