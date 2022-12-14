@@ -10,6 +10,7 @@ import Foundation
 protocol PhotoDetailViewModelInput {
     func willScroll(item: Int)
     func heartButtonDidTap(with indexPath: IndexPath)
+    func actionButtonDidTap(with indexPath: IndexPath)
 }
 
 protocol PhotoDetailViewModelOutput {
@@ -49,5 +50,10 @@ extension PhotoDetailViewModel {
             photoCoreDataRepository.create(photo: photo)
             heartButtonState = true
         }
+    }
+    
+    func actionButtonDidTap(with indexPath: IndexPath) {
+        let photo = photos[indexPath.item]
+        print(photo.user.name)
     }
 }

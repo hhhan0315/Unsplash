@@ -60,6 +60,7 @@ final class PhotoDetailViewController: UIViewController {
         super.viewDidLoad()
         
         view.backgroundColor = .systemBackground
+        navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .action, target: self, action: #selector(actionButtonDidTap(_:)))
         
         photoCollectionView.dataSource = dataSource
         photoCollectionView.collectionViewLayout = setupPhotoCollectionViewLayout()
@@ -172,5 +173,12 @@ final class PhotoDetailViewController: UIViewController {
             return
         }
         viewModel.heartButtonDidTap(with: indexPath)
+    }
+    
+    @objc private func actionButtonDidTap(_ sender: UIBarButtonItem) {
+        guard let indexPath = photoCollectionView.indexPathsForVisibleItems.first else {
+            return
+        }
+        viewModel.actionButtonDidTap(with: indexPath)
     }
 }
