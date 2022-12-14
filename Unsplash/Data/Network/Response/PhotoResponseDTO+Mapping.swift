@@ -12,6 +12,7 @@ struct PhotoResponseDTO: Decodable {
     let width: CGFloat
     let height: CGFloat
     let urls: URLDTO
+    let links: LinkDTO
     let user: UserDTO
     
     struct URLDTO: Decodable {
@@ -20,6 +21,10 @@ struct PhotoResponseDTO: Decodable {
         let regular: String
         let small: String
         let thumb: String
+    }
+    
+    struct LinkDTO: Decodable {
+        let html: String
     }
     
     struct UserDTO: Decodable {
@@ -35,6 +40,7 @@ extension PhotoResponseDTO {
             width: width,
             height: height,
             urls: urls.toDomain(),
+            links: links.toDomain(),
             user: user.toDomain()
         )
     }
@@ -43,6 +49,12 @@ extension PhotoResponseDTO {
 extension PhotoResponseDTO.URLDTO {
     func toDomain() -> URLs {
         return .init(regular: regular)
+    }
+}
+
+extension PhotoResponseDTO.LinkDTO {
+    func toDomain() -> Links {
+        return .init(html: html)
     }
 }
 

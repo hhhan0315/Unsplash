@@ -26,6 +26,7 @@ extension PhotoCoreDataEntity {
     @NSManaged public var width: Float
     @NSManaged public var height: Float
     @NSManaged public var userName: String?
+    @NSManaged public var linkHtml: String?
 
 }
 
@@ -41,6 +42,7 @@ extension PhotoCoreDataEntity {
             width: CGFloat(width),
             height: CGFloat(height),
             urls: URLs(regular: url ?? ""),
+            links: Links(html: linkHtml ?? ""),
             user: User(name: userName ?? "")
         )
     }

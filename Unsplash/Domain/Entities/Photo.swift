@@ -13,11 +13,16 @@ struct Photo {
     let width: CGFloat
     let height: CGFloat
     let urls: URLs
+    let links: Links
     let user: User
 }
 
 struct URLs {
     let regular: String
+}
+
+struct Links {
+    let html: String
 }
 
 struct User {

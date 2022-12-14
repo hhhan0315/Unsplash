@@ -65,6 +65,7 @@ extension DefaultPhotoCoreDataRepository: PhotoCoreDataRepository {
         object.setValue(photo.width, forKey: "width")
         object.setValue(photo.height, forKey: "height")
         object.setValue(Date(), forKey: "date")
+        object.setValue(photo.links.html, forKey: "linkHtml")
         
         if context.hasChanges {
             do {
