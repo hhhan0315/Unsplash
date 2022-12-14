@@ -38,7 +38,7 @@ final class PhotoDetailViewController: UIViewController {
     private enum Section {
         case photos
     }
-        
+    
     // MARK: - View LifeCycle
     
     init(viewModel: PhotoDetailViewModel) {
@@ -162,6 +162,18 @@ final class PhotoDetailViewController: UIViewController {
             .receive(on: DispatchQueue.main)
             .sink { [weak self] heartButtonState in
                 self?.heartButton.tintColor = heartButtonState ? .red : .systemBackground
+            }
+            .store(in: &cancellables)
+        
+        viewModel.$shareText
+            .receive(on: DispatchQueue.main)
+            .sink { [weak self] shareText in
+                guard let shareText = shareText else {
+                    return
+                }
+                
+                let activityViewController = UIActivityViewController(activityItems: [shareText], applicationActivities: nil)
+                self?.present(activityViewController, animated: true)
             }
             .store(in: &cancellables)
     }
