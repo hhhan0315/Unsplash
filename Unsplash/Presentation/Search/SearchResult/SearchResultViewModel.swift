@@ -60,6 +60,8 @@ extension SearchResultViewModel {
         guard currentQuery != query else {
             return
         }
+        
+        reset()
         currentQuery = query
         fetchSearchPhots()
     }
