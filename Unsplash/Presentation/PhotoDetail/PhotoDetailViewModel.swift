@@ -17,6 +17,7 @@ protocol PhotoDetailViewModelOutput {
     var photos: [Photo] { get }
     var indexPath: IndexPath? { get }
     var heartButtonState: Bool { get }
+    var shareText: String? { get }
 }
 
 final class PhotoDetailViewModel: PhotoDetailViewModelInput, PhotoDetailViewModelOutput {
@@ -25,6 +26,7 @@ final class PhotoDetailViewModel: PhotoDetailViewModelInput, PhotoDetailViewMode
     @Published var photos: [Photo] = []
     @Published var indexPath: IndexPath?
     @Published var heartButtonState: Bool = false
+    @Published var shareText: String?
     
     init(photos: [Photo], indexPath: IndexPath) {
         self.photos = photos
@@ -54,6 +56,6 @@ extension PhotoDetailViewModel {
     
     func actionButtonDidTap(with indexPath: IndexPath) {
         let photo = photos[indexPath.item]
-        print(photo.links.html)
+        shareText = photo.links.html
     }
 }
