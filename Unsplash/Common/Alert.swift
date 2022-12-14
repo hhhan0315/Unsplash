@@ -14,5 +14,6 @@ enum Alert {
     
     enum ActionTitle {
         static let ok = "확인"
+        static let cancel = "취소"
     }
 }

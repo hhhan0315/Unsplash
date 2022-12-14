@@ -2,8 +2,6 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
-	<key>UISupportsDocumentBrowser</key>
-	<true/>
 	<key>NSPhotoLibraryAddUsageDescription</key>
 	<string>이미지 저장을 위해 앨범을 사용합니다.</string>
 	<key>UIApplicationSceneManifest</key>
