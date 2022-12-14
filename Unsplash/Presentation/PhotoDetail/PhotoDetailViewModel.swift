@@ -54,6 +54,6 @@ extension PhotoDetailViewModel {
     
     func actionButtonDidTap(with indexPath: IndexPath) {
         let photo = photos[indexPath.item]
-        print(photo.user.name)
+        print(photo.links.html)
     }
 }
