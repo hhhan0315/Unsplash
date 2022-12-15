@@ -24,7 +24,7 @@ final class PhotoRepositoryMock: PhotoRepository {
 
 final class PhotoListViewModelTests: XCTestCase {
     private var sut: PhotoListViewModel?
-    private let photosMock: [Photo] = [Photo(identifier: UUID(), id: "photo1", width: 200, height: 200, urls: URLs(regular: "test.com"), user: User(name: "test"))]
+    private let photosMock: [Photo] = [Photo(identifier: UUID(), id: "photo1", width: 200, height: 200, urls: URLs(regular: "test.com"), links: Links(html: "test"), user: User(name: "test"))]
     private var cancellables = Set<AnyCancellable>()
     
     func test_viewDidLoad시_fetchPhotoList_성공하는지() {
