@@ -9,27 +9,19 @@ import Foundation
 import CoreData
 
 final class DefaultPhotoCoreDataRepository {
-    private let container: NSPersistentContainer
-    private let context: NSManagedObjectContext
+    private let coreDataStorage: CoreDataStorage
     
-    init() {
-        container = NSPersistentContainer(name: "Unsplash")
-        container.loadPersistentStores { storeDescription, error in
-            if let error = error as NSError? {
-                fatalError("Unresolved error \(error), \(error.userInfo)")
-            }
-        }
-        
-        context = container.viewContext
+    init(coreDataStorage: CoreDataStorage = CoreDataStorage.shared) {
+        self.coreDataStorage = coreDataStorage
     }
     
-    private func getEntity(id: String) -> PhotoCoreDataEntity? {
-        let request = PhotoCoreDataEntity.fetchRequest()
+    private func getEntity(id: String) -> PhotoEntity? {
+        let request = PhotoEntity.fetchRequest()
         request.fetchLimit = 1
         request.predicate = NSPredicate(format: "id = %@", id)
         
         do {
-            return try context.fetch(request).first
+            return try coreDataStorage.context.fetch(request).first
         } catch {
             return nil
         }
@@ -38,12 +30,12 @@ final class DefaultPhotoCoreDataRepository {
 
 extension DefaultPhotoCoreDataRepository: PhotoCoreDataRepository {
     func fetchAll() -> [Photo] {
-        let request = PhotoCoreDataEntity.fetchRequest()
+        let request = PhotoEntity.fetchRequest()
         let dateOrder = NSSortDescriptor(key: "date", ascending: false)
         request.sortDescriptors = [dateOrder]
         
         do {
-            return try context.fetch(request).map { $0.toDomain() }
+            return try coreDataStorage.context.fetch(request).map { $0.toDomain() }
         } catch {
             return []
         }
@@ -54,11 +46,11 @@ extension DefaultPhotoCoreDataRepository: PhotoCoreDataRepository {
             return
         }
         
-        guard let entity = NSEntityDescription.entity(forEntityName: "PhotoCoreDataEntity", in: context) else {
+        guard let entity = NSEntityDescription.entity(forEntityName: "PhotoEntity", in: coreDataStorage.context) else {
             return
         }
         
-        let object = NSManagedObject(entity: entity, insertInto: context)
+        let object = NSManagedObject(entity: entity, insertInto: coreDataStorage.context)
         object.setValue(photo.id, forKey: "id")
         object.setValue(photo.urls.regular, forKey: "url")
         object.setValue(photo.user.name, forKey: "userName")
@@ -67,25 +59,14 @@ extension DefaultPhotoCoreDataRepository: PhotoCoreDataRepository {
         object.setValue(Date(), forKey: "date")
         object.setValue(photo.links.html, forKey: "linkHtml")
         
-        if context.hasChanges {
-            do {
-                try context.save()
-            } catch {
-                fatalError(error.localizedDescription)
-            }
-        }
+        coreDataStorage.saveContext()
     }
     
     func delete(id: String) {
-        if let photoCoreDataEntity = getEntity(id: id) {
-            context.delete(photoCoreDataEntity)
+        if let photoEntity = getEntity(id: id) {
+            coreDataStorage.context.delete(photoEntity)
             
-            do {
-                try context.save()
-            } catch {
-                context.rollback()
-                fatalError(error.localizedDescription)
-            }
+            coreDataStorage.saveContext()
         }
     }
     
