@@ -35,19 +35,39 @@ Unsplash unofficial app for iOS
 ## 기능
 
 ### 사진 리스트
+- 사진 리스트를 받아서 스크롤할 수 있습니다.
+- 스크롤이 마지막에 도착하면 다음 사진 리스트를 받아올 수 있습니다.
 
 <p>
-    <img src="https://github.com/hhhan0315/Unsplash/blob/main/screenshot/intro_list1.gif" width="20%"/>
-    <img src="https://github.com/hhhan0315/Unsplash/blob/main/screenshot/intro_list2.gif" width="20%"/>
+    <img src="https://github.com/hhhan0315/Unsplash/blob/main/screenshot/intro_list1.gif"/>
+    <img src="https://github.com/hhhan0315/Unsplash/blob/main/screenshot/intro_list2.gif"/>
 </p>
 
 ### 검색
-    
-<img src="https://github.com/hhhan0315/Unsplash/blob/main/screenshot/intro_search.gif" width="20%"/>
+- 사진을 검색할 수 있습니다.
+
+<img src="https://github.com/hhhan0315/Unsplash/blob/main/screenshot/intro_search.gif"/>
+
+### 사진 상세 정보
+- 좌우로 스크롤하면서 사진을 넘길 수 있습니다.
+- 해당 사진을 저장했는지 여부를 확인할 수 있습니다.
+
+<img src="https://github.com/hhhan0315/Unsplash/blob/main/screenshot/intro_detail.gif"/>
 
 ### 사진 좋아요
+- 하트 버튼을 눌러서 사진 정보를 저장할 수 있습니다.
 
-<img src="https://github.com/hhhan0315/Unsplash/blob/main/screenshot/intro_heart.gif" width="20%"/>
+<img src="https://github.com/hhhan0315/Unsplash/blob/main/screenshot/intro_heart.gif"/>
+
+### 사진 앨범 저장
+- 저장 버튼을 눌러서 앨범에 사진을 저장할 수 있습니다.
+
+<img src="https://github.com/hhhan0315/Unsplash/blob/main/screenshot/intro_save.gif"/>
+
+### 사진 정보 공유
+- 공유 버튼을 눌러서 사진 웹 주소 정보를 공유할 수 있습니다.
+
+<img src="https://github.com/hhhan0315/Unsplash/blob/main/screenshot/intro_share.gif"/>
 
 ## 구조
 
