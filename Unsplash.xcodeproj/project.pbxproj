@@ -347,9 +347,9 @@
 		01A18D362948661900DA45B0 /* CoreDataStorage */ = {
 			isa = PBXGroup;
 			children = (
-				0120830E294B28F60077A81E /* Entity+Mapping */,
 				0120830C294B28E70077A81E /* CoreDataStorage.swift */,
 				01C0C9F628E3E1F000D655BD /* CoreDataStorage.xcdatamodeld */,
+				0120830E294B28F60077A81E /* Entity+Mapping */,
 			);
 			path = CoreDataStorage;
 			sourceTree = "<group>";

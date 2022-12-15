@@ -71,7 +71,106 @@ Unsplash unofficial app for iOS
 
 ## 구조
 
-<img src="https://github.com/hhhan0315/Unsplash/blob/main/screenshot/architecture.png" width="90%"/>
+### MVVM
+
+<img src="https://github.com/hhhan0315/Unsplash/blob/main/screenshot/architecture_mvvm.png" width="90%"/>
+
+```
+├── Unsplash
+│   ├── Application
+│   │   ├── AppDelegate.swift
+│   │   └── SceneDelegate.swift
+│   ├── Common
+│   │   ├── Alert.swift
+│   │   ├── Extension
+│   │   │   ├── NotificationName+Extension.swift
+│   │   │   ├── UIImageView+Extension.swift
+│   │   │   └── UIViewController+Extension.swift
+│   │   ├── ImageCacheManager.swift
+│   │   └── ImageSaveManager.swift
+│   ├── Data
+│   │   ├── CoreDataStorage
+│   │   │   ├── CoreDataStorage.swift
+│   │   │   ├── CoreDataStorage.xcdatamodeld
+│   │   │   │   └── Unsplash.xcdatamodel
+│   │   │   │       └── contents
+│   │   │   └── Entity+Mapping
+│   │   │       └── PhotoEntity+Mapping.swift
+│   │   ├── Network
+│   │   │   ├── Request
+│   │   │   │   ├── PhotoRequestDTO.swift
+│   │   │   │   ├── PhotoSearchRequestDTO.swift
+│   │   │   │   ├── TopicPhotoRequestDTO.swift
+│   │   │   │   └── TopicRequestDTO.swift
+│   │   │   └── Response
+│   │   │       ├── PhotoResponseDTO+Mapping.swift
+│   │   │       ├── SearchResponseDTO.swift
+│   │   │       └── TopicResponseDTO+Mapping.swift
+│   │   └── Repositories
+│   │       ├── DefaultPhotoCoreDataRepository.swift
+│   │       ├── DefaultPhotoRepository.swift
+│   │       ├── DefaultPhotoSearchRepository.swift
+│   │       ├── DefaultTopicPhotoRepository.swift
+│   │       └── DefaultTopicRepository.swift
+│   ├── Domain
+│   │   ├── Entities
+│   │   │   ├── Photo.swift
+│   │   │   └── Topic.swift
+│   │   └── Interfaces
+│   │       └── Repositories
+│   │           ├── PhotoCoreDataRepository.swift
+│   │           ├── PhotoRepository.swift
+│   │           ├── PhotoSearchRepository.swift
+│   │           ├── TopicPhotoRepository.swift
+│   │           └── TopicRepository.swift
+│   ├── Infrastructure
+│   │   └── Network
+│   │       ├── API.swift
+│   │       ├── NetworkService.swift
+│   │       ├── Secrets.swift
+│   │       ├── TargetType.swift
+│   │       ├── URLSessionDataTaskProtocol.swift
+│   │       └── URLSessionProtocol.swift
+│   ├── Presentation
+│   │   ├── Common
+│   │   │   ├── BlackGradientImageView.swift
+│   │   │   ├── PhotoCollectionViewCell.swift
+│   │   │   └── PinterestLayout.swift
+│   │   ├── LikesPhotoList
+│   │   │   ├── LikesPhotoCollectionViewCell.swift
+│   │   │   ├── LikesPhotoListViewController.swift
+│   │   │   └── LikesPhotoListViewModel.swift
+│   │   ├── MainTabBarController.swift
+│   │   ├── PhotoDetail
+│   │   │   ├── PhotoDetailCollectionViewCell.swift
+│   │   │   ├── PhotoDetailViewController.swift
+│   │   │   └── PhotoDetailViewModel.swift
+│   │   ├── PhotoList
+│   │   │   ├── PhotoListViewController.swift
+│   │   │   └── PhotoListViewModel.swift
+│   │   └── Search
+│   │       ├── SearchResult
+│   │       │   ├── SearchResultViewController.swift
+│   │       │   └── SearchResultViewModel.swift
+│   │       ├── TopicList
+│   │       │   ├── TopicListCollectionViewCell.swift
+│   │       │   ├── TopicListViewController.swift
+│   │       │   └── TopicListViewModel.swift
+│   │       └── TopicPhotoList
+│   │           ├── TopicPhotoListViewController.swift
+│   │           └── TopicPhotoListViewModel.swift
+├── UnsplashTests
+│   ├── Network
+│   │   ├── MockURLSession.swift
+│   │   ├── MockURLSessionDataTask.swift
+│   │   ├── NetworkServiceTests.swift
+│   │   └── content.json
+│   └── PhotoListViewModelTests.swift
+```
+
+### MVC
+
+<img src="https://github.com/hhhan0315/Unsplash/blob/main/screenshot/architecture_mvc.png" width="90%"/>
 
 ```
 ├── Unsplash
