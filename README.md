@@ -73,7 +73,7 @@ Unsplash unofficial app for iOS
 
 ### MVVM
 
-<img src="https://github.com/hhhan0315/Unsplash/blob/main/screenshot/architecture_mvvm.png" width="90%"/>
+<img src="https://github.com/hhhan0315/Unsplash/blob/main/screenshot/architecture_mvvm.png"/>
 
 ```
 ├── Unsplash
