@@ -38,6 +38,7 @@ Unsplash unofficial app for iOS
 - [MVVM & Clean Architecture 적용 이유](https://github.com/hhhan0315/Unsplash/tree/main/markdown/MVVM_CleanArchitecture.md)
 - [MVVM 적용 및 진행 과정](https://github.com/hhhan0315/Unsplash/tree/main/markdown/MVVM.md)
 - [Repository pattern](https://github.com/hhhan0315/Unsplash/tree/main/markdown/Repository.md)
+- [MVVM 1:N 바인딩](https://github.com/hhhan0315/Unsplash/tree/main/markdown/MVVM_binding.md)
 
 ## 스크린샷
 
