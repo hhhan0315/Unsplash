@@ -7,6 +7,15 @@ Unsplash unofficial app for iOS
 
 > iOS 13.0
 
+## 기술 정보
+
+- 화면 구현 : UIKit
+- 네트워킹 : URLSession, URLSessionProtocol, URLSessionDataTaskProtocol
+- 비동기 프로그래밍 : DispatchQueue
+- 저장소 : Core Data
+- 테스트 : XCTest(Unit Test)
+- 디자인 패턴 : MVC, MVVM, Repository
+
 ## 구현 내용
 ### 1. MVC
 - MVC 해체
@@ -26,6 +35,7 @@ Unsplash unofficial app for iOS
     - `sync & async` `blocking & non-blocking` `serial & concurrent`
     
 ### 2. MVVM
+- [MVVM 적용 및 진행 과정](https://github.com/hhhan0315/Unsplash/tree/main/markdown/MVVM.md)
 - [Repository pattern](https://github.com/hhhan0315/Unsplash/tree/main/markdown/Repository.md)
 
 ## 스크린샷
