@@ -128,13 +128,18 @@ Unsplash unofficial app for iOS
 │   │   ├── Entities
 │   │   │   ├── Photo.swift
 │   │   │   └── Topic.swift
-│   │   └── Interfaces
-│   │       └── Repositories
-│   │           ├── PhotoCoreDataRepository.swift
-│   │           ├── PhotoRepository.swift
-│   │           ├── PhotoSearchRepository.swift
-│   │           ├── TopicPhotoRepository.swift
-│   │           └── TopicRepository.swift
+│   │   ├── Interfaces
+│   │   │   └── Repositories
+│   │   │       ├── PhotoCoreDataRepository.swift
+│   │   │       ├── PhotoRepository.swift
+│   │   │       ├── PhotoSearchRepository.swift
+│   │   │       ├── TopicPhotoRepository.swift
+│   │   │       └── TopicRepository.swift
+│   │   └── UseCases
+│   │       ├── GetPhotoListUseCase.swift
+│   │       ├── GetPhotoSearchListUseCase.swift
+│   │       ├── GetTopicListUseCase.swift
+│   │       └── GetTopicPhotoListUseCase.swift
 │   ├── Infrastructure
 │   │   └── Network
 │   │       ├── API.swift
@@ -171,6 +176,16 @@ Unsplash unofficial app for iOS
 │   │       └── TopicPhotoList
 │   │           ├── TopicPhotoListViewController.swift
 │   │           └── TopicPhotoListViewModel.swift
+│   └── Resource
+│       ├── Assets.xcassets
+│       │   ├── AccentColor.colorset
+│       │   │   └── Contents.json
+│       │   ├── AppIcon.appiconset
+│       │   │   └── Contents.json
+│       │   └── Contents.json
+│       ├── Base.lproj
+│       │   └── LaunchScreen.storyboard
+│       └── Info.plist
 ├── UnsplashTests
 │   ├── Network
 │   │   ├── MockURLSession.swift
