@@ -17,19 +17,19 @@ protocol TopicListViewModelOutput {
 }
 
 final class TopicListViewModel: TopicListViewModelInput, TopicListViewModelOutput {
-    private let topicRepository: TopicRepository
+    private let getTopicListUseCase: GetTopicListUseCase
         
     // MARK: - Output
     
     @Published var topics: [Topic] = []
     @Published var errorMessage: String?
     
-    init(topicRepository: TopicRepository) {
-        self.topicRepository = topicRepository
+    init(getTopicListUseCase: GetTopicListUseCase) {
+        self.getTopicListUseCase = getTopicListUseCase
     }
     
     private func fetchTopicList() {
-        topicRepository.fetchTopicList { [weak self] result in
+        getTopicListUseCase.execute { [weak self] result in
             switch result {
             case .success(let topics):
                 self?.topics += topics

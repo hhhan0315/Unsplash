@@ -149,7 +149,8 @@ extension TopicListViewController: UICollectionViewDelegate {
         let topic = viewModel.topics[indexPath.item]
         let networkService = NetworkService()
         let topicPhotoRepository = DefaultTopicPhotoRepository(networkService: networkService)
-        let topicPhotoListViewModel = TopicPhotoListViewModel(topicPhotoRepository: topicPhotoRepository)
+        let getTopicPhotoListUseCase = DefaultGetTopicPhotoListUseCase(topicPhotoRepository: topicPhotoRepository)
+        let topicPhotoListViewModel = TopicPhotoListViewModel(getTopicPhotoListUseCase: getTopicPhotoListUseCase)
         let topicPhotoListViewController = TopicPhotoListViewController(topic: topic, viewModel: topicPhotoListViewModel)
         navigationController?.pushViewController(topicPhotoListViewController, animated: true)
     }

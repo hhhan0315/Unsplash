@@ -18,7 +18,7 @@ protocol TopicPhotoListViewModelOutput {
 }
 
 final class TopicPhotoListViewModel: TopicPhotoListViewModelInput, TopicPhotoListViewModelOutput {
-    private let topicPhotoRepository: TopicPhotoRepository
+    private let getTopicPhotoListUseCase: GetTopicPhotoListUseCase
     
     private var page = 0
     private var currentSlug = ""
@@ -28,14 +28,14 @@ final class TopicPhotoListViewModel: TopicPhotoListViewModelInput, TopicPhotoLis
     @Published var photos: [Photo] = []
     @Published var errorMessage: String?
     
-    init(topicPhotoRepository: TopicPhotoRepository) {
-        self.topicPhotoRepository = topicPhotoRepository
+    init(getTopicPhotoListUseCase: GetTopicPhotoListUseCase) {
+        self.getTopicPhotoListUseCase = getTopicPhotoListUseCase
     }
     
     private func fetchTopicPhotoList() {
         page += 1
         
-        topicPhotoRepository.fetchTopicPhotoList(slug: currentSlug, page: page) { [weak self] result in
+        getTopicPhotoListUseCase.execute(slug: currentSlug, page: self.page) { [weak self] result in
             switch result {
             case .success(let photos):
                 self?.photos += photos

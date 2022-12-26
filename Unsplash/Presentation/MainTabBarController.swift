@@ -39,12 +39,14 @@ final class MainTabBarController: UITabBarController {
         
         let networkService = NetworkService()
         let photoRepository = DefaultPhotoRepository(networkService: networkService)
-        let photoListViewModel = PhotoListViewModel(photoRepository: photoRepository)
+        let getPhotoListUseCase = DefaultGetPhotoListUseCase(photoRepository: photoRepository)
+        let photoListViewModel = PhotoListViewModel(getPhotoListUseCase: getPhotoListUseCase)
         let photoListViewController = UINavigationController(rootViewController: PhotoListViewController(viewModel: photoListViewModel))
         photoListViewController.tabBarItem = photoListTabBarItem
         
         let topicRepository = DefaultTopicRepository(networkService: networkService)
-        let topicListViewModel = TopicListViewModel(topicRepository: topicRepository)
+        let getTopicListUseCase = DefaultGetTopicListUseCase(topicRepository: topicRepository)
+        let topicListViewModel = TopicListViewModel(getTopicListUseCase: getTopicListUseCase)
         let topicListViewController = UINavigationController(rootViewController: TopicListViewController(viewModel: topicListViewModel))
         topicListViewController.tabBarItem = topicListTabBarItem
         

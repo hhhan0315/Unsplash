@@ -9,11 +9,11 @@ import XCTest
 import Combine
 @testable import Unsplash
 
-final class PhotoRepositoryMock: PhotoRepository {
-    var error: NetworkError?
+final class GetPhotoListUseCaseMock: GetPhotoListUseCase {
     var photos: [Photo] = []
+    var error: NetworkError?
     
-    func fetchPhotoList(page: Int, completion: @escaping (Result<[Photo], NetworkError>) -> Void) {
+    func execute(page: Int, completion: @escaping (Result<[Photo], NetworkError>) -> Void) {
         if let error = error {
             completion(.failure(error))
         } else {
@@ -28,9 +28,9 @@ final class PhotoListViewModelTests: XCTestCase {
     private var cancellables = Set<AnyCancellable>()
     
     func test_viewDidLoad시_fetchPhotoList_성공하는지() {
-        let photoRepositoryMock = PhotoRepositoryMock()
-        photoRepositoryMock.photos = self.photosMock
-        sut = PhotoListViewModel(photoRepository: photoRepositoryMock)
+        let getPhotoListUseCaseMock = GetPhotoListUseCaseMock()
+        getPhotoListUseCaseMock.photos = self.photosMock
+        sut = PhotoListViewModel(photoListUseCase: getPhotoListUseCaseMock)
         
         sut?.viewDidLoad()
         
@@ -38,9 +38,9 @@ final class PhotoListViewModelTests: XCTestCase {
     }
     
     func test_viewDidLoad시_decodeError발생_실패하는지() {
-        let photoRepositoryMock = PhotoRepositoryMock()
-        photoRepositoryMock.error = .decodeError
-        sut = PhotoListViewModel(photoRepository: photoRepositoryMock)
+        let getPhotoListUseCaseMock = GetPhotoListUseCaseMock()
+        getPhotoListUseCaseMock.error = .decodeError
+        sut = PhotoListViewModel(photoListUseCase: getPhotoListUseCaseMock)
         
         sut?.viewDidLoad()
         
@@ -48,9 +48,8 @@ final class PhotoListViewModelTests: XCTestCase {
     }
     
     func test_photos_bind() {
-        let photoRepositoryMock = PhotoRepositoryMock()
-        
-        sut = PhotoListViewModel(photoRepository: photoRepositoryMock)
+        let getPhotoListUseCaseMock = GetPhotoListUseCaseMock()
+        sut = PhotoListViewModel(photoListUseCase: getPhotoListUseCaseMock)
         
         sut?.photos = photosMock
         

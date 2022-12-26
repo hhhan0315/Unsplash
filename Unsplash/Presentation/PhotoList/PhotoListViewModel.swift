@@ -18,8 +18,7 @@ protocol PhotoListViewModelOutput {
 }
 
 final class PhotoListViewModel: PhotoListViewModelInput, PhotoListViewModelOutput {
-    private let photoRepository: PhotoRepository
-    
+    private let getPhotoListUseCase: GetPhotoListUseCase
     private var page = 0
     
     // MARK: - Output
@@ -27,14 +26,14 @@ final class PhotoListViewModel: PhotoListViewModelInput, PhotoListViewModelOutpu
     @Published var photos: [Photo] = []
     @Published var errorMessage: String?
     
-    init(photoRepository: PhotoRepository) {
-        self.photoRepository = photoRepository
+    init(getPhotoListUseCase: GetPhotoListUseCase) {
+        self.getPhotoListUseCase = getPhotoListUseCase
     }
     
     private func fetchPhotoList() {
         self.page += 1
         
-        photoRepository.fetchPhotoList(page: self.page) { [weak self] result in
+        getPhotoListUseCase.execute(page: self.page) { [weak self] result in
             switch result {
             case .success(let photos):
                 self?.photos += photos

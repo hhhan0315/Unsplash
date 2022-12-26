@@ -12,6 +12,9 @@
 		01208304294981D60077A81E /* ImageSaveManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01208303294981D60077A81E /* ImageSaveManager.swift */; };
 		0120830D294B28E70077A81E /* CoreDataStorage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0120830C294B28E70077A81E /* CoreDataStorage.swift */; };
 		01208310294B290B0077A81E /* PhotoEntity+Mapping.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0120830F294B290B0077A81E /* PhotoEntity+Mapping.swift */; };
+		012FAF4B2956D583001624E6 /* GetPhotoListUseCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = 012FAF4A2956D583001624E6 /* GetPhotoListUseCase.swift */; };
+		012FAF4D2956E56D001624E6 /* GetTopicListUseCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = 012FAF4C2956E56D001624E6 /* GetTopicListUseCase.swift */; };
+		012FAF4F2956E66F001624E6 /* GetTopicPhotoListUseCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = 012FAF4E2956E66F001624E6 /* GetTopicPhotoListUseCase.swift */; };
 		0132BAF52820C62E00E7A81A /* PhotoDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0132BAF42820C62E00E7A81A /* PhotoDetailViewController.swift */; };
 		013735A329417046006BDF79 /* BlackGradientImageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 013735A229417046006BDF79 /* BlackGradientImageView.swift */; };
 		013ED83E2846146F00B242FE /* PinterestLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = 013ED83D2846146F00B242FE /* PinterestLayout.swift */; };
@@ -87,6 +90,9 @@
 		01208303294981D60077A81E /* ImageSaveManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageSaveManager.swift; sourceTree = "<group>"; };
 		0120830C294B28E70077A81E /* CoreDataStorage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoreDataStorage.swift; sourceTree = "<group>"; };
 		0120830F294B290B0077A81E /* PhotoEntity+Mapping.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "PhotoEntity+Mapping.swift"; sourceTree = "<group>"; };
+		012FAF4A2956D583001624E6 /* GetPhotoListUseCase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GetPhotoListUseCase.swift; sourceTree = "<group>"; };
+		012FAF4C2956E56D001624E6 /* GetTopicListUseCase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GetTopicListUseCase.swift; sourceTree = "<group>"; };
+		012FAF4E2956E66F001624E6 /* GetTopicPhotoListUseCase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GetTopicPhotoListUseCase.swift; sourceTree = "<group>"; };
 		0132BAF42820C62E00E7A81A /* PhotoDetailViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhotoDetailViewController.swift; sourceTree = "<group>"; };
 		013735A229417046006BDF79 /* BlackGradientImageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BlackGradientImageView.swift; sourceTree = "<group>"; };
 		013ED83D2846146F00B242FE /* PinterestLayout.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PinterestLayout.swift; sourceTree = "<group>"; };
@@ -214,11 +220,22 @@
 			path = Resource;
 			sourceTree = "<group>";
 		};
+		012FAF492956D55F001624E6 /* UseCases */ = {
+			isa = PBXGroup;
+			children = (
+				012FAF4A2956D583001624E6 /* GetPhotoListUseCase.swift */,
+				012FAF4C2956E56D001624E6 /* GetTopicListUseCase.swift */,
+				012FAF4E2956E66F001624E6 /* GetTopicPhotoListUseCase.swift */,
+			);
+			path = UseCases;
+			sourceTree = "<group>";
+		};
 		0164B7902943902C00F30756 /* Domain */ = {
 			isa = PBXGroup;
 			children = (
 				0164B7932943903F00F30756 /* Entities */,
 				0164B7A829441A9600F30756 /* Interfaces */,
+				012FAF492956D55F001624E6 /* UseCases */,
 			);
 			path = Domain;
 			sourceTree = "<group>";
@@ -630,6 +647,7 @@
 				01208310294B290B0077A81E /* PhotoEntity+Mapping.swift in Sources */,
 				01B4A0072947115D0027A01E /* MainTabBarController.swift in Sources */,
 				01C0C9F828E3E1F000D655BD /* CoreDataStorage.xcdatamodeld in Sources */,
+				012FAF4F2956E66F001624E6 /* GetTopicPhotoListUseCase.swift in Sources */,
 				0164B7AA29441ABD00F30756 /* DefaultPhotoRepository.swift in Sources */,
 				01A18D352948647400DA45B0 /* TopicRequestDTO.swift in Sources */,
 				013ED83E2846146F00B242FE /* PinterestLayout.swift in Sources */,
@@ -644,9 +662,11 @@
 				01B49FED2944B2210027A01E /* SearchResultViewModel.swift in Sources */,
 				019D78CF28C9C01F00EB3FEB /* NetworkService.swift in Sources */,
 				01A18D332948625900DA45B0 /* PhotoCoreDataRepository.swift in Sources */,
+				012FAF4B2956D583001624E6 /* GetPhotoListUseCase.swift in Sources */,
 				01C0CA0A28E47C8F00D655BD /* NotificationName+Extension.swift in Sources */,
 				01C0C9D128DC8FD300D655BD /* URLSessionDataTaskProtocol.swift in Sources */,
 				01C0C9AE28DAE30D00D655BD /* Alert.swift in Sources */,
+				012FAF4D2956E56D001624E6 /* GetTopicListUseCase.swift in Sources */,
 				01B49FEB2944AB420027A01E /* DefaultTopicRepository.swift in Sources */,
 				0132BAF52820C62E00E7A81A /* PhotoDetailViewController.swift in Sources */,
 				015744F82844586400B3A6F7 /* Secrets.swift in Sources */,
