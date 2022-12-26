@@ -81,7 +81,7 @@ extension PhotoListViewModel {
 - 라이브러리를 사용하지 않고 구현해보고 싶어서 이번에는 선택하지 않았다.
 
 ## UseCase
-- 참고 : [PRDN iOS팀의 UseCase 활용기]([https://medium.com/@justfaceit/clean-architecture는-모바일-개발을-어떻게-도와주는가-1-경계선-계층을-정의해준다-b77496744616](https://medium.com/prnd/%EF%B8%8F-prnd-ios팀의-usecase-활용기-e4ddbef274a1))
+- 참고 : [PRDN iOS팀의 UseCase 활용기](https://medium.com/prnd/%EF%B8%8F-prnd-ios팀의-usecase-활용기-e4ddbef274a1)
 - Domain 계층의 UseCase는 비즈니스 로직을 담당한다고 한다.
 - 외부 사업 부서도 알고 있어야 하는 로직이며 앱의 사용자 상호 작용이 아닌 업무 요구사항을 담고 있다고 한다.
 - 현재 프로젝트에서는 Repository에서 사용하던걸 UseCase에서 그대로 똑같이 작성하게 되고 Result의 형태도 동일하다고 느껴서 구현하지 않고 ViewModel에서 그대로 Repository를 사용하는 것으로 구현했다.
