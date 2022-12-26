@@ -70,7 +70,8 @@ final class TopicListViewController: UIViewController {
     private func setupSearchController() {
         let networkService = NetworkService()
         let photoSearchRepository = DefaultPhotoSearchRepository(networkService: networkService)
-        let searchResultViewModel = SearchResultViewModel(photoSearchRepository: photoSearchRepository)
+        let getPhotoSearchListUseCase = DefaultGetPhotoSearchListUseCase(photoSearchRepository: photoSearchRepository)
+        let searchResultViewModel = SearchResultViewModel(getPhotoSearchListUseCase: getPhotoSearchListUseCase)
         let searchResultViewController = SearchResultViewController(viewModel: searchResultViewModel)
         searchResultViewController.delegate = self
         

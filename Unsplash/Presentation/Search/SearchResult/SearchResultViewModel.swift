@@ -19,7 +19,7 @@ protocol SearchResultViewModelOutput {
 }
 
 final class SearchResultViewModel: SearchResultViewModelInput, SearchResultViewModelOutput {
-    private let photoSearchRepository: PhotoSearchRepository
+    private let getPhotoSearchListUseCase: GetPhotoSearchListUseCase
     
     private var page = 0
     private var currentQuery = ""
@@ -29,14 +29,14 @@ final class SearchResultViewModel: SearchResultViewModelInput, SearchResultViewM
     @Published var photos: [Photo] = []
     @Published var errorMessage: String?
     
-    init(photoSearchRepository: PhotoSearchRepository) {
-        self.photoSearchRepository = photoSearchRepository
+    init(getPhotoSearchListUseCase: GetPhotoSearchListUseCase) {
+        self.getPhotoSearchListUseCase = getPhotoSearchListUseCase
     }
     
     private func fetchSearchPhots() {
         page += 1
         
-        photoSearchRepository.fetchSearchPhotos(query: currentQuery, page: page) { [weak self] result in
+        getPhotoSearchListUseCase.execute(query: currentQuery, page: page) { [weak self] result in
             switch result {
             case .success(let photos):
                 self?.photos += photos
