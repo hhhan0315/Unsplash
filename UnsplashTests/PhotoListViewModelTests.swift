@@ -30,7 +30,7 @@ final class PhotoListViewModelTests: XCTestCase {
     func test_viewDidLoad시_fetchPhotoList_성공하는지() {
         let getPhotoListUseCaseMock = GetPhotoListUseCaseMock()
         getPhotoListUseCaseMock.photos = self.photosMock
-        sut = PhotoListViewModel(photoListUseCase: getPhotoListUseCaseMock)
+        sut = PhotoListViewModel(getPhotoListUseCase: getPhotoListUseCaseMock)
         
         sut?.viewDidLoad()
         
@@ -40,7 +40,7 @@ final class PhotoListViewModelTests: XCTestCase {
     func test_viewDidLoad시_decodeError발생_실패하는지() {
         let getPhotoListUseCaseMock = GetPhotoListUseCaseMock()
         getPhotoListUseCaseMock.error = .decodeError
-        sut = PhotoListViewModel(photoListUseCase: getPhotoListUseCaseMock)
+        sut = PhotoListViewModel(getPhotoListUseCase: getPhotoListUseCaseMock)
         
         sut?.viewDidLoad()
         
@@ -49,7 +49,7 @@ final class PhotoListViewModelTests: XCTestCase {
     
     func test_photos_bind() {
         let getPhotoListUseCaseMock = GetPhotoListUseCaseMock()
-        sut = PhotoListViewModel(photoListUseCase: getPhotoListUseCaseMock)
+        sut = PhotoListViewModel(getPhotoListUseCase: getPhotoListUseCaseMock)
         
         sut?.photos = photosMock
         
